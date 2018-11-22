@@ -20,7 +20,7 @@ namespace Lumos.BLL.Service.Admin
                 ret.MerchantId = sysMerchantUser.Id ?? ""; ;
                 ret.UserName = sysMerchantUser.UserName ?? ""; ;
 
-                var merchantInfo = CurrentDb.MerchantInfo.Where(m => m.MerchantId == merchantId).FirstOrDefault();
+                var merchantInfo = CurrentDb.MchInfo.Where(m => m.MerchantId == merchantId).FirstOrDefault();
                 ret.MerchantName = merchantInfo.Name ?? ""; ;
                 ret.ContactAddress = merchantInfo.ContactAddress ?? "";
                 ret.ContactName = merchantInfo.ContactName ?? "";
@@ -60,7 +60,7 @@ namespace Lumos.BLL.Service.Admin
                 CurrentDb.SysMerchantUser.Add(sysMerchatUser);
                 CurrentDb.SaveChanges();
 
-                var merchantInfo = new MerchantInfo();
+                var merchantInfo = new MchInfo();
                 merchantInfo.Id = GuidUtil.New();
                 merchantInfo.MerchantId = sysMerchatUser.Id;
                 merchantInfo.Name = rop.MerchantName;
@@ -70,7 +70,7 @@ namespace Lumos.BLL.Service.Admin
                 merchantInfo.BusinessType = Enumeration.BusinessType.CarIns;
                 merchantInfo.CreateTime = this.DateTime;
                 merchantInfo.Creator = pOperater;
-                CurrentDb.MerchantInfo.Add(merchantInfo);
+                CurrentDb.MchInfo.Add(merchantInfo);
                 CurrentDb.SaveChanges();
                 ts.Complete();
 
@@ -86,7 +86,7 @@ namespace Lumos.BLL.Service.Admin
             CustomJsonResult result = new CustomJsonResult();
             using (TransactionScope ts = new TransactionScope())
             {
-                var merchantInfo = CurrentDb.MerchantInfo.Where(m => m.MerchantId == rop.MerchantId).FirstOrDefault();
+                var merchantInfo = CurrentDb.MchInfo.Where(m => m.MerchantId == rop.MerchantId).FirstOrDefault();
                 merchantInfo.ContactName = rop.ContactName;
                 merchantInfo.ContactPhone = rop.ContactPhone;
                 merchantInfo.ContactAddress = rop.ContactAddress;

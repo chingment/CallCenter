@@ -40,14 +40,14 @@ namespace WebAdmin.Controllers.Biz
 
         public CustomJsonResult GetAll(string pMenuId)
         {
-            BizMenu[] arr;
+            MchMenu[] arr;
             if (pMenuId == "0")
             {
-                arr = CurrentDb.BizMenu.OrderByDescending(m => m.Priority).ToArray();
+                arr = CurrentDb.MchMenu.OrderByDescending(m => m.Priority).ToArray();
             }
             else
             {
-                arr = CurrentDb.BizMenu.Where(m => m.PId == pMenuId).OrderByDescending(m => m.Priority).ToArray();
+                arr = CurrentDb.MchMenu.Where(m => m.PId == pMenuId).OrderByDescending(m => m.Priority).ToArray();
             }
 
             object json = ConvertToZTreeJson(arr, "id", "pid", "name", "menu");

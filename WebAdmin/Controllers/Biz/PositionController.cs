@@ -27,7 +27,7 @@ namespace WebAdmin.Controllers.Sys
 
         public CustomJsonResult GetAll()
         {
-            object obj = Newtonsoft.Json.JsonConvert.DeserializeObject(ConvertToZTreeJson2(CurrentDb.Position.ToArray(), "id", "pid", "name", "role"));
+            object obj = Newtonsoft.Json.JsonConvert.DeserializeObject(ConvertToZTreeJson2(CurrentDb.MchPosition.ToArray(), "id", "pid", "name", "role"));
             return Json(ResultType.Success, obj);
         }
 
@@ -40,7 +40,7 @@ namespace WebAdmin.Controllers.Sys
         {
             var positionMenus = AdminServiceFactory.Position.GetPositionMenus(this.CurrentUserId, positionId);
             var isCheckedIds = from p in positionMenus select p.Id;
-            object obj = Newtonsoft.Json.JsonConvert.DeserializeObject(ConvertToZTreeJson(CurrentDb.BizMenu.OrderByDescending(m => m.Priority).ToArray(), "id", "pid", "name", "menu", isCheckedIds.ToArray()));
+            object obj = Newtonsoft.Json.JsonConvert.DeserializeObject(ConvertToZTreeJson(CurrentDb.MchMenu.OrderByDescending(m => m.Priority).ToArray(), "id", "pid", "name", "menu", isCheckedIds.ToArray()));
             return Json(ResultType.Success, obj);
 
         }

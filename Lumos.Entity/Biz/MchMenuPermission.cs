@@ -4,18 +4,17 @@ using System.ComponentModel.DataAnnotations.Schema;
 
 namespace Lumos.Entity
 {
-    [Table("PositionMenu")]
-    public class PositionMenu
+    [Table("MchMenuPermission")]
+    public class MchMenuPermission
     {
         public string Id { get; set; }
         [Key]
         [Column(Order = 1)]
-        public string PositionId { get; set; }
-        [Key]
-        [Column(Order = 2)]
         public string MenuId { get; set; }
-
-        public Enumeration.PositionType PositionType { get; set; }
+        [Key]
+        [Column(Order = 2, TypeName = "varchar")]
+        [MaxLength(128)]
+        public string PermissionId { get; set; }
 
         public string Creator { get; set; }
         public DateTime CreateTime { get; set; }

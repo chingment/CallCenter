@@ -111,11 +111,11 @@ namespace WebMerch.Controllers
 
                 string pId = "00000000000000000000000000000001";
 
-                var menus = new List<BizMenu>();
+                var menus = new List<MchMenu>();
                 menus =
-                    (from menu in CurrentDb.BizMenu
+                    (from menu in CurrentDb.MchMenu
                      where
-                     (from positionMenu in CurrentDb.PositionMenu
+                     (from positionMenu in CurrentDb.MchPositionMenu
                       where positionMenu.PositionType == user.PositionType
                       select positionMenu.MenuId).Contains(menu.Id)
                      select menu).ToList();
