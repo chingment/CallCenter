@@ -1,0 +1,455 @@
+﻿@{
+    ViewBag.Title = "";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+@section scripts{
+    <script type="text/javascript">
+
+        var num = 0;
+        var maxMum = 2;
+        var tree_Kinds;
+        var list_ProductSkus;
+        var tab_Main;
+        var cur_KindId;
+        $(this).ready(function () {
+
+            tab_Main = $("#tab_Main").tab({
+                click: function (index) {
+
+                    var selObj = getSelectedNode();
+                    if (selObj == null) {
+                        return false;
+                    }
+
+                    switch (index) {
+                        case 0:
+                            getDetails();
+                            break;
+                        case 1:
+                            list_ProductSkus.loadData();
+                            break;
+                    }
+
+
+                    return true;
+                }
+            });
+
+            loadKinds();
+
+            $.formValidator.initConfig({ formID: "form1", onError: function (msg) { $.lumos.tips(msg); } });
+            $("#txt_Name").formValidator({ onShow: "", onFocus: "", onCorrect: "" }).inputValidator({ min: 1, max: 20, empty: { leftEmpty: false, emptyError: "不能为空" }, onError: "名称不能超过20个字符" });
+            $("#txt_MainImg").formValidator({ onShow: "", onFocus: "", onCorrect: "" }).inputValidator({ min: 1, max: 500, onError: "请上传封面" });
+            $("#txt_IconImg").formValidator({ onShow: "", onFocus: "", onCorrect: "" }).inputValidator({ min: 1, max: 500, onError: "请上传小图标" });
+            $("#sel_Status").formValidator({ onShow: "", onFocus: "", onCorrect: "" }).inputValidator({ min: 1, max: 500, onError: "请选择状态" });
+            $("#txt_Description").formValidator({ onShow: "", onFocus: "不超过500个字符", onCorrect: "&nbsp;", empty: true, onEmpty: "&nbsp;" }).inputValidator({ min: 0, max: 500, onError: "不超过500个字符" });
+
+            $("#btn_add").click(function () {
+                var selObj = getSelectedNode();
+                if (selObj == null) {
+                    return;
+                }
+                var url = '/ProductKind/Add?pKindId=' + selObj.id + '&pKindName=' + escape(selObj.name);
+                var title = '新建';
+                art.dialog.open(url, {
+                    id: "openDialog", title: title, width: '650px', height: '450px', lock: true, drag: false, cancelVal: '关闭', cancel: true, okVal: '确定', ok: function () {
+                        this.iframe.contentWindow.add();
+                        return false;
+                    }
+                });
+
+            });
+
+            $("#btn_delete").click(function () {
+                var selObj = getSelectedNode();
+                if (selObj == null) {
+                    return;
+                }
+                art.dialog.confirm(
+                    "确定删除[" + selObj.name + "]节点及其子节点吗？",
+                         function () {
+                             var id = selObj.id;
+                             var kindIds = [];
+                             var nodes = tree_Kinds.getSelectedNodeFollowChildren();
+                             $.each(nodes, function (i, n) {
+                                 kindIds.push(n.id);
+                             });
+
+                             $.lumos.postJson({
+                                 url: "/ProductKind/Delete",
+                                 data: { kindIds: kindIds },
+                                 success: function (d) {
+                                     $.lumos.tips(d.message);
+                                     loadKinds();
+                                 }
+                             });
+
+                             return true;
+                         });
+
+
+                return false;
+            });
+
+            $("#btn_sort").click(function () {
+                var selObj = getSelectedNode();
+                if (selObj == null) {
+                    return;
+                }
+
+                if (typeof selObj.children == "undefined") {
+                    $.lumos.tips("该节点没有子节点！");
+                    return;
+                }
+
+
+                var url = '/ProductKind/Sort?id=' + selObj.id + '&pName=' + escape(selObj.name);
+                var title = '排序';
+                art.dialog.open(url, {
+                    id: "openDialog", title: title, width: '650px', height: '400px', lock: true, drag: false, cancelVal: '关闭', cancel: true, okVal: '保存', ok: function () {
+                        this.iframe.contentWindow.edit();
+                        return false;
+                    }
+                });
+
+            });
+
+            list_ProductSkus = $("#list_table_product").loadDataTable({
+                url: "/ProductKind/GetProductSkuList",
+                pageIndex: 0,
+                searchParams: $("#form2").serializeArray(),
+                searchButtonId: "btn_Search",
+                containerId: "form2",
+                rowDataCombie: function (p_index, p_row) {
+                    var l_Strlimt = "";
+                    l_Strlimt += "@Html.IsInPermission("<a href=\\\"javascript:void(0)\\\" operate=\\\"edit\\\"   class=\\\"a-btn a-btn-edit\\\"  >修改</a>")";
+                    var l_StrRows = "";
+                    l_StrRows += "<tr>";
+                    l_StrRows += "<td class=\"no\" >" + (p_index + 1) + "</td>";
+                    l_StrRows += "<td class=\"overflow \" ><div> <img src=\"" + p_row.mainImg + "\" style=\"width:50px;height:50px\"><div></td>";
+                    l_StrRows += "<td class=\"overflow tipitem\" title=\"" + p_row.name + "\">" + p_row.name + "</td>";
+                    l_StrRows += "<td class=\"overflow tipitem\" title=\"" + p_row.kindNames + "\">" + p_row.kindNames + "</td>";
+                    l_StrRows += "<td class=\"operation\">";
+                    l_StrRows += l_Strlimt;
+                    l_StrRows += "</td>";
+                    l_StrRows += "</tr>";
+                    return l_StrRows;
+                },
+                operate: {
+                    "edit": function (obj) {
+
+                        var url = '/ProductSku/Edit?productSkuId=' + obj.id;
+                        var title = '商品信息修改';
+                        var dialog = art.dialog.open(url, {
+                            id: "openDialog", title: title, width: '800px', height: '600px', lock: true, drag: false, cancelVal: '关闭', cancel: true, okVal: '保存', ok: function () {
+                                this.iframe.contentWindow.edit();
+                                return false;
+                            }
+                        });
+
+                    }
+                }
+            });
+
+        });
+
+        function getSelectedNode() {
+            var selObj = tree_Kinds.getSelectedNodes();
+            if ($.lumos.isNullOrEmpty(selObj)) {
+                $.lumos.tips("请在左边树形结构选中节点信息");
+                return null;
+            }
+            return selObj[0];
+        }
+
+        function getChildNodeGrade(treeNode) {
+            var p = treeNode.getParentNode();
+            if (p != null) {
+                num += 1;
+                getChildNodeGrade(p);
+            }
+        }
+
+        function getDetails() {
+
+            $.lumos.postJson({
+                data: { kindId: cur_KindId },
+                url: "/ProductKind/GetDetails",
+                success: function (d) {
+                    if (d.result == $.lumos.resultType.success) {
+                        var data = d.data;
+                        $("#txt_Name").val(data.name);
+                        $("#txt_Name").defaultPassed();
+                        $("#txt_Description").val(data.description);
+                        $("#txt_Description").defaultPassed();
+                        $("#txt_MainImg").val(data.mainImg);
+                        $("#txt_IconImg").val(data.iconImg);
+
+                        $("#sel_Status").find("option[value='" + data.status + "']").attr("selected", true);
+                        $("#sel_Status").trigger("chosen:updated");
+                        $("#img_MainImg").attr("src", data.mainImg);
+                        $("#img_IconImg").attr("src", data.iconImg);
+                    }
+                }
+            });
+        }
+
+        function loadKinds(id) {
+
+            $.lumos.postJson({
+                url: "/ProductKind/GetAll?pId=0",
+                success: function (d) {
+                    var obj = eval(d.data);
+                    tree_Kinds = $.fn.zTree.init($("#tree_Kinds"), {
+                        view: {
+                            showLine: true,
+                            selectedMulti: false
+                        },
+                        data: {
+                            simpleData: { enable: true }
+                        },
+                        callback: {
+                            onClick: function treeNodeOnClick(event, treeId, treeNode, clickFlag) {
+
+                                cur_KindId = treeNode.id;
+
+                                $("input[name='KindId']").val(cur_KindId);
+
+                                var parentName = "/";
+                                if (treeNode.getParentNode() != null) {
+                                    parentName = treeNode.getParentNode().name;
+                                    $("#btn_delete").attr("disabled", false);
+                                }
+                                else {
+                                    $("#btn_delete").attr("disabled", true);
+                                }
+
+                                /*最大支持几级菜单由maxMum决定 可修改这个值*/
+                                num = 0;
+                                getChildNodeGrade(treeNode);
+                                if (num >= maxMum) {
+                                    $("#btn_add").attr("disabled", true);
+                                }
+                                else {
+                                    $("#btn_add").attr("disabled", false);
+                                }
+
+                                $("#lbl_PName").text(parentName);
+                                $("#txt_PName").val(parentName)
+
+                                tab_Main.click();
+                            }
+                        }
+                    }, obj);
+                    var node = tree_Kinds.getNodeByParam("id", id, null);
+                    tree_Kinds.selectNode(node);
+                }
+            });
+
+        }
+
+        function eidt() {
+
+            var selObj = getSelectedNode();
+            if (selObj == null) {
+                return false;
+            }
+            var isValid = $.formValidator.pageIsValid();
+            if (isValid) {
+                art.dialog.confirm('确定要保存？', function () {
+                    var id = selObj.id;
+
+                    var name = $('#txt_Name').val();
+                    var mainImg = $("#txt_MainImg").val();
+                    var iconImg = $("#txt_IconImg").val();
+                    var description = $("#txt_Description").val();
+                    var status = $("#sel_Status").val();
+                    $.lumos.postJson({
+                        url: "/ProductKind/Edit",
+                        data: { kindId: cur_KindId, name: name, mainImg: mainImg, iconImg: iconImg, description: description, status: status },
+                        isUseHandling: true,
+                        success: function (d) {
+                            $.lumos.tips(d.message);
+                            if (d.result == $.lumos.resultType.success) {
+                                loadKinds(id);
+                            }
+                        }
+                    });
+                });
+            }
+            return false;
+        }
+
+
+        //-->
+    </script>
+}
+
+
+<dl class="tree-tab">
+    <dd class="tree-tab-left">
+        <ul id="tree_Kinds" class="ztree"></ul>
+    </dd>
+    <dd class="tree-tab-right">
+        <div class="tab" id="tab_Main">
+            <div class="tab-item">
+                <ul>
+                    <li class="item first selected"><a class="a-btn-info" href="javascript:void(0)">基本信息</a></li>
+                    <li class="item"><a class="a-btn-info" href="javascript:void(0)">关联商品</a></li>
+                </ul>
+            </div>
+            <div class="tab-content">
+                <div class="subcontent" style="display:block">
+                    <div class="f-btn-area" style="margin-bottom:5px;">
+                        <input type="button" class="btn btn-open" id="btn_add" value="新建" />
+                        <input type="button" class="btn btn-delete" id="btn_delete" value="删除" />
+                    </div>
+                    <table class="f-tb" cellpadding="0" cellspacing="1">
+                        <tr>
+                            <td class="f-tb-t" style="width:80px">
+                                <span class="required-symbol">*</span>上级名称：
+                            </td>
+                            <td class="f-tb-c">
+                                <label id="lbl_PName">/</label>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td class="f-tb-t" style="width:50px">
+                                <span class="required-symbol">*</span>名称：
+                            </td>
+                            <td class="f-tb-c">
+                                <input type="text" autocomplete="off" value="" id="txt_Name" style="width: 250px;" class="input-control" />
+                            </td>
+                        </tr>
+                        <tr>
+                            <td class="f-tb-t">
+                                图片：
+                            </td>
+                            <td class="f-tb-c">
+
+                                <table class="f-tb1-detail" style="text-align:center;width:auto">
+                                    <tr style="vertical-align:top">
+                                        <td>
+                                            <div>
+                                                <span class="uploadimgbox" upload="true">
+                                                    <span class="uploadimg" inputname="txt_MainImg" path="productkind">
+                                                        <img id="img_MainImg" src="~/Static/default1.jpg" />
+                                                        <span class="uploadimg-click" style="">上传</span>
+                                                        <input id="txt_MainImg" value="" name="txt_MainImg" type="hidden" />
+                                                    </span>
+                                                    <span class="uploadimg-view" style="">预览</span>
+                                                </span>
+                                            </div>
+                                            <div>
+                                                <span><span class="required-symbol">*</span>封面</span>
+                                            </div>
+                                        </td>
+                                        <td>
+                                            <div>
+                                                <span class="uploadimgbox" upload="true">
+                                                    <span class="uploadimg" inputname="txt_IconImg" path="productkind">
+                                                        <img id="img_IconImg" src="~/Static/default1.jpg" />
+                                                        <span class="uploadimg-click" style="">上传</span>
+                                                        <input id="txt_IconImg" value="" name="txt_IconImg" type="hidden" />
+                                                    </span>
+                                                    <span class="uploadimg-view" style="">预览</span>
+                                                </span>
+                                            </div>
+                                            <div>
+                                                <span><span class="required-symbol">*</span>小图标</span>
+                                            </div>
+                                        </td>
+                                    </tr>
+                                </table>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td class="f-tb-t" style="width:50px;">
+                                <span class="required-symbol">*</span>状态：
+                            </td>
+                            <td class="f-tb-c">
+                                @(Html.initEnumeration<Lumos.Entity.Enumeration.ProductKindStatus>(Lumos.Entity.Enumeration.InputType.Select, "sel.Status", new { @class = "select-control", defaulttext = "请选择", hidevalue = new Lumos.Entity.Enumeration.ProductKindStatus[] { Lumos.Entity.Enumeration.ProductKindStatus.Unknow } }))
+                            </td>
+                        </tr>
+                        <tr>
+                            <td class="f-tb-t">
+                                备注：
+                            </td>
+                            <td class="f-tb-c">
+                                <textarea name="Model.ProductKind.Description" rows="5" cols="42" id="Model_ProductKind_Description" class="input-control"></textarea>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td class="f-tb-t"></td>
+                            <td class="f-tb-c">
+                                <input type="button" onclick="eidt()" name="btn_Save" value="保存" id="btn_Save" class="btn btn-sure" />
+                            </td>
+                        </tr>
+                    </table>
+
+                </div>
+                <div class="subcontent">
+                    <form id="form2" name="form2">
+                        <input type="hidden" name="KindId" value="" />
+                        <div class="search-bar">
+                            <div class="filter">
+                                <span class="filter-label">商品名称：</span>
+                                <span class="filter-input">
+                                    <input type="text" class="input-control" name="Name" style="width:120px;" />
+                                </span>
+                            </div>
+                            <div class="filter"><input type="button" class="btn btn-search" id="btn_Search" value="查询" /> </div>
+
+                            <div class="filter" style="float:right">  </div>
+                        </div>
+                        <div class="list">
+                            <table id="list_table_product" class="list-tb" cellpadding="0" cellspacing="0">
+                                <thead>
+                                    <tr>
+                                        <th style="width:10%" class="no">
+                                            序号
+                                        </th>
+                                        <th style="width:20%">
+                                            图片
+                                        </th>
+                                        <th style="width:30%">
+                                            名称
+                                        </th>
+                                        <th style="width:30%">
+                                            模块
+                                        </th>
+                                        <th style="width:10%" class="operation">
+                                            操作
+                                        </th>
+                                    </tr>
+                                </thead>
+                                <tbody></tbody>
+                                <tfoot>
+                                    <tr>
+                                        <td colspan="5">
+                                            <div class="pull-left">
+                                                <span class="load-tip"></span>
+                                            </div>
+                                            <div class="pull-right pagination">
+                                                <div class="pagination-info">
+
+                                                </div>
+                                                <div class="pagination-index">
+
+                                                </div>
+                                                <div class="pagination-goto">
+
+                                                </div>
+                                            </div>
+                                        </td>
+                                    </tr>
+                                </tfoot>
+                            </table>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </dd>
+</dl>

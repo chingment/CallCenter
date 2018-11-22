@@ -1,0 +1,283 @@
+﻿@{
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+@section scripts{
+    <script type="text/javascript">
+        $(document).ready(function () {
+
+            $.lumos.getJson({
+                url: "/Home/GetIndexData",
+                isUseHandling: true,
+                success: function (d) {
+                    if (d.result == $.lumos.resultType.success) {
+                        $('#gbr_page').html($("#tmpl_block").tmpl(d.data));
+                    }
+                }
+            });
+
+            $("ul.btn-dropdownmenu > .parent").live("mouseenter", function (e) {
+                var _this = $(this);
+
+                var children = $(_this).find('.children');
+                var display = $(children).css('display');
+
+                if (display == "none") {
+                    $(children).show();
+                    $(_this).addClass('open');
+                }
+                else {
+                    $(children).hide();
+                    $(_this).removeClass('open');
+                }
+
+                $(_this).mouseleave(function () {
+                    $(children).hide();
+                    $(_this).removeClass('open');
+                });
+
+            });
+
+            $('a[gotopage]').live("click", function () {
+                var target = $(this).attr("target");
+                var gotopage = $(this).attr("gotopage");
+
+
+                $('a[gotopage]').parent().removeClass('active');
+                $(this).parent().addClass('active');
+
+
+
+
+                window.frames[target].document.location = gotopage;
+            });
+
+            $('#btn_LoginOut').live("click", function () {
+
+                art.dialog.confirm('确定要退出？', function () {
+                    $.lumos.postJson({
+                        url: "/Home/LogOff",
+                        success: function (d) {
+                            $.lumos.tips(d.message);
+                            if (d.result == $.lumos.resultType.success) {
+                                window.location.href = d.data.url;
+                            }
+                        }
+                    });
+                });
+
+                return false;
+            });
+
+            setInterval("reinitIframe()", 200);
+        });
+
+        function reinitIframe() {
+            var iframe = document.getElementById("iframeMain");
+            try {
+                var bHeight = iframe.contentWindow.document.body.scrollHeight;
+                var dHeight = iframe.contentWindow.document.documentElement.scrollHeight;
+                var height = Math.max(bHeight, dHeight);
+
+                var heightss = $(iframe).contents().find("body").height()
+                var height = Math.max(bHeight, dHeight);
+
+                iframe.height = heightss;
+
+                var tree_tab_left = $('.ztree');
+                if (tree_tab_left.length > 0) {
+                    console.log($(tree_tab_left).height())
+                }
+            } catch (ex) { }
+        }
+    </script>
+}
+
+<script id="tmpl_block" type="text/x-jquery-tmpl">
+    <div class="gbr gbr-header" id="gbr_header">
+        <div class="wrapper">
+            <div class="content clearfix">
+                <ul class="content-left">
+                    <li>
+                        <span class="title">${title}</span>
+                    </li>
+                </ul>
+                <ul class="content-right btn-dropdownmenu">
+
+                    {{if isLogin}}
+                    <li>
+                        <a href="/home/main" target="iframeMain">
+                            <span class="title">
+                                主界面
+                            </span>
+                        </a>
+                    </li>
+                    <li class="parent">
+                        <a href="javascript:void(0)" class="directory">
+                            <span class="title">
+                                欢迎您,${userName}
+                            </span>
+                            <span class="more"></span>
+                        </a>
+                        <ul class="children">
+                            <li><a href="/Home/ChangePassword" target="iframeMain">修改密码</a></li>
+                            <li>
+                                <a id="btn_LoginOut" href="javascript:void(0)">退出</a>
+                            </li>
+                        </ul>
+                    </li>
+                    {{/if}}
+                </ul>
+                <div class="clear"></div>
+            </div>
+            <div class="clear"></div>
+        </div>
+        <div class="clear"></div>
+    </div>
+    <div class="gbr gbr-main" id="gbr_main">
+        <div class="wrapper">
+            <div class="content clearfix" id="gbr_main_content">
+                <dl>
+                    <dd class="content-left">
+                        <ul class="navmenu-left">
+                            {{if isLogin}}
+                            <li class="parent">
+                                <span><span class="icon icon_navmenu_level1_common"></span><span>机器管理</span></span>
+                                <ul class="children">
+                                    <li>
+                                        <a gotopage="/Machine/List" target="iframeMain">
+                                            <span class="icon"></span><span>机器列表</span>
+                                        </a>
+                                    </li>
+                                </ul>
+                            </li>
+                            <li class="parent">
+                                <span><span class="icon icon_navmenu_level1_common"></span><span>便利店管理</span></span>
+                                <ul class="children">
+                                    <li>
+                                        <a gotopage="/Store/List" target="iframeMain">
+                                            <span class="icon"></span><span>便利店设置</span>
+                                        </a>
+                                    </li>
+                                </ul>
+                            </li>
+                            <li class="parent">
+                                <span><span class="icon icon_navmenu_level1_common"></span><span>商品管理</span></span>
+                                <ul class="children">
+                                    <li>
+                                        <a gotopage="/ProductSku/List" target="iframeMain">
+                                            <span class="icon"></span><span>商品设置</span>
+                                        </a>
+                                    </li>
+                                    <li>
+                                        <a gotopage="/ProductKind/List" target="iframeMain">
+                                            <span class="icon"></span><span>商品品类设置</span>
+                                        </a>
+                                    </li>
+                                    <li>
+                                        <a gotopage="/ProductSubject/List" target="iframeMain">
+                                            <span class="icon"></span><span>商品栏目设置</span>
+                                        </a>
+                                    </li>
+                                </ul>
+                            </li>
+                            <li class="parent">
+                                <span><span class="icon icon_navmenu_level1_common"></span><span>库存管理</span></span>
+                                <ul class="children">
+                                    <li>
+                                        <a gotopage="/Warehouse/List" target="iframeMain">
+                                            <span class="icon"></span><span>仓库设置</span>
+                                        </a>
+                                    </li>
+                                    <li>
+                                        <a gotopage="/Supplier/List" target="iframeMain">
+                                            <span class="icon"></span><span>供应商设置</span>
+                                        </a>
+                                    </li>
+                                    <li>
+                                        <a gotopage="/Order2StockIn/List" target="iframeMain">
+                                            <span class="icon"></span><span>商品入库</span>
+                                        </a>
+                                    </li>
+                                    <li>
+                                        <a gotopage="/Order2StockOut/List" target="iframeMain">
+                                            <span class="icon"></span><span>商品出库</span>
+                                        </a>
+                                    </li>
+                                </ul>
+                            </li>
+                            <li class="parent">
+                                <span><span class="icon icon_navmenu_level1_common"></span><span>订单查询</span></span>
+                                <ul class="children">
+                                    <li>
+                                        <a gotopage="/Order/List?status=2000" target="iframeMain">
+                                            <span class="icon"></span><span>待支付订单</span>
+                                        </a>
+                                    </li>
+                                    <li>
+                                        <a gotopage="/Order/List?status=3000" target="iframeMain">
+                                            <span class="icon"></span><span>待提货订单</span>
+                                        </a>
+                                    </li>
+                                    <li>
+                                        <a gotopage="/Order/List?status=3000" target="iframeMain">
+                                            <span class="icon"></span><span>待发货订单</span>
+                                        </a>
+                                    </li>
+                                    <li>
+                                        <a gotopage="/Order/List?status=3000" target="iframeMain">
+                                            <span class="icon"></span><span>已发货订单</span>
+                                        </a>
+                                    </li>
+                                    <li>
+                                        <a gotopage="/Order/List?status=4000" target="iframeMain">
+                                            <span class="icon"></span><span>已完成订单</span>
+                                        </a>
+                                    </li>
+                                    <li>
+                                        <a gotopage="/Order/List?status=5000" target="iframeMain">
+                                            <span class="icon"></span><span>已取消订单</span>
+                                        </a>
+                                    </li>
+
+                                </ul>
+                            </li>
+
+                            <li class="parent">
+                                <span><span class="icon icon_navmenu_level1_common"></span><span>用户管理</span></span>
+                                <ul class="children">
+                                    <li>
+                                        <a gotopage="/ReplenishStaff/List" target="iframeMain">
+                                            <span class="icon"></span><span>商品补货员</span>
+                                        </a>
+                                    </li>
+                                </ul>
+                            </li>
+                            {{/if}}
+                        </ul>
+                    </dd>
+                    <dd class="content-right">
+                        <div class="gbr-row gbr-row-breadcrumb">
+                            <ul class="breadcrumb">
+                                <li><a target="iframeMain" href="/home/main" class="root">&nbsp;</a></li>
+                                <li><span class="site">主界面</span></li>
+                            </ul>
+                        </div>
+                        <div class="gbr-row gbr-row-functionpage">
+                            <iframe src="/home/Main" id="iframeMain" name="iframeMain" style="width:100%;" frameBorder="0px" scrolling="no"></iframe>
+                        </div>
+                    </dd>
+                    <div class="clear"></div>
+                </dl>
+                <div class="clear"></div>
+            </div>
+            <div class="clear"></div>
+        </div>
+        <div class="clear"></div>
+    </div>
+</script>
+
+
+<div class="gbr-row" id="gbr_page">
+
+</div>
