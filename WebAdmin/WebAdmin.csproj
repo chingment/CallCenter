@@ -1155,10 +1155,6 @@
       <Project>{c19704c7-7d89-42e8-9f15-d8c1a1a0c525}</Project>
       <Name>Lumos.Entity</Name>
     </ProjectReference>
-    <ProjectReference Include="..\MySDK\MySDK.csproj">
-      <Project>{8479fcaf-4aef-40d4-b76d-246282522fb7}</Project>
-      <Name>MySDK</Name>
-    </ProjectReference>
   </ItemGroup>
   <ItemGroup>
     <None Include="Properties\PublishProfiles\mipb.pubxml" />
