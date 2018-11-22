@@ -45,23 +45,7 @@ namespace Lumos.Entity
         public enum BizProcessesAuditType
         {
             [Remark("未知")]
-            Unknow = 0,
-            [Remark("车险订单")]
-            OrderToCarInsure = 1,
-            [Remark("车险理赔")]
-            OrderToCarClaim = 2,
-            [Remark("商户资料审核")]
-            MerchantAudit = 3,
-            [Remark("人才输送")]
-            OrderToTalentDemand = 4,
-            [Remark("定损点申请")]
-            OrderToApplyLossAssess = 5,
-            [Remark("违章处理")]
-            OrderToLllegalDealt = 6,
-            [Remark("贷款")]
-            OrderToCredit = 7,
-            [Remark("保险产品订单")]
-            OrderToInsurance = 8
+            Unknow = 0
         }
     }
 }
