@@ -36,7 +36,7 @@ namespace WebMerch.Controllers
 
         public CustomJsonResult GetList(RupUserGetList rup)
         {
-            var list = (from u in CurrentDb.SysStaffUser
+            var list = (from u in CurrentDb.SysAdminUser
                         where (rup.UserName == null || u.UserName.Contains(rup.UserName)) &&
                         (rup.FullName == null || u.FullName.Contains(rup.FullName)) &&
                         u.IsDelete == false

@@ -160,12 +160,12 @@
     <Compile Include="Controllers\CommonController.cs" />
     <Compile Include="Controllers\HomeController.cs" />
     <Compile Include="App_Start\Own\NPOIExcelHelper.cs" />
+    <Compile Include="Controllers\Sys\AdminUserController.cs" />
     <Compile Include="Controllers\Sys\BackgroundJobController.cs" />
     <Compile Include="Controllers\Sys\MachineKeyController.cs" />
     <Compile Include="Controllers\Sys\MenuController.cs" />
     <Compile Include="Controllers\Sys\PermissionController.cs" />
     <Compile Include="Controllers\Sys\RoleController.cs" />
-    <Compile Include="Controllers\Sys\StaffUserController.cs" />
     <Compile Include="Controllers\Sys\UserController.cs" />
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
@@ -1078,7 +1078,6 @@
     <Content Include="Scripts\ckeditor\skins\moono\readme.md" />
     <Content Include="Scripts\ckfinder\plugins\fileeditor\codemirror\LICENSE" />
     <Content Include="Scripts\ckfinder\userfiles\.htaccess" />
-    <Content Include="Views\Sys\StaffUser\SelectList.cshtml" />
     <Content Include="Static\ExcelTemplate\POS机信登记表.xls" />
     <Content Include="Views\Shared\UpLoadFile.cshtml" />
     <Content Include="Views\Home\Main.cshtml" />
@@ -1114,6 +1113,7 @@
     <Folder Include="Scripts\ckeditor\samples\plugins\magicline\" />
     <Folder Include="Scripts\ckeditor\samples\plugins\toolbar\" />
     <Folder Include="Scripts\ckeditor\samples\plugins\wysiwygarea\" />
+    <Folder Include="Views\Sys\AdminUser\" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="fonts\glyphicons-halflings-regular.woff" />
@@ -1171,9 +1171,6 @@
     <Content Include="Views\Sys\Role\Add.cshtml" />
     <Content Include="Views\Sys\Role\AddUserToRole.cshtml" />
     <Content Include="Views\Sys\Role\List.cshtml" />
-    <Content Include="Views\Sys\StaffUser\Add.cshtml" />
-    <Content Include="Views\Sys\StaffUser\Edit.cshtml" />
-    <Content Include="Views\Sys\StaffUser\List.cshtml" />
     <Content Include="Views\Sys\User\Details.cshtml" />
     <Content Include="Views\Sys\User\List.cshtml" />
     <Content Include="Views\web.config" />

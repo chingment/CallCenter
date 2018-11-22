@@ -74,12 +74,12 @@ namespace WebSSO.Controllers
 
             switch (result.User.Type)
             {
-                case Enumeration.UserType.Staff:
+                case Enumeration.UserType.Admin:
                     host = System.Configuration.ConfigurationManager.AppSettings["custom:WebAdminUrl"];
                     //returnUrl = string.Format("{0}?returnUrl={1}", host, model.ReturnUrl);
                     returnUrl = string.Format("{0}", host);
                     break;
-                case Enumeration.UserType.MerchantUser:
+                case Enumeration.UserType.Merchant:
                     host = System.Configuration.ConfigurationManager.AppSettings["custom:WebMerchUrl"];
                     //returnUrl = string.Format("{0}?returnUrl={1}", host, model.ReturnUrl);
                     returnUrl = string.Format("{0}", host);

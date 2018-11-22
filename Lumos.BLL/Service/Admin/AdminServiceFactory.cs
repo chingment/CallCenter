@@ -40,11 +40,11 @@ namespace Lumos.BLL.Service.Admin
             }
         }
 
-        public static SysStaffUserProvider SysStaffUser
+        public static SysAdminUserProvider SysAdminUser
         {
             get
             {
-                return new SysStaffUserProvider();
+                return new SysAdminUserProvider();
             }
         }
 
