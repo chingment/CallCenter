@@ -1,5 +1,4 @@
-﻿using Lumos.Entity;
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -7,8 +6,8 @@ using System.Threading.Tasks;
 
 namespace Lumos.BLL.Service.Admin
 {
-    public class RetSysMenuGetPermissions
+    public class RupMerchantGetList:RupBaseGetList
     {
-        public List<Permission> Permissions { get; set; }
+
     }
 }

@@ -30,61 +30,6 @@
             });
 
 
-            list_machine = $("#list_machine").loadDataTable({
-                url: "/Biz/Merchant/GetMachineListByBinded",
-                pageIndex: 0,
-                searchParams: $("#form_machine").serializeArray(),
-                searchButtonId: "btn_Search",
-                containerId: "form_machine",
-                rowDataCombie: function (p_index, p_row) {
-                    var l_Strlimt = "";
-                    l_Strlimt += "@Html.IsInPermission("<a href=\\\"javascript:void(0)\\\" operate=\\\"bindoff\\\"  class=\\\"a-btn\\\" >解绑</a>")";
-                    var l_StrRows = "";
-                    l_StrRows += "<tr>";
-                    l_StrRows += "<td class=\"no\" >" + (p_index + 1) + "</td>";
-                    l_StrRows += "<td class=\"overflow tipitem\" title=\"" + p_row.deviceId + "\"   >" + p_row.deviceId + "</td>";
-                    l_StrRows += "<td class=\"overflow\" title=\"" + p_row.machineName + "\"   >" + p_row.machineName + "</td>";
-                    l_StrRows += "<td class=\"overflow\" title=\"" + p_row.macAddress + "\">" + p_row.macAddress + "</td>";
-                    l_StrRows += "<td class=\"operation\">";
-                    l_StrRows += l_Strlimt;
-                    l_StrRows += "</td>";
-                    l_StrRows += "</tr>";
-                    return l_StrRows;
-                },
-                operate:
-                    {
-                        "bindoff": function (obj) {
-                            art.dialog.confirm("确定要解绑,数据会被清除，慎重操作？", function () {
-                                $.lumos.postJson({
-                                    isUseHandling: true,
-                                    url: "/Biz/Merchant/BindOffMachine",
-                                    data: { merchantId: obj.merchantId, machineId: obj.machineId },
-                                    success: function (d) {
-                                        list_machine.loadData(0);
-                                        $.lumos.tips(d.message);
-                                    }
-                                });
-                            });
-                        }
-                    }
-            });
-
-
-
-            $("#btn_add_machine").click(function () {
-
-                var url = '/Biz/Merchant/MachineListByBindable?merchantId=' + merchantId;
-                var title = '选择绑定';
-                art.dialog.open(url, {
-                    id: "openDialog333", title: title, width: '600px', height: '400px', lock: true, drag: false, cancelVal: '关闭', cancel: true
-                });
-
-            });
-
-            $("#btn_edit").click(function () {
-                edit();
-            });
-
             initData();
         });
 
@@ -136,176 +81,93 @@
             });
         }
 
-        function refresh(type) {
-            switch (type) {
-                case 1:
-                    list_machine.loadData(0);
-                    break;
-            }
-        }
-
         //-->
     </script>
 }
 
 
 <div class="gbr-row gbr-dialog">
-    <div class="tab" id="tab1">
-        <div class="tab-item">
-            <ul>
-                <li class="item first selected"><a class="a-btn-info" href="javascript:void(0)">基本信息</a></li>
-                <li class="item"><a class="a-btn-info" href="javascript:void(0)">机器管理</a></li>
-            </ul>
+
+    <div class="gbr-row-title clearfix">
+        <div class="pull-left">
+            <h5>账号信息</h5>
         </div>
-        <div class="tab-content">
-            <div class="subcontent">
-                <form id="form_merchant">
-                    <div class="gbr-row-title clearfix">
-                        <div class="pull-left">
-                            <h5>账号信息</h5>
-                        </div>
-                        <div class="pull-right f-tb1-item-pull-right">
-                            <h6></h6>
-                        </div>
-                    </div>
-
-                    <table class="f-tb" cellpadding="0" cellspacing="1">
-                        <tr>
-                            <td class="f-tb-t">
-                                账号：
-                            </td>
-                            <td class="f-tb-c">
-                                <span id="lbl_UserName"></span>
-                            </td>
-                        </tr>
-                        <tr>
-                            <td class="f-tb-t">
-                                <span class="required-symbol">*</span>密码：
-                            </td>
-                            <td class="f-tb-c">
-                                <label id="lbl_Password">******</label>
-                                <input class="input-control" autocomplete="off" type="password" id="txt_Password" style="width: 150px;display:none;" />
-                                <a class="a-btn" id="abtn-editPwd" href="javascript:void(0)">修改</a>
-                            </td>
-                        </tr>
-                    </table>
-                    <div class="gbr-row-title clearfix">
-                        <div class="pull-left">
-                            <h5>商户信息</h5>
-                        </div>
-                        <div class="pull-right f-tb1-item-pull-right">
-                            <h6></h6>
-                        </div>
-                    </div>
-
-                    <table class="f-tb" cellpadding="0" cellspacing="1" style="width:100%">
-                        <tr>
-                            <td class="f-tb-t">
-                                商户名称：
-                            </td>
-                            <td class="f-tb-c">
-                                <span id="lbl_MerchantName"></span>
-                            </td>
-                        </tr>
-                        <tr>
-                            <td class="f-tb-t">
-                                <span class="required-symbol">*</span>联系人：
-                            </td>
-                            <td class="f-tb-c">
-                                <input class="input-control" type="text" id="txt_ContactName" style="width: 150px;" value="" autocomplete="off" />
-                            </td>
-                        </tr>
-                        <tr>
-                            <td class="f-tb-t">
-                                <span class="required-symbol">*</span>联系电话：
-                            </td>
-                            <td class="f-tb-c">
-                                <input class="input-control" type="text" id="txt_ContactPhone" style="width: 150px;" value="" autocomplete="off" />
-                            </td>
-                        </tr>
-                        <tr>
-                            <td class="f-tb-t">
-                                联系地址：
-                            </td>
-                            <td class="f-tb-c">
-                                <input class="input-control" type="text" id="txt_ContactAddress" style="width: 150px;" value="" autocomplete="off" />
-                            </td>
-                        </tr>
-                        <tr>
-                            <td class="f-tb-t"></td>
-                            <td class="f-tb-c">
-                                <input type="button" id="btn_edit" value="保存" class="btn btn-sure" />
-                            </td>
-                        </tr>
-                    </table>
-
-                </form>
-            </div>
-            <div class="subcontent">
-
-                <form id="form_machine" name="form_machine">
-                    <input id="MerchantId" name="MerchantId" type="hidden" value="" />
-                    <div class="search-bar">
-                        <div class="filter">
-                            <span class="filter-label">名称：</span>
-                            <span class="filter-input">
-                                <input type="text" class="input-control" name="Name" style="width:120px;" />
-                            </span>
-                        </div>
-
-                        <div class="filter"><input type="button" class="btn btn-search" id="btn_Search" value="查询" /> </div>
-
-                        <div class="filter" style="float:right"><input type="button" class="btn btn-add" id="btn_add_machine" value="选择绑定" /> </div>
-                    </div>
-                    <div class="list">
-                        <table id="list_machine" class="list-tb" cellpadding="0" cellspacing="0">
-                            <thead>
-                                <tr>
-                                    <th style="width:5%" class="no">
-                                        序号
-                                    </th>
-                                    <th style="width:30%">
-                                        设备ID
-                                    </th>
-                                    <th style="width:30%">
-                                        名称
-                                    </th>
-                                    <th style="width:25%">
-                                        Mac地址
-                                    </th>
-                                    <th style="width:10%" class="operation">
-                                        操作
-                                    </th>
-                                </tr>
-                            </thead>
-                            <tbody></tbody>
-                            <tfoot>
-                                <tr>
-                                    <td colspan="5">
-                                        <div class="pull-left">
-                                            <span class="load-tip"></span>
-                                        </div>
-                                        <div class="pull-right pagination">
-                                            <div class="pagination-info">
-
-                                            </div>
-                                            <div class="pagination-index">
-
-                                            </div>
-                                            <div class="pagination-goto">
-
-                                            </div>
-                                        </div>
-                                    </td>
-                                </tr>
-                            </tfoot>
-                        </table>
-                    </div>
-                </form>
-
-            </div>
+        <div class="pull-right f-tb1-item-pull-right">
+            <h6></h6>
         </div>
     </div>
+
+    <table class="f-tb" cellpadding="0" cellspacing="1">
+        <tr>
+            <td class="f-tb-t">
+                账号：
+            </td>
+            <td class="f-tb-c">
+                <span id="lbl_UserName"></span>
+            </td>
+        </tr>
+        <tr>
+            <td class="f-tb-t">
+                <span class="required-symbol">*</span>密码：
+            </td>
+            <td class="f-tb-c">
+                <label id="lbl_Password">******</label>
+                <input class="input-control" autocomplete="off" type="password" id="txt_Password" style="width: 150px;display:none;" />
+                <a class="a-btn" id="abtn-editPwd" href="javascript:void(0)">修改</a>
+            </td>
+        </tr>
+    </table>
+    <div class="gbr-row-title clearfix">
+        <div class="pull-left">
+            <h5>商户信息</h5>
+        </div>
+        <div class="pull-right f-tb1-item-pull-right">
+            <h6></h6>
+        </div>
+    </div>
+
+    <table class="f-tb" cellpadding="0" cellspacing="1" style="width:100%">
+        <tr>
+            <td class="f-tb-t">
+                商户名称：
+            </td>
+            <td class="f-tb-c">
+                <span id="lbl_MerchantName"></span>
+            </td>
+        </tr>
+        <tr>
+            <td class="f-tb-t">
+                <span class="required-symbol">*</span>联系人：
+            </td>
+            <td class="f-tb-c">
+                <input class="input-control" type="text" id="txt_ContactName" style="width: 150px;" value="" autocomplete="off" />
+            </td>
+        </tr>
+        <tr>
+            <td class="f-tb-t">
+                <span class="required-symbol">*</span>联系电话：
+            </td>
+            <td class="f-tb-c">
+                <input class="input-control" type="text" id="txt_ContactPhone" style="width: 150px;" value="" autocomplete="off" />
+            </td>
+        </tr>
+        <tr>
+            <td class="f-tb-t">
+                联系地址：
+            </td>
+            <td class="f-tb-c">
+                <input class="input-control" type="text" id="txt_ContactAddress" style="width: 300px;" value="" autocomplete="off" />
+            </td>
+        </tr>
+        <tr style="display:none">
+            <td class="f-tb-t"></td>
+            <td class="f-tb-c">
+                <input type="button" id="btn_edit" value="保存" class="btn btn-sure" />
+            </td>
+        </tr>
+    </table>
+
+
 </div>
 
 

@@ -26,6 +26,13 @@ namespace Lumos.DAL
         public IDbSet<WxAutoReply> WxAutoReply { get; set; }
         public IDbSet<WxMsgPushLog> WxMsgPushLog { get; set; }
         public IDbSet<WxUserInfo> WxUserInfo { get; set; }
+
+        public IDbSet<MerchantInfo> MerchantInfo { get; set; }
+        public IDbSet<BizMenu> BizMenu { get; set; }
+        public IDbSet<BizMenuPermission> BizMenuPermission { get; set; }
+        public IDbSet<PositionMenu> PositionMenu { get; set; }
+        
+
         protected override void OnModelCreating(DbModelBuilder modelBuilder)
         {
             base.OnModelCreating(modelBuilder);
@@ -134,15 +141,15 @@ namespace Lumos.DAL
             base.Seed(context);
         }
 
-        public List<SysPermission> GetPermissionList(PermissionCode permission)
+        public List<Permission> GetPermissionList(SysPermissionCode permission)
         {
             Type t = permission.GetType();
-            List<SysPermission> list = new List<SysPermission>();
+            List<Permission> list = new List<Permission>();
             list = GetPermissionList(t, list);
             return list;
         }
 
-        private List<SysPermission> GetPermissionList(Type t, List<SysPermission> list)
+        private List<Permission> GetPermissionList(Type t, List<Permission> list)
         {
             if (t.Name != "Object")
             {
@@ -157,7 +164,7 @@ namespace Lumos.DAL
                     }
                     object id = property.GetValue(null);
                     string name = property.Name;
-                    SysPermission model = new SysPermission();
+                    Permission model = new Permission();
                     model.Id = id.ToString();
                     model.Name = name;
                     model.PId = pId;

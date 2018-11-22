@@ -68,7 +68,7 @@
     <Compile Include="AuthorizeRelay\PermissionCodeAttribute.cs" />
     <Compile Include="AuthorizeRelay\QueryParam.cs" />
     <Compile Include="ContextFactory.cs" />
-    <Compile Include="AuthorizeRelay\PermissionCode.cs" />
+    <Compile Include="AuthorizeRelay\SysPermissionCode.cs" />
     <Compile Include="DatabaseFactory\DatabaseFactory.cs" />
     <Compile Include="DatabaseFactory\DatabaseParameter.cs" />
     <Compile Include="DatabaseFactory\DBOptionBySqlSentenceProvider.cs" />
@@ -79,6 +79,7 @@
     <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="LumosDbContext.cs" />
+    <Compile Include="Permission.cs" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\..\SelfStoreCloudPlatform\Lumos.Redis\Lumos.Redis.csproj">

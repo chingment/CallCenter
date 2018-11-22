@@ -43,7 +43,7 @@ namespace Lumos.Entity
             Client = 2,
             Agent = 3,
             Salesman = 4,
-            Merchant = 5
+            MerchantUser = 5
         }
 
         public enum LoginType

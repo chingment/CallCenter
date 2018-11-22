@@ -13,7 +13,7 @@ using System.Web.Mvc;
 
 namespace WebAdmin.Controllers.Sys
 {
-    [OwnAuthorize(PermissionCode.菜单管理)]
+    [OwnAuthorize(SysPermissionCode.菜单管理)]
     public class MenuController : OwnBaseController
     {
 
@@ -85,6 +85,7 @@ namespace WebAdmin.Controllers.Sys
         {
             return AdminServiceFactory.SysMenu.EditSort(this.CurrentUserId, rop);
         }
+
 
     }
 }

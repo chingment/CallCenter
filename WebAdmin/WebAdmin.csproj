@@ -154,6 +154,8 @@
     <Compile Include="App_Start\Own\OwnResponse.cs" />
     <Compile Include="App_Start\Own\OwnStatisticsTrackerAttribute.cs" />
     <Compile Include="App_Start\RouteConfig.cs" />
+    <Compile Include="Controllers\Biz\BizMenuController.cs" />
+    <Compile Include="Controllers\Biz\MerchantController.cs" />
     <Compile Include="Controllers\CommonController.cs" />
     <Compile Include="Controllers\HomeController.cs" />
     <Compile Include="App_Start\Own\NPOIExcelHelper.cs" />
@@ -1079,20 +1081,16 @@
     <Content Include="Static\ExcelTemplate\POS机信登记表.xls" />
     <Content Include="Views\Shared\UpLoadFile.cshtml" />
     <Content Include="Views\Home\Main.cshtml" />
-    <Content Include="Views\Biz\Machine\Add.cshtml" />
-    <Content Include="Views\Biz\Machine\Edit.cshtml" />
-    <Content Include="Views\Biz\Machine\List.cshtml" />
     <Content Include="Views\Biz\Merchant\Add.cshtml" />
     <Content Include="Views\Biz\Merchant\Edit.cshtml" />
     <Content Include="Views\Biz\Merchant\List.cshtml" />
-    <Content Include="Views\Biz\Merchant\MachineListByBindable.cshtml" />
-    <Content Include="Views\Biz\Machine\ListByBind.cshtml" />
-    <Content Include="Views\Biz\Machine\Bind.cshtml" />
-    <Content Include="Views\Biz\Merchant\ListBySelect.cshtml" />
     <Content Include="Views\Sys\BackgroundJob\List.cshtml" />
     <Content Include="Views\Sys\BackgroundJob\Add.cshtml" />
     <Content Include="Views\Sys\BackgroundJob\Edit.cshtml" />
     <Content Include="Views\Sys\BackgroundJob\ListByLog.cshtml" />
+    <Content Include="Views\Biz\BizMenu\Add.cshtml" />
+    <Content Include="Views\Biz\BizMenu\List.cshtml" />
+    <Content Include="Views\Biz\BizMenu\Sort.cshtml" />
     <None Include="Web.config">
       <SubType>Designer</SubType>
     </None>
@@ -1104,7 +1102,6 @@
     </Content>
   </ItemGroup>
   <ItemGroup>
-    <Folder Include="Controllers\Biz\" />
     <Folder Include="Models\" />
     <Folder Include="Scripts\ckeditor\samples\assets\inlineall\" />
     <Folder Include="Scripts\ckeditor\samples\assets\outputxhtml\" />

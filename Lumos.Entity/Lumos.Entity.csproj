@@ -55,9 +55,13 @@
     <Compile Include="BackgroundJob\BackgroundJob.cs" />
     <Compile Include="BackgroundJob\BackgroundJobLog.cs" />
     <Compile Include="BizEnumeration.cs" />
+    <Compile Include="Biz\BizMenu.cs" />
+    <Compile Include="Biz\BizMenuPermission.cs" />
     <Compile Include="Biz\BizSn.cs" />
     <Compile Include="Biz\BizProcessesAudit.cs" />
     <Compile Include="Biz\BizProcessesAuditDetails.cs" />
+    <Compile Include="Biz\MerchantInfo.cs" />
+    <Compile Include="Biz\PositionMenu.cs" />
     <Compile Include="Sys\SysClientUser.cs" />
     <Compile Include="Sys\SysMerchatUser.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
@@ -70,7 +74,6 @@
     <Compile Include="Sys\SysRole.cs" />
     <Compile Include="Sys\SysSmsSendHistory.cs" />
     <Compile Include="Sys\SysStaffUser.cs" />
-    <Compile Include="Sys\SysPermission.cs" />
     <Compile Include="Sys\SysMenu.cs" />
     <Compile Include="Sys\SysProvinceCity.cs" />
     <Compile Include="Sys\SysRolePermission.cs" />

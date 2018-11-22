@@ -13,7 +13,7 @@ namespace Lumos.BLL.Service.Admin
         {
             var ret = new RetSysMenuGetPermissions();
 
-            ret.Permissions = AdminServiceFactory.AuthorizeRelay.GetPermissionList(new PermissionCode());
+            ret.Permissions = AdminServiceFactory.AuthorizeRelay.GetPermissionList(new SysPermissionCode());
 
             return new CustomJsonResult(ResultType.Success, ResultCode.Success, "获取成功", ret);
         }

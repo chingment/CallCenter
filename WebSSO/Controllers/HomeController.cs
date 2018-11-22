@@ -79,7 +79,7 @@ namespace WebSSO.Controllers
                     //returnUrl = string.Format("{0}?returnUrl={1}", host, model.ReturnUrl);
                     returnUrl = string.Format("{0}", host);
                     break;
-                case Enumeration.UserType.Merchant:
+                case Enumeration.UserType.MerchantUser:
                     host = System.Configuration.ConfigurationManager.AppSettings["custom:WebMerchUrl"];
                     //returnUrl = string.Format("{0}?returnUrl={1}", host, model.ReturnUrl);
                     returnUrl = string.Format("{0}", host);

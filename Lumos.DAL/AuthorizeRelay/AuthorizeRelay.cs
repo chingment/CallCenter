@@ -219,10 +219,10 @@ namespace Lumos.DAL.AuthorizeRelay
             return new CustomJsonResult(ResultType.Success, ResultCode.Success, "保存成功");
         }
 
-        public List<SysPermission> GetPermissionList(PermissionCode pPermissionCode)
+        public List<Permission> GetPermissionList(SysPermissionCode pPermissionCode)
         {
             Type t = pPermissionCode.GetType();
-            List<SysPermission> list = new List<SysPermission>();
+            List<Permission> list = new List<Permission>();
             //SysPermission p = new SysPermission();
             //p.Id = "0";
             //p.Name = "权限集合";
@@ -232,7 +232,7 @@ namespace Lumos.DAL.AuthorizeRelay
             return list;
         }
 
-        private List<SysPermission> GetBasePermissionList(Type pType, List<SysPermission> pSysPermissionList)
+        private List<Permission> GetBasePermissionList(Type pType, List<Permission> pSysPermissionList)
         {
             if (pType.Name != "Object")
             {
@@ -247,7 +247,7 @@ namespace Lumos.DAL.AuthorizeRelay
                     }
                     object id = property.GetValue(null);
                     string name = property.Name;
-                    SysPermission model = new SysPermission();
+                    Permission model = new Permission();
                     model.Id = id.ToString();
                     model.Name = name;
                     pSysPermissionList.Add(model);
