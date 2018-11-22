@@ -54,6 +54,7 @@ namespace Lumos.BLL.Service.Admin
             sysMenu.IsCanDelete = true;
             sysMenu.Creator = pOperater;
             sysMenu.CreateTime = DateTime.Now;
+            sysMenu.BelongSite = rop.BelongSite;
             CurrentDb.SysMenu.Add(sysMenu);
             CurrentDb.SaveChanges();
 
