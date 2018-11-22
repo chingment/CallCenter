@@ -48,7 +48,7 @@
     <None Include="App.config" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\WeiXinSdk\WeiXinSdk.csproj">
+    <ProjectReference Include="..\..\SelfStoreCloudPlatform\WeiXinSdk\WeiXinSdk.csproj">
       <Project>{636311a8-0485-4953-841e-35ca27eea436}</Project>
       <Name>WeiXinSdk</Name>
     </ProjectReference>
