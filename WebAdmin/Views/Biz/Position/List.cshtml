@@ -95,8 +95,8 @@
 
         function loadMenus() {
             $.lumos.getJson({
-                url: "/Biz/BizMenu/GetAll",
-                urlParams: { pMenuId: "0" },
+                url: "/Sys/Menu/GetAll",
+                urlParams: { pMenuId: "0", BelongSite: 2 },
                 success: function (d) {
 
                     var zNodes = d.data;

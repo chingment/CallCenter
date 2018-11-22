@@ -1087,9 +1087,6 @@
     <Content Include="Views\Sys\BackgroundJob\Add.cshtml" />
     <Content Include="Views\Sys\BackgroundJob\Edit.cshtml" />
     <Content Include="Views\Sys\BackgroundJob\ListByLog.cshtml" />
-    <Content Include="Views\Biz\BizMenu\Add.cshtml" />
-    <Content Include="Views\Biz\BizMenu\List.cshtml" />
-    <Content Include="Views\Biz\BizMenu\Sort.cshtml" />
     <Content Include="Views\Biz\Position\List.cshtml" />
     <None Include="Web.config">
       <SubType>Designer</SubType>
