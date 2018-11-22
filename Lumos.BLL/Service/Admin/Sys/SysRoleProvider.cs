@@ -27,6 +27,7 @@ namespace Lumos.BLL.Service.Admin
             sysRole.CreateTime = DateTime.Now;
             sysRole.Creator = pOperater;
             sysRole.IsCanDelete = true;
+            sysRole.BelongSite = rop.BelongSite;
             CurrentDb.SysRole.Add(sysRole);
             CurrentDb.SaveChanges();
           
