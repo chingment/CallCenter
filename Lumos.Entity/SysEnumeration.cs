@@ -21,24 +21,6 @@ namespace Lumos.Entity
             Exception = 2,
         }
 
-        public enum BannerType
-        {
-            Unknow = 0,
-            MainHomeTop = 1
-        }
-
-        public enum SysBannerStatus
-        {
-            [Remark("未知")]
-            Unknow = 0,
-            [Remark("暂存")]
-            Save = 1,
-            [Remark("已发布")]
-            Release = 2,
-            [Remark("撤销")]
-            Cancle = 3
-        }
-
         public enum AppType
         {
             Unknow = 0,
