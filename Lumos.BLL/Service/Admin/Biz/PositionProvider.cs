@@ -20,7 +20,7 @@ namespace Lumos.BLL.Service.Admin
             ret.Description = position.Description;
 
 
-            var positionMenus = from c in CurrentDb.BizMenu
+            var positionMenus = from c in CurrentDb.SysMenu
                                 where
                                     (from o in CurrentDb.BizPositionMenu where o.PositionId == positionId select o.MenuId).Contains(c.Id)
                                 select c;
@@ -34,9 +34,9 @@ namespace Lumos.BLL.Service.Admin
             return new CustomJsonResult(ResultType.Success, ResultCode.Success, "获取成功", ret);
         }
 
-        public List<BizMenu> GetPositionMenus(string pOperater, string pPositionId)
+        public List<SysMenu> GetPositionMenus(string pOperater, string pPositionId)
         {
-            var model = from c in CurrentDb.BizMenu
+            var model = from c in CurrentDb.SysMenu
                         where
                             (from o in CurrentDb.BizPositionMenu where o.PositionId == pPositionId select o.MenuId).Contains(c.Id)
                         select c;

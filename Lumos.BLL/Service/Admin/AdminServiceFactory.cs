@@ -24,14 +24,6 @@ namespace Lumos.BLL.Service.Admin
             }
         }
 
-        public static BizMenuProvider BizMenu
-        {
-            get
-            {
-                return new BizMenuProvider();
-            }
-        }
-
         public static SysUserProvider SysUser
         {
             get

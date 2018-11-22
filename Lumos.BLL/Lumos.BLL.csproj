@@ -77,7 +77,7 @@
       <Link>Properties\AssemblyInfo.cs</Link>
     </Compile>
     <Compile Include="BaseProvider.cs" />
-    <Compile Include="BizPermissionCode.cs" />
+    <Compile Include="MchPermissionCode.cs" />
     <Compile Include="Biz\BizFactory.cs" />
     <Compile Include="Biz\RModels\RetLogin.cs" />
     <Compile Include="Biz\RModels\RetWxUserCheckedUser.cs" />
@@ -98,16 +98,11 @@
     <Compile Include="Sdk\WxSdkProvider.cs" />
     <Compile Include="Service\Admin\Biz\MerchantProvider.cs" />
     <Compile Include="Service\Admin\Biz\RModels\RetMerchantGetDetails.cs" />
-    <Compile Include="Service\Admin\Biz\RModels\RetBizMenuGetDetails.cs" />
     <Compile Include="Service\Admin\Biz\RModels\RetBizMenuGetPermissions.cs" />
     <Compile Include="Service\Admin\Biz\RModels\RetPositionGetDetails.cs" />
     <Compile Include="Service\Admin\Biz\RModels\RopMerchantAdd.cs" />
     <Compile Include="Service\Admin\Biz\RModels\RopMerchantEdit.cs" />
-    <Compile Include="Service\Admin\Biz\RModels\RopBizMenuAdd.cs" />
-    <Compile Include="Service\Admin\Biz\RModels\RopBizMenuEdit.cs" />
-    <Compile Include="Service\Admin\Biz\RModels\RopBizMenuEditSort.cs" />
     <Compile Include="Service\Admin\Biz\RModels\RupMerchantGetList.cs" />
-    <Compile Include="Service\Admin\Biz\BizMenuProvider.cs" />
     <Compile Include="Service\Admin\Biz\PositionProvider.cs" />
     <Compile Include="Service\Admin\Sys\BackgroundJobProvider.cs" />
     <Compile Include="Service\Admin\Sys\RModels\RetBackgroundJobGetDetails.cs" />

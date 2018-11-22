@@ -13,7 +13,7 @@ using System.Web.Mvc;
 
 namespace WebAdmin.Controllers.Sys
 {
-    [OwnAuthorize(SysPermissionCode.业务系统管理)]
+    [OwnAuthorize(AdminPermissionCode.业务系统管理)]
     public class PositionController : OwnBaseController
     {
         #region 视图
@@ -40,7 +40,7 @@ namespace WebAdmin.Controllers.Sys
         {
             var positionMenus = AdminServiceFactory.Position.GetPositionMenus(this.CurrentUserId, positionId);
             var isCheckedIds = from p in positionMenus select p.Id;
-            object obj = Newtonsoft.Json.JsonConvert.DeserializeObject(ConvertToZTreeJson(CurrentDb.BizMenu.OrderByDescending(m => m.Priority).ToArray(), "id", "pid", "name", "menu", isCheckedIds.ToArray()));
+            object obj = Newtonsoft.Json.JsonConvert.DeserializeObject(ConvertToZTreeJson(CurrentDb.SysMenu.OrderByDescending(m => m.Priority).ToArray(), "id", "pid", "name", "menu", isCheckedIds.ToArray()));
             return Json(ResultType.Success, obj);
 
         }

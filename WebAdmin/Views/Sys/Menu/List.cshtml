@@ -9,6 +9,7 @@
         var tree_Menus;
         var tab_Main;
         var cur_MenuId;
+        var belongSite = $.lumos.getUrlParamValue("belongSite");
         $(this).ready(function () {
 
             $.formValidator.initConfig({ formID: "form1", onError: function (msg) { } });
@@ -157,7 +158,7 @@
 
             $.lumos.getJson({
                 url: "/Sys/Menu/GetAll",
-                urlParams: { pMenuId: "0" },
+                urlParams: { pMenuId: "0", belongSite: belongSite },
                 success: function (d) {
 
                     var obj = d.data;
@@ -246,6 +247,7 @@
         function loadPermissions() {
             $.lumos.getJson({
                 url: "/Sys/Menu/GetPermissions",
+                urlParams: { belongSite: belongSite },
                 isUseHandling: true,
                 success: function (d) {
                     if (d.result == $.lumos.resultType.success) {

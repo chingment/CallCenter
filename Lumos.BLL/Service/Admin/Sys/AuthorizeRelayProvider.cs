@@ -88,9 +88,9 @@ namespace Lumos.BLL.Service.Admin
             return _authorizeRelay.ChangePassword(pOperater, pUserId, pOldpassword, pNewpassword);
         }
 
-        public List<Permission> GetPermissionList(SysPermissionCode pPermissionCode)
+        public List<Permission> GetPermissionList(Type pType)
         {
-            return _authorizeRelay.GetPermissionList(pPermissionCode);
+            return _authorizeRelay.GetPermissionList(pType);
         }
     }
 }

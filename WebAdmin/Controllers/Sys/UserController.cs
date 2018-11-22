@@ -12,7 +12,7 @@ using Lumos.BLL.Service.Admin;
 
 namespace WebAdmin.Controllers.Sys
 {
-    [OwnAuthorize(SysPermissionCode.所有用户管理)]
+    [OwnAuthorize(AdminPermissionCode.所有用户管理)]
     public class UserController : OwnBaseController
     {
 

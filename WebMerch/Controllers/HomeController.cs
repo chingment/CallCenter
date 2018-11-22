@@ -111,9 +111,9 @@ namespace WebMerch.Controllers
 
                 string pId = "00000000000000000000000000000001";
 
-                var menus = new List<BizMenu>();
+                var menus = new List<SysMenu>();
                 menus =
-                    (from menu in CurrentDb.BizMenu
+                    (from menu in CurrentDb.SysMenu
                      where
                      (from positionMenu in CurrentDb.BizPositionMenu
                       where positionMenu.PositionType == user.PositionType

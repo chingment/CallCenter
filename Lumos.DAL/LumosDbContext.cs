@@ -28,8 +28,6 @@ namespace Lumos.DAL
         public IDbSet<WxUserInfo> WxUserInfo { get; set; }
 
         public IDbSet<MchInfo> MchInfo { get; set; }
-        public IDbSet<BizMenu> BizMenu { get; set; }
-        public IDbSet<BizMenuPermission> BizMenuPermission { get; set; }
         public IDbSet<BizPositionMenu> BizPositionMenu { get; set; }
         public IDbSet<BizPosition> BizPosition { get; set; }
         public IDbSet<MchOrganization> MchOrganization { get; set; }
@@ -141,41 +139,6 @@ namespace Lumos.DAL
         {
             base.Seed(context);
         }
-
-        public List<Permission> GetPermissionList(SysPermissionCode permission)
-        {
-            Type t = permission.GetType();
-            List<Permission> list = new List<Permission>();
-            list = GetPermissionList(t, list);
-            return list;
-        }
-
-        private List<Permission> GetPermissionList(Type t, List<Permission> list)
-        {
-            if (t.Name != "Object")
-            {
-                System.Reflection.FieldInfo[] properties = t.GetFields();
-                foreach (System.Reflection.FieldInfo property in properties)
-                {
-                    string pId = "0";
-                    object[] typeAttributes = property.GetCustomAttributes(false);
-                    foreach (PermissionCodeAttribute attribute in typeAttributes)
-                    {
-                        pId = attribute.PId;
-                    }
-                    object id = property.GetValue(null);
-                    string name = property.Name;
-                    Permission model = new Permission();
-                    model.Id = id.ToString();
-                    model.Name = name;
-                    model.PId = pId;
-                    list.Add(model);
-                }
-                list = GetPermissionList(t.BaseType, list);
-            }
-            return list;
-        }
-
     }
 
 }

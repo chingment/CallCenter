@@ -45,7 +45,7 @@ namespace Lumos.BLL.Service.Merch
                 user.PasswordHash = PassWordHelper.HashPassword(rop.Password);
                 user.Email = rop.Email;
                 user.PhoneNumber = rop.PhoneNumber;
-                user.Type = Enumeration.UserType.Merchant;
+                user.BelongSite = Enumeration.BelongSite.Merchant;
                 user.IsDelete = false;
                 user.IsCanDelete = true;
                 user.Status = Enumeration.UserStatus.Normal;

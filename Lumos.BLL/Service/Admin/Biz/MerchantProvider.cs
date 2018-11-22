@@ -53,7 +53,7 @@ namespace Lumos.BLL.Service.Admin
                 sysMerchatUser.CreateTime = this.DateTime;
                 sysMerchatUser.Creator = pOperater;
                 sysMerchatUser.Status = Enumeration.UserStatus.Normal;
-                sysMerchatUser.Type = Enumeration.UserType.Merchant;
+                sysMerchatUser.BelongSite = Enumeration.BelongSite.Merchant;
                 sysMerchatUser.BusinessType = Enumeration.BusinessType.CarIns;
                 sysMerchatUser.PositionType = Enumeration.PositionType.GM;
                 sysMerchatUser.MerchantId = sysMerchatUser.Id;

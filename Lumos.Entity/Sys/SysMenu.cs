@@ -33,5 +33,9 @@ namespace Lumos.Entity
         public DateTime? MendTime { get; set; }
 
         public bool IsCanDelete { get; set; }
+
+        public Enumeration.BelongSite BelongSite { get; set; }
+
+        public Enumeration.BusinessType BusinessType { get; set; }
     }
 }

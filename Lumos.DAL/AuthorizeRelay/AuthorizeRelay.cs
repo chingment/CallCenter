@@ -219,16 +219,15 @@ namespace Lumos.DAL.AuthorizeRelay
             return new CustomJsonResult(ResultType.Success, ResultCode.Success, "保存成功");
         }
 
-        public List<Permission> GetPermissionList(SysPermissionCode pPermissionCode)
+        public List<Permission> GetPermissionList(Type pPermissionCode)
         {
-            Type t = pPermissionCode.GetType();
             List<Permission> list = new List<Permission>();
             //SysPermission p = new SysPermission();
             //p.Id = "0";
             //p.Name = "权限集合";
             //p.PId = "";
             //list.Add(p);
-            list = GetBasePermissionList(t, list);
+            list = GetBasePermissionList(pPermissionCode, list);
             return list;
         }
 
