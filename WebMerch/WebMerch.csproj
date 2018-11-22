@@ -164,6 +164,7 @@
     <Compile Include="Controllers\CommonController.cs" />
     <Compile Include="Controllers\HomeController.cs" />
     <Compile Include="Controllers\OrganizationController.cs" />
+    <Compile Include="Controllers\UserController.cs" />
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
@@ -195,6 +196,9 @@
     <Content Include="Views\Organization\List.cshtml" />
     <Content Include="Views\Organization\Sort.cshtml" />
     <Content Include="Views\Organization\Add.cshtml" />
+    <Content Include="Views\StaffUser\Add.cshtml" />
+    <Content Include="Views\StaffUser\Edit.cshtml" />
+    <Content Include="Views\StaffUser\List.cshtml" />
     <None Include="Web.config">
       <SubType>Designer</SubType>
     </None>

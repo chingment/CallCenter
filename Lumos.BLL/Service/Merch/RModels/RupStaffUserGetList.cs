@@ -8,6 +8,9 @@ namespace Lumos.BLL.Service.Merch
 {
     public class RupUserGetList : RupBaseGetList
     {
+        public string UserName { get; set; }
+        public string FullName { get; set; }
+
         public string OrganizationId { get; set; }
     }
 }

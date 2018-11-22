@@ -16,7 +16,16 @@ namespace Lumos.BLL.Service.Merch
                 return new OrganizationProvider();
             }
         }
-    
+
+
+        public static UserProvider User
+        {
+            get
+            {
+                return new UserProvider();
+            }
+        }
+
 
     }
 }

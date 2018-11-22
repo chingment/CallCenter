@@ -135,9 +135,13 @@
     <Compile Include="Service\Merch\MerchServiceFactory.cs" />
     <Compile Include="Service\Merch\OrganizationProvider.cs" />
     <Compile Include="Service\Merch\RModels\RetOrganizationGetDetails.cs" />
+    <Compile Include="Service\Merch\RModels\RetUserGetDetails.cs" />
     <Compile Include="Service\Merch\RModels\RopOrganizationAdd.cs" />
     <Compile Include="Service\Merch\RModels\RopOrganizationEdit.cs" />
-    <Compile Include="Service\Merch\RModels\RupUserGetList.cs" />
+    <Compile Include="Service\Merch\RModels\RopUserAdd.cs" />
+    <Compile Include="Service\Merch\RModels\RopUserEdit.cs" />
+    <Compile Include="Service\Merch\RModels\RupStaffUserGetList.cs" />
+    <Compile Include="Service\Merch\UserProvider.cs" />
     <Compile Include="SnUtil.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Service\Admin\Sys\AuthorizeRelayProvider.cs" />
