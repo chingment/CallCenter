@@ -109,7 +109,7 @@ namespace WebMerch.Controllers
 
                 var user = CurrentDb.SysMerchantUser.Where(m => m.Id == this.CurrentUserId).FirstOrDefault();
 
-                string pId = "00000000000000000000000000000001";
+                string pId = "00000000000000000000000000000002";
 
                 var menus = new List<SysMenu>();
                 menus =
