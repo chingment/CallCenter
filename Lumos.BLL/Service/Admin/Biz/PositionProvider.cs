@@ -13,16 +13,16 @@ namespace Lumos.BLL.Service.Admin
         {
             var ret = new RetPositionGetDetails();
 
-            var position = CurrentDb.MchPosition.Where(m => m.Id == positionId).FirstOrDefault();
+            var position = CurrentDb.BizPosition.Where(m => m.Id == positionId).FirstOrDefault();
 
             ret.PositionId = position.Id;
             ret.Name = position.Name;
             ret.Description = position.Description;
 
 
-            var positionMenus = from c in CurrentDb.MchMenu
+            var positionMenus = from c in CurrentDb.BizMenu
                                 where
-                                    (from o in CurrentDb.MchPositionMenu where o.PositionId == positionId select o.MenuId).Contains(c.Id)
+                                    (from o in CurrentDb.BizPositionMenu where o.PositionId == positionId select o.MenuId).Contains(c.Id)
                                 select c;
 
 
@@ -34,11 +34,11 @@ namespace Lumos.BLL.Service.Admin
             return new CustomJsonResult(ResultType.Success, ResultCode.Success, "获取成功", ret);
         }
 
-        public List<MchMenu> GetPositionMenus(string pOperater, string pPositionId)
+        public List<BizMenu> GetPositionMenus(string pOperater, string pPositionId)
         {
-            var model = from c in CurrentDb.MchMenu
+            var model = from c in CurrentDb.BizMenu
                         where
-                            (from o in CurrentDb.MchPositionMenu where o.PositionId == pPositionId select o.MenuId).Contains(c.Id)
+                            (from o in CurrentDb.BizPositionMenu where o.PositionId == pPositionId select o.MenuId).Contains(c.Id)
                         select c;
 
             return model.ToList();
@@ -46,13 +46,13 @@ namespace Lumos.BLL.Service.Admin
 
         public CustomJsonResult SavePositionMenu(string pOperater, string pPositionId, string[] pMenuIds)
         {
-            var position = CurrentDb.MchPosition.Where(m => m.Id == pPositionId).FirstOrDefault();
+            var position = CurrentDb.BizPosition.Where(m => m.Id == pPositionId).FirstOrDefault();
 
-            List<MchPositionMenu> positionMenuList = CurrentDb.MchPositionMenu.Where(r => r.PositionId == pPositionId).ToList();
+            List<BizPositionMenu> positionMenuList = CurrentDb.BizPositionMenu.Where(r => r.PositionId == pPositionId).ToList();
 
             foreach (var positionMenu in positionMenuList)
             {
-                CurrentDb.MchPositionMenu.Remove(positionMenu);
+                CurrentDb.BizPositionMenu.Remove(positionMenu);
             }
 
 
@@ -60,7 +60,7 @@ namespace Lumos.BLL.Service.Admin
             {
                 foreach (var menuId in pMenuIds)
                 {
-                    CurrentDb.MchPositionMenu.Add(new MchPositionMenu { Id = GuidUtil.New(), PositionId = pPositionId, PositionType = position.Type, MenuId = menuId, Creator = pOperater, CreateTime = DateTime.Now });
+                    CurrentDb.BizPositionMenu.Add(new BizPositionMenu { Id = GuidUtil.New(), PositionId = pPositionId, PositionType = position.Type, MenuId = menuId, Creator = pOperater, CreateTime = DateTime.Now });
                 }
             }
 

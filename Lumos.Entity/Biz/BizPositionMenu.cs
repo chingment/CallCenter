@@ -4,8 +4,8 @@ using System.ComponentModel.DataAnnotations.Schema;
 
 namespace Lumos.Entity
 {
-    [Table("MchPositionMenu")]
-    public class MchPositionMenu
+    [Table("BizPositionMenu")]
+    public class BizPositionMenu
     {
         public string Id { get; set; }
         [Key]

@@ -61,7 +61,7 @@ namespace Lumos.BLL.Service.Admin
         {
             var ret = new RetBizMenuGetDetails();
 
-            var menu = CurrentDb.MchMenu.Where(m => m.Id == pMenuId).FirstOrDefault();
+            var menu = CurrentDb.BizMenu.Where(m => m.Id == pMenuId).FirstOrDefault();
 
             ret.MenuId = menu.Id;
             ret.Name = menu.Name;
@@ -69,7 +69,7 @@ namespace Lumos.BLL.Service.Admin
             ret.Description = menu.Description;
             ret.BusinessType = menu.BusinessType;
 
-            var menuPermission = CurrentDb.MchMenuPermission.Where(u => u.MenuId == pMenuId).ToList();
+            var menuPermission = CurrentDb.BizMenuPermission.Where(u => u.MenuId == pMenuId).ToList();
             var permissionIdIds = (from p in menuPermission select p.PermissionId).ToArray();
 
             ret.PermissionIds = permissionIdIds;
@@ -79,7 +79,7 @@ namespace Lumos.BLL.Service.Admin
 
         public CustomJsonResult Add(string pOperater, RopBizMenuAdd rop)
         {
-            var menu = new MchMenu();
+            var menu = new BizMenu();
             menu.Id = GuidUtil.New();
             menu.Name = rop.Name;
             menu.Url = rop.Url;
@@ -89,14 +89,14 @@ namespace Lumos.BLL.Service.Admin
             menu.BusinessType = rop.BusinessType;
             menu.Creator = pOperater;
             menu.CreateTime = DateTime.Now;
-            CurrentDb.MchMenu.Add(menu);
+            CurrentDb.BizMenu.Add(menu);
             CurrentDb.SaveChanges();
 
             if (rop.PermissionIds != null)
             {
                 foreach (var id in rop.PermissionIds)
                 {
-                    CurrentDb.MchMenuPermission.Add(new MchMenuPermission { Id = GuidUtil.New(), MenuId = menu.Id, PermissionId = id, Creator = pOperater, CreateTime = DateTime.Now });
+                    CurrentDb.BizMenuPermission.Add(new BizMenuPermission { Id = GuidUtil.New(), MenuId = menu.Id, PermissionId = id, Creator = pOperater, CreateTime = DateTime.Now });
                 }
             }
 
@@ -110,7 +110,7 @@ namespace Lumos.BLL.Service.Admin
         public CustomJsonResult Edit(string pOperater, RopBizMenuEdit rop)
         {
 
-            var menu = CurrentDb.MchMenu.Where(m => m.Id == rop.MenuId).FirstOrDefault();
+            var menu = CurrentDb.BizMenu.Where(m => m.Id == rop.MenuId).FirstOrDefault();
 
             menu.Name = rop.Name;
             menu.Url = rop.Url;
@@ -119,10 +119,10 @@ namespace Lumos.BLL.Service.Admin
             menu.Mender = pOperater;
             menu.MendTime = DateTime.Now;
 
-            var menuPermission = CurrentDb.MchMenuPermission.Where(r => r.MenuId == rop.MenuId).ToList();
+            var menuPermission = CurrentDb.BizMenuPermission.Where(r => r.MenuId == rop.MenuId).ToList();
             foreach (var m in menuPermission)
             {
-                CurrentDb.MchMenuPermission.Remove(m);
+                CurrentDb.BizMenuPermission.Remove(m);
             }
 
 
@@ -130,7 +130,7 @@ namespace Lumos.BLL.Service.Admin
             {
                 foreach (var id in rop.PermissionIds)
                 {
-                    CurrentDb.MchMenuPermission.Add(new MchMenuPermission { Id = GuidUtil.New(), MenuId = menu.Id, PermissionId = id, Creator = pOperater, CreateTime = DateTime.Now });
+                    CurrentDb.BizMenuPermission.Add(new BizMenuPermission { Id = GuidUtil.New(), MenuId = menu.Id, PermissionId = id, Creator = pOperater, CreateTime = DateTime.Now });
                 }
             }
 
@@ -148,19 +148,19 @@ namespace Lumos.BLL.Service.Admin
             {
                 foreach (var id in pMenuIds)
                 {
-                    var menu = CurrentDb.MchMenu.Where(m => m.Id == id).FirstOrDefault();
+                    var menu = CurrentDb.BizMenu.Where(m => m.Id == id).FirstOrDefault();
 
                     if (!menu.IsCanDelete)
                     {
                         return new CustomJsonResult(ResultType.Failure, ResultCode.Failure, string.Format("所选菜单（{0}）不允许删除", menu.Name));
                     }
 
-                    CurrentDb.MchMenu.Remove(menu);
+                    CurrentDb.BizMenu.Remove(menu);
 
-                    var positionMenus = CurrentDb.MchPositionMenu.Where(r => r.MenuId == id).ToList();
+                    var positionMenus = CurrentDb.BizPositionMenu.Where(r => r.MenuId == id).ToList();
                     foreach (var positionMenu in positionMenus)
                     {
-                        CurrentDb.MchPositionMenu.Remove(positionMenu);
+                        CurrentDb.BizPositionMenu.Remove(positionMenu);
                     }
 
                     CurrentDb.SaveChanges();
@@ -181,7 +181,7 @@ namespace Lumos.BLL.Service.Admin
                     {
                         string menuId = item.MenuId;
                         int priority = item.Priority;
-                        var model = CurrentDb.MchMenu.Where(m => m.Id == menuId).FirstOrDefault();
+                        var model = CurrentDb.BizMenu.Where(m => m.Id == menuId).FirstOrDefault();
                         if (model != null)
                         {
                             model.Priority = priority;

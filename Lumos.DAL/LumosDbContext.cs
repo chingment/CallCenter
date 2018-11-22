@@ -28,10 +28,10 @@ namespace Lumos.DAL
         public IDbSet<WxUserInfo> WxUserInfo { get; set; }
 
         public IDbSet<MchInfo> MchInfo { get; set; }
-        public IDbSet<MchMenu> MchMenu { get; set; }
-        public IDbSet<MchMenuPermission> MchMenuPermission { get; set; }
-        public IDbSet<MchPositionMenu> MchPositionMenu { get; set; }
-        public IDbSet<MchPosition> MchPosition { get; set; }
+        public IDbSet<BizMenu> BizMenu { get; set; }
+        public IDbSet<BizMenuPermission> BizMenuPermission { get; set; }
+        public IDbSet<BizPositionMenu> BizPositionMenu { get; set; }
+        public IDbSet<BizPosition> BizPosition { get; set; }
         public IDbSet<MchOrganization> MchOrganization { get; set; }
 
         protected override void OnModelCreating(DbModelBuilder modelBuilder)
