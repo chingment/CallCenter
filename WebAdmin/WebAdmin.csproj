@@ -156,6 +156,7 @@
     <Compile Include="App_Start\RouteConfig.cs" />
     <Compile Include="Controllers\Biz\BizMenuController.cs" />
     <Compile Include="Controllers\Biz\MerchantController.cs" />
+    <Compile Include="Controllers\Biz\PositionController.cs" />
     <Compile Include="Controllers\CommonController.cs" />
     <Compile Include="Controllers\HomeController.cs" />
     <Compile Include="App_Start\Own\NPOIExcelHelper.cs" />
@@ -1091,6 +1092,7 @@
     <Content Include="Views\Biz\BizMenu\Add.cshtml" />
     <Content Include="Views\Biz\BizMenu\List.cshtml" />
     <Content Include="Views\Biz\BizMenu\Sort.cshtml" />
+    <Content Include="Views\Biz\Position\List.cshtml" />
     <None Include="Web.config">
       <SubType>Designer</SubType>
     </None>

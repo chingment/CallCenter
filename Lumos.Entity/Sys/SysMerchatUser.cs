@@ -11,5 +11,7 @@ namespace Lumos.Entity
         public string MerchantId { get; set; }
         public Enumeration.PositionType PositionType { get; set; }
         public Enumeration.BusinessType BusinessType { get; set; }
+
+        public string OrganizationId { get; set; }
     }
 }

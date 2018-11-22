@@ -100,6 +100,7 @@
     <Compile Include="Service\Admin\Biz\RModels\RetMerchantGetDetails.cs" />
     <Compile Include="Service\Admin\Biz\RModels\RetBizMenuGetDetails.cs" />
     <Compile Include="Service\Admin\Biz\RModels\RetBizMenuGetPermissions.cs" />
+    <Compile Include="Service\Admin\Biz\RModels\RetPositionGetDetails.cs" />
     <Compile Include="Service\Admin\Biz\RModels\RopMerchantAdd.cs" />
     <Compile Include="Service\Admin\Biz\RModels\RopMerchantEdit.cs" />
     <Compile Include="Service\Admin\Biz\RModels\RopBizMenuAdd.cs" />
@@ -107,6 +108,7 @@
     <Compile Include="Service\Admin\Biz\RModels\RopBizMenuEditSort.cs" />
     <Compile Include="Service\Admin\Biz\RModels\RupMerchantGetList.cs" />
     <Compile Include="Service\Admin\Biz\BizMenuProvider.cs" />
+    <Compile Include="Service\Admin\Biz\PositionProvider.cs" />
     <Compile Include="Service\Admin\Sys\BackgroundJobProvider.cs" />
     <Compile Include="Service\Admin\Sys\RModels\RetBackgroundJobGetDetails.cs" />
     <Compile Include="Service\Admin\Sys\RModels\RopBackgroundJobAdd.cs" />
@@ -130,6 +132,12 @@
     <Compile Include="Service\Admin\Sys\SysMenuProvider.cs" />
     <Compile Include="Service\Admin\Sys\SysRoleProvider.cs" />
     <Compile Include="Service\Admin\Sys\SysStaffUserProvider.cs" />
+    <Compile Include="Service\Merch\MerchServiceFactory.cs" />
+    <Compile Include="Service\Merch\OrganizationProvider.cs" />
+    <Compile Include="Service\Merch\RModels\RetOrganizationGetDetails.cs" />
+    <Compile Include="Service\Merch\RModels\RopOrganizationAdd.cs" />
+    <Compile Include="Service\Merch\RModels\RopOrganizationEdit.cs" />
+    <Compile Include="Service\Merch\RModels\RupUserGetList.cs" />
     <Compile Include="SnUtil.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Service\Admin\Sys\AuthorizeRelayProvider.cs" />
@@ -184,7 +192,6 @@
   <ItemGroup>
     <Folder Include="Biz\Models\" />
     <Folder Include="Service\Admin\Biz\Models\" />
-    <Folder Include="Service\Merch\RModels\" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

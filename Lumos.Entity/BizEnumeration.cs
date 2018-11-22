@@ -60,7 +60,13 @@ namespace Lumos.Entity
             [Remark("小组负责人")]
             TL = 3,
             [Remark("外呼人员")]
-            TSR = 4
+            TSR = 4,
+            [Remark("后勤负责人")]
+            OB = 5,
+            [Remark("后勤人员")]
+            TBR = 6,
+            [Remark("数据维护人员")]
+            DBA = 7
         }
 
         public enum BusinessType
@@ -69,6 +75,17 @@ namespace Lumos.Entity
             Unknow = 0,
             [Remark("车险")]
             CarIns = 1
+        }
+
+        public enum OrganizationStatus
+        {
+
+            [Remark("未知")]
+            Unknow = 0,
+            [Remark("正常")]
+            Valid = 1,
+            [Remark("停用")]
+            Invalid = 2
         }
     }
 }

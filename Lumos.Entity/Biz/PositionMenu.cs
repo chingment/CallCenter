@@ -4,15 +4,19 @@ using System.ComponentModel.DataAnnotations.Schema;
 
 namespace Lumos.Entity
 {
+    [Table("PositionMenu")]
     public class PositionMenu
     {
         public string Id { get; set; }
         [Key]
         [Column(Order = 1)]
-        public Enumeration.PositionType PositionType { get; set; }
+        public string PositionId { get; set; }
         [Key]
         [Column(Order = 2)]
         public string MenuId { get; set; }
+
+        public Enumeration.PositionType PositionType { get; set; }
+
         public string Creator { get; set; }
         public DateTime CreateTime { get; set; }
     }

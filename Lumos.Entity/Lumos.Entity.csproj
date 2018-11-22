@@ -61,6 +61,8 @@
     <Compile Include="Biz\BizProcessesAudit.cs" />
     <Compile Include="Biz\BizProcessesAuditDetails.cs" />
     <Compile Include="Biz\MerchantInfo.cs" />
+    <Compile Include="Biz\Organization.cs" />
+    <Compile Include="Biz\Position.cs" />
     <Compile Include="Biz\PositionMenu.cs" />
     <Compile Include="Sys\SysClientUser.cs" />
     <Compile Include="Sys\SysMerchatUser.cs" />

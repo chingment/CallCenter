@@ -163,6 +163,7 @@
     <Compile Include="App_Start\RouteConfig.cs" />
     <Compile Include="Controllers\CommonController.cs" />
     <Compile Include="Controllers\HomeController.cs" />
+    <Compile Include="Controllers\OrganizationController.cs" />
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
@@ -191,37 +192,9 @@
     <Content Include="Views\Shared\MessageBox.cshtml" />
     <Content Include="Views\Shared\UpLoadFile.cshtml" />
     <Content Include="Views\Shared\_Layout.cshtml" />
-    <Content Include="Views\Machine\List.cshtml" />
-    <Content Include="Views\Machine\Edit.cshtml" />
-    <Content Include="Views\Store\MachineListByBindable.cshtml" />
-    <Content Include="Views\Store\Edit.cshtml" />
-    <Content Include="Views\Store\List.cshtml" />
-    <Content Include="Views\ProductSku\Add.cshtml" />
-    <Content Include="Views\ProductSku\Edit.cshtml" />
-    <Content Include="Views\ProductSku\List.cshtml" />
-    <Content Include="Views\ProductKind\List.cshtml" />
-    <Content Include="Views\ProductKind\Sort.cshtml" />
-    <Content Include="Views\ProductSku\EditBySalePrice.cshtml" />
-    <Content Include="Views\Store\Add.cshtml" />
-    <Content Include="Views\Supplier\Add.cshtml" />
-    <Content Include="Views\Supplier\Edit.cshtml" />
-    <Content Include="Views\Supplier\List.cshtml" />
-    <Content Include="Views\Warehouse\Add.cshtml" />
-    <Content Include="Views\Warehouse\Edit.cshtml" />
-    <Content Include="Views\Warehouse\List.cshtml" />
-    <Content Include="Views\Order2StockIn\List.cshtml" />
-    <Content Include="Views\Order2StockIn\Add.cshtml" />
-    <Content Include="Views\Order2StockIn\Details.cshtml" />
-    <Content Include="Views\ProductSubject\Add.cshtml" />
-    <Content Include="Views\ProductSubject\List.cshtml" />
-    <Content Include="Views\ProductSubject\Sort.cshtml" />
-    <Content Include="Views\Order\Details.cshtml" />
-    <Content Include="Views\Order\List.cshtml" />
-    <Content Include="Views\ReplenishStaff\List.cshtml" />
-    <Content Include="Views\ReplenishStaff\Add.cshtml" />
-    <Content Include="Views\Order2StockOut\Add.cshtml" />
-    <Content Include="Views\Order2StockOut\Details.cshtml" />
-    <Content Include="Views\Order2StockOut\List.cshtml" />
+    <Content Include="Views\Organization\List.cshtml" />
+    <Content Include="Views\Organization\Sort.cshtml" />
+    <Content Include="Views\Organization\Add.cshtml" />
     <None Include="Web.config">
       <SubType>Designer</SubType>
     </None>

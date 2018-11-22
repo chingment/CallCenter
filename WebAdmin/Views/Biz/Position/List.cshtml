@@ -1,0 +1,216 @@
+﻿@{
+    ViewBag.Title = "";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+@section scripts{
+    <script type="text/javascript">
+
+        var tab_Main;
+        var tree_Positions;
+        var tree_Menus;
+        var cur_PositionId;
+        $(this).ready(function () {
+
+            tab_Main = $("#tab_Main").tab({
+                click: function (index) {
+                    var selObj = getSelectedNode();
+                    if (selObj == null) {
+                        return false;
+                    }
+                    switch (index) {
+                        case 0:
+                            getDetails();
+                            break;
+                        case 1:
+                            getDetails();
+                            break;
+                    }
+                    return true;
+                }
+            });
+
+            $("#btn_save_rolemenu").click(function () {
+
+                var selObj = getSelectedNode();
+                if (selObj == null) {
+                    return;
+                }
+
+                art.dialog.confirm('确定要保存？', function () {
+
+                    var nodes = tree_Menus.getCheckedNodes(true);
+                    var menuIds = [];
+                    for (var key in nodes) {
+                        menuIds.push(nodes[key].id);
+                    }
+                    $.lumos.postJson({
+                        url: "/Sys/Position/SavePositionMenu",
+                        isUseHandling: true,
+                        data: { positionId: cur_PositionId, menuIds: menuIds },
+                        success: function (d) {
+                            $.lumos.tips(d.message);
+                        }
+                    });
+                });
+                return false;
+            });
+
+            initData();
+        });
+
+        function initData() {
+            loadPositions();
+            loadMenus();
+        }
+
+        function loadPositions() {
+            $.lumos.getJson({
+                url: "/Biz/Position/GetAll",
+                success: function (d) {
+                    if (d.result == $.lumos.resultType.success) {
+                        var data = d.data;
+                        tree_Roles = $.fn.zTree.init($("#tree_Roles"), {
+                            view: {
+                                showLine: true,
+                                selectedMulti: false
+                            },
+                            data: {
+                                simpleData: { enable: true }
+                            },
+                            callback: {
+                                onClick: function treeNodeOnClick(event, treeId, treeNode, clickFlag) {
+                                    cur_PositionId = treeNode.id;
+                                    tab_Main.click();
+                                }
+                            }
+                        }, data);
+                        var node = tree_Roles.getNodeByParam("id", 0, null);
+                        tree_Roles.selectNode(node);
+                    }
+
+                }
+            });
+        }
+
+        function loadMenus() {
+            $.lumos.getJson({
+                url: "/Biz/BizMenu/GetAll",
+                urlParams: { pMenuId: "0" },
+                success: function (d) {
+
+                    var zNodes = d.data;
+                    tree_Menus = $.fn.zTree.init($("#tree_Menus"), {
+                        view: {
+                            selectedMulti: false
+                        },
+                        check: {
+                            enable: true
+                        },
+                        data: {
+                            simpleData: {
+                                enable: true
+                            },
+                            key: {
+                                url: "_url"
+                            }
+
+                        }
+                    }, zNodes);
+
+                }
+            });
+
+        }
+
+        function getDetails() {
+
+            $.lumos.getJson({
+                url: "/Biz/Position/GetDetails",
+                urlParams: { positionId: cur_PositionId },
+                isUseHandling: true,
+                success: function (d) {
+                    if (d.result == $.lumos.resultType.success) {
+                        var data = d.data;
+                        $("#lbl_Name").text(data.name);
+                        $("#lbl_Description").text(data.description);
+
+                        var checkedNodes = tree_Menus.getCheckedNodes();
+                        for (var k = 0; k < checkedNodes.length; k++) {
+                            tree_Menus.checkNode(checkedNodes[k]);
+                        }
+
+                        $.each(data.menuIds, function (i, n) {
+                            var node = tree_Menus.getNodeByParam("id", n);
+                            tree_Menus.checkNode(node);
+                        });
+                    }
+                    else {
+                        $.lumos.tips(d.message);
+                    }
+                }
+            });
+        }
+
+        function getSelectedNode() {
+            var selObj = tree_Roles.getSelectedNodes();
+            if ($.lumos.isNullOrEmpty(selObj)) {
+                $.lumos.tips("请在左边树形结构选中节点信息");
+                return null;
+            }
+            return selObj[0];
+        }
+
+    </script>
+}
+
+
+<dl class="tree-tab">
+    <dd class="tree-tab-left">
+        <ul id="tree_Roles" class="ztree"></ul>
+    </dd>
+    <dd class="tree-tab-right">
+        <div class="tab" id="tab_Main">
+            <div class="tab-item">
+                <ul>
+                    <li class="item first selected"><a class="a-btn-info" href="javascript:void(0)">基本信息</a></li>
+                    <li class="item"><a class="a-btn-info" href="javascript:void(0)">关联菜单</a></li>
+                </ul>
+            </div>
+            <div class="tab-content">
+                <div class="subcontent">
+                    <form name="form1" method="post" id="form1">
+                        <table class="f-tb" cellpadding="0" cellspacing="1">
+                            <tr>
+                                <td class="f-tb-t">
+                                    名称：
+                                </td>
+                                <td class="f-tb-c">
+                                    <span id="lbl_Name"></span>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td class="f-tb-t">
+                                    备注：
+                                </td>
+                                <td class="f-tb-c">
+                                    <p id="lbl_Description"></p>
+                                </td>
+                            </tr>
+                        </table>
+                    </form>
+                </div>
+                <div class="subcontent">
+                    <form id="form3" name="form3">
+                        <ul id="tree_Menus" class="ztree"></ul>
+                        <div class="f-btn-area" style="margin-bottom:5px; text-align:center">
+                            <input type="button" class="btn btn-sure" id="btn_save_rolemenu" value="保存" style="margin-right:5px;" />
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </dd>
+</dl>
+
+

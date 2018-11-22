@@ -14,6 +14,8 @@ namespace System
         public const string 角色管理 = "Sys4000";
         public const string 菜单管理 = "Sys5000";
         public const string 后台任务管理 = "Sys6000";
+
+        public const string 业务系统管理 = "Sys7000";
     }
 
 }

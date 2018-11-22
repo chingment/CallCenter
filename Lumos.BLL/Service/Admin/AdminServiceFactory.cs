@@ -8,6 +8,14 @@ namespace Lumos.BLL.Service.Admin
 {
     public class AdminServiceFactory : BaseFactory
     {
+        public static PositionProvider Position
+        {
+            get
+            {
+                return new PositionProvider();
+            }
+        }
+
         public static MerchantProvider Merchant
         {
             get

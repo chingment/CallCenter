@@ -1,8 +1,10 @@
 ﻿using System.Web.Mvc;
+using System.Linq;
 using Lumos.BLL;
 using Lumos;
 using System.Collections.Generic;
 using Lumos.BLL.Service.Admin;
+using Lumos.Entity;
 
 namespace WebMerch.Controllers
 {
@@ -13,7 +15,7 @@ namespace WebMerch.Controllers
         {
             //BizFactory.ProductSku.InitSearchCache();
 
-  
+
             //var tran = RedisManager.Db.CreateTransaction();
 
             //var productSkus = CurrentDb.ProductSku.Where(m => m.BarCode != null).ToList();
@@ -105,6 +107,37 @@ namespace WebMerch.Controllers
             {
                 ret.UserName = OwnRequest.GetUserNameWithSymbol();
 
+                var user = CurrentDb.SysMerchantUser.Where(m => m.Id == this.CurrentUserId).FirstOrDefault();
+
+                string pId = "00000000000000000000000000000001";
+
+                var menus = new List<BizMenu>();
+                menus =
+                    (from menu in CurrentDb.BizMenu
+                     where
+                     (from positionMenu in CurrentDb.PositionMenu
+                      where positionMenu.PositionType == user.PositionType
+                      select positionMenu.MenuId).Contains(menu.Id)
+                     select menu).ToList();
+
+                var menuLevel1 = from c in menus where c.PId == pId select c;
+                foreach (var menuLevel1Child in menuLevel1)
+                {
+                    var menuModel1 = new IndexModel.MenuModel();
+
+                    menuModel1.Name = menuLevel1Child.Name;
+
+
+                    var menuLevel2 = from c in menus where c.PId == menuLevel1Child.Id select c;
+
+                    foreach (var menuLevel2Child in menuLevel2)
+                    {
+
+                        menuModel1.SubMenus.Add(new IndexModel.SubMenuModel { Name = menuLevel2Child.Name, Url = menuLevel2Child.Url });
+                    }
+
+                    ret.MenuNavByLeft.Add(menuModel1);
+                }
             }
 
 

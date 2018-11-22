@@ -9,6 +9,7 @@ using System.Web.Mvc;
 
 namespace WebAdmin.Controllers.Biz
 {
+    [OwnAuthorize(SysPermissionCode.业务系统管理)]
     public class BizMenuController : OwnBaseController
     {
         public ActionResult List()

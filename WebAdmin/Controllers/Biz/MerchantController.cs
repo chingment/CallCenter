@@ -11,6 +11,7 @@ using Lumos.BLL.Service.Admin;
 
 namespace WebAdmin.Controllers.Biz
 {
+    [OwnAuthorize(SysPermissionCode.业务系统管理)]
     public class MerchantController : OwnBaseController
     {
 

@@ -31,7 +31,8 @@ namespace Lumos.DAL
         public IDbSet<BizMenu> BizMenu { get; set; }
         public IDbSet<BizMenuPermission> BizMenuPermission { get; set; }
         public IDbSet<PositionMenu> PositionMenu { get; set; }
-        
+        public IDbSet<Position> Position { get; set; }
+        public IDbSet<Organization> Organization { get; set; }
 
         protected override void OnModelCreating(DbModelBuilder modelBuilder)
         {
