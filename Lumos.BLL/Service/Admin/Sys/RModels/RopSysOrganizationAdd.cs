@@ -7,8 +7,10 @@ using System.Threading.Tasks;
 
 namespace Lumos.BLL.Service.Admin
 {
-    public class RetBizMenuGetPermissions
+    public class RopSysOrganizationAdd
     {
-        public List<Permission> Permissions { get; set; }
+        public string PId { get; set; }
+        public string Name { get; set; }
+        public string Description { get; set; }
     }
 }

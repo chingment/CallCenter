@@ -15,7 +15,7 @@ namespace Lumos.BLL.Service.Merch
         public CustomJsonResult GetDetails(string pOperater, string pMerchantId, string pSubjectId)
         {
             var ret = new RetOrganizationGetDetails();
-            var organization = CurrentDb.MchOrganization.Where(m => m.MerchantId == pMerchantId && m.Id == pSubjectId).FirstOrDefault();
+            var organization = CurrentDb.Organization.Where(m => m.MerchantId == pMerchantId && m.Id == pSubjectId).FirstOrDefault();
             if (organization != null)
             {
                 ret.OrganizationId = organization.Id ?? "";
@@ -34,13 +34,13 @@ namespace Lumos.BLL.Service.Merch
 
             using (TransactionScope ts = new TransactionScope())
             {
-                var isExistOrganization = CurrentDb.MchOrganization.Where(m => m.MerchantId == pMerchantId && m.Name == rop.Name).FirstOrDefault();
+                var isExistOrganization = CurrentDb.Organization.Where(m => m.MerchantId == pMerchantId && m.Name == rop.Name).FirstOrDefault();
                 if (isExistOrganization != null)
                 {
                     return new CustomJsonResult(ResultType.Failure, ResultCode.Failure, "名称已存在");
                 }
 
-                var organization = new MchOrganization();
+                var organization = new Organization();
                 organization.Id = GuidUtil.New();
                 organization.MerchantId = pMerchantId;
                 organization.PId = rop.PId;
@@ -49,7 +49,7 @@ namespace Lumos.BLL.Service.Merch
                 organization.Status = Enumeration.OrganizationStatus.Valid;
                 organization.Creator = pOperater;
                 organization.CreateTime = DateTime.Now;
-                CurrentDb.MchOrganization.Add(organization);
+                CurrentDb.Organization.Add(organization);
                 CurrentDb.SaveChanges();
                 ts.Complete();
                 result = new CustomJsonResult(ResultType.Success, ResultCode.Success, "添加成功");
@@ -60,9 +60,9 @@ namespace Lumos.BLL.Service.Merch
 
         public CustomJsonResult Edit(string pOperater, string pMerchantId, RopOrganizationEdit rop)
         {
-            var organization = CurrentDb.MchOrganization.Where(m => m.Id == rop.OrganizationId).FirstOrDefault();
+            var organization = CurrentDb.Organization.Where(m => m.Id == rop.OrganizationId).FirstOrDefault();
 
-            var isExistlOrganization = CurrentDb.MchOrganization.Where(m => m.MerchantId == pMerchantId && m.Id != organization.Id && m.Name == rop.Name).FirstOrDefault();
+            var isExistlOrganization = CurrentDb.Organization.Where(m => m.MerchantId == pMerchantId && m.Id != organization.Id && m.Name == rop.Name).FirstOrDefault();
             if (isExistlOrganization != null)
             {
                 return new CustomJsonResult(ResultType.Failure, ResultCode.Failure, "名称已存在");
@@ -85,7 +85,7 @@ namespace Lumos.BLL.Service.Merch
             {
                 foreach (var id in pOrganizationIds)
                 {
-                    var organization = CurrentDb.MchOrganization.Where(m => m.Id == id).FirstOrDefault();
+                    var organization = CurrentDb.Organization.Where(m => m.Id == id).FirstOrDefault();
                     if (organization != null)
                     {
                         organization.IsDelete = true;

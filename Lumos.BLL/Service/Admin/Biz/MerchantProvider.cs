@@ -17,10 +17,10 @@ namespace Lumos.BLL.Service.Admin
             var sysMerchantUser = CurrentDb.SysMerchantUser.Where(m => m.Id == merchantId).FirstOrDefault();
             if (sysMerchantUser != null)
             {
-                ret.MerchantId = sysMerchantUser.Id ?? ""; ;
+                ret.Id = sysMerchantUser.Id ?? ""; ;
                 ret.UserName = sysMerchantUser.UserName ?? ""; ;
 
-                var merchantInfo = CurrentDb.MchInfo.Where(m => m.MerchantId == merchantId).FirstOrDefault();
+                var merchantInfo = CurrentDb.Merchant.Where(m => m.MerchantId == merchantId).FirstOrDefault();
                 ret.MerchantName = merchantInfo.Name ?? ""; ;
                 ret.ContactAddress = merchantInfo.ContactAddress ?? "";
                 ret.ContactName = merchantInfo.ContactName ?? "";
@@ -54,23 +54,22 @@ namespace Lumos.BLL.Service.Admin
                 sysMerchatUser.Creator = pOperater;
                 sysMerchatUser.Status = Enumeration.UserStatus.Normal;
                 sysMerchatUser.BelongSite = Enumeration.BelongSite.Merchant;
-                sysMerchatUser.BusinessType = Enumeration.BusinessType.CarIns;
-                sysMerchatUser.PositionType = Enumeration.PositionType.GM;
+
                 sysMerchatUser.MerchantId = sysMerchatUser.Id;
                 CurrentDb.SysMerchantUser.Add(sysMerchatUser);
                 CurrentDb.SaveChanges();
 
-                var merchantInfo = new MchInfo();
-                merchantInfo.Id = GuidUtil.New();
-                merchantInfo.MerchantId = sysMerchatUser.Id;
-                merchantInfo.Name = rop.MerchantName;
-                merchantInfo.ContactName = rop.ContactName;
-                merchantInfo.ContactPhone = rop.ContactPhone;
-                merchantInfo.ContactAddress = rop.ContactAddress;
-                merchantInfo.BusinessType = Enumeration.BusinessType.CarIns;
-                merchantInfo.CreateTime = this.DateTime;
-                merchantInfo.Creator = pOperater;
-                CurrentDb.MchInfo.Add(merchantInfo);
+                var merchant = new Merchant();
+                merchant.Id = GuidUtil.New();
+                merchant.MerchantId = sysMerchatUser.Id;
+                merchant.Name = rop.MerchantName;
+                merchant.ContactName = rop.ContactName;
+                merchant.ContactPhone = rop.ContactPhone;
+                merchant.ContactAddress = rop.ContactAddress;
+                merchant.BusinessType = Enumeration.BusinessType.CarIns;
+                merchant.CreateTime = this.DateTime;
+                merchant.Creator = pOperater;
+                CurrentDb.Merchant.Add(merchant);
                 CurrentDb.SaveChanges();
                 ts.Complete();
 
@@ -86,16 +85,16 @@ namespace Lumos.BLL.Service.Admin
             CustomJsonResult result = new CustomJsonResult();
             using (TransactionScope ts = new TransactionScope())
             {
-                var merchantInfo = CurrentDb.MchInfo.Where(m => m.MerchantId == rop.MerchantId).FirstOrDefault();
-                merchantInfo.ContactName = rop.ContactName;
-                merchantInfo.ContactPhone = rop.ContactPhone;
-                merchantInfo.ContactAddress = rop.ContactAddress;
-                merchantInfo.MendTime = this.DateTime;
-                merchantInfo.Mender = pOperater;
+                var merchant = CurrentDb.Merchant.Where(m => m.MerchantId == rop.Id).FirstOrDefault();
+                merchant.ContactName = rop.ContactName;
+                merchant.ContactPhone = rop.ContactPhone;
+                merchant.ContactAddress = rop.ContactAddress;
+                merchant.MendTime = this.DateTime;
+                merchant.Mender = pOperater;
 
                 if (!string.IsNullOrEmpty(rop.Password))
                 {
-                    var sysMerchantUser = CurrentDb.SysMerchantUser.Where(m => m.Id == merchantInfo.MerchantId).FirstOrDefault();
+                    var sysMerchantUser = CurrentDb.SysMerchantUser.Where(m => m.Id == merchant.MerchantId).FirstOrDefault();
                     sysMerchantUser.PasswordHash = PassWordHelper.HashPassword(rop.Password);
                 }
 

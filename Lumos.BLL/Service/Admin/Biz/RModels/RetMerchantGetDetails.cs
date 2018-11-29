@@ -9,7 +9,7 @@ namespace Lumos.BLL.Service.Admin
     public class RetMerchantGetDetails
     {
         public string UserName { get; set; }
-        public string MerchantId { get; set; }
+        public string Id { get; set; }
         public string MerchantName { get; set; }
         public string ContactName { get; set; }
         public string ContactPhone { get; set; }

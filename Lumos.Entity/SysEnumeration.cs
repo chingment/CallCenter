@@ -155,5 +155,28 @@ namespace Lumos.Entity
             [Remark("停止中")]
             Stoping = 4
         }
+        public enum SysOrganizationStatus
+        {
+            [Remark("未知")]
+            Unknow = 0,
+            [Remark("正常")]
+            Valid = 1,
+            [Remark("停用")]
+            Invalid = 2
+        }
+
+
+        //1开头的为管理端系统职位，2开头为商户端系统职位
+        public enum SysPositionId
+        {
+            [Remark("未知")]
+            Unknow = 0,
+            [Remark("管理端管理员职位")]
+            AdminAdministrator = 100,
+            [Remark("管理端初级运营")]
+            AdminJuniorOperators = 101,
+            [Remark("商户端管理员职位")]
+            MerchantAdministrator = 200
+        }
     }
 }

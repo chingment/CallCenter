@@ -27,10 +27,8 @@ namespace Lumos.DAL
         public IDbSet<WxMsgPushLog> WxMsgPushLog { get; set; }
         public IDbSet<WxUserInfo> WxUserInfo { get; set; }
 
-        public IDbSet<MchInfo> MchInfo { get; set; }
-        public IDbSet<BizPositionMenu> BizPositionMenu { get; set; }
-        public IDbSet<BizPosition> BizPosition { get; set; }
-        public IDbSet<MchOrganization> MchOrganization { get; set; }
+        public IDbSet<Merchant> Merchant { get; set; }
+        public IDbSet<Organization> Organization { get; set; }
 
         protected override void OnModelCreating(DbModelBuilder modelBuilder)
         {

@@ -114,10 +114,8 @@ namespace WebMerch.Controllers
                 var menus = new List<SysMenu>();
                 menus =
                     (from menu in CurrentDb.SysMenu
-                     where
-                     (from positionMenu in CurrentDb.BizPositionMenu
-                      where positionMenu.PositionType == user.PositionType
-                      select positionMenu.MenuId).Contains(menu.Id)
+                     
+                
                      select menu).ToList();
 
                 var menuLevel1 = from c in menus where c.PId == pId select c;

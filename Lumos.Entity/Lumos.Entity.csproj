@@ -58,10 +58,8 @@
     <Compile Include="Biz\BizSn.cs" />
     <Compile Include="Biz\BizProcessesAudit.cs" />
     <Compile Include="Biz\BizProcessesAuditDetails.cs" />
-    <Compile Include="Biz\MchInfo.cs" />
-    <Compile Include="Biz\MchOrganization.cs" />
-    <Compile Include="Biz\BizPosition.cs" />
-    <Compile Include="Biz\BizPositionMenu.cs" />
+    <Compile Include="Biz\Merchant.cs" />
+    <Compile Include="Biz\Organization.cs" />
     <Compile Include="Sys\SysClientUser.cs" />
     <Compile Include="Sys\SysMerchatUser.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
@@ -70,7 +68,11 @@
     <Compile Include="Sys\SysClientCode.cs" />
     <Compile Include="Sys\SysMenuPermission.cs" />
     <Compile Include="Sys\SysOperateHistory.cs" />
+    <Compile Include="Sys\SysOrganization.cs" />
     <Compile Include="Sys\SysPageAccessRecord.cs" />
+    <Compile Include="Sys\SysPermission.cs" />
+    <Compile Include="Sys\SysPosition.cs" />
+    <Compile Include="Sys\SysPositionRole.cs" />
     <Compile Include="Sys\SysRole.cs" />
     <Compile Include="Sys\SysSmsSendHistory.cs" />
     <Compile Include="Sys\SysAdminUser.cs" />

@@ -8,11 +8,19 @@ namespace Lumos.BLL.Service.Admin
 {
     public class AdminServiceFactory : BaseFactory
     {
-        public static PositionProvider Position
+        public static SysOrganizationProvider SysOrganization
         {
             get
             {
-                return new PositionProvider();
+                return new SysOrganizationProvider();
+            }
+        }
+
+        public static SysPositionProvider SysPosition
+        {
+            get
+            {
+                return new SysPositionProvider();
             }
         }
 

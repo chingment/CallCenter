@@ -4,28 +4,42 @@
 }
 @section scripts{
     <script type="text/javascript">
+
+
         var num = 0;
         var maxMum = 2;
-        var tree_Menus;
-        var tab_Main;
-        var cur_MenuId;
+
+        var mainTree_Id = "maintree";
+        var mainTree_Rmenus;
+        var mainTab;
         var belongSite = $.lumos.getUrlParamValue("belongSite");
         $(this).ready(function () {
 
-            $.formValidator.initConfig({ formID: "form1", onError: function (msg) { } });
-            $("#txt_Name").formValidator({ onShow: "&nbsp;", onFocus: "不超过20个字符", onCorrect: "&nbsp;", empty: false, onEmpty: "不能为空" }).inputValidator({ min: 1, max: 20, empty: { leftEmpty: false, emptyError: "不能为空" }, onError: "不超过20个字符" });
-            $("#txt_Url").formValidator({ onShow: "&nbsp;", onFocus: "不超过200个字符", onCorrect: "&nbsp;", empty: true, onEmpty: "&nbsp;" }).inputValidator({ min: 0, max: 200, onError: "不超过200个字符" });
-            $("#txt_Description").formValidator({ onShow: "&nbsp;", onFocus: "不超过500个字符", onCorrect: "&nbsp;", empty: true, onEmpty: "&nbsp;" }).inputValidator({ min: 0, max: 500, onError: "不超过500个字符" });
+            mainTab = $("#tab_Main").tab({
+                treeId: mainTree_Id,
+                click: function (index, key) {
+                    switch (index) {
+                        case 0:
+                            getMainTreeSelNodeDetails();
+                            break;
+                    }
+                    return true;
+                }
+            });
 
-            tab_Main = $("#tab_Main").tab();
+            $.formValidator.initConfig({ formID: "form1", onError: function (msg) { $.lumos.tips(msg); } });
+            $("#txt_Name").formValidator().inputValidator({ min: 1, max: 20, onError: "名称须填,且不能超过20个字符" });
+            $("#txt_Url").formValidator().inputValidator({ min: 0, max: 200, onError: "网页路径不能超过200个字符" });
+            $("#txt_Description").formValidator().inputValidator({ min: 0, max: 500, onError: "描述不能超过500个字符" });
 
-            $("#btn_add").click(function () {
-                var selObj = getSelectedNode();
-                if (selObj == null) {
+            $("#maintree_add_node").click(function () {
+                var selNode = mainTab.treeGetSelectedNode();
+                if (selNode == null) {
+                    $.lumos.tips("请在左边树形结构选中节点信息");
                     return;
                 }
 
-                var url = '/Sys/Menu/Add?belongSite=' + belongSite + '&pMenuId=' + selObj.id + '&pMenuName=' + escape(selObj.name)
+                var url = '/Sys/Menu/Add?belongSite=' + belongSite + '&pId=' + selNode.id + '&pName=' + escape(selNode.name)
                 var title = '新建';
                 art.dialog.open(url, {
                     id: "openDialog", title: title, width: '700px', height: '480px', lock: true, drag: false, cancelVal: '关闭', cancel: true, okVal: '确定', ok: function () {
@@ -35,34 +49,31 @@
                 });
             });
 
-            $("#btn_edit").click(function () {
-                edit();
-                return false;
-            })
+            $("#maintree_delete_node").click(function () {
 
-            $("#btn_delete").click(function () {
-
-                var selObj = getSelectedNode();
-                if (selObj == null) {
+                var selNode = mainTab.treeGetSelectedNode();
+                if (selNode == null) {
+                    $.lumos.tips("请在左边树形结构选中节点信息");
                     return;
                 }
 
                 art.dialog.confirm(
-                    "确定删除[" + selObj.name + "]节点及其子节点吗？",
+                    "确定删除[" + selNode.name + "]节点及其子节点吗？",
                     function () {
-                        var id = selObj.id;
-                        var menuIds = [];
-                        var nodes = tree_Menus.getSelectedNodeFollowChildren();
-                        $.each(nodes, function (i, n) {
-                            menuIds.push(n.id);
-                        });
-
+                        var id = selNode.id;
                         $.lumos.postJson({
                             url: "/Sys/Menu/Delete",
-                            data: { menuIds: menuIds },
+                            data: { id: id },
                             success: function (d) {
                                 $.lumos.tips(d.message);
-                                loadMenus(id);
+                                if (d.result == $.lumos.resultType.success) {
+                                    $("#lbl_PName").text("/");
+                                    $("#txt_Name").val("");
+                                    $("#txt_Url").val("");
+                                    $("#txt_Description").val("");
+                                    $("input[name='permissionId']").attr("checked", false);
+                                    mainTreeLoadData();
+                                }
                             }
                         });
                         return true;
@@ -70,63 +81,20 @@
                 return false;
             });
 
-            $("#btn_sort").click(function () {
-                var selObj = getSelectedNode();
-                if (selObj == null) {
+            $("#maintree_eidt_node").click(function () {
+
+                var selNode = mainTab.treeGetSelectedNode();
+                if (selNode == null) {
+                    $.lumos.tips("请在左边树形结构选中节点信息");
                     return;
                 }
 
-                if (typeof selObj.children == "undefined") {
-                    $.lumos.tips("该节点没有子节点！");
+                var isValid = $.formValidator.pageIsValid();
+                if (!isValid)
                     return;
-                }
 
-                var url = '/Sys/Menu/Sort?pMenuId=' + selObj.id + '&pMenuName=' + escape(selObj.name);
-                var title = '排序';
-                art.dialog.open(url, {
-                    id: "openDialog", title: title, width: '650px', height: '400px', lock: true, drag: false, cancelVal: '关闭', cancel: true, okVal: '保存', ok: function () {
-                        this.iframe.contentWindow.edit();
-                        return false;
-                    }
-                });
-
-            });
-
-            initData();
-        });
-
-        function initData() {
-            loadMenus();
-            loadPermissions();
-        }
-
-        function getChildNodeGrade(treeNode) {
-            var p = treeNode.getParentNode();
-            if (p != null) {
-                num += 1;
-                getChildNodeGrade(p);
-            }
-        }
-
-        function getSelectedNode() {
-            var selObj = tree_Menus.getSelectedNodes();
-            if ($.lumos.isNullOrEmpty(selObj)) {
-                $.lumos.tips("请在左边树形结构选中节点信息");
-                return null;
-            }
-            return selObj[0];
-        }
-
-        function edit() {
-
-            var selObj = getSelectedNode();
-            if (selObj == null) {
-                return false;
-            }
-            var isValid = $.formValidator.pageIsValid();
-            if (isValid) {
                 art.dialog.confirm('确定要保存？', function () {
-                    var menuId = selObj.id;
+                    var id = selNode.id;
                     var name = $("#txt_Name").val();
                     var url = $("#txt_Url").val();
                     var description = $("#txt_Description").val();
@@ -138,110 +106,168 @@
 
                     $.lumos.postJson({
                         url: "/Sys/Menu/Edit",
-                        data: { menuId: menuId, name: name, url: url, description: description, permissionIds: permissionIds },
+                        data: { id: id, name: name, url: url, description: description, permissionIds: permissionIds },
                         isUseHandling: true,
                         success: function (d) {
                             $.lumos.tips(d.message);
                             if (d.result == $.lumos.resultType.success) {
-                                loadMenus(id);
+                                mainTreeLoadData();
                             }
                         }
                     });
                 });
+
+                return false;
+            })
+
+            mainTreeLoadData();
+            loadPermissions();
+
+        });
+
+
+        function getChildNodeGrade(treeNode) {
+            var p = treeNode.getParentNode();
+            if (p != null) {
+                num += 1;
+                getChildNodeGrade(p);
             }
-
-
-            return false;
         }
 
-        function loadMenus(id) {
+        function mainTreeLoadData() {
 
             $.lumos.getJson({
                 url: "/Sys/Menu/GetAll",
-                urlParams: { pMenuId: "0", belongSite: belongSite },
+                urlParams: { belongSite: belongSite },
                 success: function (d) {
 
-                    var obj = d.data;
-                    tree_Menus = $.fn.zTree.init($("#tree_Menus"), {
-                        view: {
-                            showLine: true,
-                            selectedMulti: false
-                        },
-                        data: {
-                            simpleData: {
-                                enable: true
+                    if (d.result == $.lumos.resultType.success) {
+                        var data = d.data;
+                        $.fn.zTree.init($("#" + mainTree_Id), {
+                            edit: {
+                                enable: true,
+                                showRemoveBtn: false,
+                                showRenameBtn: false,
+                                drag: {
+                                    prev: true,
+                                    next: false,
+                                    inner: false
+                                }
                             },
-                            key: {
-                                url: "_url"
-                            }
-                        },
-                        callback: {
-                            onClick: function treeNodeOnClick(event, treeId, treeNode, clickFlag) {
-
-                                var parentName = "/";
-                                if (treeNode.getParentNode() != null) {
-                                    parentName = treeNode.getParentNode().name;
-                                    $("#btn_delete").show();
-                                }
-                                else {
-                                    $("#btn_delete").hide();
-                                }
-
-                                /*最大支持几级菜单由maxMum决定 可修改这个值*/
-                                num = 0;
-                                getChildNodeGrade(treeNode);
-                                if (num >= maxMum) {
-                                    $("#btn_add").hide();
-                                }
-                                else {
-                                    $("#btn_add").show();
-                                }
-
-                                cur_MenuId = treeNode.id;
-
-                                $.lumos.getJson({
-                                    url: "/Sys/Menu/GetDetails",
-                                    urlParams: { menuId: treeNode.id },
-                                    success: function (d) {
-
-                                        if (d.result == $.lumos.resultType.success) {
-                                            $("#lbl_PName").text(parentName);
-                                            var data = d.data;
-                                            $("#txt_Name").val(data.name);
-                                            $("#txt_Name").defaultPassed();
-                                            $("#txt_Url").val(data.url);
-                                            $("#txt_Description").val(data.description);
-                                            $("#txt_Description").defaultPassed();
-
-                                            $("input[name='permissionId']").attr("checked", false);
-
-                                            var permissionIds = data.permissionIds;
-                                            for (var i = 0; i < permissionIds.length; i++) {
-                                                $("input[name='permissionId'][value='" + permissionIds[i] + "']").attr("checked", true);
-                                            }
-
+                            view: {
+                                showLine: true,
+                                selectedMulti: false
+                            },
+                            data: {
+                                simpleData: { enable: true }
+                            },
+                            callback: {
+                                onClick: function treeNodeOnClick(event, treeId, treeNode, clickFlag) {
+                                    mainTab.refresh(treeNode.id);
+                                },
+                                beforeDrag: function (treeId, treeNodes) {
+                                    for (var i = 0, l = treeNodes.length; i < l; i++) {
+                                        dragId = treeNodes[i].pId;
+                                        if (treeNodes[i].drag === false) {
+                                            return false;
                                         }
                                     }
-                                });
 
+                                    return true;
+                                },
+                                beforeDrop: function (treeId, treeNodes, targetNode, moveType, isCopy) {
+                                    if (treeNodes[0].level == 0) {
+                                        return false;
+                                    }
+                                    if (targetNode.pId == dragId) {
+                                        return true;
+                                    } else {
+                                        $.lumos.tips('只能进行同级排序！')
+                                        return false;
+                                    }
+                                },
+                                onDrag: function () {
+                                    //console.log("拖拽中");
+                                    return true;
+                                },
+                                onDrop: function (event, treeId, treeNodes, targetNode, moveType, isCopy) {
+
+                                    if (treeNodes[0].pId == dragId && targetNode.pId == dragId) {
+                                        var updateNode = getPeerNodes(targetNode);
+                                        var dics = [];
+                                        for (var i = 0; i < updateNode.length; i++) {
+                                            dics.push({ id: updateNode[i].id, priority: i + 1 });
+                                        }
+
+                                        $.lumos.postJson({
+                                            url: "/Sys/Menu/EditSort",
+                                            isUseHandling: false,
+                                            data: { dics: dics },
+                                            success: function (d) {
+                                                $.lumos.parentDialog.refresh(1);
+                                            }
+                                        });
+
+                                    } else {
+                                        return false;
+                                    }
+                                    return true;
+                                }
                             }
-                        },
-                        async: {
-                            url: ""
+                        }, data);
+                    }
+
+                }
+            });
+        }
+
+        function getMainTreeSelNodeDetails() {
+
+            var selNode = mainTab.treeGetSelectedNode();
+            var id = selNode.id;
+
+            var parentName = "/";
+            if (selNode.getParentNode() != null) {
+                parentName = selNode.getParentNode().name;
+            }
+
+
+            /*最大支持几级菜单由maxMum决定 可修改这个值*/
+            num = 0;
+            getChildNodeGrade(selNode);
+            if (num == 0) {
+                $('#maintree_delete_node').attr("disabled", "disabled");
+                $('#maintree_add_node').removeAttr("disabled");
+            }
+            else if (num >= maxMum) {
+                $('#maintree_add_node').attr("disabled", "disabled");
+                $('#maintree_delete_node').removeAttr("disabled");
+            }
+            else {
+                $('#maintree_delete_node').removeAttr("disabled");
+                $('#maintree_add_node').removeAttr("disabled");
+            }
+
+
+            $.lumos.getJson({
+                url: "/Sys/Menu/GetDetails",
+                urlParams: { id: id },
+                success: function (d) {
+                    if (d.result == $.lumos.resultType.success) {
+                        var data = d.data;
+                        $("#lbl_PName").text(parentName);
+                        $("#txt_Name").val(data.name);
+                        $("#txt_Url").val(data.url);
+                        $("#txt_Description").val(data.description);
+                        $("input[name='permissionId']").attr("checked", false);
+                        var permissionIds = data.permissionIds;
+                        for (var i = 0; i < permissionIds.length; i++) {
+                            $("input[name='permissionId'][value='" + permissionIds[i] + "']").attr("checked", true);
                         }
-
-                    }, obj);
-
-                    var node = tree_Menus.getNodeByParam("id", id, null);
-                    tree_Menus.selectNode(node);
-
-                    var left = $('#tree_Menus').height();
-                    var right = $('#tree_tab_right').height();
-                    if (left > right) {
-                        $('#tree_tab_right').height(left + 20);
                     }
                 }
             });
+
         }
 
         function loadPermissions() {
@@ -270,91 +296,100 @@
         function refresh(type) {
             switch (type) {
                 case 1:
-                    loadMenus(cur_MenuId)
+                    mainTreeLoadData()
                     break;
             }
         }
+
+        var dragId;
+        function getPeerNodes(targetNode) {
+            if (targetNode == null) {
+                return null;
+            } else {
+                if (targetNode.getParentNode() != null) {
+                    return targetNode.getParentNode().children;
+                }
+                return null;
+            }
+
+        }
+
+
     </script>
 }
 
-<form name="form1" id="form1">
 
-    <dl class="tree-tab" id="tree_tab">
-        <dd class="tree-tab-left" id="tree_tab_left">
-            <ul id="tree_Menus" class="ztree"></ul>
-        </dd>
-        <dd class="tree-tab-right" id="tree_tab_right">
-            <div class="tab" id="tab_Main">
-                <div class="tab-item">
-                    <ul>
-                        <li class="item first selected"><a href="javascript:void(0)">基本信息</a></li>
-                    </ul>
-                </div>
-                <div class="tab-content">
-                    <div class="subcontent">
-                        <div class="f-btn-area">
-                            <input type="button" class="btn btn-open" id="btn_add" value="新建" />
-                            <input type="button" class="btn btn-open" id="btn_sort" value="排序" />
-                            <input type="button" class="btn btn-delete" id="btn_delete" value="删除" />
-                        </div>
-                        <table class="f-tb" cellpadding="0" cellspacing="1">
-                            <tr>
-                                <td class="f-tb-t">
-                                    上级名称：
-                                </td>
-                                <td class="f-tb-c">
-                                    <label id="lbl_PName">/</label>
-                                    <input name="txt_PName" type="hidden" id="txt_PName" />
-                                    <input name="txt_PId" type="hidden" id="txt_PId" />
-                                </td>
-                            </tr>
-                            <tr>
-                                <td class="f-tb-t">
-                                    名称：
-                                </td>
-                                <td class="f-tb-c">
-                                    <input type="text" autocomplete="off" id="txt_Name" style="width: 250px;" class="input-control" />
-                                    <span id="txt_NameTip"></span>
-                                </td>
-                            </tr>
-                            <tr class="tr_url">
-                                <td class="f-tb-t">
-                                    网页路径：
-                                </td>
-                                <td class="f-tb-c">
-                                    <input type="text" autocomplete="off" id="txt_Url" class="input-control" style="width: 350px;" />
-                                    <span id="txt_UrlTip"></span>
-                                </td>
-                            </tr>
-                            <tr>
-                                <td class="f-tb-t">
-                                    权限：
-                                </td>
-                                <td class="f-tb-c">
-                                    <div id="list_Permission"></div>
-                                </td>
-                            </tr>
-                            <tr>
-                                <td class="f-tb-t">
-                                    备注：
-                                </td>
-                                <td class="f-tb-c">
-                                    <textarea rows="5" cols="46" id="txt_Description" class="input-control"></textarea>
-                                    <span id="txt_DescriptionTip"></span>
-                                </td>
-                            </tr>
-                            <tr>
-                                <td class="f-tb-t">
-                                    &nbsp;
-                                </td>
-                                <td class="f-tb-c">
-                                    <input type="button" value="保存" id="btn_edit" class="btn btn-sure" />
-                                </td>
-                            </tr>
-                        </table>
+<dl class="tree-tab" id="tree_tab">
+    <dd class="tree-tab-left" id="tree_tab_left">
+        <ul id="maintree" class="ztree"></ul>
+    </dd>
+    <dd class="tree-tab-right" id="tree_tab_right">
+        <div class="tab" id="tab_Main">
+            <div class="tab-item">
+                <ul>
+                    <li class="item first selected"><a href="javascript:void(0)">基本信息</a></li>
+                </ul>
+            </div>
+            <div class="tab-content">
+                <div class="subcontent">
+                    <div class="f-btn-area">
+                        <input type="button" class="btn btn-open" id="maintree_add_node" value="新建" />
+                        <input type="button" class="btn btn-delete" id="maintree_delete_node" value="删除" />
                     </div>
+                    <table class="f-tb" cellpadding="0" cellspacing="1">
+                        <tr>
+                            <td class="f-tb-t">
+                                上级名称：
+                            </td>
+                            <td class="f-tb-c">
+                                <label id="lbl_PName">/</label>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td class="f-tb-t">
+                                <span class="required-symbol">*</span>名称：
+                            </td>
+                            <td class="f-tb-c">
+                                <input type="text" autocomplete="off" id="txt_Name" style="width: 250px;" class="input-control" />
+                            </td>
+                        </tr>
+                        <tr class="tr_url">
+                            <td class="f-tb-t">
+                                网页路径：
+                            </td>
+                            <td class="f-tb-c">
+                                <input type="text" autocomplete="off" id="txt_Url" class="input-control" style="width: 350px;" />
+                            </td>
+                        </tr>
+                        <tr>
+                            <td class="f-tb-t">
+                                权限：
+                            </td>
+                            <td class="f-tb-c">
+                                <div id="list_Permission"></div>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td class="f-tb-t">
+                                备注：
+                            </td>
+                            <td class="f-tb-c">
+                                <textarea rows="5" cols="46" id="txt_Description" class="input-control"></textarea>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td class="f-tb-t">
+                                &nbsp;
+                            </td>
+                            <td class="f-tb-c">
+                                <input type="button" value="保存" id="maintree_eidt_node" class="btn btn-sure" />
+                            </td>
+                        </tr>
+                    </table>
                 </div>
             </div>
-        </dd>
-    </dl>
-</form>
+        </div>
+    </dd>
+</dl>
+<div class="help-tips">提示：最大支持三级节点</div>
+

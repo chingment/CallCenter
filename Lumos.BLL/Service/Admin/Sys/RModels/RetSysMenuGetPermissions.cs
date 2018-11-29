@@ -9,6 +9,6 @@ namespace Lumos.BLL.Service.Admin
 {
     public class RetSysMenuGetPermissions
     {
-        public List<Permission> Permissions { get; set; }
+        public List<SysPermission> Permissions { get; set; }
     }
 }

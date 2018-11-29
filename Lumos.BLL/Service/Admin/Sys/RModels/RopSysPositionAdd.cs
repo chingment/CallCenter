@@ -6,12 +6,13 @@ using System.Threading.Tasks;
 
 namespace Lumos.BLL.Service.Admin
 {
-    public class RetPositionGetDetails
+    public class RopSysPositionAdd
     {
-        public string PositionId { get; set; }
+        public string[] RoleIds { get; set; }
         public string Name { get; set; }
-        public string Description { get; set; }
 
-        public string[] MenuIds { get; set; }
+        public string OrganizationId { get; set; }
+
+        public string Description { get; set; }
     }
 }

@@ -12,7 +12,7 @@ namespace Lumos.BLL.Service.Admin
 
         public class Dic
         {
-            public string MenuId { get; set; }
+            public string Id { get; set; }
             public int Priority { get; set; }
         }
     }
