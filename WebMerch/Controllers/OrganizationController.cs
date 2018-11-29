@@ -22,37 +22,43 @@ namespace WebMerch.Controllers
             return View();
         }
 
-        public CustomJsonResult GetTreeList(int pId)
+        public CustomJsonResult GetAll()
         {
 
-            var arr = CurrentDb.Organization.Where(m => m.MerchantId == this.CurrentUserId && m.IsDelete == false).OrderByDescending(m => m.Priority).ToArray();
+            var arr = CurrentDb.Organization.Where(m => m.IsDelete == false && m.MerchantId == this.CurrentMerchantId).OrderBy(m => m.Priority).ToArray();
 
             object json = ConvertToZTreeJson(arr, "id", "pid", "name", "menu");
             return Json(ResultType.Success, json);
 
         }
 
-        public CustomJsonResult GetDetails(string organizationId)
+        public CustomJsonResult GetDetails(string id)
         {
-            return MerchServiceFactory.Organization.GetDetails(this.CurrentUserId, this.CurrentUserId, organizationId);
+            return MerchServiceFactory.Organization.GetDetails(this.CurrentUserId, this.CurrentMerchantId, id);
         }
 
         [HttpPost]
         public CustomJsonResult Add(RopOrganizationAdd rop)
         {
-            return MerchServiceFactory.Organization.Add(this.CurrentUserId, this.CurrentUserId, rop);
+            return MerchServiceFactory.Organization.Add(this.CurrentUserId, this.CurrentMerchantId, rop);
         }
 
         [HttpPost]
         public CustomJsonResult Edit(RopOrganizationEdit rop)
         {
-            return MerchServiceFactory.Organization.Edit(this.CurrentUserId, this.CurrentUserId, rop);
+            return MerchServiceFactory.Organization.Edit(this.CurrentUserId, this.CurrentMerchantId, rop);
         }
 
         [HttpPost]
         public CustomJsonResult Delete(string id)
         {
-            return MerchServiceFactory.Organization.Delete(this.CurrentUserId, this.CurrentUserId, id);
+            return MerchServiceFactory.Organization.Delete(this.CurrentUserId, this.CurrentMerchantId, id);
+        }
+
+        [HttpPost]
+        public CustomJsonResult EditSort(RopOrganizationEditSort rop)
+        {
+            return MerchServiceFactory.Organization.EditSort(this.CurrentUserId, this.CurrentMerchantId, rop);
         }
 
         public CustomJsonResult GetUserList(RupUserGetList rup)
@@ -64,7 +70,7 @@ namespace WebMerch.Controllers
                          where
                          p.OrganizationId == rup.OrganizationId &&
    (name.Length == 0 || p.FullName.Contains(name))
-   && p.MerchantId == this.CurrentUserId
+   && p.MerchantId == this.CurrentMerchantId
                          select new { p.Id, p.OrganizationId, p.UserName, p.FullName, p.CreateTime });
 
             int total = query.Count();

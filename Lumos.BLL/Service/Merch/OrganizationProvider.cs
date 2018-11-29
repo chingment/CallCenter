@@ -12,13 +12,50 @@ namespace Lumos.BLL.Service.Merch
 {
     public class OrganizationProvider : BaseProvider
     {
+
+        private List<Organization> GetFathers(string merchantId, string id)
+        {
+            var sysOrganizations = CurrentDb.Organization.Where(m => m.MerchantId == merchantId).ToList();
+
+            var list = new List<Organization>();
+            var list2 = list.Concat(GetFatherList(sysOrganizations, id));
+            return list2.OrderBy(m => m.Dept).ToList();
+        }
+
+
+        public IEnumerable<Organization> GetFatherList(IList<Organization> list, string pId)
+        {
+            var query = list.Where(p => p.Id == pId).ToList();
+            return query.ToList().Concat(query.ToList().SelectMany(t => GetFatherList(list, t.PId)));
+        }
+
+        private List<Organization> GetSons(string merchantId, string id)
+        {
+            var sysOrganizations = CurrentDb.Organization.Where(m => m.MerchantId == merchantId).ToList();
+            var sysOrganization = sysOrganizations.Where(p => p.Id == id).ToList();
+            var list2 = sysOrganization.Concat(GetSonList(sysOrganizations, id));
+            return list2.ToList();
+        }
+
+        private IEnumerable<Organization> GetSonList(IList<Organization> list, string pId)
+        {
+            var query = list.Where(p => p.PId == pId).ToList();
+            return query.ToList().Concat(query.ToList().SelectMany(t => GetSonList(list, t.Id)));
+        }
+
         public CustomJsonResult GetDetails(string operater, string merchantId, string id)
         {
             var ret = new RetOrganizationGetDetails();
             var organization = CurrentDb.Organization.Where(m => m.MerchantId == merchantId && m.Id == id).FirstOrDefault();
+
+            if (organization == null)
+            {
+                return new CustomJsonResult(ResultType.Failure, ResultCode.Failure, "操作失败", ret);
+            }
+
             if (organization != null)
             {
-                ret.OrganizationId = organization.Id ?? "";
+                ret.Id = organization.Id ?? "";
                 ret.Name = organization.Name ?? "";
                 ret.Description = organization.Description ?? "";
                 ret.Status = organization.Status;
@@ -34,19 +71,31 @@ namespace Lumos.BLL.Service.Merch
 
             using (TransactionScope ts = new TransactionScope())
             {
-                var isExistOrganization = CurrentDb.Organization.Where(m => m.MerchantId == merchantId && m.Name == rop.Name).FirstOrDefault();
-                if (isExistOrganization != null)
+                var fathters = GetFathers(merchantId, rop.PId);
+                int dept = fathters.Count;
+                var isExists = CurrentDb.Organization.Where(m => m.MerchantId == merchantId && m.PId == rop.PId && m.Name == rop.Name && m.Dept == dept).FirstOrDefault();
+                if (isExists != null)
                 {
-                    return new CustomJsonResult(ResultType.Failure, ResultCode.Failure, "名称已存在");
+                    return new CustomJsonResult(ResultType.Failure, "该名称在同一级别已经存在");
                 }
+
+                string fullName = "";
+                foreach (var item in fathters)
+                {
+                    fullName += item.Name + "-";
+                }
+
+                fullName += rop.Name;
 
                 var organization = new Organization();
                 organization.Id = GuidUtil.New();
                 organization.MerchantId = merchantId;
                 organization.PId = rop.PId;
                 organization.Name = rop.Name;
+                organization.FullName = fullName;
                 organization.Description = rop.Description;
                 organization.Status = Enumeration.OrganizationStatus.Valid;
+                organization.Dept = dept;
                 organization.Creator = operater;
                 organization.CreateTime = DateTime.Now;
                 CurrentDb.Organization.Add(organization);
@@ -60,15 +109,31 @@ namespace Lumos.BLL.Service.Merch
 
         public CustomJsonResult Edit(string operater, string merchantId, RopOrganizationEdit rop)
         {
-            var organization = CurrentDb.Organization.Where(m => m.Id == rop.OrganizationId).FirstOrDefault();
-
-            var isExistlOrganization = CurrentDb.Organization.Where(m => m.MerchantId == merchantId && m.Id != organization.Id && m.Name == rop.Name).FirstOrDefault();
-            if (isExistlOrganization != null)
+            var organization = CurrentDb.Organization.Where(m => m.MerchantId == merchantId && m.Id == rop.Id).FirstOrDefault();
+            if (organization == null)
             {
-                return new CustomJsonResult(ResultType.Failure, ResultCode.Failure, "名称已存在");
+                return new CustomJsonResult(ResultType.Failure, ResultCode.Failure, "数据为空");
             }
 
+            var fathters = GetFathers(merchantId, organization.PId);
+            int dept = fathters.Count;
+            var isExists = CurrentDb.Organization.Where(m => m.PId == organization.PId && m.Name == rop.Name && m.Dept == dept && m.Id != rop.Id).FirstOrDefault();
+            if (isExists != null)
+            {
+                return new CustomJsonResult(ResultType.Failure, ResultCode.Failure, string.Format("保存失败，该名称({0})已被同一级别使用", rop.Name));
+            }
+
+            string fullName = "";
+            foreach (var item in fathters)
+            {
+                fullName += item.Name + "-";
+            }
+
+            fullName += rop.Name;
+
             organization.Name = rop.Name;
+            organization.FullName = fullName;
+            organization.Dept = dept;
             organization.Status = rop.Status;
             organization.Description = rop.Description;
             organization.Mender = operater;
@@ -81,28 +146,63 @@ namespace Lumos.BLL.Service.Merch
 
         public CustomJsonResult Delete(string operater, string merchantId, string id)
         {
-            //if (pOrganizationIds != null)
-            //{
-            //    foreach (var id in pOrganizationIds)
-            //    {
-            //        var organization = CurrentDb.Organization.Where(m => m.Id == id).FirstOrDefault();
-            //        if (organization != null)
-            //        {
-            //            organization.IsDelete = true;
+            CustomJsonResult result = new CustomJsonResult();
 
-            //            var sysMerchantUsers = CurrentDb.SysMerchantUser.Where(m => m.OrganizationId == id).ToList();
+            using (TransactionScope ts = new TransactionScope())
+            {
+                var organizations = GetSons(merchantId, id).ToList();
 
-            //            foreach (var sysMerchantUser in sysMerchantUsers)
-            //            {
-            //                sysMerchantUser.OrganizationId = null;
-            //            }
+                if (organizations.Count == 0)
+                {
+                    return new CustomJsonResult(ResultType.Failure, ResultCode.Failure, "请选择要删除的数据");
+                }
 
-            //            CurrentDb.SaveChanges();
-            //        }
-            //    }
-            //}
 
-            return new CustomJsonResult(ResultType.Success, ResultCode.Success, "删除成功");
+
+                foreach (var organization in organizations)
+                {
+
+                    if (organization.Dept == 0)
+                    {
+                        return new CustomJsonResult(ResultType.Failure, ResultCode.Failure, string.Format("所选机构（{0}）不允许删除", organization.Name));
+                    }
+
+                    organization.IsDelete = true;
+
+                }
+
+
+                CurrentDb.SaveChanges();
+                ts.Complete();
+
+                result = new CustomJsonResult(ResultType.Success, ResultCode.Success, "操作成功"); ;
+            }
+
+            return result;
+        }
+
+        public CustomJsonResult EditSort(string operater, string merchantId, RopOrganizationEditSort rop)
+        {
+            if (rop != null)
+            {
+                if (rop.Dics != null)
+                {
+                    foreach (var item in rop.Dics)
+                    {
+                        string id = item.Id;
+                        int priority = item.Priority;
+                        var organization = CurrentDb.Organization.Where(m => m.MerchantId == merchantId && m.Id == id).FirstOrDefault();
+                        if (organization != null)
+                        {
+                            organization.Priority = priority;
+                            CurrentDb.SaveChanges();
+                        }
+                    }
+                }
+            }
+
+            return new CustomJsonResult(ResultType.Success, ResultCode.Success, "操作成功");
+
         }
 
     }

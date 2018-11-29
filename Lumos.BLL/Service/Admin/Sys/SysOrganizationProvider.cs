@@ -132,6 +132,7 @@ namespace Lumos.BLL.Service.Admin
 
             organization.Name = rop.Name;
             organization.FullName = fullName;
+            organization.Dept = dept;
             organization.Status = rop.Status;
             organization.Description = rop.Description;
             organization.Mender = operater;

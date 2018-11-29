@@ -195,9 +195,9 @@
     <Content Include="Views\Organization\List.cshtml" />
     <Content Include="Views\Organization\Sort.cshtml" />
     <Content Include="Views\Organization\Add.cshtml" />
-    <Content Include="Views\StaffUser\Add.cshtml" />
-    <Content Include="Views\StaffUser\Edit.cshtml" />
-    <Content Include="Views\StaffUser\List.cshtml" />
+    <Content Include="Views\User\Add.cshtml" />
+    <Content Include="Views\User\Edit.cshtml" />
+    <Content Include="Views\User\List.cshtml" />
     <None Include="Web.config">
       <SubType>Designer</SubType>
     </None>

@@ -121,31 +121,6 @@
 
             });
 
-            $("#maintree_sort_node").click(function () {
-
-                var selNode = mainTab.treeGetSelectedNode();
-                if (selNode == null) {
-                    $.lumos.tips("请在左边树形结构选中节点信息");
-                    return;
-                }
-
-                if (typeof selNode.children == "undefined") {
-                    $.lumos.tips("该节点没有子节点！");
-                    return;
-                }
-
-
-                var url = '/Sys/Organization/Sort?pId=' + selNode.id + '&pName=' + escape(selNode.name);
-                var title = '排序';
-                art.dialog.open(url, {
-                    id: "openDialog", title: title, width: '650px', height: '400px', lock: true, drag: false, cancelVal: '关闭', cancel: true, okVal: '保存', ok: function () {
-                        this.iframe.contentWindow.edit();
-                        return false;
-                    }
-                });
-
-            });
-
             $("#maintree_add_position").click(function () {
 
                 var selNode = mainTab.treeGetSelectedNode();

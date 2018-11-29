@@ -36,10 +36,11 @@ namespace WebMerch.Controllers
 
         public CustomJsonResult GetList(RupUserGetList rup)
         {
-            var list = (from u in CurrentDb.SysAdminUser
+            var list = (from u in CurrentDb.SysMerchantUser
                         where (rup.UserName == null || u.UserName.Contains(rup.UserName)) &&
                         (rup.FullName == null || u.FullName.Contains(rup.FullName)) &&
-                        u.IsDelete == false
+                        u.IsDelete == false &&
+                        u.MerchantId == this.CurrentMerchantId
                         select new { u.Id, u.UserName, u.FullName, u.Email, u.PhoneNumber, u.CreateTime, u.IsDelete });
 
             int total = list.Count();
@@ -53,27 +54,27 @@ namespace WebMerch.Controllers
             return Json(ResultType.Success, pageEntity, "");
         }
 
-        public CustomJsonResult GetDetails(string userId)
+        public CustomJsonResult GetDetails(string id)
         {
-            return MerchServiceFactory.User.GetDetails(this.CurrentUserId, userId);
+            return MerchServiceFactory.User.GetDetails(this.CurrentUserId,this.CurrentMerchantId, id);
         }
 
         [HttpPost]
         public CustomJsonResult Add(RopUserAdd rop)
         {
-            return MerchServiceFactory.User.Add(this.CurrentUserId, rop);
+            return MerchServiceFactory.User.Add(this.CurrentUserId, this.CurrentMerchantId, rop);
         }
 
         [HttpPost]
         public CustomJsonResult Edit(RopUserEdit rop)
         {
-            return MerchServiceFactory.User.Edit(this.CurrentUserId, rop);
+            return MerchServiceFactory.User.Edit(this.CurrentUserId, this.CurrentMerchantId, rop);
         }
 
         [HttpPost]
         public CustomJsonResult Delete(string id)
         {
-            return MerchServiceFactory.User.Delete(this.CurrentUserId, id);
+            return MerchServiceFactory.User.Delete(this.CurrentUserId, this.CurrentMerchantId, id);
         }
 
     }

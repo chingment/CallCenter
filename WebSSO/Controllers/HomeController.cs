@@ -90,6 +90,7 @@ namespace WebSSO.Controllers
             UserInfo userInfo = new UserInfo();
             userInfo.UserId = result.User.UserId;
             userInfo.UserName = result.User.UserName;
+            userInfo.MerchantId = result.User.MerchantId;
 
             string token = GuidUtil.New();
             SSOUtil.SetUserInfo(token, userInfo);

@@ -142,6 +142,7 @@
     <Compile Include="Service\Merch\RModels\RetUserGetDetails.cs" />
     <Compile Include="Service\Merch\RModels\RopOrganizationAdd.cs" />
     <Compile Include="Service\Merch\RModels\RopOrganizationEdit.cs" />
+    <Compile Include="Service\Merch\RModels\RopOrganizationEditSort.cs" />
     <Compile Include="Service\Merch\RModels\RopUserAdd.cs" />
     <Compile Include="Service\Merch\RModels\RopUserEdit.cs" />
     <Compile Include="Service\Merch\RModels\RupStaffUserGetList.cs" />

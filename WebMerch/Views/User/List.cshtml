@@ -10,7 +10,7 @@
 
     $(document).ready(function () {
         listTable = $("#list_table").loadDataTable({
-            url: "/Sys/StaffUser/GetList",
+            url: "/User/GetList",
             pageIndex: 0,
             searchParams: $("#form1").serializeArray(),
             searchButtonId: "btn_Search",
@@ -36,22 +36,24 @@
             operate: {
                 "delete": function (obj) {
 
-                    var userIds = [];
+                    var ids = [];
                     $.each(obj, function (i, n) {
-                        userIds.push(n.id);
+                        ids.push(n.id);
                     });
 
                     $.lumos.postJson({
-                        url: "/Sys/StaffUser/Delete",
-                        data: { userIds: userIds },
+                        url: "/User/Delete",
+                        data: { ids: ids },
                         success: function (d) {
-                            listTable.loadData(0);
                             $.lumos.tips(d.message);
+                            if (d.result == $.lumos.resultType.success) {
+                                listTable.loadData(0);
+                            }
                         }
                     });
                 },
                 "edit": function (obj) {
-                    var url = '/Sys/StaffUser/Edit?userId=' + obj.id;
+                    var url = '/User/Edit?id=' + obj.id;
                     var title = '修改';
                     art.dialog.open(url, {
                         id: "openDialog", title: title, width: '650px', height: '500px', lock: true, drag: false, cancelVal: '关闭', cancel: true, okVal: '保存', ok: function () {
@@ -63,10 +65,8 @@
             }
         });
 
-
-
         $("#btn_Add").click(function () {
-            var url = '/Sys/StaffUser/Add';
+            var url = '/User/Add';
             var title = '新建';
             art.dialog.open(url, {
                 id: "openDialog", title: title, width: '650px', height: '500px', lock: true, drag: false, cancelVal: '关闭', cancel: true, okVal: '确定', ok: function () {
@@ -75,8 +75,6 @@
                 }
             });
         });
-
-
 
     });
 
@@ -113,7 +111,6 @@
 
         <div class="filter" style="float:right">
             <input type="button" class="btn btn-add" id="btn_Add" value="新建" />
-            <input type="button" class="btn btn-sure" id="btn_Add" value="删除" multiple="true" operate="delete" style="margin-left:0px;margin-right:0px;" />
         </div>
     </div>
     <div class="list">
@@ -121,7 +118,7 @@
             <thead>
                 <tr>
                     <th style="width:15%" class="no">
-                        <input type="checkbox" name="list_table_ckb" childname="list_table_ckb_child" />
+                        序号
                     </th>
                     <th style="width:15%">
                         用户名

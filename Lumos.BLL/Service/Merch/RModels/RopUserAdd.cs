@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Lumos.Entity;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -17,6 +18,8 @@ namespace Lumos.BLL.Service.Merch
 
         public string PhoneNumber { get; set; }
 
-        public string[] RoleIds { get; set; }
+        public string OrganizationId { get; set; }
+
+        public Enumeration.SysPositionId PositionId { get; set; }
     }
 }

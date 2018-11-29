@@ -11,23 +11,24 @@ namespace Lumos.BLL.Service.Merch
 {
     public class UserProvider : BaseProvider
     {
-
-        public CustomJsonResult GetDetails(string operater, string userId)
+        public CustomJsonResult GetDetails(string operater, string merchantId, string id)
         {
             var ret = new RetUserGetDetails();
-            var user = CurrentDb.SysMerchantUser.Where(m => m.Id == userId).FirstOrDefault();
+            var user = CurrentDb.SysMerchantUser.Where(m => m.Id == id).FirstOrDefault();
             if (user != null)
             {
                 ret.UserName = user.UserName ?? ""; ;
                 ret.FullName = user.FullName ?? ""; ;
                 ret.Email = user.Email ?? ""; ;
                 ret.PhoneNumber = user.PhoneNumber ?? "";
+                ret.OrganizationId = user.OrganizationId;
+                ret.PositionId = user.PositionId;
             }
 
             return new CustomJsonResult(ResultType.Success, ResultCode.Success, "获取成功", ret);
         }
 
-        public CustomJsonResult Add(string operater, RopUserAdd rop)
+        public CustomJsonResult Add(string operater, string merchantId, RopUserAdd rop)
         {
             CustomJsonResult result = new CustomJsonResult();
             var isExistUserName = CurrentDb.SysUser.Where(m => m.UserName == rop.UserName).FirstOrDefault();
@@ -49,6 +50,8 @@ namespace Lumos.BLL.Service.Merch
                 user.IsDelete = false;
                 user.IsCanDelete = true;
                 user.Status = Enumeration.UserStatus.Normal;
+                user.OrganizationId = rop.OrganizationId;
+                user.PositionId = rop.PositionId;
                 user.Creator = operater;
                 user.CreateTime = DateTime.Now;
                 user.RegisterTime = DateTime.Now;
@@ -68,21 +71,24 @@ namespace Lumos.BLL.Service.Merch
             return result;
         }
 
-        public CustomJsonResult Edit(string operater, RopUserEdit rop)
+        public CustomJsonResult Edit(string operater, string merchantId, RopUserEdit rop)
         {
 
             CustomJsonResult result = new CustomJsonResult();
 
             using (TransactionScope ts = new TransactionScope())
             {
-                var user = CurrentDb.SysMerchantUser.Where(m => m.Id == rop.UserId).FirstOrDefault();
+                var user = CurrentDb.SysMerchantUser.Where(m => m.Id == rop.Id).FirstOrDefault();
                 if (!string.IsNullOrEmpty(rop.Password))
                 {
                     user.PasswordHash = PassWordHelper.HashPassword(rop.Password);
                 }
+
                 user.FullName = rop.FullName;
                 user.Email = rop.Email;
                 user.PhoneNumber = rop.PhoneNumber;
+                user.OrganizationId = rop.OrganizationId;
+                user.PositionId = rop.PositionId;
                 user.MendTime = DateTime.Now;
                 user.Mender = operater;
                 CurrentDb.SaveChanges();
@@ -97,7 +103,7 @@ namespace Lumos.BLL.Service.Merch
 
         }
 
-        public CustomJsonResult Delete(string operater, string id)
+        public CustomJsonResult Delete(string operater, string merchantId, string id)
         {
 
 
