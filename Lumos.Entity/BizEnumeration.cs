@@ -96,7 +96,15 @@ namespace Lumos.Entity
             CarIns = 1
         }
 
-        public enum DataBatchFileStatus
+        public enum DataBatchSoureType
+        {
+            [Remark("未知")]
+            Unknow = 0,
+            [Remark("文件")]
+            File = 1
+        }
+
+        public enum DataBatchStatus
         {
             [Remark("未知")]
             Unknow = 0,

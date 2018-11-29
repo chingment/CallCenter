@@ -1,0 +1,115 @@
+﻿@{
+    ViewBag.Title = "";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+@section scripts{
+    <script type="text/javascript">
+
+        $(this).ready(function () {
+
+            $.formValidator.initConfig({ formID: "form1", onError: function (msg) { $.lumos.tips(msg); } });
+
+
+        });
+
+
+
+        function add() {
+
+            var isValid = $.formValidator.pageIsValid();
+            if (!isValid)
+                return false;
+
+            art.dialog.confirm('确定要新建？', function (e) {
+
+       
+
+                $('#form1').ajaxSubmit({
+                    type: "post",
+                    url: "/DataBatch/AddByFile",
+                    dataType: "json",
+                    success: function (d) {
+
+                        alert(JSON.stringify(d))
+
+                    }
+                });
+
+            });
+
+            return false;
+        }
+
+
+    </script>
+}
+
+
+
+<div class="gbr-row gbr-dialog">
+    <div class="gbr-row-title clearfix">
+        <div class="pull-left">
+            <h5>基本信息</h5>
+        </div>
+        <div class="pull-right f-tb1-item-pull-right">
+            <h6></h6>
+        </div>
+    </div>
+    <form id='form1' method='post' enctype="multipart/form-data"　>
+        <table class="f-tb" cellpadding="0" cellspacing="1">
+            <tr>
+                <td class="f-tb-t">
+                    <span class="required-symbol">*</span>批次号：
+                </td>
+                <td class="f-tb-c">
+                    <input id="txt_Code" name="code" class="input-control" type="text" style="width: 224px;" autocomplete="off" />
+                </td>
+            </tr>
+            <tr>
+                <td class="f-tb-t">
+                    <span class="required-symbol">*</span>标题：
+                </td>
+                <td class="f-tb-c">
+                    <input id="txt_Name" name="name" class="input-control" type="text" style="width: 224px;" autocomplete="off" />
+                </td>
+            </tr>
+            <tr>
+                <td class="f-tb-t">
+                    <span class="required-symbol">*</span>数据有效期：
+                </td>
+                <td class="f-tb-c">
+                    <input id="txt_StartTime" class="input-control" type="text" style="width: 224px;" autocomplete="off" />
+                </td>
+            </tr>
+            <tr style="display:none">
+                <td class="f-tb-t"></td>
+                <td class="f-tb-c">
+                    <input type="submit" name="btn_Submit" id="btn_Submit" value="确定" class="btn btn-sure" />
+                    <input type="button" name="btn_Cancle" id="btn_Cancle" value="关闭" class="btn btn-close dialog-close" />
+                </td>
+            </tr>
+        </table>
+        <div class="gbr-row-title clearfix">
+            <div class="pull-left">
+                <h5>选择文件</h5>
+            </div>
+            <div class="pull-right f-tb1-item-pull-right">
+                <h6></h6>
+            </div>
+        </div>
+        <div style="margin:20px 0px;height:30px;">
+            <div class="markupload" style="position:relative;width:300px; height:33px; float:left;margin-right:20px ">
+                <div class="file-name" id="file_name"></div>
+                <div class="file-msg"></div>
+                <label class="file-browse" for="markupload_file">浏览..</label>
+                <div class='file-loading'>上传中...</div>
+               
+                <input type='file' name='markupload_file' id='markupload_file' class="markupload-file" filetype="xls" accept='application/vnd.ms-excel'>
+
+            </div>
+
+
+        </div>
+    </form>
+</div>
+
