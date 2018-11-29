@@ -43,11 +43,11 @@ namespace WebAdmin.Controllers.Biz
         public CustomJsonResult GetList(RupMerchantGetList rup)
         {
             string name = rup.Name.ToSearchString();
-            var query = (from m in CurrentDb.SysMerchantUser
-                         join u in CurrentDb.Merchant on m.Id equals u.MerchantId
+            var query = (from m in CurrentDb.Merchant
+                         join u in CurrentDb.SysMerchantUser on m.UserId equals u.Id
                          where
-                                 (name.Length == 0 || u.Name.Contains(name))
-                         select new { m.Id, m.UserName, u.BusinessType, MerchantName = u.Name, u.ContactName, u.ContactAddress, u.ContactPhone, m.CreateTime });
+                                 (name.Length == 0 || m.Name.Contains(name))
+                         select new { m.Id, u.UserName, m.Name, m.ContactName, m.ContactAddress, m.ContactPhone, m.CreateTime });
 
             int total = query.Count();
 
@@ -55,21 +55,23 @@ namespace WebAdmin.Controllers.Biz
             int pageSize = 10;
             query = query.OrderByDescending(r => r.CreateTime).Skip(pageSize * (pageIndex)).Take(pageSize);
 
-            List<object> list = new List<object>();
 
-            foreach (var item in query)
+            var list = query.ToList();
+
+            List<object> olist = new List<object>();
+
+            foreach (var item in list)
             {
 
-                list.Add(new
+                olist.Add(new
                 {
-                    Id = item.Id,
-                    UserName = item.UserName,
-                    MerchantName = item.MerchantName,
-                    ContactName = item.ContactName,
-                    ContactPhone = item.ContactPhone,
-                    CreateTime = item.CreateTime,
-                    ContactAddress = item.ContactAddress,
-                    BusinessType = item.BusinessType.GetCnName()
+                    item.Id,
+                    item.UserName,
+                    item.Name,
+                    item.ContactName,
+                    item.ContactPhone,
+                    item.CreateTime,
+                    item.ContactAddress
                 });
 
 
