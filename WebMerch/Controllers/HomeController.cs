@@ -107,34 +107,30 @@ namespace WebMerch.Controllers
             {
                 ret.UserName = OwnRequest.GetUserNameWithSymbol();
 
-                var user = CurrentDb.SysMerchantUser.Where(m => m.Id == this.CurrentUserId).FirstOrDefault();
-
-                string pId = "00000000000000000000000000000002";
-
-                var menus = new List<SysMenu>();
-                menus =
-                    (from menu in CurrentDb.SysMenu
-                     
-                
-                     select menu).ToList();
-
-                var menuLevel1 = from c in menus where c.PId == pId select c;
-                foreach (var menuLevel1Child in menuLevel1)
+                var sysMerchantUser = CurrentDb.SysMerchantUser.Where(m => m.Id == this.CurrentUserId).FirstOrDefault();
+                if (sysMerchantUser != null)
                 {
-                    var menuModel1 = new IndexModel.MenuModel();
+                    var menus = (from menu in CurrentDb.SysMenu where (from rolemenu in CurrentDb.SysRoleMenu where (from sysPositionRole in CurrentDb.SysPositionRole where sysPositionRole.PositionId == sysMerchantUser.PositionId select sysPositionRole.RoleId).Contains(rolemenu.RoleId) select rolemenu.MenuId).Contains(menu.Id) && menu.BelongSite == Enumeration.BelongSite.Merchant select menu).OrderBy(m => m.Priority).ToList();
 
-                    menuModel1.Name = menuLevel1Child.Name;
+                    var menuLevel1 = from c in menus where c.Dept == 1 select c;
 
-
-                    var menuLevel2 = from c in menus where c.PId == menuLevel1Child.Id select c;
-
-                    foreach (var menuLevel2Child in menuLevel2)
+                    foreach (var menuLevel1Child in menuLevel1)
                     {
+                        var menuModel1 = new IndexModel.MenuModel();
 
-                        menuModel1.SubMenus.Add(new IndexModel.SubMenuModel { Name = menuLevel2Child.Name, Url = menuLevel2Child.Url });
+                        menuModel1.Name = menuLevel1Child.Name;
+
+
+                        var menuLevel2 = from c in menus where c.PId == menuLevel1Child.Id select c;
+
+                        foreach (var menuLevel2Child in menuLevel2)
+                        {
+
+                            menuModel1.SubMenus.Add(new IndexModel.SubMenuModel { Name = menuLevel2Child.Name, Url = menuLevel2Child.Url });
+                        }
+
+                        ret.MenuNavByLeft.Add(menuModel1);
                     }
-
-                    ret.MenuNavByLeft.Add(menuModel1);
                 }
             }
 

@@ -97,7 +97,6 @@ namespace Lumos.BLL.Service.Merch
 
         }
 
-
         public CustomJsonResult Delete(string pOperater, string[] pUserIds)
         {
             if (pUserIds == null)
@@ -124,6 +123,36 @@ namespace Lumos.BLL.Service.Merch
             }
 
             return new CustomJsonResult(ResultType.Success, ResultCode.Success, "删除成功");
+        }
+
+
+        public List<string> GetPermissions(string operater, string merchantId, string id)
+        {
+            List<string> list = new List<string>();
+
+
+            var adminUser = CurrentDb.SysMerchantUser.Where(m => m.MerchantId == merchantId && m.Id == id).FirstOrDefault();
+            if (adminUser == null)
+                return list;
+
+
+            var model = (from sysMenuPermission in CurrentDb.SysMenuPermission
+                         where
+                             (from sysRoleMenu in CurrentDb.SysRoleMenu
+                              where
+                              (from sysPositionRole in CurrentDb.SysPositionRole
+                               where sysPositionRole.PositionId == adminUser.PositionId
+                               select sysPositionRole.RoleId)
+                              .Contains(sysRoleMenu.RoleId)
+                              select sysRoleMenu.MenuId).Contains(sysMenuPermission.MenuId)
+                         select sysMenuPermission.PermissionId).Distinct();
+
+            if (model != null)
+            {
+                list = model.ToList();
+            }
+
+            return list;
         }
     }
 }

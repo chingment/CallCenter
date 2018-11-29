@@ -148,52 +148,7 @@ namespace Lumos.DAL.AuthorizeRelay
                 }
             }
 
-
             return result;
-        }
-
-        public List<SysMenu> GetUserMenus(string pUserId,Enumeration.BelongSite belongSite)
-        {
-            List<SysMenu> listMenu = new List<SysMenu>();
-            var model =
-                from menu in _db.SysMenu
-                where
-                (from rolemenu in _db.SysRoleMenu
-                 where
-                 (from userrole in _db.SysUserRole where rolemenu.RoleId == userrole.RoleId && userrole.UserId == pUserId select userrole.RoleId)
-                 .Contains(rolemenu.RoleId)
-                 select rolemenu.MenuId).Contains(menu.Id)&& menu.BelongSite== belongSite
-                select menu;
-
-
-            if (model != null)
-            {
-                listMenu = model.OrderByDescending(m => m.Priority).ToList();
-            }
-            return listMenu;
-        }
-
-        public List<string> GetUserPermissions(string pUserId)
-        {
-            List<string> list = new List<string>();
-
-            var model = (from sysMenuPermission in _db.SysMenuPermission
-                         where
-                             (from sysRoleMenu in _db.SysRoleMenu
-                              where
-                              (from userrole in _db.SysUserRole where sysRoleMenu.RoleId == userrole.RoleId && userrole.UserId == pUserId select userrole.RoleId)
-                              .Contains(sysRoleMenu.RoleId)
-                              select sysRoleMenu.MenuId).Contains(sysMenuPermission.MenuId)
-                         select sysMenuPermission.PermissionId).Distinct();
-
-
-
-
-            if (model != null)
-            {
-                list = model.ToList();
-            }
-            return list;
         }
 
         public CustomJsonResult ChangePassword(string pOperater, string pUserId, string pOldpassword, string pNewpassword)

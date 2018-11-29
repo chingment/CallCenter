@@ -151,7 +151,6 @@
     <Compile Include="App_Start\BundleConfig.cs" />
     <Compile Include="App_Start\FilterConfig.cs" />
     <Compile Include="App_Start\Own\OwnRequest.cs" />
-    <Compile Include="App_Start\Own\OwnResponse.cs" />
     <Compile Include="App_Start\Own\OwnStatisticsTrackerAttribute.cs" />
     <Compile Include="App_Start\RouteConfig.cs" />
     <Compile Include="Controllers\Biz\MerchantController.cs" />
@@ -175,7 +174,6 @@
     <Compile Include="App_Start\Own\OwnBaseController.cs" />
     <Compile Include="App_Start\Own\OwnExceptionAttribute.cs" />
     <Compile Include="App_Start\Own\OwnHmlExtension.cs" />
-    <Compile Include="App_Start\Own\OwnNoResubmitAttribute.cs" />
     <Compile Include="App_Start\Own\OwnStaticResource.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
@@ -1171,7 +1169,6 @@
     <Content Include="Views\Shared\MessageBox.cshtml" />
     <Content Include="Views\Sys\Menu\Add.cshtml" />
     <Content Include="Views\Sys\Menu\List.cshtml" />
-    <Content Include="Views\Sys\Menu\Sort.cshtml" />
     <Content Include="Views\Sys\Role\Add.cshtml" />
     <Content Include="Views\Sys\Role\AddUserToRole.cshtml" />
     <Content Include="Views\Sys\Role\List.cshtml" />
