@@ -34,7 +34,7 @@ namespace Lumos.BLL.Service.Admin
             ret.ContactAddress = merchant.ContactAddress ?? "";
             ret.ContactName = merchant.ContactName ?? "";
             ret.ContactPhone = merchant.ContactPhone ?? "";
-
+            ret.SimpleCode = merchant.SimpleCode;
             return new CustomJsonResult(ResultType.Success, ResultCode.Success, "获取成功", ret);
         }
 
@@ -52,6 +52,20 @@ namespace Lumos.BLL.Service.Admin
                     return new CustomJsonResult(ResultType.Failure, string.Format("该用户名（{0}）已经被使用", rop.UserName));
                 }
 
+                var isExistsMerchant = CurrentDb.Merchant.Where(m => m.SimpleCode == rop.SimpleCode).FirstOrDefault();
+
+                if (isExistsMerchant != null)
+                {
+                    return new CustomJsonResult(ResultType.Failure, string.Format("该商户代码（{0}）已经被使用", rop.SimpleCode));
+                }
+
+                var sysPosition = CurrentDb.SysPosition.Where(m => m.BelongSite == Enumeration.BelongSite.Merchant && m.Id == Enumeration.SysPositionId.MerchantAdministrator).FirstOrDefault();
+                if (sysPosition == null)
+                {
+                    return new CustomJsonResult(ResultType.Failure, ResultCode.Failure, "初始角色未指定");
+                }
+
+                string organizationId = GuidUtil.New();
                 string merchantId = GuidUtil.New();
                 var sysMerchatUser = new SysMerchantUser();
                 sysMerchatUser.Id = GuidUtil.New();
@@ -64,6 +78,8 @@ namespace Lumos.BLL.Service.Admin
                 sysMerchatUser.CreateTime = this.DateTime;
                 sysMerchatUser.Creator = operater;
                 sysMerchatUser.MerchantId = merchantId;
+                sysMerchatUser.OrganizationId = organizationId;
+                sysMerchatUser.PositionId = sysPosition.Id;
                 CurrentDb.SysMerchantUser.Add(sysMerchatUser);
 
 
@@ -74,28 +90,27 @@ namespace Lumos.BLL.Service.Admin
                 merchant.ContactName = rop.ContactName;
                 merchant.ContactPhone = rop.ContactPhone;
                 merchant.ContactAddress = rop.ContactAddress;
+                merchant.SimpleCode = rop.SimpleCode;
                 merchant.CreateTime = this.DateTime;
                 merchant.Creator = operater;
                 CurrentDb.Merchant.Add(merchant);
 
-                var sysRole = CurrentDb.SysRole.Where(m => m.BelongSite == Enumeration.BelongSite.Merchant && m.Dept == 0).FirstOrDefault();
-                if (sysRole == null)
-                {
-                    return new CustomJsonResult(ResultType.Failure, ResultCode.Failure, "初始角色未指定");
-                }
-
-                var sysUserRole = new SysUserRole();
-                sysUserRole.Id = GuidUtil.New();
-                sysUserRole.RoleId = sysRole.Id;
-                sysUserRole.UserId = sysMerchatUser.Id;
-                sysUserRole.CreateTime = this.DateTime;
-                sysUserRole.Creator = operater;
-                sysUserRole.IsCanDelete = false;
-                CurrentDb.SysUserRole.Add(sysUserRole);
 
 
+                var organization = new Organization();
+                organization.Id = organization.Id;
+                organization.PId = GuidUtil.Empty();
+                organization.Name = "总公司";
+                organization.Dept = 0;
+                organization.IsDelete = false;
+                organization.Status = Enumeration.OrganizationStatus.Valid;
+                organization.Priority = 0;
+                organization.MerchantId = merchantId;
+                organization.FullName = organization.Name;
+                organization.Creator = operater;
+                organization.CreateTime = this.DateTime;
 
-
+                CurrentDb.Organization.Add(organization);
 
                 CurrentDb.SaveChanges();
                 ts.Complete();

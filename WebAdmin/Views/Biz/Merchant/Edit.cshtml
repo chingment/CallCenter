@@ -38,13 +38,24 @@
         }
 
         function edit() {
+
+            var password = $("#txt_Password").val();
+
             var isValid = $.formValidator.pageIsValid();
             if (!isValid)
                 return false;
 
+
+            if (password != "") {
+                var isFlag = password.match(regexEnum.password);
+                if (isFlag == null) {
+                    $.lumos.tips('密码由6到20个数字、英文字母或下划线组成');
+                    return;
+                }
+            }
+
             art.dialog.confirm('确定要保存？', function () {
 
-                var password = $("#txt_Password").val();
                 var contactName = $("#txt_ContactName").val();
                 var contactPhone = $("#txt_ContactPhone").val();
                 var contactAddress = $("#txt_ContactAddress").val();
@@ -74,6 +85,7 @@
                     if (d.result == $.lumos.resultType.success) {
                         var data = d.data;
                         $('#lbl_UserName').text(data.userName);
+                        $('#lbl_SimpleCode').text(data.simpleCode);
                         $('#lbl_Name').text(data.name);
                         $("#txt_ContactName").val(data.contactName);
                         $("#txt_ContactPhone").val(data.contactPhone);
@@ -129,6 +141,14 @@
     </div>
 
     <table class="f-tb" cellpadding="0" cellspacing="1" style="width:100%">
+        <tr>
+            <td class="f-tb-t">
+                商户代码：
+            </td>
+            <td class="f-tb-c">
+                <span id="lbl_SimpleCode"></span>
+            </td>
+        </tr>
         <tr>
             <td class="f-tb-t">
                 商户名称：

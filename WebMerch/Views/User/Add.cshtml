@@ -18,8 +18,26 @@
 
             $('#sel_Positions').myChosen({ urlParams: { type: "SysPosition" } });
             $('#sel_Organizations').myChosen({ urlParams: { type: "SysOrganization" } });
+
+            getDetails();
         });
 
+
+        function getDetails() {
+
+            $.lumos.getJson({
+                url: "/User/GetDetails",
+                urlParams: { id: 0 },
+                isUseHandling: true,
+                success: function (d) {
+                    if (d.result == $.lumos.resultType.success) {
+                        var data = d.data;
+
+                        $('#lbl_SimpleCode').text(data.simpleCode);
+                    }
+                }
+            });
+        }
 
         function add() {
 
@@ -37,7 +55,7 @@
                 var positionId = $("#sel_Positions").val();
                 var organizationId = $("#sel_Organizations").val();
                 $.lumos.postJson({
-                    url: "User/Add",
+                    url: "/User/Add",
                     data: { userName: userName, password: password, fullName: fullName, email: email, phoneNumber: phoneNumber, positionId: positionId, organizationId: organizationId },
                     isUseHandling: true,
                     success: function (d) {
@@ -76,7 +94,7 @@
                 <span class="required-symbol">*</span>用户名：
             </td>
             <td class="f-tb-c">
-                Up
+                <span id="lbl_SimpleCode"></span>
                 <input id="txt_UserName" class="input-control" autocomplete="off" type="text" style="width: 206px;" clear="on" />
             </td>
         </tr>

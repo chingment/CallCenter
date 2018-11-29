@@ -14,6 +14,11 @@ namespace Lumos.BLL.Service.Merch
         public CustomJsonResult GetDetails(string operater, string merchantId, string id)
         {
             var ret = new RetUserGetDetails();
+
+            var merchant = CurrentDb.Merchant.Where(m => m.Id == merchantId).FirstOrDefault();
+
+            ret.SimpleCode = merchant.SimpleCode;
+
             var user = CurrentDb.SysMerchantUser.Where(m => m.Id == id).FirstOrDefault();
             if (user != null)
             {
@@ -39,9 +44,11 @@ namespace Lumos.BLL.Service.Merch
 
             using (TransactionScope ts = new TransactionScope())
             {
+                var merchant = CurrentDb.Merchant.Where(m => m.Id == merchantId).FirstOrDefault();
+
                 var user = new SysMerchantUser();
                 user.Id = GuidUtil.New();
-                user.UserName = string.Format("Up{0}", rop.UserName);
+                user.UserName = string.Format("{0}{1}", merchant.SimpleCode, rop.UserName);
                 user.FullName = rop.FullName;
                 user.PasswordHash = PassWordHelper.HashPassword(rop.Password);
                 user.Email = rop.Email;
@@ -50,6 +57,7 @@ namespace Lumos.BLL.Service.Merch
                 user.IsDelete = false;
                 user.IsCanDelete = true;
                 user.Status = Enumeration.UserStatus.Normal;
+                user.MerchantId = merchantId;
                 user.OrganizationId = rop.OrganizationId;
                 user.PositionId = rop.PositionId;
                 user.Creator = operater;
