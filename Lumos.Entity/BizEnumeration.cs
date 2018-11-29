@@ -87,5 +87,29 @@ namespace Lumos.Entity
             [Remark("停用")]
             Invalid = 2
         }
+
+        public enum DataBatchFileType
+        {
+            [Remark("未知")]
+            Unknow = 0,
+            [Remark("车险")]
+            CarIns = 1
+        }
+
+        public enum DataBatchFileStatus
+        {
+            [Remark("未知")]
+            Unknow = 0,
+            [Remark("上传成功")]
+            UploadSuccess = 1,
+            [Remark("上传失败")]
+            UploadFailure = 1,
+            [Remark("数据处理中")]
+            DataHandling = 2,
+            [Remark("完成")]
+            Complete = 2,
+        }
+
+
     }
 }
