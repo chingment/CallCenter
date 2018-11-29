@@ -50,9 +50,9 @@ namespace WebMerch.Controllers
         }
 
         [HttpPost]
-        public CustomJsonResult Delete(string[] organizationIds)
+        public CustomJsonResult Delete(string id)
         {
-            return MerchServiceFactory.Organization.Delete(this.CurrentUserId, this.CurrentUserId, organizationIds);
+            return MerchServiceFactory.Organization.Delete(this.CurrentUserId, this.CurrentUserId, id);
         }
 
         public CustomJsonResult GetUserList(RupUserGetList rup)

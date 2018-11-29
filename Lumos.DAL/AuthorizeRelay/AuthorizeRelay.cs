@@ -5,14 +5,27 @@ using Lumos.Entity;
 using System.Reflection;
 using System.Transactions;
 
+
 namespace Lumos.DAL.AuthorizeRelay
 {
+
+    public class LoginUserInfo
+    {
+        public string UserId { get; set; }
+
+        public string UserName { get; set; }
+
+        public Enumeration.BelongSite BelongSite { get; set; }
+
+        public string MerchantId { get; set; }
+    }
+
     public class LoginResult
     {
 
         private Enumeration.LoginResult _ResultType;
         private Enumeration.LoginResultTip _ResultTip;
-        private SysUser _User;
+        private LoginUserInfo _User;
 
         public Enumeration.LoginResult ResultType
         {
@@ -32,7 +45,7 @@ namespace Lumos.DAL.AuthorizeRelay
         }
 
 
-        public SysUser User
+        public LoginUserInfo User
         {
             get
             {
@@ -51,7 +64,7 @@ namespace Lumos.DAL.AuthorizeRelay
             this._ResultTip = pTip;
         }
 
-        public LoginResult(Enumeration.LoginResult pType, Enumeration.LoginResultTip pTip, SysUser pUser)
+        public LoginResult(Enumeration.LoginResult pType, Enumeration.LoginResultTip pTip, LoginUserInfo pUser)
         {
             this._ResultType = pType;
             this._ResultTip = pTip;
@@ -69,17 +82,17 @@ namespace Lumos.DAL.AuthorizeRelay
             _db = new AuthorizeRelayDbContext();
         }
 
-        private void AddOperateHistory(string pOperater, Enumeration.OperateType pOperateType, string pReferenceId, string pContent)
+        private void AddOperateHistory(string operater, Enumeration.OperateType operateType, string referenceId, string content)
         {
             SysOperateHistory operateHistory = new SysOperateHistory();
             operateHistory.Id = GuidUtil.New();
-            operateHistory.UserId = pOperater;
-            operateHistory.ReferenceId = pReferenceId;
+            operateHistory.UserId = operater;
+            operateHistory.ReferenceId = referenceId;
             operateHistory.Ip = "";
-            operateHistory.Type = pOperateType;
-            operateHistory.Content = pContent;
+            operateHistory.Type = operateType;
+            operateHistory.Content = content;
             operateHistory.CreateTime = DateTime.Now;
-            operateHistory.Creator = pOperater;
+            operateHistory.Creator = operater;
             _db.SysOperateHistory.Add(operateHistory);
             _db.SaveChanges();
         }
@@ -116,24 +129,43 @@ namespace Lumos.DAL.AuthorizeRelay
             {
                 var lastUserInfo = CloneObject(user) as SysUser;
 
+
+                var loginUserInfo = new LoginUserInfo();
+                loginUserInfo.UserId = user.Id;
+                loginUserInfo.UserName = user.UserName;
+                loginUserInfo.BelongSite = user.BelongSite;
+
+                switch (user.BelongSite)
+                {
+                    case Enumeration.BelongSite.Merchant:
+
+                        var sysMerchantUser = _db.SysMerchantUser.Where(m => m.Id == user.Id).FirstOrDefault();
+                        if (sysMerchantUser != null)
+                        {
+                            loginUserInfo.MerchantId = sysMerchantUser.MerchantId;
+                        }
+
+                        break;
+                }
+
                 bool isFlag = PassWordHelper.VerifyHashedPassword(user.PasswordHash, pPassword);
 
                 if (!isFlag)
                 {
-                    result = new LoginResult(Enumeration.LoginResult.Failure, Enumeration.LoginResultTip.UserPasswordIncorrect, lastUserInfo);
+                    result = new LoginResult(Enumeration.LoginResult.Failure, Enumeration.LoginResultTip.UserPasswordIncorrect, loginUserInfo);
                 }
                 else
                 {
 
                     if (user.Status == Enumeration.UserStatus.Disable)
                     {
-                        result = new LoginResult(Enumeration.LoginResult.Failure, Enumeration.LoginResultTip.UserDisabled, lastUserInfo);
+                        result = new LoginResult(Enumeration.LoginResult.Failure, Enumeration.LoginResultTip.UserDisabled, loginUserInfo);
                     }
                     else
                     {
                         if (user.IsDelete)
                         {
-                            result = new LoginResult(Enumeration.LoginResult.Failure, Enumeration.LoginResultTip.UserDeleted, lastUserInfo);
+                            result = new LoginResult(Enumeration.LoginResult.Failure, Enumeration.LoginResultTip.UserDeleted, loginUserInfo);
                         }
                         else
                         {
@@ -141,56 +173,52 @@ namespace Lumos.DAL.AuthorizeRelay
                             user.LastLoginIp = pLoginIp;
                             _db.SaveChanges();
 
-                            result = new LoginResult(Enumeration.LoginResult.Success, Enumeration.LoginResultTip.VerifyPass, lastUserInfo);
+                            result = new LoginResult(Enumeration.LoginResult.Success, Enumeration.LoginResultTip.VerifyPass, loginUserInfo);
 
                         }
                     }
                 }
             }
 
+
             return result;
         }
 
-        public CustomJsonResult ChangePassword(string pOperater, string pUserId, string pOldpassword, string pNewpassword)
+        public CustomJsonResult ChangePassword(string operater, string userId, string oldpassword, string newpassword)
         {
 
-            var sysUser = _db.SysUser.Where(m => m.Id == pUserId).FirstOrDefault();
+            var sysUser = _db.SysUser.Where(m => m.Id == userId).FirstOrDefault();
             if (sysUser != null)
             {
 
-                if (!PassWordHelper.VerifyHashedPassword(sysUser.PasswordHash, pOldpassword))
+                if (!PassWordHelper.VerifyHashedPassword(sysUser.PasswordHash, oldpassword))
                 {
                     return new CustomJsonResult(ResultType.Failure, ResultCode.Failure, "旧密码不正确");
                 }
 
-                sysUser.PasswordHash = PassWordHelper.HashPassword(pNewpassword);
-                sysUser.Mender = pOperater;
+                sysUser.PasswordHash = PassWordHelper.HashPassword(newpassword);
+                sysUser.Mender = operater;
                 sysUser.MendTime = DateTime.Now;
 
                 _db.SaveChanges();
             }
 
 
-            return new CustomJsonResult(ResultType.Success, ResultCode.Success, "保存成功");
+            return new CustomJsonResult(ResultType.Success, ResultCode.Success, "操作成功");
         }
 
-        public List<SysPermission> GetPermissionList(Type pPermissionCode)
+        public List<SysPermission> GetPermissionList(Type type)
         {
             List<SysPermission> list = new List<SysPermission>();
-            //SysPermission p = new SysPermission();
-            //p.Id = "0";
-            //p.Name = "权限集合";
-            //p.PId = "";
-            //list.Add(p);
-            list = GetBasePermissionList(pPermissionCode, list);
+            list = GetBasePermissionList(type, list);
             return list;
         }
 
-        private List<SysPermission> GetBasePermissionList(Type pType, List<SysPermission> pSysPermissionList)
+        private List<SysPermission> GetBasePermissionList(Type type, List<SysPermission> sysPermission)
         {
-            if (pType.Name != "Object")
+            if (type.Name != "Object")
             {
-                System.Reflection.FieldInfo[] properties = pType.GetFields();
+                System.Reflection.FieldInfo[] properties = type.GetFields();
                 foreach (System.Reflection.FieldInfo property in properties)
                 {
                     string pId = "0";
@@ -204,11 +232,11 @@ namespace Lumos.DAL.AuthorizeRelay
                     SysPermission model = new SysPermission();
                     model.Id = id.ToString();
                     model.Name = name;
-                    pSysPermissionList.Add(model);
+                    sysPermission.Add(model);
                 }
-                pSysPermissionList = GetBasePermissionList(pType.BaseType, pSysPermissionList);
+                sysPermission = GetBasePermissionList(type.BaseType, sysPermission);
             }
-            return pSysPermissionList;
+            return sysPermission;
         }
 
     }

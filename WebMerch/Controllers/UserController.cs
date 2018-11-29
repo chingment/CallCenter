@@ -71,9 +71,9 @@ namespace WebMerch.Controllers
         }
 
         [HttpPost]
-        public CustomJsonResult Delete(string[] userIds)
+        public CustomJsonResult Delete(string id)
         {
-            return MerchServiceFactory.User.Delete(this.CurrentUserId, userIds);
+            return MerchServiceFactory.User.Delete(this.CurrentUserId, id);
         }
 
     }

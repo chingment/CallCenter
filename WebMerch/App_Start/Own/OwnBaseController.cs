@@ -22,6 +22,14 @@ namespace WebMerch
             }
         }
 
+        public string CurrentMerchantId
+        {
+            get
+            {
+                return OwnRequest.GetCurrentMerchantId();
+            }
+        }
+
         private LumosDbContext _currentDb;
 
         public LumosDbContext CurrentDb

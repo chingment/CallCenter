@@ -15,6 +15,7 @@ using Lumos.Web.Mvc;
 using log4net;
 using System.Text;
 using Lumos;
+using Lumos.BLL;
 
 namespace WebAdmin.Controllers
 {
@@ -162,6 +163,61 @@ namespace WebAdmin.Controllers
             Session[name] = code;   //Session 取出验证码
             Response.End();
             return null;
+        }
+
+        public CustomJsonResult GetSelectFields(string type)
+        {
+            if (type == null)
+                return new CustomJsonResult(ResultType.Failure, ResultCode.Failure, "类型为空");
+
+            var result = new CustomJsonResult();
+
+
+
+            //var sysPositions = CurrentDb.SysPosition.Where(m => m.BelongSite == Enumeration.BelongSite.Admin).ToList();
+
+            //foreach (var item in sysPositions)
+            //{
+            //    ret.ConfigPositions.Add(new FieldModel(item.Name, ((int)item.Id).ToString()));
+            //}
+
+            var fields = new List<FieldModel>();
+
+            type = type.ToLower();
+
+            switch (type)
+            {
+                case "sysposition":
+                    #region sysposition
+                    var sysPositions = CurrentDb.SysPosition.Where(m => m.BelongSite == Enumeration.BelongSite.Admin).ToList();
+
+                    foreach (var item in sysPositions)
+                    {
+                        fields.Add(new FieldModel(item.Name, ((int)item.Id).ToString()));
+                    }
+                    #endregion
+                    break;
+                case "sysorganization":
+                    #region sysorganization
+                    var sysOrganizations = CurrentDb.SysOrganization.Where(m => m.IsDelete == false).OrderBy(m => m.Dept).ToList();
+
+                    foreach (var item in sysOrganizations)
+                    {
+                        var field = new FieldModel();
+                        field.Value = item.Id;
+                        field.PValue = item.PId;
+                        field.Name = item.Name;
+                        field.Dept = item.Dept;
+                        fields.Add(field);
+                    }
+                    #endregion 
+                    break;
+            }
+
+
+
+            return new CustomJsonResult(ResultType.Success, ResultCode.Success, "获取成功", fields);
+
         }
 
     }

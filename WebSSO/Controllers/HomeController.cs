@@ -88,7 +88,7 @@ namespace WebSSO.Controllers
 
 
             UserInfo userInfo = new UserInfo();
-            userInfo.UserId = result.User.Id;
+            userInfo.UserId = result.User.UserId;
             userInfo.UserName = result.User.UserName;
 
             string token = GuidUtil.New();

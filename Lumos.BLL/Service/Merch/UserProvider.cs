@@ -12,7 +12,7 @@ namespace Lumos.BLL.Service.Merch
     public class UserProvider : BaseProvider
     {
 
-        public CustomJsonResult GetDetails(string pOperater, string userId)
+        public CustomJsonResult GetDetails(string operater, string userId)
         {
             var ret = new RetUserGetDetails();
             var user = CurrentDb.SysMerchantUser.Where(m => m.Id == userId).FirstOrDefault();
@@ -27,7 +27,7 @@ namespace Lumos.BLL.Service.Merch
             return new CustomJsonResult(ResultType.Success, ResultCode.Success, "获取成功", ret);
         }
 
-        public CustomJsonResult Add(string pOperater, RopUserAdd rop)
+        public CustomJsonResult Add(string operater, RopUserAdd rop)
         {
             CustomJsonResult result = new CustomJsonResult();
             var isExistUserName = CurrentDb.SysUser.Where(m => m.UserName == rop.UserName).FirstOrDefault();
@@ -49,7 +49,7 @@ namespace Lumos.BLL.Service.Merch
                 user.IsDelete = false;
                 user.IsCanDelete = true;
                 user.Status = Enumeration.UserStatus.Normal;
-                user.Creator = pOperater;
+                user.Creator = operater;
                 user.CreateTime = DateTime.Now;
                 user.RegisterTime = DateTime.Now;
                 user.Status = Enumeration.UserStatus.Normal;
@@ -68,7 +68,7 @@ namespace Lumos.BLL.Service.Merch
             return result;
         }
 
-        public CustomJsonResult Edit(string pOperater, RopUserEdit rop)
+        public CustomJsonResult Edit(string operater, RopUserEdit rop)
         {
 
             CustomJsonResult result = new CustomJsonResult();
@@ -84,7 +84,7 @@ namespace Lumos.BLL.Service.Merch
                 user.Email = rop.Email;
                 user.PhoneNumber = rop.PhoneNumber;
                 user.MendTime = DateTime.Now;
-                user.Mender = pOperater;
+                user.Mender = operater;
                 CurrentDb.SaveChanges();
 
                 result = new CustomJsonResult(ResultType.Success, ResultCode.Success, "保存成功");
@@ -97,30 +97,27 @@ namespace Lumos.BLL.Service.Merch
 
         }
 
-        public CustomJsonResult Delete(string pOperater, string[] pUserIds)
+        public CustomJsonResult Delete(string operater, string id)
         {
-            if (pUserIds == null)
+
+
+            var user = CurrentDb.SysUser.Find(id);
+
+            if (user == null)
                 return new CustomJsonResult(ResultType.Failure, ResultCode.Failure, "找不到用户");
 
-            if (pUserIds.Length <= 0)
-                return new CustomJsonResult(ResultType.Failure, ResultCode.Failure, "找不到用户");
 
-
-            foreach (string userId in pUserIds)
+            if (!user.IsCanDelete)
             {
-                SysUser user = CurrentDb.SysUser.Find(userId);
-
-                if (!user.IsCanDelete)
-                {
-                    return new CustomJsonResult(ResultType.Failure, ResultCode.Failure, string.Format("不允许删除用户（{0}）", user.UserName));
-                }
-
-                user.IsDelete = true;
-                user.Mender = pOperater;
-                user.MendTime = DateTime.Now;
-
-                CurrentDb.SaveChanges();
+                return new CustomJsonResult(ResultType.Failure, ResultCode.Failure, string.Format("不允许删除用户（{0}）", user.UserName));
             }
+
+            user.IsDelete = true;
+            user.Mender = operater;
+            user.MendTime = DateTime.Now;
+
+            CurrentDb.SaveChanges();
+
 
             return new CustomJsonResult(ResultType.Success, ResultCode.Success, "删除成功");
         }

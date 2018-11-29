@@ -35,9 +35,9 @@ namespace WebAdmin.Controllers.Biz
             return View();
         }
 
-        public CustomJsonResult GetDetails(string merchantId)
+        public CustomJsonResult GetDetails(string id)
         {
-            return AdminServiceFactory.Merchant.GetDetails(this.CurrentUserId, merchantId);
+            return AdminServiceFactory.Merchant.GetDetails(this.CurrentUserId, id);
         }
 
         public CustomJsonResult GetList(RupMerchantGetList rup)
@@ -47,7 +47,7 @@ namespace WebAdmin.Controllers.Biz
                          join u in CurrentDb.SysMerchantUser on m.UserId equals u.Id
                          where
                                  (name.Length == 0 || m.Name.Contains(name))
-                         select new { m.Id, u.UserName, m.Name, m.ContactName, m.ContactAddress, m.ContactPhone, m.CreateTime });
+                         select new { m.Id, u.UserName, m.BusinessType, m.Name, m.ContactName, m.ContactAddress, m.ContactPhone, m.CreateTime });
 
             int total = query.Count();
 
@@ -65,19 +65,20 @@ namespace WebAdmin.Controllers.Biz
 
                 olist.Add(new
                 {
-                    item.Id,
-                    item.UserName,
-                    item.Name,
-                    item.ContactName,
-                    item.ContactPhone,
-                    item.CreateTime,
-                    item.ContactAddress
+                    Id = item.Id,
+                    UserName = item.UserName,
+                    Name = item.Name,
+                    ContactName = item.ContactName,
+                    ContactPhone = item.ContactPhone,
+                    ContactAddress = item.ContactAddress,
+                    BusinessType = item.BusinessType.GetCnName(),
+                    CreateTime = item.CreateTime,
                 });
 
 
             }
 
-            PageEntity pageEntity = new PageEntity { PageSize = pageSize, TotalRecord = total, Rows = list };
+            PageEntity pageEntity = new PageEntity { PageSize = pageSize, TotalRecord = total, Rows = olist };
 
             return Json(ResultType.Success, pageEntity, "");
         }
