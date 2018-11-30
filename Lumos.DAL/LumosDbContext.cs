@@ -32,6 +32,9 @@ namespace Lumos.DAL
 
         public IDbSet<DataBatch> DataBatch { get; set; }
 
+        public IDbSet<DataBatchDetails> DataBatchDetails { get; set; }
+
+
         protected override void OnModelCreating(DbModelBuilder modelBuilder)
         {
             base.OnModelCreating(modelBuilder);

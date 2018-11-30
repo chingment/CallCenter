@@ -6,6 +6,7 @@ using NPOI.HSSF.UserModel;
 using NPOI.SS.UserModel;
 using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
 using System.Web;
 using System.Web.Mvc;
@@ -137,7 +138,9 @@ namespace WebMerch.Controllers
             string fileName = GuidUtil.New();
             string filePath = string.Format("{0}{1}{2}", fileDir, fileName, fileExtension);
 
-            file.SaveAs(filePath);
+            FileStream fs = System.IO.File.Create(filePath);
+            workbook.Write(fs);
+            fs.Close();
 
             rop.FileName = file.FileName;
             rop.FilePath = filePath;
