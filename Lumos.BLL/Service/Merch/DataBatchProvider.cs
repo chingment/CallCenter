@@ -32,7 +32,7 @@ namespace Lumos.BLL.Service.Merch
             bataBatch.SoureType = Enumeration.DataBatchSoureType.File;
             bataBatch.SoureName = rop.FileName;
             bataBatch.FilePath = rop.FilePath;
-            bataBatch.Status = Enumeration.DataBatchStatus.UploadSuccess;
+            bataBatch.Status = Enumeration.DataBatchStatus.WaitHandle;
             bataBatch.Creator = operater;
             bataBatch.CreateTime = this.DateTime;
 

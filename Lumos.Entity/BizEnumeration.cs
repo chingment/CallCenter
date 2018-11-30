@@ -108,14 +108,12 @@ namespace Lumos.Entity
         {
             [Remark("未知")]
             Unknow = 0,
-            [Remark("上传成功")]
-            UploadSuccess = 1,
-            [Remark("上传失败")]
-            UploadFailure = 1,
+            [Remark("等待处理")]
+            WaitHandle = 1,
             [Remark("数据处理中")]
-            DataHandling = 2,
+            Handling = 2,
             [Remark("完成")]
-            Complete = 2,
+            Complete = 3,
         }
 
 

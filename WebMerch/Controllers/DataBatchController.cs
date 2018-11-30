@@ -77,11 +77,6 @@ namespace WebMerch.Controllers
 
             var file = Request.Files[0];
 
-            if (file == null)
-            {
-                return new CustomJsonResult(ResultType.Failure, ResultCode.Failure, "请选择上传文件");
-            }
-
             string fileExtension = System.IO.Path.GetExtension(file.FileName).ToLower();
 
             if (fileExtension != ".xls")
@@ -110,6 +105,7 @@ namespace WebMerch.Controllers
             switch (rop.BizType)
             {
                 case Enumeration.DataBatchBizType.CarIns:
+                    #region 车险模板
                     excelFormatCheckUtil.AddCheckCellIsString(0, "初登日期", 0, 200);
                     excelFormatCheckUtil.AddCheckCellIsString(1, "车牌", 0, 200);
                     excelFormatCheckUtil.AddCheckCellIsString(2, "厂牌型号", 0, 200);
@@ -123,6 +119,7 @@ namespace WebMerch.Controllers
                     excelFormatCheckUtil.AddCheckCellIsString(10, "起保日期", 0, 200);
                     excelFormatCheckUtil.AddCheckCellIsString(11, "终保日期", 0, 200);
                     excelFormatCheckUtil.AddCheckCellIsString(12, "保险公司", 0, 200);
+                    #endregion 
                     break;
                 default:
                     return new CustomJsonResult(ResultType.Failure, ResultCode.Failure, "业务类型不符合");
@@ -143,7 +140,7 @@ namespace WebMerch.Controllers
             file.SaveAs(filePath);
 
             rop.FileName = file.FileName;
-
+            rop.FilePath = filePath;
             result = MerchServiceFactory.DataBatch.AddByFile(this.CurrentUserId, this.CurrentMerchantId, rop);
 
             return result;
