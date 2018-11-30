@@ -9,12 +9,14 @@ namespace Lumos.Entity
     {
         [Key]
         public string Id { get; set; }
+
+        public string MerchantId { get; set; }
         public string Code { get; set; }
         public string Name { get; set; }
         public Enumeration.DataBatchSoureType SoureType { get; set; }
         public string SoureName { get; set; }
         public string FilePath { get; set; }
-        public Enumeration.DataBatchFileType FileType { get; set; }
+        public Enumeration.DataBatchBizType BizType { get; set; }
         public DateTime StartTime { get; set; }
         public DateTime EndTime { get; set; }
         public int ValidCount { get; set; }

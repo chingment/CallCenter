@@ -8,7 +8,11 @@
         $(this).ready(function () {
 
             $.formValidator.initConfig({ formID: "form1", onError: function (msg) { $.lumos.tips(msg); } });
-
+            $("#txt_Code").formValidator().inputValidator({ min: 1, max: 50, onError: "批次号须填，且不能超过50个字符" });
+            $("#txt_Name").formValidator().inputValidator({ min: 1, max: 50, onError: "标签须填，且不能超过50个字符" });
+            $("#txt_StartTime").formValidator().inputValidator({ min: 1, max: 50, onError: "请选择有效开始时间" });
+            $("#txt_EndTime").formValidator().inputValidator({ min: 1, max: 50, onError: "请选择有效结束时间" });
+            $("#markupload_file").formValidator().inputValidator({ min: 1, max: 2000, onError: "请选择上次文件" });
 
         });
 
@@ -29,9 +33,13 @@
                     url: "/DataBatch/AddByFile",
                     dataType: "json",
                     success: function (d) {
-
-                        alert(JSON.stringify(d))
-
+                        if (d.result == $.lumos.resultType.success) {
+                            $.lumos.parentDialog.refresh(1);
+                            $.lumos.tips(d.message, true);
+                        }
+                        else {
+                            $.lumos.tips(d.message);
+                        }
                     }
                 });
 
@@ -56,6 +64,8 @@
         </div>
     </div>
     <form id='form1' method='post' enctype="multipart/form-data"　>
+        <input id="txt_BizType" name="bizType" value="1" type="hidden" />
+        @*暂定业务类型为车险*@
         <table class="f-tb" cellpadding="0" cellspacing="1">
             <tr>
                 <td class="f-tb-t">
@@ -67,7 +77,7 @@
             </tr>
             <tr>
                 <td class="f-tb-t">
-                    <span class="required-symbol">*</span>标题：
+                    <span class="required-symbol">*</span>标签：
                 </td>
                 <td class="f-tb-c">
                     <input id="txt_Name" name="name" class="input-control" type="text" style="width: 224px;" autocomplete="off" />
@@ -75,10 +85,18 @@
             </tr>
             <tr>
                 <td class="f-tb-t">
-                    <span class="required-symbol">*</span>数据有效期：
+                    <span class="required-symbol">*</span>有效期：
                 </td>
                 <td class="f-tb-c">
-                    <input id="txt_StartTime" class="input-control" type="text" style="width: 224px;" autocomplete="off" />
+                    <input id="txt_StartTime" type="text" name="startTime" class="input-control" style="width:80px;" onfocus="WdatePicker({ dateFmt: 'yyyy-MM-dd', maxDate: '#F{$dp.$D(\'txt_EndTime\')}', minDate: '@DateTime.Now.ToUnifiedFormatDate()' })" value="@DateTime.Now.ToUnifiedFormatDate()" />
+                    至<input id="txt_EndTime" type="text" name="endTime"  class="input-control" style="width:80px;" onfocus="WdatePicker({ dateFmt: 'yyyy-MM-dd', minDate: '#F{$dp.$D(\'txt_StartTime\')}', maxDate: '@DateTime.Now.AddDays(180).ToUnifiedFormatDate()' })" value="@DateTime.Now.AddDays(90).ToUnifiedFormatDate()" />
+
+                    @*<input id="txt_StartTime" name="startTime" type="text" class="input-control" onclick="WdatePicker({ minDate:'@DateTime.Now.ToUnifiedFormatDate()', maxDate: '#F{$dp.$D(\'txt_EndTime\')'})" style="width:80px;" value="@DateTime.Now.ToUnifiedFormatDate()" />
+                    至<input id="txt_EndTime" name="endTime" type="text" class="input-control Wdate" onclick="WdatePicker({ minDate: '#F{$dp.$D(\'txt_StartTime\')}' })" style="width:80px;" value="@DateTime.Now.AddDays(90).ToUnifiedFormatDate()" />*@
+
+
+                    @*<input id="Model_StartTime" name="startTime"  type="text" class="input-control" onclick="WdatePicker({ minxDate:''@DateTime.Now.ToUnifiedFormatDate()', maxDate: '#F{$dp.$D(\'Model_EndTime\')||\'@DateTime.Now.ToString("yyyy-MM-dd")\'}' })" style="width:80px;" value="@DateTime.Now.ToUnifiedFormatDate()" />
+                  至<input id="Model_EndTime" name="endTime" type="text" class="input-control Wdate"  onclick="WdatePicker({ minDate: '#F{$dp.$D(\'Model_StartTime\')}' })" style="width:80px;" value="@DateTime.Now.AddDays(90).ToUnifiedFormatDate()" />*@
                 </td>
             </tr>
             <tr style="display:none">

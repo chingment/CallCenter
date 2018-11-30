@@ -136,6 +136,7 @@
     <Compile Include="Service\Admin\Sys\SysOrganizationProvider.cs" />
     <Compile Include="Service\Admin\Sys\SysPositionProvider.cs" />
     <Compile Include="Service\Admin\Sys\SysRoleProvider.cs" />
+    <Compile Include="Service\Merch\DataBatchProvider.cs" />
     <Compile Include="Service\Merch\MerchServiceFactory.cs" />
     <Compile Include="Service\Merch\OrganizationProvider.cs" />
     <Compile Include="Service\Merch\RModels\RetOrganizationGetDetails.cs" />
