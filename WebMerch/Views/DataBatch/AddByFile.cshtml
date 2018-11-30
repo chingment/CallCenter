@@ -24,21 +24,33 @@
             if (!isValid)
                 return false;
 
+
+
             art.dialog.confirm('确定要新建？', function (e) {
 
-       
+                var loading = artDialog.loading2("正在上传中");
+                $("#errorbox").hide();
+                $("#message").text("");
+                $("#point").html("");
 
                 $('#form1').ajaxSubmit({
                     type: "post",
                     url: "/DataBatch/AddByFile",
                     dataType: "json",
                     success: function (d) {
+                        loading.close();
                         if (d.result == $.lumos.resultType.success) {
                             $.lumos.parentDialog.refresh(1);
                             $.lumos.tips(d.message, true);
                         }
                         else {
-                            $.lumos.tips(d.message);
+                            $("#errorbox").show();
+                            $("#message").text(d.message);
+                            if (d.data != null) {
+                                for (var i = 0; i < d.data.length; i++) {
+                                    $("#point").append("<li>" + d.data[i] + "</li>");
+                                }
+                            }
                         }
                     }
                 });
@@ -63,7 +75,7 @@
             <h6></h6>
         </div>
     </div>
-    <form id='form1' method='post' enctype="multipart/form-data"　>
+    <form id='form1' method='post' enctype="multipart/form-data" 　>
         <input id="txt_BizType" name="bizType" value="1" type="hidden" />
         @*暂定业务类型为车险*@
         <table class="f-tb" cellpadding="0" cellspacing="1">
@@ -89,14 +101,7 @@
                 </td>
                 <td class="f-tb-c">
                     <input id="txt_StartTime" type="text" name="startTime" class="input-control" style="width:80px;" onfocus="WdatePicker({ dateFmt: 'yyyy-MM-dd', maxDate: '#F{$dp.$D(\'txt_EndTime\')}', minDate: '@DateTime.Now.ToUnifiedFormatDate()' })" value="@DateTime.Now.ToUnifiedFormatDate()" />
-                    至<input id="txt_EndTime" type="text" name="endTime"  class="input-control" style="width:80px;" onfocus="WdatePicker({ dateFmt: 'yyyy-MM-dd', minDate: '#F{$dp.$D(\'txt_StartTime\')}', maxDate: '@DateTime.Now.AddDays(180).ToUnifiedFormatDate()' })" value="@DateTime.Now.AddDays(90).ToUnifiedFormatDate()" />
-
-                    @*<input id="txt_StartTime" name="startTime" type="text" class="input-control" onclick="WdatePicker({ minDate:'@DateTime.Now.ToUnifiedFormatDate()', maxDate: '#F{$dp.$D(\'txt_EndTime\')'})" style="width:80px;" value="@DateTime.Now.ToUnifiedFormatDate()" />
-                    至<input id="txt_EndTime" name="endTime" type="text" class="input-control Wdate" onclick="WdatePicker({ minDate: '#F{$dp.$D(\'txt_StartTime\')}' })" style="width:80px;" value="@DateTime.Now.AddDays(90).ToUnifiedFormatDate()" />*@
-
-
-                    @*<input id="Model_StartTime" name="startTime"  type="text" class="input-control" onclick="WdatePicker({ minxDate:''@DateTime.Now.ToUnifiedFormatDate()', maxDate: '#F{$dp.$D(\'Model_EndTime\')||\'@DateTime.Now.ToString("yyyy-MM-dd")\'}' })" style="width:80px;" value="@DateTime.Now.ToUnifiedFormatDate()" />
-                  至<input id="Model_EndTime" name="endTime" type="text" class="input-control Wdate"  onclick="WdatePicker({ minDate: '#F{$dp.$D(\'Model_StartTime\')}' })" style="width:80px;" value="@DateTime.Now.AddDays(90).ToUnifiedFormatDate()" />*@
+                    至<input id="txt_EndTime" type="text" name="endTime" class="input-control" style="width:80px;" onfocus="WdatePicker({ dateFmt: 'yyyy-MM-dd', minDate: '#F{$dp.$D(\'txt_StartTime\')}', maxDate: '@DateTime.Now.AddDays(180).ToUnifiedFormatDate()' })" value="@DateTime.Now.AddDays(90).ToUnifiedFormatDate()" />
                 </td>
             </tr>
             <tr style="display:none">
@@ -121,12 +126,18 @@
                 <div class="file-msg"></div>
                 <label class="file-browse" for="markupload_file">浏览..</label>
                 <div class='file-loading'>上传中...</div>
-               
-                <input type='file' name='markupload_file' id='markupload_file' class="markupload-file" filetype="xls" accept='application/vnd.ms-excel'>
 
+                <div style="width:0px;overflow:hidden">
+                    <input type='file' name='markupload_file' id='markupload_file' class="markupload-file" filetype="xls" accept='application/vnd.ms-excel'>
+                </div>
             </div>
 
 
+        </div>
+
+        <div id="errorbox" style="display:none;color:red;">
+            <div>错误提示:<span id="message"></span></div>
+            <ul id="point"></ul>
         </div>
     </form>
 </div>

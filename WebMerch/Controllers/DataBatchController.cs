@@ -117,11 +117,12 @@ namespace WebMerch.Controllers
                     excelFormatCheckUtil.AddCheckCellIsString(4, "车架号", 0, 200);
                     excelFormatCheckUtil.AddCheckCellIsString(5, "发动机号", 0, 200);
                     excelFormatCheckUtil.AddCheckCellIsString(6, "车主", 1, 200);
-                    excelFormatCheckUtil.AddCheckCellIsString(7, "电话", 1, 200);
-                    excelFormatCheckUtil.AddCheckCellIsString(8, "保单号", 0, 200);
-                    excelFormatCheckUtil.AddCheckCellIsString(8, "起保日期", 0, 200);
-                    excelFormatCheckUtil.AddCheckCellIsString(8, "终保日期", 0, 200);
-                    excelFormatCheckUtil.AddCheckCellIsString(8, "保险公司", 0, 200);
+                    excelFormatCheckUtil.AddCheckCellIsString(7, "地址", 0, 200);
+                    excelFormatCheckUtil.AddCheckCellIsString(8, "电话", 1, 200);
+                    excelFormatCheckUtil.AddCheckCellIsString(9, "保单号", 0, 200);
+                    excelFormatCheckUtil.AddCheckCellIsString(10, "起保日期", 0, 200);
+                    excelFormatCheckUtil.AddCheckCellIsString(11, "终保日期", 0, 200);
+                    excelFormatCheckUtil.AddCheckCellIsString(12, "保险公司", 0, 200);
                     break;
                 default:
                     return new CustomJsonResult(ResultType.Failure, ResultCode.Failure, "业务类型不符合");
@@ -131,7 +132,7 @@ namespace WebMerch.Controllers
 
             if (excelFormatCheckUtil.ErrorPoint.Count > 0)
             {
-                return new CustomJsonResult(ResultType.Failure, ResultCode.Failure, excelFormatCheckUtil.ErrorMessage);
+                return new CustomJsonResult(ResultType.Failure, ResultCode.Failure, excelFormatCheckUtil.ErrorMessage, excelFormatCheckUtil.ErrorPoint);
             }
 
 
