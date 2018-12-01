@@ -201,6 +201,7 @@
     <Content Include="Views\User\List.cshtml" />
     <Content Include="Views\DataBatch\List.cshtml" />
     <Content Include="Views\DataBatch\AddByFile.cshtml" />
+    <Content Include="Views\DataBatch\Details.cshtml" />
     <None Include="Web.config">
       <SubType>Designer</SubType>
     </None>

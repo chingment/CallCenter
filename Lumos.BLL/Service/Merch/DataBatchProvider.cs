@@ -11,6 +11,29 @@ namespace Lumos.BLL.Service.Merch
 {
     public class DataBatchProvider : BaseProvider
     {
+        public CustomJsonResult GetDetails(string operater, string merchantId, string id)
+        {
+            var ret = new RetDataBatchGetDetails();
+
+            var dataBatch = CurrentDb.DataBatch.Where(m => m.MerchantId == merchantId && m.Id == id).FirstOrDefault();
+
+            if (dataBatch != null)
+            {
+                ret.Id = dataBatch.Id ?? ""; ;
+                ret.Code = dataBatch.Code ?? ""; ;
+                ret.Name = dataBatch.Name ?? ""; ;
+                ret.SoureName = dataBatch.SoureName ?? "";
+                ret.ValidCount = dataBatch.ValidCount;
+                ret.InValidCount = dataBatch.InValidCount;
+                ret.ExpiryTime = dataBatch.ExpiryTime.ToUnifiedFormatDate() ?? "";
+                ret.RecoveryTime = dataBatch.RecoveryTime.ToUnifiedFormatDate() ?? "";
+                ret.HandleReport = dataBatch.HandleReport ?? "";
+                ret.FollowDelayDays = dataBatch.FollowDelayDays;
+            }
+
+            return new CustomJsonResult(ResultType.Success, ResultCode.Success, "获取成功", ret);
+        }
+
         public CustomJsonResult AddByFile(string operater, string merchantId, RopDataBatchAddByFile rop)
         {
             CustomJsonResult result = new CustomJsonResult();

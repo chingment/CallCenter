@@ -1,0 +1,247 @@
+﻿@{
+    ViewBag.Title = "";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+@section scripts{
+    <script type="text/javascript">
+
+        var id = $.lumos.getUrlParamValue("id");
+        var list_machine;
+        $(this).ready(function () {
+
+            $('input[name=DataBatchId]').val(id);
+
+            list_machine = $("#list_DataBatchDetails_CarIns").loadDataTable({
+                url: "/DataBatch/GetListByCarIns",
+                pageIndex: 0,
+                searchParams: $("#form_DataBatchDetails_CarIns").serializeArray(),
+                searchButtonId: "btn_Search",
+                containerId: "form_DataBatchDetails_CarIns",
+                rowDataCombie: function (p_index, p_row) {
+                    var l_StrRows = "";
+                    l_StrRows += "<tr>";
+                    l_StrRows += "<td class=\"no\" >" + (p_index + 1) + "</td>";
+                    l_StrRows += "<td class=\"overflow\" title=\"" + p_row.csrName + "\"   >" + p_row.csrName + "</td>";
+                    l_StrRows += "<td class=\"overflow\" title=\"" + p_row.csrPhoneNumber + "\">" + p_row.csrPhoneNumber + "</td>";
+                    l_StrRows += "<td class=\"overflow\" title=\"" + p_row.csrIdNumber + "\">" + p_row.csrIdNumber + "</td>";
+                    l_StrRows += "<td class=\"overflow\" title=\"" + p_row.csrAddress + "\">" + p_row.csrAddress + "</td>";
+                    l_StrRows += "<td class=\"overflow\" title=\"" + p_row.carRegisterDate + "\">" + p_row.carRegisterDate + "</td>";
+                    l_StrRows += "<td class=\"overflow\" title=\"" + p_row.carPlateNo + "\">" + p_row.carPlateNo + "</td>";
+                    l_StrRows += "<td class=\"overflow\" title=\"" + p_row.carModel + "\">" + p_row.carModel + "</td>";
+                    l_StrRows += "<td class=\"overflow\" title=\"" + p_row.carVin + "\">" + p_row.carVin + "</td>";
+                    l_StrRows += "<td class=\"overflow\" title=\"" + p_row.carEngineNo + "\">" + p_row.carEngineNo + "</td>";
+                    l_StrRows += "<td class=\"overflow\" title=\"" + p_row.carInsLastQzNo + "\">" + p_row.carInsLastQzNo + "</td>";
+                    l_StrRows += "<td class=\"overflow\" title=\"" + p_row.carInsLastCompany + "\">" + p_row.carInsLastCompany + "</td>";
+                    l_StrRows += "<td class=\"overflow\" title=\"" + p_row.carInsLastStartTime + "\">" + p_row.carInsLastStartTime + "</td>";
+                    l_StrRows += "<td class=\"overflow\" title=\"" + p_row.carInsLastEndTime + "\">" + p_row.carInsLastEndTime + "</td>";
+                    l_StrRows += "<td class=\"overflow\" title=\"" + p_row.handleReport + "\">" + p_row.handleReport + "</td>";
+                    l_StrRows += "</tr>";
+                    return l_StrRows;
+                }
+            });
+
+            getDetails();
+           
+        });
+
+        function getDetails() {
+
+            $.lumos.getJson({
+                url: "/DataBatch/GetDetails",
+                urlParams: { id: id },
+                isUseHandling: true,
+                success: function (d) {
+                    if (d.result == $.lumos.resultType.success) {
+                        var data = d.data;
+                        $('#lbl_Code').text(data.code);
+                        $('#lbl_Name').text(data.name);
+                        $('#lbl_SoureName').text(data.soureName);
+                        $("#lbl_ValidCount").text(data.validCount);
+                        $("#lbl_InValidCount").text(data.inValidCount);
+                        $("#lbl_ExpiryTime").text(data.expiryTime);
+                        $("#lbl_RecoveryTime").text(data.recoveryTime);
+                        $("#lbl_FollowDelayDays").text(data.followDelayDays);
+                    }
+                }
+            });
+        }
+
+    </script>
+}
+
+
+<div class="gbr-row gbr-dialog">
+    <div class="tab" id="tab1">
+        <div class="tab-item">
+            <ul>
+                <li class="item first selected"><a class="a-btn-info" href="javascript:void(0)">基本信息</a></li>
+                <li class="item"><a class="a-btn-info" href="javascript:void(0)">数据信息</a></li>
+            </ul>
+        </div>
+        <div class="tab-content">
+            <div class="subcontent">
+                    <table class="f-tb" cellpadding="0" cellspacing="1">
+                        <tr>
+                            <td class="f-tb-t">
+                                批次号：
+                            </td>
+                            <td class="f-tb-c">
+                                <span id="lbl_Code"></span>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td class="f-tb-t">
+                                标签：
+                            </td>
+                            <td class="f-tb-c">
+                                <span id="lbl_Name"></span>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td class="f-tb-t">
+                                来源：
+                            </td>
+                            <td class="f-tb-c">
+                                <span id="lbl_SoureName"></span>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td class="f-tb-t">
+                                有效数据：
+                            </td>
+                            <td class="f-tb-c">
+                                <span id="lbl_ValidCount"></span>条
+                            </td>
+                        </tr>
+                        <tr>
+                            <td class="f-tb-t">
+                                无效数据：
+                            </td>
+                            <td class="f-tb-c">
+                                <span id="lbl_InValidCount"></span>条
+                            </td>
+                        </tr>
+                        <tr>
+                            <td class="f-tb-t">
+                                有效时间：
+                            </td>
+                            <td class="f-tb-c">
+                                <span id="lbl_ExpiryTime"></span>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td class="f-tb-t">
+                                跟进延迟：
+                            </td>
+                            <td class="f-tb-c">
+                                <span id="lbl_FollowDelayDays"></span>天
+                            </td>
+                        </tr>
+                        <tr>
+                            <td class="f-tb-t">
+                                回收时间：
+                            </td>
+                            <td class="f-tb-c">
+                                <span id="lbl_RecoveryTime"></span>
+                            </td>
+                        </tr>
+                    </table>
+            </div>
+            <div class="subcontent">
+
+                <form id="form_DataBatchDetails_CarIns" name="form_DataBatchDetails_CarIns">
+                    <input id="DataBatchId" name="DataBatchId" type="hidden" value="" />
+                    <div class="search-bar">
+                        <div class="filter">
+                            <span class="filter-label">名称：</span>
+                            <span class="filter-input">
+                                <input type="text" class="input-control" name="Name" style="width:120px;" />
+                            </span>
+                        </div>
+                        <div class="filter"><input type="button" class="btn btn-search" id="btn_Search" value="查询" /> </div>
+                    </div>
+                    <div class="list">
+                        <table id="list_DataBatchDetails_CarIns" class="list-tb" cellpadding="0" cellspacing="0">
+                            <thead>
+                                <tr>
+                                    <th style="width:5%" class="no">
+                                        序号
+                                    </th>
+                                    <th style="width:5%">
+                                        姓名
+                                    </th>
+                                    <th style="width:5%">
+                                        电话
+                                    </th>
+                                    <th style="width:5%">
+                                        身份证
+                                    </th>
+                                    <th style="width:10%">
+                                        地址
+                                    </th>
+                                    <th style="width:5%">
+                                        初登日期
+                                    </th>
+                                    <th style="width:5%">
+                                        车牌
+                                    </th>
+                                    <th style="width:5%">
+                                        厂牌型号
+                                    </th>
+                                    <th style="width:10%">
+                                        车架号
+                                    </th>
+                                    <th style="width:10%">
+                                        发动机号
+                                    </th>
+                                    <th style="width:10%">
+                                        保单号
+                                    </th>
+                                    <th style="width:10%">
+                                        保险公司
+                                    </th>
+                                    <th style="width:10%">
+                                        起保日期
+                                    </th>
+                                    <th style="width:10%">
+                                        终保日期
+                                    </th>
+                                    <th style="width:10%">
+                                        处理结果
+                                    </th>
+                                </tr>
+                            </thead>
+                            <tbody></tbody>
+                            <tfoot>
+                                <tr>
+                                    <td colspan="15">
+                                        <div class="pull-left">
+                                            <span class="load-tip"></span>
+                                        </div>
+                                        <div class="pull-right pagination">
+                                            <div class="pagination-info">
+
+                                            </div>
+                                            <div class="pagination-index">
+
+                                            </div>
+                                            <div class="pagination-goto">
+
+                                            </div>
+                                        </div>
+                                    </td>
+                                </tr>
+                            </tfoot>
+                        </table>
+                    </div>
+                </form>
+
+            </div>
+        </div>
+    </div>
+</div>
+
+
+
+

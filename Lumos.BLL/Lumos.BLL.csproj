@@ -152,6 +152,7 @@
     <Compile Include="Service\Merch\DataBatchProvider.cs" />
     <Compile Include="Service\Merch\MerchServiceFactory.cs" />
     <Compile Include="Service\Merch\OrganizationProvider.cs" />
+    <Compile Include="Service\Merch\RModels\RetDataBatchGetDetails.cs" />
     <Compile Include="Service\Merch\RModels\RetOrganizationGetDetails.cs" />
     <Compile Include="Service\Merch\RModels\RetUserGetDetails.cs" />
     <Compile Include="Service\Merch\RModels\RopDataBatchAddByFile.cs" />
@@ -161,6 +162,7 @@
     <Compile Include="Service\Merch\RModels\RopUserAdd.cs" />
     <Compile Include="Service\Merch\RModels\RopUserEdit.cs" />
     <Compile Include="Service\Merch\RModels\RupDataBatchGetList.cs" />
+    <Compile Include="Service\Merch\RModels\RupDataBatchGetListByCarIns.cs" />
     <Compile Include="Service\Merch\RModels\RupStaffUserGetList.cs" />
     <Compile Include="Service\Merch\UserProvider.cs" />
     <Compile Include="SnUtil.cs" />

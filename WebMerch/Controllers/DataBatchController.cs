@@ -25,13 +25,23 @@ namespace WebMerch.Controllers
             return View();
         }
 
+        public ActionResult Details()
+        {
+            return View();
+        }
+
+        public CustomJsonResult GetDetails(string id)
+        {
+            return MerchServiceFactory.DataBatch.GetDetails(this.CurrentUserId, this.CurrentMerchantId, id);
+        }
+
         public CustomJsonResult GetList(RupDataBatchGetList rup)
         {
             var query = (from u in CurrentDb.DataBatch
                          where (rup.Code == null || u.Code.Contains(rup.Code))
                          &&
                          u.MerchantId == this.CurrentMerchantId
-                         select new { u.Id, u.Code, u.Name, u.SoureName, u.SoureType,u.Description, u.ValidCount, u.InValidCount, u.Status, u.CreateTime });
+                         select new { u.Id, u.Code, u.Name, u.SoureName, u.SoureType, u.Description, u.ValidCount, u.InValidCount, u.Status, u.CreateTime });
 
             int total = query.Count();
 
@@ -58,6 +68,57 @@ namespace WebMerch.Controllers
                     InValidCount = item.InValidCount,
                     StatusName = item.Status.GetCnName(),
                     Description = item.Description,
+                    CreateTime = item.CreateTime.ToUnifiedFormatDateTime()
+                });
+            }
+
+
+            PageEntity pageEntity = new PageEntity { PageSize = pageSize, TotalRecord = total, Rows = olist };
+
+            return Json(ResultType.Success, pageEntity, "");
+        }
+
+        public CustomJsonResult GetListByCarIns(RupDataBatchGetListByCarIns rup)
+        {
+            var query = (from u in CurrentDb.DataBatchDetails
+                         where
+                         u.DataBatchId == rup.DataBatchId
+                         &&
+                         u.MerchantId == this.CurrentMerchantId
+                         select new { u.Id, u.CsrName, u.CsrPhoneNumber, u.CsrAddress, u.CsrIdNumber, u.CarRegisterDate, u.CarPlateNo, u.CarModel, u.CarEngineNo, u.CarVin, u.CarInsLastQzNo, u.CarInsLastSyNo, u.CarInsLastCompany, u.CarInsLastStartTime, u.CarInsLastEndTime, u.CreateTime, u.IsValid, u.HandleReport });
+
+            int total = query.Count();
+
+            int pageIndex = rup.PageIndex;
+            int pageSize = 10;
+            query = query.OrderByDescending(r => r.CreateTime).Skip(pageSize * (pageIndex)).Take(pageSize);
+
+
+            var list = query.ToList();
+
+            List<object> olist = new List<object>();
+
+            foreach (var item in list)
+            {
+
+                olist.Add(new
+                {
+                    Id = item.Id,
+                    CsrName = item.CsrName,
+                    CsrPhoneNumber = item.CsrPhoneNumber,
+                    CsrAddress = item.CsrAddress,
+                    CsrIdNumber = item.CsrIdNumber,
+                    CarRegisterDate = item.CarRegisterDate,
+                    CarPlateNo = item.CarPlateNo,
+                    CarModel = item.CarModel,
+                    CarEngineNo = item.CarEngineNo,
+                    CarVin = item.CarVin,
+                    IsValid = item.IsValid,
+                    CarInsLastQzNo = item.CarInsLastQzNo,
+                    CarInsLastCompany = item.CarInsLastCompany,
+                    CarInsLastStartTime = item.CarInsLastStartTime,
+                    CarInsLastEndTime = item.CarInsLastEndTime,
+                    HandleReport = item.HandleReport,
                     CreateTime = item.CreateTime.ToUnifiedFormatDateTime()
                 });
             }
