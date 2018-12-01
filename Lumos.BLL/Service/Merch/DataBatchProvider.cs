@@ -1,4 +1,5 @@
-﻿using Lumos.Entity;
+﻿using Lumos.BLL.Biz;
+using Lumos.Entity;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -37,6 +38,7 @@ namespace Lumos.BLL.Service.Merch
             CurrentDb.DataBatch.Add(bataBatch);
             CurrentDb.SaveChanges();
 
+            RedisMqFactory.Global.Push(RedisMqHandleType.DataBatch, bataBatch);
 
             result = new CustomJsonResult(ResultType.Success, ResultCode.Success, "新建成功");
 

@@ -97,7 +97,7 @@
     <Compile Include="Biz\RModels\RetWxUserCheckedUser.cs" />
     <Compile Include="Biz\RModels\RopLogin.cs" />
     <Compile Include="Biz\RModels\RopWxUserCheckedUser.cs" />
-    <Compile Include="Biz\Redis\RedisMq4GlobalModel.cs" />
+    <Compile Include="Biz\Redis\RedisMq4GlobalHandle.cs" />
     <Compile Include="Biz\Redis\RedisMq4GlobalProvider.cs" />
     <Compile Include="Biz\Redis\RedisMqFactory.cs" />
     <Compile Include="Biz\SmsProvider.cs" />
@@ -170,12 +170,12 @@
     <Compile Include="Service\Admin\Sys\SysItemCacheUpdateTimeProvider.cs" />
     <Compile Include="Service\Admin\Sys\SysUserProvider.cs" />
     <Compile Include="Task\BaseProgram.cs" />
-    <Compile Include="Task\Task4DataBatchHandleProvider.cs" />
     <Compile Include="Task\Quartz\QuartzManager.cs" />
     <Compile Include="Task\Quartz\SchedulerJobListener.cs" />
     <Compile Include="Task\ITask.cs" />
     <Compile Include="Task\Launcher.cs" />
     <Compile Include="Task\Task4Factory.cs" />
+    <Compile Include="Task\Task4Mq2GlobalProvder.cs" />
     <Compile Include="Task\Task4Tim2GlobalProvider.cs" />
   </ItemGroup>
   <ItemGroup>
