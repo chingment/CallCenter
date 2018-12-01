@@ -17,14 +17,11 @@ namespace Lumos.Entity
         public string SoureName { get; set; }
         public string FilePath { get; set; }
         public Enumeration.DataBatchBizType BizType { get; set; }
-        public DateTime StartTime { get; set; }
-        public DateTime EndTime { get; set; }
         public int ValidCount { get; set; }
         public int InValidCount { get; set; }
         public Enumeration.DataBatchStatus Status { get; set; }
         public string Description { get; set; }
         public string Creator { get; set; }
-
         public DateTime CreateTime { get; set; }
 
         public string Mender { get; set; }

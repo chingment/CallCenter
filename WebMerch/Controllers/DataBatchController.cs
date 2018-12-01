@@ -31,7 +31,7 @@ namespace WebMerch.Controllers
                          where (rup.Code == null || u.Code.Contains(rup.Code))
                          &&
                          u.MerchantId == this.CurrentMerchantId
-                         select new { u.Id, u.Code, u.Name, u.SoureName, u.SoureType, u.StartTime, u.EndTime, u.Description, u.ValidCount, u.InValidCount, u.Status, u.CreateTime });
+                         select new { u.Id, u.Code, u.Name, u.SoureName, u.SoureType,u.Description, u.ValidCount, u.InValidCount, u.Status, u.CreateTime });
 
             int total = query.Count();
 
@@ -54,8 +54,6 @@ namespace WebMerch.Controllers
                     Name = item.Name,
                     SoureName = item.SoureName,
                     SoureTypeName = item.SoureType.GetCnName(),
-                    StartTime = item.StartTime.ToUnifiedFormatDate(),
-                    EndTime = item.EndTime.ToUnifiedFormatDate(),
                     ValidCount = item.ValidCount,
                     InValidCount = item.InValidCount,
                     StatusName = item.Status.GetCnName(),

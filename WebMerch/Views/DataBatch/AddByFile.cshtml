@@ -10,8 +10,8 @@
             $.formValidator.initConfig({ formID: "form1", onError: function (msg) { $.lumos.tips(msg); } });
             $("#txt_Code").formValidator().inputValidator({ min: 1, max: 50, onError: "批次号须填，且不能超过50个字符" });
             $("#txt_Name").formValidator().inputValidator({ min: 1, max: 50, onError: "标签须填，且不能超过50个字符" });
-            $("#txt_StartTime").formValidator().inputValidator({ min: 1, max: 50, onError: "请选择有效开始时间" });
-            $("#txt_EndTime").formValidator().inputValidator({ min: 1, max: 50, onError: "请选择有效结束时间" });
+            //$("#txt_StartTime").formValidator().inputValidator({ min: 1, max: 50, onError: "请选择有效开始时间" });
+            //$("#txt_EndTime").formValidator().inputValidator({ min: 1, max: 50, onError: "请选择有效结束时间" });
             $("#markupload_file").formValidator().inputValidator({ min: 1, max: 2000, onError: "请选择上次文件" });
 
         });
@@ -80,7 +80,7 @@
         @*暂定业务类型为车险*@
         <table class="f-tb" cellpadding="0" cellspacing="1">
             <tr>
-                <td class="f-tb-t">
+                <td class="f-tb-t" style="width:120px;">
                     <span class="required-symbol">*</span>批次号：
                 </td>
                 <td class="f-tb-c">
@@ -95,7 +95,47 @@
                     <input id="txt_Name" name="name" class="input-control" type="text" style="width: 224px;" autocomplete="off" />
                 </td>
             </tr>
+            @*<tr>
+                <td class="f-tb-t">
+                    <span class="required-symbol">*</span>有效期（天）：
+                </td>
+                <td class="f-tb-c">
+                    <div>
+                        <input id="txt_days" type="text" name="startTime" class="input-control" style="width:50px;" value="30" />
+                    </div>
+                </td>
+            </tr>
             <tr>
+                <td class="f-tb-t">
+                    <span class="required-symbol">*</span>跟进延迟（天）：
+                </td>
+                <td class="f-tb-c">
+                    <div>
+                        <input id="txt_No" type="text" name="startTime" class="input-control" style="width:50px;" value="14"  />
+                    </div>
+                </td>
+            </tr>
+            <tr>
+                <td class="f-tb-t">
+                    <span class="required-symbol">*</span>回收期（天）：
+                </td>
+                <td class="f-tb-c">
+                    <div>
+                        <input id="txt_No" type="text" name="startTime" class="input-control" style="width:50px;" value="30" />
+                    </div>
+                </td>
+            </tr>
+            <tr>
+                <td class="f-tb-t">
+                   
+                </td>
+                <td class="f-tb-c">
+                    <div  class="help-tips">
+                        *有效期,跟进延迟,回收期，可在数据分配时再作调整
+                    </div>
+                </td>
+            </tr>*@
+            @*<tr>
                 <td class="f-tb-t">
                     <span class="required-symbol">*</span>有效期：
                 </td>
@@ -103,7 +143,7 @@
                     <input id="txt_StartTime" type="text" name="startTime" class="input-control" style="width:80px;" onfocus="WdatePicker({ dateFmt: 'yyyy-MM-dd', maxDate: '#F{$dp.$D(\'txt_EndTime\')}', minDate: '@DateTime.Now.ToUnifiedFormatDate()' })" value="@DateTime.Now.ToUnifiedFormatDate()" />
                     至<input id="txt_EndTime" type="text" name="endTime" class="input-control" style="width:80px;" onfocus="WdatePicker({ dateFmt: 'yyyy-MM-dd', minDate: '#F{$dp.$D(\'txt_StartTime\')}', maxDate: '@DateTime.Now.AddDays(180).ToUnifiedFormatDate()' })" value="@DateTime.Now.AddDays(90).ToUnifiedFormatDate()" />
                 </td>
-            </tr>
+            </tr>*@
             <tr style="display:none">
                 <td class="f-tb-t"></td>
                 <td class="f-tb-c">

@@ -26,8 +26,6 @@ namespace Lumos.BLL.Service.Merch
             bataBatch.MerchantId = merchantId;
             bataBatch.Code = rop.Code;
             bataBatch.Name = rop.Name;
-            bataBatch.StartTime = rop.StartTime;
-            bataBatch.EndTime = rop.EndTime;
             bataBatch.BizType = rop.BizType;
             bataBatch.SoureType = Enumeration.DataBatchSoureType.File;
             bataBatch.SoureName = rop.FileName;

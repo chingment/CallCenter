@@ -24,8 +24,6 @@
                 l_StrRows += "<td class=\"overflow tipitem\" title=\"" + p_row.code + "\"   >" + p_row.code + "</td>";
                 l_StrRows += "<td class=\"overflow\" title=\"" + p_row.name + "\">" + p_row.name + "</td>";
                 l_StrRows += "<td class=\"overflow\" title=\"" + p_row.soureName + "\">" + p_row.soureName + "</td>";
-                l_StrRows += "<td class=\"overflow\" title=\"" + p_row.startTime + "\">" + p_row.startTime + "</td>";
-                l_StrRows += "<td class=\"overflow\" title=\"" + p_row.endTime + "\">" + p_row.endTime + "</td>";
                 l_StrRows += "<td class=\"overflow\" title=\"" + p_row.validCount + "\">" + p_row.validCount + "</td>";
                 l_StrRows += "<td class=\"overflow\" title=\"" + p_row.inValidCount + "\">" + p_row.inValidCount + "</td>";
                 l_StrRows += "<td class=\"overflow\" title=\"" + p_row.statusName + "\">" + p_row.statusName + "</td>";
@@ -110,15 +108,9 @@
                         来源
                     </th>
                     <th style="width:10%">
-                        开始时间
-                    </th>
-                    <th style="width:10%">
-                        结束时间
-                    </th>
-                    <th style="width:5%">
                         有效
                     </th>
-                    <th style="width:5%">
+                    <th style="width:10%">
                         无效
                     </th>
                     <th style="width:10%">
@@ -135,7 +127,7 @@
             <tbody></tbody>
             <tfoot>
                 <tr>
-                    <td colspan="11">
+                    <td colspan="9">
                         <div class="pull-left">
                             <span class="load-tip"></span>
                         </div>
