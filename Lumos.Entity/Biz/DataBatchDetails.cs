@@ -26,8 +26,16 @@ namespace Lumos.Entity
         public string CarInsLastStartTime { get; set; }
         public string CarInsLastEndTime { get; set; }
         public string Creator { get; set; }
+
+        public bool IsValid { get; set; }
+
+        public string HandleReport { get; set; }
+
         public DateTime CreateTime { get; set; }
         public string Mender { get; set; }
         public DateTime? MendTime { get; set; }
+        public DateTime ExpiryTime { get; set; }
+        public DateTime RecoveryTime { get; set; }
+        public int FollowDelayDays { get; set; }
     }
 }

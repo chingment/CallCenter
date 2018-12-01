@@ -29,6 +29,9 @@ namespace Lumos.BLL.Service.Merch
             bataBatch.Name = rop.Name;
             bataBatch.BizType = rop.BizType;
             bataBatch.SoureType = Enumeration.DataBatchSoureType.File;
+            bataBatch.ExpiryTime = this.DateTime.AddDays(rop.ExpiryDays);
+            bataBatch.FollowDelayDays = rop.FollowDelayDays;
+            bataBatch.RecoveryTime = bataBatch.ExpiryTime.AddDays(rop.ExpiryDays);
             bataBatch.SoureName = rop.FileName;
             bataBatch.FilePath = rop.FilePath;
             bataBatch.Status = Enumeration.DataBatchStatus.WaitHandle;

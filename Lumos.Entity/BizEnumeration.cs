@@ -48,27 +48,6 @@ namespace Lumos.Entity
             Unknow = 0
         }
 
-
-        public enum PositionType
-        {
-            [Remark("未知")]
-            Unknow = 0,
-            [Remark("总负责人")]
-            GM = 1,
-            [Remark("场地负责人")]
-            OL = 2,
-            [Remark("小组负责人")]
-            TL = 3,
-            [Remark("外呼人员")]
-            TSR = 4,
-            [Remark("后勤负责人")]
-            OB = 5,
-            [Remark("后勤人员")]
-            TBR = 6,
-            [Remark("数据维护人员")]
-            DBA = 7
-        }
-
         public enum BusinessType
         {
             [Remark("未知")]

@@ -78,15 +78,56 @@ namespace Lumos.BLL.Biz
                             HSSFWorkbook workbook = new HSSFWorkbook(fsRead);
                             ISheet sheet = workbook.GetSheetAt(0);
                             int rowCount = sheet.LastRowNum + 1;
+
+                            int validCount = 0;
+                            int inValidCount = 0;
                             for (int i = 1; i < rowCount; i++)
                             {
                                 IRow row = sheet.GetRow(i);
+
+                                var csrPhoneNumber = NPOIHelperUtil.GetCellValue(row.GetCell(8));
+
+                                var l_DataBatchDetail = CurrentDb.DataBatchDetails.Where(m => m.MerchantId == dataBatch.MerchantId && m.CsrPhoneNumber == csrPhoneNumber).FirstOrDefault();
+
+                                bool isValid = true;
+                                string handleReport = "";
+                                if (l_DataBatchDetail == null)
+                                {
+                                    handleReport = "有效分配数据：未重复";
+                                    isValid = true;
+                                    validCount += 1;
+                                }
+                                else
+                                {
+                                    if (l_DataBatchDetail.RecoveryTime >= DateTime.Now)
+                                    {
+                                        if (l_DataBatchDetail.DataBatchId == dataBatch.Id)
+                                        {
+                                            handleReport = "无效分配数据:与本批次重复";
+                                        }
+                                        else
+                                        {
+                                            handleReport = "无效分配数据:与其他批次重复，未到回收时间";
+                                        }
+
+                                        isValid = false;
+                                        inValidCount += 1;
+                                    }
+                                    else
+                                    {
+                                        handleReport = "有效分配数据:数据重复，已到回收时间";
+                                        isValid = true;
+                                        validCount += 1;
+                                    }
+                                }
+
+
                                 var dataBatchDetail = new DataBatchDetails();
                                 dataBatchDetail.Id = GuidUtil.New();
                                 dataBatchDetail.MerchantId = dataBatch.MerchantId;
                                 dataBatchDetail.DataBatchId = dataBatch.Id;
                                 dataBatchDetail.CsrName = NPOIHelperUtil.GetCellValue(row.GetCell(6));
-                                dataBatchDetail.CsrPhoneNumber = NPOIHelperUtil.GetCellValue(row.GetCell(8));
+                                dataBatchDetail.CsrPhoneNumber = csrPhoneNumber;
                                 dataBatchDetail.CsrAddress = NPOIHelperUtil.GetCellValue(row.GetCell(7));
                                 dataBatchDetail.CsrIdNumber = NPOIHelperUtil.GetCellValue(row.GetCell(3));
                                 dataBatchDetail.CarRegisterDate = NPOIHelperUtil.GetCellValue(row.GetCell(0));
@@ -99,12 +140,19 @@ namespace Lumos.BLL.Biz
                                 dataBatchDetail.CarInsLastCompany = NPOIHelperUtil.GetCellValue(row.GetCell(12));
                                 dataBatchDetail.CarInsLastStartTime = NPOIHelperUtil.GetCellValue(row.GetCell(10));
                                 dataBatchDetail.CarInsLastEndTime = NPOIHelperUtil.GetCellValue(row.GetCell(11));
+                                dataBatchDetail.ExpiryTime = dataBatch.ExpiryTime;
+                                dataBatchDetail.RecoveryTime = dataBatch.RecoveryTime;
+                                dataBatchDetail.FollowDelayDays = dataBatch.FollowDelayDays;
+                                dataBatchDetail.IsValid = isValid;
+                                dataBatchDetail.HandleReport = handleReport;
                                 dataBatchDetail.Creator = GuidUtil.New();
                                 dataBatchDetail.CreateTime = DateTime.Now;
                                 CurrentDb.DataBatchDetails.Add(dataBatchDetail);
                                 CurrentDb.SaveChanges();
                             }
 
+                            dataBatch.ValidCount = validCount;
+                            dataBatch.InValidCount = inValidCount;
                             dataBatch.Status = Entity.Enumeration.DataBatchStatus.Complete;
                             dataBatch.Mender = GuidUtil.New();
                             dataBatch.MendTime = DateTime.Now;

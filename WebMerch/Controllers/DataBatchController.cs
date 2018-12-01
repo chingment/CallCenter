@@ -58,7 +58,7 @@ namespace WebMerch.Controllers
                     InValidCount = item.InValidCount,
                     StatusName = item.Status.GetCnName(),
                     Description = item.Description,
-                    CreateTime = item.CreateTime.ToUnifiedFormatDate()
+                    CreateTime = item.CreateTime.ToUnifiedFormatDateTime()
                 });
             }
 

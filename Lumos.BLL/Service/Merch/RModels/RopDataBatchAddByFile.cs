@@ -13,9 +13,11 @@ namespace Lumos.BLL.Service.Merch
 
         public string Name { get; set; }
 
-        public DateTime StartTime { get; set; }
+        public int RecoveryDays { get; set; }
 
-        public DateTime EndTime { get; set; }
+        public int ExpiryDays { get; set; }
+
+        public int FollowDelayDays { get; set; }
 
         public string FileName { get; set; }
 

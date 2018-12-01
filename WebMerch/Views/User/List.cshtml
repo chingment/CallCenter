@@ -18,7 +18,6 @@
             rowDataCombie: function (p_index, p_row) {
                 var l_Strlimt = "";
                 l_Strlimt += "@Html.IsInPermission("<a href=\\\"javascript:void(0)\\\" operate=\\\"edit\\\"   class=\\\"a-btn a-btn-edit\\\"  >修改</a>")";
-                l_Strlimt += "@Html.IsInPermission("<a href=\\\"javascript:void(0)\\\" operate=\\\"delete\\\"  class=\\\"a-btn\\\" >删除</a>")";
                 var l_StrRows = "";
                 l_StrRows += "<tr>";
                 l_StrRows += "<td class=\"no\" >" + (p_index + 1) + "</td>";
@@ -34,24 +33,6 @@
                 return l_StrRows;
             },
             operate: {
-                "delete": function (obj) {
-
-                    var ids = [];
-                    $.each(obj, function (i, n) {
-                        ids.push(n.id);
-                    });
-
-                    $.lumos.postJson({
-                        url: "/User/Delete",
-                        data: { ids: ids },
-                        success: function (d) {
-                            $.lumos.tips(d.message);
-                            if (d.result == $.lumos.resultType.success) {
-                                listTable.loadData(0);
-                            }
-                        }
-                    });
-                },
                 "edit": function (obj) {
                     var url = '/User/Edit?id=' + obj.id;
                     var title = '修改';
