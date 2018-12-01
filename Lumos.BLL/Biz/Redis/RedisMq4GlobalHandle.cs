@@ -1,4 +1,5 @@
-﻿using Lumos.DAL;
+﻿using Lumos.Common;
+using Lumos.DAL;
 using Lumos.Entity;
 using NPOI.HSSF.UserModel;
 using NPOI.SS.UserModel;
@@ -80,25 +81,24 @@ namespace Lumos.BLL.Biz
                             for (int i = 1; i < rowCount; i++)
                             {
                                 IRow row = sheet.GetRow(i);
-
                                 var dataBatchDetail = new DataBatchDetails();
                                 dataBatchDetail.Id = GuidUtil.New();
                                 dataBatchDetail.MerchantId = dataBatch.MerchantId;
                                 dataBatchDetail.DataBatchId = dataBatch.Id;
-                                dataBatchDetail.CsrName = "";
-                                dataBatchDetail.CsrPhoneNumber = "";
-                                dataBatchDetail.CsrAddress = "";
-                                dataBatchDetail.CsrIdNumber = "";
-                                dataBatchDetail.CarRegisterDate = "";
-                                dataBatchDetail.CarPlateNo = "";
-                                dataBatchDetail.CarModel = "";
-                                dataBatchDetail.CarEngineNo = "";
-                                dataBatchDetail.CarVin = "";
-                                dataBatchDetail.CarInsLastQzNo = "";
-                                dataBatchDetail.CarInsLastSyNo = "";
-                                dataBatchDetail.CarInsLastCompany = "";
-                                dataBatchDetail.CarInsLastStartTime = "";
-                                dataBatchDetail.CarInsLastEndTime = "";
+                                dataBatchDetail.CsrName = NPOIHelperUtil.GetCellValue(row.GetCell(6));
+                                dataBatchDetail.CsrPhoneNumber = NPOIHelperUtil.GetCellValue(row.GetCell(8));
+                                dataBatchDetail.CsrAddress = NPOIHelperUtil.GetCellValue(row.GetCell(7));
+                                dataBatchDetail.CsrIdNumber = NPOIHelperUtil.GetCellValue(row.GetCell(3));
+                                dataBatchDetail.CarRegisterDate = NPOIHelperUtil.GetCellValue(row.GetCell(0));
+                                dataBatchDetail.CarPlateNo = NPOIHelperUtil.GetCellValue(row.GetCell(1));
+                                dataBatchDetail.CarModel = NPOIHelperUtil.GetCellValue(row.GetCell(2));
+                                dataBatchDetail.CarEngineNo = NPOIHelperUtil.GetCellValue(row.GetCell(5));
+                                dataBatchDetail.CarVin = NPOIHelperUtil.GetCellValue(row.GetCell(4));
+                                dataBatchDetail.CarInsLastQzNo = NPOIHelperUtil.GetCellValue(row.GetCell(9));
+                                dataBatchDetail.CarInsLastSyNo = NPOIHelperUtil.GetCellValue(row.GetCell(9));
+                                dataBatchDetail.CarInsLastCompany = NPOIHelperUtil.GetCellValue(row.GetCell(12));
+                                dataBatchDetail.CarInsLastStartTime = NPOIHelperUtil.GetCellValue(row.GetCell(10));
+                                dataBatchDetail.CarInsLastEndTime = NPOIHelperUtil.GetCellValue(row.GetCell(11));
                                 dataBatchDetail.Creator = GuidUtil.New();
                                 dataBatchDetail.CreateTime = DateTime.Now;
                                 CurrentDb.DataBatchDetails.Add(dataBatchDetail);
@@ -112,7 +112,6 @@ namespace Lumos.BLL.Biz
                             ts.Complete();
                         }
                     }
-
                 }
             }
 
