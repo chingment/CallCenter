@@ -23,6 +23,11 @@ namespace WebMerch.Controllers
             return View();
         }
 
+        public ViewResult ListBySelect()
+        {
+            return View();
+        }
+
         public ViewResult Add()
         {
             return View();

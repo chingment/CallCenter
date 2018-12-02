@@ -16,5 +16,10 @@ namespace Lumos.BLL.Service.Merch
 
         public Lumos.Entity.Enumeration.OrganizationStatus Status { get; set; }
 
+        public string HeaderId { get; set; }
+
+        public string HeaderFullName { get; set; }
+
+        public string HeaderUserName { get; set; }
     }
 }

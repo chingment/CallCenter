@@ -44,30 +44,10 @@
             $("#tab1").tab();
 
 
-            $('#btn_select_staffuser').live('click', function () {
-                var dialogtitle = "选择用户";
-
-                var l_title = $(this).attr("dialog-title")
-                if (typeof l_title != 'undefined') {
-                    dialogtitle = l_title;
-                }
-                art.dialog.open('../StaffUser/SelectList', {
-                    id: "openDialog565", title: l_title, width: '600px', height: '480px', lock: true, drag: false, cancelVal: '关闭', cancel: true
+            $('#btn_select_user').live('click', function () {
+                art.dialog.open('/User/ListBySelect', {
+                    id: "openDialog565", title: "选择", width: '600px', height: '480px', lock: true, drag: false, cancelVal: '关闭', cancel: true
                 });
-
-            });
-
-            $('#btn_select_salesmanUser').live('click', function () {
-                var dialogtitle = "选择业务人员";
-
-                var l_title = $(this).attr("dialog-title")
-                if (typeof l_title != 'undefined') {
-                    dialogtitle = l_title;
-                }
-                art.dialog.open('../SalesmanUser/SelectList', {
-                    id: "openDialog565", title: l_title, width: '600px', height: '480px', lock: true, drag: false, cancelVal: '关闭', cancel: true
-                });
-
             });
 
             $(".open-bigimg").live('click', function () {

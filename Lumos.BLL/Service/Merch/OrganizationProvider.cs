@@ -59,7 +59,16 @@ namespace Lumos.BLL.Service.Merch
                 ret.Name = organization.Name ?? "";
                 ret.Description = organization.Description ?? "";
                 ret.Status = organization.Status;
+
+                var header = CurrentDb.SysMerchantUser.Where(m => m.Id == organization.HeaderId).FirstOrDefault();
+                if (header != null)
+                {
+                    ret.HeaderId = header.Id;
+                    ret.HeaderUserName = header.UserName;
+                    ret.HeaderFullName = header.FullName;
+                }
             }
+
 
             return new CustomJsonResult(ResultType.Success, ResultCode.Success, "获取成功", ret);
         }
@@ -96,6 +105,7 @@ namespace Lumos.BLL.Service.Merch
                 organization.Description = rop.Description;
                 organization.Status = Enumeration.OrganizationStatus.Valid;
                 organization.Dept = dept;
+                organization.HeaderId = rop.HeaderId;
                 organization.Creator = operater;
                 organization.CreateTime = DateTime.Now;
                 CurrentDb.Organization.Add(organization);
@@ -136,6 +146,7 @@ namespace Lumos.BLL.Service.Merch
             organization.Dept = dept;
             organization.Status = rop.Status;
             organization.Description = rop.Description;
+            organization.HeaderId = rop.HeaderId;
             organization.Mender = operater;
             organization.MendTime = DateTime.Now;
             CurrentDb.SaveChanges();

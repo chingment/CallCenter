@@ -33,7 +33,7 @@
 
             $.formValidator.initConfig({ formID: "form1", onError: function (msg) { $.lumos.tips(msg); } });
             $("#txt_Name").formValidator().inputValidator({ min: 1, max: 20, onError: "名称须填,且不能超过20个字符" });
-            $("#sel_Status").formValidator().inputValidator({ min: 1, max: 500, onError: "请选择状态" });
+            $("#txt_HearderId").formValidator().inputValidator({ min: 1, max: 100, onError: "请选择机构负责人" });
             $("#txt_Description").formValidator().inputValidator({ min: 0, max: 500, onError: "描述不能超过500个字符" });
 
             $("#maintree_add_node").click(function () {
@@ -103,17 +103,17 @@
                     var id = selNode.id;
                     var name = $('#txt_Name').val();
                     var description = $("#txt_Description").val();
+                    var headerId = $("#txt_HeaderId").val();
                     var status = $("#sel_Status").val();
-
                     $.lumos.postJson({
                         url: "/Organization/Edit",
-                        data: { id: id, name: name, description: description, status: status },
-                        success: function (d) {
+                        data: { id: id, name: name, description: description, headerId, headerId, status: status },
+                                success: function (d) {
                             $.lumos.tips(d.message);
                             if (d.result == $.lumos.resultType.success) {
                                 mainTreeLoadData();
                             }
-                        }
+                                }
                     });
                 });
 
@@ -206,6 +206,10 @@
                         $("#lbl_PName").text(parentName);
                         $("#txt_Name").val(data.name);
                         $("#txt_Description").val(data.description);
+
+                        $("#txt_HeaderId").val(data.headerId);
+                        $('#lbl_Header_Name').text(data.headerFullName + "(" + data.headerUserName + ")");
+
                         $("#sel_Status").find("option[value='" + data.status + "']").attr("selected", true);
                         $("#sel_Status").trigger("chosen:updated");
                     }
@@ -322,6 +326,11 @@
 
         }
 
+        function getUserDetails(obj) {
+
+            $("#txt_HeaderId").val(obj.id);
+            $('#lbl_Header_Name').text(obj.fullName + "(" + obj.userName + ")");
+        }
     </script>
 }
 
@@ -348,7 +357,7 @@
 
                         <table class="f-tb" cellpadding="0" cellspacing="1">
                             <tr>
-                                <td class="f-tb-t">
+                                <td class="f-tb-t" style="width:80px">
                                     上级名称：
                                 </td>
                                 <td class="f-tb-c">
@@ -361,6 +370,16 @@
                                 </td>
                                 <td class="f-tb-c">
                                     <input type="text" autocomplete="off" value="" id="txt_Name" style="width: 250px;" class="input-control" />
+                                </td>
+                            </tr>
+                            <tr>
+                                <td class="f-tb-t">
+                                    <span class="required-symbol">*</span> 机构负责人：
+                                </td>
+                                <td class="f-tb-c">
+                                    <span id="lbl_Header_Name"></span>
+                                    <input type="hidden" id="txt_HeaderId" value="" />
+                                    <input type="button" class="btn" id="btn_select_user" value="选择" dialog-title="选择" />
                                 </td>
                             </tr>
                             <tr>

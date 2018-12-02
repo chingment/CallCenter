@@ -28,5 +28,7 @@ namespace Lumos.Entity
         public int Dept { get; set; }
 
         public string FullName { get; set; }
+
+        public string HeaderId { get; set; }
     }
 }

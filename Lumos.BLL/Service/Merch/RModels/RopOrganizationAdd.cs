@@ -12,5 +12,6 @@ namespace Lumos.BLL.Service.Merch
         public string Name { get; set; }
         public string Description { get; set; }
 
+        public string HeaderId { get; set; }
     }
 }

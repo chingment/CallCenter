@@ -203,6 +203,7 @@
     <Content Include="Views\ObBatch\List.cshtml" />
     <Content Include="Views\ObBatch\AddByFile.cshtml" />
     <Content Include="Views\ObBatch\Details.cshtml" />
+    <Content Include="Views\User\ListBySelect.cshtml" />
     <None Include="Web.config">
       <SubType>Designer</SubType>
     </None>
@@ -215,7 +216,6 @@
   </ItemGroup>
   <ItemGroup>
     <Folder Include="Scripts\ckeditor\" />
-    <Folder Include="Views\ObBatchData\" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="fonts\glyphicons-halflings-regular.woff" />
