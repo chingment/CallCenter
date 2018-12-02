@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace Lumos.BLL.Service.Merch
 {
-    public class RetDataBatchGetDetails
+    public class RetObBatchGetDetails
     {
         public string Id { get; set; }
 

@@ -4,8 +4,8 @@ using System.ComponentModel.DataAnnotations.Schema;
 
 namespace Lumos.Entity
 {
-    [Table("DataBatch")]
-    public class DataBatch
+    [Table("ObBatch")]
+    public class ObBatch
     {
         [Key]
         public string Id { get; set; }

@@ -162,8 +162,9 @@
     <Compile Include="App_Start\Own\OwnRequest.cs" />
     <Compile Include="App_Start\RouteConfig.cs" />
     <Compile Include="Controllers\CommonController.cs" />
-    <Compile Include="Controllers\DataBatchController.cs" />
+    <Compile Include="Controllers\ObBatchController.cs" />
     <Compile Include="Controllers\HomeController.cs" />
+    <Compile Include="Controllers\ObBatchDataController.cs" />
     <Compile Include="Controllers\OrganizationController.cs" />
     <Compile Include="Controllers\UserController.cs" />
     <Compile Include="Global.asax.cs">
@@ -199,9 +200,9 @@
     <Content Include="Views\User\Add.cshtml" />
     <Content Include="Views\User\Edit.cshtml" />
     <Content Include="Views\User\List.cshtml" />
-    <Content Include="Views\DataBatch\List.cshtml" />
-    <Content Include="Views\DataBatch\AddByFile.cshtml" />
-    <Content Include="Views\DataBatch\Details.cshtml" />
+    <Content Include="Views\ObBatch\List.cshtml" />
+    <Content Include="Views\ObBatch\AddByFile.cshtml" />
+    <Content Include="Views\ObBatch\Details.cshtml" />
     <None Include="Web.config">
       <SubType>Designer</SubType>
     </None>
@@ -214,6 +215,7 @@
   </ItemGroup>
   <ItemGroup>
     <Folder Include="Scripts\ckeditor\" />
+    <Folder Include="Views\ObBatchData\" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="fonts\glyphicons-halflings-regular.woff" />

@@ -10,10 +10,10 @@
         var list_machine;
         $(this).ready(function () {
 
-            $('input[name=DataBatchId]').val(id);
+            $('input[name=ObBatchId]').val(id);
 
             list_machine = $("#list_DataBatchDetails_CarIns").loadDataTable({
-                url: "/DataBatch/GetListByCarIns",
+                url: "/ObBatchData/GetListByCarIns",
                 pageIndex: 0,
                 searchParams: $("#form_DataBatchDetails_CarIns").serializeArray(),
                 searchButtonId: "btn_Search",
@@ -48,7 +48,7 @@
         function getDetails() {
 
             $.lumos.getJson({
-                url: "/DataBatch/GetDetails",
+                url: "/ObBatch/GetDetails",
                 urlParams: { id: id },
                 isUseHandling: true,
                 success: function (d) {
@@ -75,7 +75,7 @@
     <div class="tab" id="tab1">
         <div class="tab-item">
             <ul>
-                <li class="item first selected"><a class="a-btn-info" href="javascript:void(0)">基本信息</a></li>
+                <li class="item first selected"><a class="a-btn-info" href="javascript:void(0)">报告信息</a></li>
                 <li class="item"><a class="a-btn-info" href="javascript:void(0)">数据信息</a></li>
             </ul>
         </div>
@@ -151,7 +151,7 @@
             <div class="subcontent">
 
                 <form id="form_DataBatchDetails_CarIns" name="form_DataBatchDetails_CarIns">
-                    <input id="DataBatchId" name="DataBatchId" type="hidden" value="" />
+                    <input id="ObBatchId" name="ObBatchId" type="hidden" value="" />
                     <div class="search-bar">
                         <div class="filter">
                             <span class="filter-label">名称：</span>

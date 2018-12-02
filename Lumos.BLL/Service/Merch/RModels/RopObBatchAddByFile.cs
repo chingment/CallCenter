@@ -7,7 +7,7 @@ using System.Threading.Tasks;
 
 namespace Lumos.BLL.Service.Merch
 {
-    public class RopDataBatchAddByFile
+    public class RopObBatchAddByFile
     {
         public string Code { get; set; }
 

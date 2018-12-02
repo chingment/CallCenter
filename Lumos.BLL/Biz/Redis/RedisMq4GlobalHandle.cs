@@ -15,8 +15,8 @@ namespace Lumos.BLL.Biz
     {
         [Remark("未知")]
         Unknow = 0,
-        [Remark("数据批次")]
-        DataBatch = 1
+        [Remark("外呼数据批次导入")]
+        ObBatch = 1
     }
 
     public class RedisMq4GlobalHandle
@@ -26,16 +26,16 @@ namespace Lumos.BLL.Biz
         private static readonly object lock_Handle = new object();
         public void Handle()
         {
-            LogUtil.Info("type:" + this.Type.GetCnName());
-            //LogUtil.Info("pms:"+)
+            LogUtil.Info("type:" + this.Type.GetCnName() + ",pms: " + Newtonsoft.Json.JsonConvert.SerializeObject(this.Pms));
+
             lock (lock_Handle)
             {
                 try
                 {
                     switch (this.Type)
                     {
-                        case RedisMqHandleType.DataBatch:
-                            HandleByDataBatch(this.Pms.ToJsonObject<DataBatch>());
+                        case RedisMqHandleType.ObBatch:
+                            HandleByDataBatch(this.Pms.ToJsonObject<ObBatch>());
                             break;
                     }
                 }
@@ -47,34 +47,32 @@ namespace Lumos.BLL.Biz
         }
 
 
-        private void HandleByDataBatch(DataBatch rop)
+        private void HandleByDataBatch(ObBatch rop)
         {
             LumosDbContext CurrentDb = new LumosDbContext();
 
-            var dataBatch = CurrentDb.DataBatch.Where(m => m.Id == rop.Id && m.Status == Entity.Enumeration.DataBatchStatus.WaitHandle).FirstOrDefault();
+            var obBatch = CurrentDb.ObBatch.Where(m => m.Id == rop.Id && m.Status == Entity.Enumeration.DataBatchStatus.WaitHandle).FirstOrDefault();
 
-            if (dataBatch == null)
+            if (obBatch == null)
             {
                 LogUtil.Info("找不到处理的批次");
                 return;
             }
 
-            dataBatch.Status = Entity.Enumeration.DataBatchStatus.Handling;
-            dataBatch.Mender = GuidUtil.New();
-            dataBatch.MendTime = DateTime.Now;
+            obBatch.Status = Entity.Enumeration.DataBatchStatus.Handling;
+            obBatch.Mender = GuidUtil.New();
+            obBatch.MendTime = DateTime.Now;
             CurrentDb.SaveChanges();
-
-            //Thread.Sleep(10000);
 
             using (TransactionScope ts = new TransactionScope())
             {
-                if (dataBatch.SoureType == Entity.Enumeration.DataBatchSoureType.File)
+                if (obBatch.SoureType == Entity.Enumeration.DataBatchSoureType.File)
                 {
-                    if (!string.IsNullOrEmpty(dataBatch.FilePath))
+                    if (!string.IsNullOrEmpty(obBatch.FilePath))
                     {
-                        if (File.Exists(dataBatch.FilePath))
+                        if (File.Exists(obBatch.FilePath))
                         {
-                            FileStream fsRead = new FileStream(dataBatch.FilePath, FileMode.Open);
+                            FileStream fsRead = new FileStream(obBatch.FilePath, FileMode.Open);
                             HSSFWorkbook workbook = new HSSFWorkbook(fsRead);
                             ISheet sheet = workbook.GetSheetAt(0);
                             int rowCount = sheet.LastRowNum + 1;
@@ -87,11 +85,11 @@ namespace Lumos.BLL.Biz
 
                                 var csrPhoneNumber = NPOIHelperUtil.GetCellValue(row.GetCell(8));
 
-                                var l_DataBatchDetail = CurrentDb.DataBatchDetails.Where(m => m.MerchantId == dataBatch.MerchantId && m.CsrPhoneNumber == csrPhoneNumber).FirstOrDefault();
+                                var obCustomer = CurrentDb.ObCustomer.Where(m => m.MerchantId == obBatch.MerchantId && m.CsrPhoneNumber == csrPhoneNumber).FirstOrDefault();
 
                                 bool isValid = true;
                                 string handleReport = "";
-                                if (l_DataBatchDetail == null)
+                                if (obCustomer == null)
                                 {
                                     handleReport = "有效分配数据：未重复";
                                     isValid = true;
@@ -99,9 +97,9 @@ namespace Lumos.BLL.Biz
                                 }
                                 else
                                 {
-                                    if (l_DataBatchDetail.RecoveryTime >= DateTime.Now)
+                                    if (obCustomer.RecoveryTime >= DateTime.Now)
                                     {
-                                        if (l_DataBatchDetail.DataBatchId == dataBatch.Id)
+                                        if (obCustomer.ObBatchId == obBatch.Id)
                                         {
                                             handleReport = "无效分配数据:与本批次重复";
                                         }
@@ -122,40 +120,65 @@ namespace Lumos.BLL.Biz
                                 }
 
 
-                                var dataBatchDetail = new DataBatchDetails();
-                                dataBatchDetail.Id = GuidUtil.New();
-                                dataBatchDetail.MerchantId = dataBatch.MerchantId;
-                                dataBatchDetail.DataBatchId = dataBatch.Id;
-                                dataBatchDetail.CsrName = NPOIHelperUtil.GetCellValue(row.GetCell(6));
-                                dataBatchDetail.CsrPhoneNumber = csrPhoneNumber;
-                                dataBatchDetail.CsrAddress = NPOIHelperUtil.GetCellValue(row.GetCell(7));
-                                dataBatchDetail.CsrIdNumber = NPOIHelperUtil.GetCellValue(row.GetCell(3));
-                                dataBatchDetail.CarRegisterDate = NPOIHelperUtil.GetCellValue(row.GetCell(0));
-                                dataBatchDetail.CarPlateNo = NPOIHelperUtil.GetCellValue(row.GetCell(1));
-                                dataBatchDetail.CarModel = NPOIHelperUtil.GetCellValue(row.GetCell(2));
-                                dataBatchDetail.CarEngineNo = NPOIHelperUtil.GetCellValue(row.GetCell(5));
-                                dataBatchDetail.CarVin = NPOIHelperUtil.GetCellValue(row.GetCell(4));
-                                dataBatchDetail.CarInsLastQzNo = NPOIHelperUtil.GetCellValue(row.GetCell(9));
-                                dataBatchDetail.CarInsLastSyNo = NPOIHelperUtil.GetCellValue(row.GetCell(9));
-                                dataBatchDetail.CarInsLastCompany = NPOIHelperUtil.GetCellValue(row.GetCell(12));
-                                dataBatchDetail.CarInsLastStartTime = NPOIHelperUtil.GetCellValue(row.GetCell(10));
-                                dataBatchDetail.CarInsLastEndTime = NPOIHelperUtil.GetCellValue(row.GetCell(11));
-                                dataBatchDetail.ExpiryTime = dataBatch.ExpiryTime;
-                                dataBatchDetail.RecoveryTime = dataBatch.RecoveryTime;
-                                dataBatchDetail.FollowDelayDays = dataBatch.FollowDelayDays;
-                                dataBatchDetail.IsValid = isValid;
-                                dataBatchDetail.HandleReport = handleReport;
-                                dataBatchDetail.Creator = GuidUtil.New();
-                                dataBatchDetail.CreateTime = DateTime.Now;
-                                CurrentDb.DataBatchDetails.Add(dataBatchDetail);
+                                var obBatchData = new ObBatchData();
+                                obBatchData.Id = GuidUtil.New();
+                                obBatchData.MerchantId = obBatch.MerchantId;
+                                obBatchData.ObBatchId = obBatch.Id;
+                                obBatchData.CsrName = NPOIHelperUtil.GetCellValue(row.GetCell(6));
+                                obBatchData.CsrPhoneNumber = csrPhoneNumber;
+                                obBatchData.CsrAddress = NPOIHelperUtil.GetCellValue(row.GetCell(7));
+                                obBatchData.CsrIdNumber = NPOIHelperUtil.GetCellValue(row.GetCell(3));
+                                obBatchData.CarRegisterDate = NPOIHelperUtil.GetCellValue(row.GetCell(0));
+                                obBatchData.CarPlateNo = NPOIHelperUtil.GetCellValue(row.GetCell(1));
+                                obBatchData.CarModel = NPOIHelperUtil.GetCellValue(row.GetCell(2));
+                                obBatchData.CarEngineNo = NPOIHelperUtil.GetCellValue(row.GetCell(5));
+                                obBatchData.CarVin = NPOIHelperUtil.GetCellValue(row.GetCell(4));
+                                obBatchData.CarInsLastQzNo = NPOIHelperUtil.GetCellValue(row.GetCell(9));
+                                obBatchData.CarInsLastSyNo = NPOIHelperUtil.GetCellValue(row.GetCell(9));
+                                obBatchData.CarInsLastCompany = NPOIHelperUtil.GetCellValue(row.GetCell(12));
+                                obBatchData.CarInsLastStartTime = NPOIHelperUtil.GetCellValue(row.GetCell(10));
+                                obBatchData.CarInsLastEndTime = NPOIHelperUtil.GetCellValue(row.GetCell(11));
+                                obBatchData.IsValid = isValid;
+                                obBatchData.HandleReport = handleReport;
+                                obBatchData.Creator = GuidUtil.New();
+                                obBatchData.CreateTime = DateTime.Now;
+                                CurrentDb.ObBatchData.Add(obBatchData);
                                 CurrentDb.SaveChanges();
+
+                                if (isValid)
+                                {
+                                    obCustomer = new ObCustomer();
+                                    obCustomer.Id = GuidUtil.New();
+                                    obCustomer.MerchantId = obBatch.MerchantId;
+                                    obCustomer.ObBatchId = obBatch.Id;
+                                    obCustomer.ObBatchDataId = obBatchData.Id;
+                                    obCustomer.CsrName = NPOIHelperUtil.GetCellValue(row.GetCell(6));
+                                    obCustomer.CsrPhoneNumber = csrPhoneNumber;
+                                    obCustomer.CsrAddress = NPOIHelperUtil.GetCellValue(row.GetCell(7));
+                                    obCustomer.CsrIdNumber = NPOIHelperUtil.GetCellValue(row.GetCell(3));
+                                    obCustomer.CarRegisterDate = NPOIHelperUtil.GetCellValue(row.GetCell(0));
+                                    obCustomer.CarPlateNo = NPOIHelperUtil.GetCellValue(row.GetCell(1));
+                                    obCustomer.CarModel = NPOIHelperUtil.GetCellValue(row.GetCell(2));
+                                    obCustomer.CarEngineNo = NPOIHelperUtil.GetCellValue(row.GetCell(5));
+                                    obCustomer.CarVin = NPOIHelperUtil.GetCellValue(row.GetCell(4));
+                                    obCustomer.CarInsLastQzNo = NPOIHelperUtil.GetCellValue(row.GetCell(9));
+                                    obCustomer.CarInsLastSyNo = NPOIHelperUtil.GetCellValue(row.GetCell(9));
+                                    obCustomer.CarInsLastCompany = NPOIHelperUtil.GetCellValue(row.GetCell(12));
+                                    obCustomer.CarInsLastStartTime = NPOIHelperUtil.GetCellValue(row.GetCell(10));
+                                    obCustomer.CarInsLastEndTime = NPOIHelperUtil.GetCellValue(row.GetCell(11));
+                                    obCustomer.ExpiryTime = obBatch.ExpiryTime;
+                                    obCustomer.RecoveryTime = obBatch.RecoveryTime;
+                                    obCustomer.FollowDelayDays = obBatch.FollowDelayDays;
+                                    CurrentDb.ObCustomer.Add(obCustomer);
+                                    CurrentDb.SaveChanges();
+                                }
                             }
 
-                            dataBatch.ValidCount = validCount;
-                            dataBatch.InValidCount = inValidCount;
-                            dataBatch.Status = Entity.Enumeration.DataBatchStatus.Complete;
-                            dataBatch.Mender = GuidUtil.New();
-                            dataBatch.MendTime = DateTime.Now;
+                            obBatch.ValidCount = validCount;
+                            obBatch.InValidCount = inValidCount;
+                            obBatch.Status = Entity.Enumeration.DataBatchStatus.Complete;
+                            obBatch.Mender = GuidUtil.New();
+                            obBatch.MendTime = DateTime.Now;
                             CurrentDb.SaveChanges();
                             ts.Complete();
                         }

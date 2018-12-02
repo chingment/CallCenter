@@ -34,7 +34,7 @@
                 return;
             }
 
-            art.dialog.confirm('确定要新建？', function (e) {
+            art.dialog.confirm('确定要导入？', function (e) {
 
                 var loading = artDialog.loading2("正在上传中");
                 $("#errorbox").hide();
@@ -43,7 +43,7 @@
 
                 $('#form1').ajaxSubmit({
                     type: "post",
-                    url: "/DataBatch/AddByFile",
+                    url: "/ObBatch/AddByFile",
                     dataType: "json",
                     success: function (d) {
                         loading.close();

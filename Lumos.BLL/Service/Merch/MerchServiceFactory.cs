@@ -9,11 +9,11 @@ namespace Lumos.BLL.Service.Merch
     public class MerchServiceFactory : BaseFactory
     {
 
-        public static DataBatchProvider DataBatch
+        public static ObBatchProvider ObBatch
         {
             get
             {
-                return new DataBatchProvider();
+                return new ObBatchProvider();
             }
         }
 

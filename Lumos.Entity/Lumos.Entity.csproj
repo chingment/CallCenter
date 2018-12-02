@@ -58,9 +58,10 @@
     <Compile Include="Biz\BizSn.cs" />
     <Compile Include="Biz\BizProcessesAudit.cs" />
     <Compile Include="Biz\BizProcessesAuditDetails.cs" />
-    <Compile Include="Biz\DataBatch.cs" />
-    <Compile Include="Biz\DataBatchDetails.cs" />
+    <Compile Include="Biz\ObBatch.cs" />
+    <Compile Include="Biz\ObBatchData.cs" />
     <Compile Include="Biz\Merchant.cs" />
+    <Compile Include="Biz\ObCustomer.cs" />
     <Compile Include="Biz\Organization.cs" />
     <Compile Include="Sys\SysClientUser.cs" />
     <Compile Include="Sys\SysMerchatUser.cs" />

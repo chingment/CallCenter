@@ -6,8 +6,8 @@ using System.Threading.Tasks;
 
 namespace Lumos.BLL.Service.Merch
 {
-    public class RupDataBatchGetListByCarIns : RupBaseGetList
+    public class RupObBatchGetList : RupBaseGetList
     {
-        public string DataBatchId { get; set; }
+        public string Code { get; set; }
     }
 }

@@ -30,10 +30,11 @@ namespace Lumos.DAL
         public IDbSet<Merchant> Merchant { get; set; }
         public IDbSet<Organization> Organization { get; set; }
 
-        public IDbSet<DataBatch> DataBatch { get; set; }
+        public IDbSet<ObBatch> ObBatch { get; set; }
 
-        public IDbSet<DataBatchDetails> DataBatchDetails { get; set; }
+        public IDbSet<ObBatchData> ObBatchData { get; set; }
 
+        public IDbSet<ObCustomer> ObCustomer { get; set; }
 
         protected override void OnModelCreating(DbModelBuilder modelBuilder)
         {
