@@ -169,6 +169,8 @@ namespace Lumos.BLL.Biz
                                     obCustomer.ExpiryTime = obBatch.ExpiryTime;
                                     obCustomer.RecoveryTime = obBatch.RecoveryTime;
                                     obCustomer.FollowDelayDays = obBatch.FollowDelayDays;
+                                    obCustomer.Creator = GuidUtil.New();
+                                    obCustomer.CreateTime = DateTime.Now;
                                     CurrentDb.ObCustomer.Add(obCustomer);
                                     CurrentDb.SaveChanges();
                                 }

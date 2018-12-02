@@ -4,6 +4,7 @@ using System.ComponentModel.DataAnnotations.Schema;
 
 namespace Lumos.Entity
 {
+    [Table("ObCustomer")]
     public class ObCustomer
     {
         [Key]
