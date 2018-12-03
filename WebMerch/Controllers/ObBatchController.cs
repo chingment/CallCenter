@@ -94,6 +94,14 @@ namespace WebMerch.Controllers
                 return new CustomJsonResult(ResultType.Failure, ResultCode.Failure, "文件格式类型不符合，必须为.xls文件");
             }
 
+            var organization = CurrentDb.Organization.Where(m => m.Dept == 0 && m.MerchantId == this.CurrentMerchantId).FirstOrDefault();
+
+            if (string.IsNullOrEmpty(organization.HeaderId))
+            {
+                return new CustomJsonResult(ResultType.Failure, ResultCode.Failure, string.Format("请机构[{0}]设置负责人，该负责人是用于分配数据", organization.Name));
+            }
+
+
             var result = new CustomJsonResult();
 
             HSSFWorkbook workbook = new HSSFWorkbook(file.InputStream);
@@ -153,6 +161,7 @@ namespace WebMerch.Controllers
 
             rop.FileName = file.FileName;
             rop.FilePath = filePath;
+            rop.BelongId = organization.HeaderId;
             result = MerchServiceFactory.ObBatch.AddByFile(this.CurrentUserId, this.CurrentMerchantId, rop);
 
             return result;

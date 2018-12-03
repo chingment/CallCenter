@@ -57,6 +57,7 @@ namespace Lumos.BLL.Service.Merch
             obBatch.RecoveryTime = obBatch.ExpiryTime.AddDays(rop.ExpiryDays);
             obBatch.SoureName = rop.FileName;
             obBatch.FilePath = rop.FilePath;
+            obBatch.BelongId = rop.BelongId;
             obBatch.Status = Enumeration.DataBatchStatus.WaitHandle;
             obBatch.Creator = operater;
             obBatch.CreateTime = this.DateTime;

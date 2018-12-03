@@ -34,7 +34,11 @@ namespace Lumos.DAL
 
         public IDbSet<ObBatchData> ObBatchData { get; set; }
 
+        public IDbSet<ObBatchDataAllocate>  ObBatchDataAllocate { get; set; }
+
         public IDbSet<ObCustomer> ObCustomer { get; set; }
+
+        public IDbSet<ObCustomerBelongTrack> ObCustomerBelongTrack { get; set; }
 
         protected override void OnModelCreating(DbModelBuilder modelBuilder)
         {

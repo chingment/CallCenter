@@ -30,5 +30,7 @@ namespace Lumos.Entity
         public DateTime? MendTime { get; set; }
 
         public string HandleReport { get; set; }
+
+        public string BelongId { get; set; }
     }
 }

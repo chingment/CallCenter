@@ -93,10 +93,10 @@
     <Compile Include="Biz\Models\FieldModel.cs" />
     <Compile Include="MchPermissionCode.cs" />
     <Compile Include="Biz\BizFactory.cs" />
-    <Compile Include="Biz\RModels\RetLogin.cs" />
-    <Compile Include="Biz\RModels\RetWxUserCheckedUser.cs" />
-    <Compile Include="Biz\RModels\RopLogin.cs" />
-    <Compile Include="Biz\RModels\RopWxUserCheckedUser.cs" />
+    <Compile Include="Biz\Redis\RModels\RetLogin.cs" />
+    <Compile Include="Biz\Redis\RModels\RetWxUserCheckedUser.cs" />
+    <Compile Include="Biz\Redis\RModels\RopLogin.cs" />
+    <Compile Include="Biz\Redis\RModels\RopWxUserCheckedUser.cs" />
     <Compile Include="Biz\Redis\RedisMq4GlobalHandle.cs" />
     <Compile Include="Biz\Redis\RedisMq4GlobalProvider.cs" />
     <Compile Include="Biz\Redis\RedisMqFactory.cs" />
@@ -104,9 +104,9 @@
     <Compile Include="Biz\WxUserProvider.cs" />
     <Compile Include="Service\Admin\AdminServiceFactory.cs" />
     <Compile Include="Factory..cs" />
-    <Compile Include="Biz\RModels\RetOperateResult.cs" />
-    <Compile Include="Biz\RModels\RupBaseGetList.cs" />
-    <Compile Include="Biz\RModels\RupOperateGetResult.cs" />
+    <Compile Include="Biz\Redis\RModels\RetOperateResult.cs" />
+    <Compile Include="Biz\Redis\RModels\RupBaseGetList.cs" />
+    <Compile Include="Biz\Redis\RModels\RupOperateGetResult.cs" />
     <Compile Include="Sdk\SdkFactory.cs" />
     <Compile Include="Sdk\WxConfigByFanJu.cs" />
     <Compile Include="Sdk\WxSdkProvider.cs" />
