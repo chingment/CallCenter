@@ -25,7 +25,9 @@ namespace Lumos.BLL.Service.Merch
 
         public Enumeration.DataBatchBizType BizType { get; set; }
 
-        public string BelongId { get; set; }
+        public string BelongUserId { get; set; }
+
+        public string BelongOrganizationId { get; set; }
     }
 
 }

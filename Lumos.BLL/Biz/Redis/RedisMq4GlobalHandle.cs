@@ -72,7 +72,7 @@ namespace Lumos.BLL.Biz
                     {
                         if (File.Exists(obBatch.FilePath))
                         {
-                            var belong = CurrentDb.SysUser.Where(m => m.Id == obBatch.BelongId).FirstOrDefault();
+                            var belongUser = CurrentDb.SysUser.Where(m => m.Id == obBatch.BelongUserId).FirstOrDefault();
 
                             FileStream fsRead = new FileStream(obBatch.FilePath, FileMode.Open);
                             HSSFWorkbook workbook = new HSSFWorkbook(fsRead);
@@ -171,6 +171,8 @@ namespace Lumos.BLL.Biz
                                     obCustomer.ExpiryTime = obBatch.ExpiryTime;
                                     obCustomer.RecoveryTime = obBatch.RecoveryTime;
                                     obCustomer.FollowDelayDays = obBatch.FollowDelayDays;
+                                    obCustomer.BelongOrganizationId = obBatch.BelongOrganizationId;
+                                    obCustomer.BelongUserId = obBatch.BelongUserId;
                                     obCustomer.Creator = obBatch.Creator;
                                     obCustomer.CreateTime = obBatch.CreateTime;
                                     CurrentDb.ObCustomer.Add(obCustomer);
@@ -183,8 +185,8 @@ namespace Lumos.BLL.Biz
                                     obCustomerBelongTrack.ObBatchId = obBatch.Id;
                                     obCustomerBelongTrack.ObBatchDataId = obBatchData.Id;
                                     obCustomerBelongTrack.ObCustomerId = obCustomer.Id;
-                                    obCustomerBelongTrack.BelongId = obBatch.BelongId;
-                                    obCustomerBelongTrack.Description = string.Format("分配给用户：{0}，姓名：{1}",belong.UserName, belong.FullName);
+                                    obCustomerBelongTrack.BelongUserId = obBatch.BelongUserId;
+                                    obCustomerBelongTrack.Description = string.Format("分配给用户：{0}，姓名：{1}",belongUser.UserName, belongUser.FullName);
                                     obCustomerBelongTrack.Creator = obBatch.Creator;
                                     obCustomerBelongTrack.CreateTime = obBatch.CreateTime;
                                     CurrentDb.ObCustomerBelongTrack.Add(obCustomerBelongTrack);
@@ -201,20 +203,21 @@ namespace Lumos.BLL.Biz
                             if (validCount > 0)
                             {
 
-                                var obBatchDataAllocate = new ObBatchDataAllocate();
-                                obBatchDataAllocate.Id = GuidUtil.New();
-                                obBatchDataAllocate.PId = GuidUtil.Empty();
-                                obBatchDataAllocate.MerchantId = obBatch.MerchantId;
-                                obBatchDataAllocate.ObBatchId = obBatch.Id;
-                                obBatchDataAllocate.DataCount = validCount;
-                                obBatchDataAllocate.AllocatedCount = 0;
-                                obBatchDataAllocate.UnAllocatedCount = validCount;
-                                obBatchDataAllocate.UsedCount = 0;
-                                obBatchDataAllocate.UnUsedCount = 0;
-                                obBatchDataAllocate.Creator = obBatch.Creator;
-                                obBatchDataAllocate.CreateTime = obBatch.CreateTime;
-                                obBatchDataAllocate.BelongId = obBatch.BelongId;
-                                CurrentDb.ObBatchDataAllocate.Add(obBatchDataAllocate);
+                                var obBatchAllocateTask = new ObBatchAllocateTask();
+                                obBatchAllocateTask.Id = GuidUtil.New();
+                                obBatchAllocateTask.PId = GuidUtil.Empty();
+                                obBatchAllocateTask.MerchantId = obBatch.MerchantId;
+                                obBatchAllocateTask.ObBatchId = obBatch.Id;
+                                obBatchAllocateTask.DataCount = validCount;
+                                obBatchAllocateTask.AllocatedCount = 0;
+                                obBatchAllocateTask.UnAllocatedCount = validCount;
+                                obBatchAllocateTask.UsedCount = 0;
+                                obBatchAllocateTask.UnUsedCount = 0;
+                                obBatchAllocateTask.Creator = obBatch.Creator;
+                                obBatchAllocateTask.CreateTime = obBatch.CreateTime;
+                                obBatchAllocateTask.BelongUserId = obBatch.BelongUserId;
+                                obBatchAllocateTask.BelongOrganizationId = obBatch.BelongOrganizationId;
+                                CurrentDb.ObBatchAllocateTask.Add(obBatchAllocateTask);
                                 CurrentDb.SaveChanges();
 
                             }

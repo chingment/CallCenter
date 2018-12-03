@@ -14,19 +14,29 @@ using System.Web.Mvc;
 
 namespace WebMerch.Controllers
 {
-    public class ObBatchDataAllocateController : OwnBaseController
+    public class ObBatchAllocateTaskController : OwnBaseController
     {
         public ActionResult List()
         {
             return View();
         }
 
+        public ActionResult Allocate()
+        {
+            return View();
+        }
+
+        public CustomJsonResult GetDetails(string id)
+        {
+            return MerchServiceFactory.ObBatchAllocateTask.GetDetails(this.CurrentUserId, this.CurrentMerchantId, id);
+        }
+
         public CustomJsonResult GetList(RupDataBatchGetListByCarIns rup)
         {
-            var query = (from u in CurrentDb.ObBatchDataAllocate
+            var query = (from u in CurrentDb.ObBatchAllocateTask
                          join b in CurrentDb.ObBatch on u.ObBatchId equals b.Id
                          where
-                         u.BelongId == this.CurrentUserId
+                         u.BelongUserId == this.CurrentUserId
                          &&
                          u.MerchantId == this.CurrentMerchantId
                          select new { u.Id, ObBatchName = b.Name, ObBatchCode = b.Code, u.DataCount, u.AllocatedCount, u.UnAllocatedCount, u.UnUsedCount, u.UsedCount, u.CreateTime });

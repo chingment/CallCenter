@@ -17,6 +17,14 @@ namespace Lumos.BLL.Service.Merch
             }
         }
 
+        public static ObBatchAllocateTaskProvider ObBatchAllocateTask
+        {
+            get
+            {
+                return new ObBatchAllocateTaskProvider();
+            }
+        }
+
 
         public static OrganizationProvider Organization
         {

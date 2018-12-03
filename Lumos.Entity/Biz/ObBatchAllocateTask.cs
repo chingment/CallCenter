@@ -5,8 +5,8 @@ using System.ComponentModel.DataAnnotations.Schema;
 
 namespace Lumos.Entity
 {
-    [Table("ObBatchDataAllocate")]
-    public class ObBatchDataAllocate
+    [Table("ObBatchAllocateTask")]
+    public class ObBatchAllocateTask
     {
         [Key]
         public string Id { get; set; }
@@ -18,7 +18,8 @@ namespace Lumos.Entity
         public int UnAllocatedCount { get; set; }
         public int UsedCount { get; set; }
         public int UnUsedCount { get; set; }
-        public string BelongId { get; set; }
+        public string BelongUserId { get; set; }
+        public string BelongOrganizationId { get; set; }
         public string Creator { get; set; }
         public DateTime CreateTime { get; set; }
 

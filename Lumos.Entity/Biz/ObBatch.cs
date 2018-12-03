@@ -31,6 +31,8 @@ namespace Lumos.Entity
 
         public string HandleReport { get; set; }
 
-        public string BelongId { get; set; }
+        public string BelongUserId { get; set; }
+
+        public string BelongOrganizationId { get; set; }
     }
 }

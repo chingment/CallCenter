@@ -95,6 +95,16 @@ namespace Lumos.Entity
             Complete = 3,
         }
 
+        public enum ObBatchAllocateTaskAllocateMode
+        {
+            [Remark("未知")]
+            Unknow = 0,
+            [Remark("随机分配")]
+            Random = 1,
+            [Remark("筛选数据")]
+            Filter = 2,
+        }
+
 
     }
 }

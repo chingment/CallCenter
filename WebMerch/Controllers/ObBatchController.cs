@@ -161,7 +161,8 @@ namespace WebMerch.Controllers
 
             rop.FileName = file.FileName;
             rop.FilePath = filePath;
-            rop.BelongId = organization.HeaderId;
+            rop.BelongUserId = organization.HeaderId;
+            rop.BelongOrganizationId = organization.Id;
             result = MerchServiceFactory.ObBatch.AddByFile(this.CurrentUserId, this.CurrentMerchantId, rop);
 
             return result;

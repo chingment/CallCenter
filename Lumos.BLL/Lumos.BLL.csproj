@@ -149,13 +149,16 @@
     <Compile Include="Service\Admin\Sys\SysOrganizationProvider.cs" />
     <Compile Include="Service\Admin\Sys\SysPositionProvider.cs" />
     <Compile Include="Service\Admin\Sys\SysRoleProvider.cs" />
+    <Compile Include="Service\Merch\ObBatchAllocateTaskProvider.cs" />
     <Compile Include="Service\Merch\ObBatchProvider.cs" />
     <Compile Include="Service\Merch\MerchServiceFactory.cs" />
     <Compile Include="Service\Merch\OrganizationProvider.cs" />
+    <Compile Include="Service\Merch\RModels\RetObBatchAllocateTaskGetDetails.cs" />
     <Compile Include="Service\Merch\RModels\RetObBatchGetDetails.cs" />
     <Compile Include="Service\Merch\RModels\RetOrganizationGetDetails.cs" />
     <Compile Include="Service\Merch\RModels\RetUserGetDetails.cs" />
     <Compile Include="Service\Merch\RModels\RopObBatchAddByFile.cs" />
+    <Compile Include="Service\Merch\RModels\ObBatchAllocateTaskAllocate.cs" />
     <Compile Include="Service\Merch\RModels\RopOrganizationAdd.cs" />
     <Compile Include="Service\Merch\RModels\RopOrganizationEdit.cs" />
     <Compile Include="Service\Merch\RModels\RopOrganizationEditSort.cs" />
