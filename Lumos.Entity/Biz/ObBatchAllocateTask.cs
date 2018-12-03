@@ -13,6 +13,7 @@ namespace Lumos.Entity
         public string PId { get; set; }
         public string MerchantId { get; set; }
         public string ObBatchId { get; set; }
+        public string SoureName { get; set; }
         public int DataCount { get; set; }
         public int AllocatedCount { get; set; }
         public int UnAllocatedCount { get; set; }

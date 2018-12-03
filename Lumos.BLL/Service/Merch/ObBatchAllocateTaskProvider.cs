@@ -35,7 +35,7 @@ namespace Lumos.BLL.Service.Merch
                         var sysUser = CurrentDb.SysUser.Where(m => m.Id == item.HeaderId).FirstOrDefault();
                         if (sysUser != null)
                         {
-                            ret.BelongUsers.Add(new RetObBatchAllocateTaskGetDetails.BelongUser { UserId = sysUser.Id, UserName = string.Format("{0}:{1}（{2}）", item.FullName, sysUser.UserName, sysUser.FullName), OrganizationId = item.Id });
+                            ret.BelongUsers.Add(new RetObBatchAllocateTaskGetDetails.BelongUser { UserId = sysUser.Id, UserName = string.Format("{0}:{1}（{2}）", item.FullName, sysUser.FullName, sysUser.UserName), OrganizationId = item.Id });
                         }
                     }
                 }
@@ -46,7 +46,7 @@ namespace Lumos.BLL.Service.Merch
 
                     foreach (var sysMerchantUser in sysMerchantUsers)
                     {
-                        ret.BelongUsers.Add(new RetObBatchAllocateTaskGetDetails.BelongUser { UserId = sysMerchantUser.Id, UserName = string.Format("{0}（{1}）", sysMerchantUser.UserName, sysMerchantUser.FullName), OrganizationId = sysMerchantUser.OrganizationId });
+                        ret.BelongUsers.Add(new RetObBatchAllocateTaskGetDetails.BelongUser { UserId = sysMerchantUser.Id, UserName = string.Format("{0}（{1}）", sysMerchantUser.FullName, sysMerchantUser.UserName), OrganizationId = sysMerchantUser.OrganizationId });
                     }
 
                 }
@@ -91,6 +91,8 @@ namespace Lumos.BLL.Service.Merch
                 obBatchAllocateTask.Mender = operater;
                 obBatchAllocateTask.MendTime = this.DateTime;
 
+                var soureUser = CurrentDb.SysUser.Where(m => m.Id == obBatchAllocateTask.BelongUserId).FirstOrDefault();
+
                 var belongUsers = rop.BelongUsers.Where(m => m.AllocatedCount > 0).ToList();
 
                 foreach (var item in belongUsers)
@@ -109,6 +111,7 @@ namespace Lumos.BLL.Service.Merch
                     new_task.BelongOrganizationId = item.OrganizationId;
                     new_task.Creator = operater;
                     new_task.CreateTime = this.DateTime;
+                    new_task.SoureName = string.Format("上级分配人：{0}（{1}）", soureUser.FullName, soureUser.UserName);
                     CurrentDb.ObBatchAllocateTask.Add(new_task);
 
 
@@ -132,7 +135,7 @@ namespace Lumos.BLL.Service.Merch
                         obCustomerBelongTrack.ObBatchDataId = obCustomer.ObBatchId;
                         obCustomerBelongTrack.ObCustomerId = obCustomer.Id;
                         obCustomerBelongTrack.BelongUserId = item.UserId;
-                        obCustomerBelongTrack.Description = string.Format("分配给用户：{0}，姓名：{1}", belongUser.UserName, belongUser.FullName);
+                        obCustomerBelongTrack.Description = string.Format("分配给用户：{0}（1}）", belongUser.FullName, belongUser.UserName);
                         obCustomerBelongTrack.Creator = operater;
                         obCustomerBelongTrack.CreateTime = this.DateTime;
                         CurrentDb.ObCustomerBelongTrack.Add(obCustomerBelongTrack);

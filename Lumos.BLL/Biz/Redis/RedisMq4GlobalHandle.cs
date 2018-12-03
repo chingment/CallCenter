@@ -219,6 +219,7 @@ namespace Lumos.BLL.Biz
                                 obBatchAllocateTask.CreateTime = obBatch.CreateTime;
                                 obBatchAllocateTask.BelongUserId = obBatch.BelongUserId;
                                 obBatchAllocateTask.BelongOrganizationId = obBatch.BelongOrganizationId;
+                                obBatchAllocateTask.SoureName = string.Format("数据文件:{0}", rop.SoureName);
                                 CurrentDb.ObBatchAllocateTask.Add(obBatchAllocateTask);
                                 CurrentDb.SaveChanges();
 
