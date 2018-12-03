@@ -192,7 +192,7 @@ namespace WebMerch.Controllers
                     break;
                 case "sysorganization":
                     #region sysorganization
-                    var sysOrganizations = CurrentDb.Organization.Where(m => m.MerchantId == this.CurrentMerchantId && m.IsDelete == false).OrderBy(m => m.Dept).ToList();
+                    var sysOrganizations = CurrentDb.Organization.Where(m => m.MerchantId == this.CurrentMerchantId && m.IsDelete == false).OrderBy(m => m.Priority).OrderBy(m => m.Dept).ToList();
 
                     foreach (var item in sysOrganizations)
                     {

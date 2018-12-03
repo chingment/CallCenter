@@ -28,14 +28,27 @@ namespace Lumos.BLL.Service.Merch
 
 
                 var organizations = CurrentDb.Organization.Where(m => m.PId == obBatchDataAllocate.BelongOrganizationId && m.IsDelete == false).OrderBy(m => m.Priority).ToList();
-
-                foreach (var item in organizations)
+                if (organizations.Count > 0)
                 {
-                    var sysUser = CurrentDb.SysUser.Where(m => m.Id == item.HeaderId).FirstOrDefault();
-                    if (sysUser != null)
+                    foreach (var item in organizations)
                     {
-                        ret.BelongUsers.Add(new RetObBatchAllocateTaskGetDetails.BelongUser { UserId = sysUser.Id, UserName = string.Format("{0}:{1}（{2}）", item.FullName, sysUser.UserName, sysUser.FullName), OrganizationId = item.Id });
+                        var sysUser = CurrentDb.SysUser.Where(m => m.Id == item.HeaderId).FirstOrDefault();
+                        if (sysUser != null)
+                        {
+                            ret.BelongUsers.Add(new RetObBatchAllocateTaskGetDetails.BelongUser { UserId = sysUser.Id, UserName = string.Format("{0}:{1}（{2}）", item.FullName, sysUser.UserName, sysUser.FullName), OrganizationId = item.Id });
+                        }
                     }
+                }
+                else
+                {
+
+                    var sysMerchantUsers = CurrentDb.SysMerchantUser.Where(m => m.MerchantId == merchantId && m.OrganizationId == obBatchDataAllocate.BelongOrganizationId).ToList();
+
+                    foreach (var sysMerchantUser in sysMerchantUsers)
+                    {
+                        ret.BelongUsers.Add(new RetObBatchAllocateTaskGetDetails.BelongUser { UserId = sysMerchantUser.Id, UserName = string.Format("{0}（{1}）", sysMerchantUser.UserName, sysMerchantUser.FullName), OrganizationId = sysMerchantUser.OrganizationId });
+                    }
+
                 }
             }
 
@@ -73,19 +86,21 @@ namespace Lumos.BLL.Service.Merch
                     return new CustomJsonResult(ResultType.Failure, ResultCode.Failure, "分配的总数量大于批次的数量");
                 }
 
-
+                obBatchAllocateTask.AllocatedCount += allocatedCount;
                 obBatchAllocateTask.UnAllocatedCount -= allocatedCount;
                 obBatchAllocateTask.Mender = operater;
                 obBatchAllocateTask.MendTime = this.DateTime;
 
-                foreach (var item in rop.BelongUsers)
+                var belongUsers = rop.BelongUsers.Where(m => m.AllocatedCount > 0).ToList();
+
+                foreach (var item in belongUsers)
                 {
                     var new_task = new ObBatchAllocateTask();
                     new_task.Id = GuidUtil.New();
                     new_task.PId = obBatchAllocateTask.Id;
                     new_task.MerchantId = obBatchAllocateTask.MerchantId;
                     new_task.ObBatchId = obBatchAllocateTask.ObBatchId;
-                    new_task.DataCount = allocatedCount;
+                    new_task.DataCount = item.AllocatedCount;
                     new_task.AllocatedCount = 0;
                     new_task.UnAllocatedCount = item.AllocatedCount;
                     new_task.UsedCount = 0;
@@ -97,6 +112,8 @@ namespace Lumos.BLL.Service.Merch
                     CurrentDb.ObBatchAllocateTask.Add(new_task);
 
 
+                    var belongUser = CurrentDb.SysUser.Where(m => m.Id == item.UserId).FirstOrDefault();
+
                     var obCustomers = CurrentDb.ObCustomer.Where(x => x.BelongUserId == obBatchAllocateTask.BelongUserId).OrderBy(x => Guid.NewGuid()).Take(item.AllocatedCount).ToList();
 
                     foreach (var obCustomer in obCustomers)
@@ -106,6 +123,19 @@ namespace Lumos.BLL.Service.Merch
                         obCustomer.ObBatchAllocateTaskId = new_task.Id;
                         obCustomer.Mender = operater;
                         obCustomer.MendTime = this.DateTime;
+
+
+                        var obCustomerBelongTrack = new ObCustomerBelongTrack();
+                        obCustomerBelongTrack.Id = GuidUtil.New();
+                        obCustomerBelongTrack.MerchantId = obCustomer.MerchantId;
+                        obCustomerBelongTrack.ObBatchId = obCustomer.ObBatchId;
+                        obCustomerBelongTrack.ObBatchDataId = obCustomer.ObBatchId;
+                        obCustomerBelongTrack.ObCustomerId = obCustomer.Id;
+                        obCustomerBelongTrack.BelongUserId = item.UserId;
+                        obCustomerBelongTrack.Description = string.Format("分配给用户：{0}，姓名：{1}", belongUser.UserName, belongUser.FullName);
+                        obCustomerBelongTrack.Creator = operater;
+                        obCustomerBelongTrack.CreateTime = this.DateTime;
+                        CurrentDb.ObCustomerBelongTrack.Add(obCustomerBelongTrack);
                     }
                 }
 
