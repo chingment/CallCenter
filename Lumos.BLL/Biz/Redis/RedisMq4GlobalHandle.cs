@@ -64,6 +64,7 @@ namespace Lumos.BLL.Biz
             obBatch.MendTime = DateTime.Now;
             CurrentDb.SaveChanges();
 
+            var obBatchAllocateTaskId = GuidUtil.New();
             using (TransactionScope ts = new TransactionScope())
             {
                 if (obBatch.SoureType == Entity.Enumeration.DataBatchSoureType.File)
@@ -154,6 +155,7 @@ namespace Lumos.BLL.Biz
                                     obCustomer.MerchantId = obBatch.MerchantId;
                                     obCustomer.ObBatchId = obBatch.Id;
                                     obCustomer.ObBatchDataId = obBatchData.Id;
+                                    obCustomer.ObBatchAllocateTaskId = obBatchAllocateTaskId;
                                     obCustomer.CsrName = NPOIHelperUtil.GetCellValue(row.GetCell(6));
                                     obCustomer.CsrPhoneNumber = csrPhoneNumber;
                                     obCustomer.CsrAddress = NPOIHelperUtil.GetCellValue(row.GetCell(7));
@@ -186,7 +188,7 @@ namespace Lumos.BLL.Biz
                                     obCustomerBelongTrack.ObBatchDataId = obBatchData.Id;
                                     obCustomerBelongTrack.ObCustomerId = obCustomer.Id;
                                     obCustomerBelongTrack.BelongUserId = obBatch.BelongUserId;
-                                    obCustomerBelongTrack.Description = string.Format("分配给用户：{0}，姓名：{1}",belongUser.UserName, belongUser.FullName);
+                                    obCustomerBelongTrack.Description = string.Format("分配给用户：{0}，姓名：{1}", belongUser.UserName, belongUser.FullName);
                                     obCustomerBelongTrack.Creator = obBatch.Creator;
                                     obCustomerBelongTrack.CreateTime = obBatch.CreateTime;
                                     CurrentDb.ObCustomerBelongTrack.Add(obCustomerBelongTrack);
@@ -204,7 +206,7 @@ namespace Lumos.BLL.Biz
                             {
 
                                 var obBatchAllocateTask = new ObBatchAllocateTask();
-                                obBatchAllocateTask.Id = GuidUtil.New();
+                                obBatchAllocateTask.Id = obBatchAllocateTaskId;
                                 obBatchAllocateTask.PId = GuidUtil.Empty();
                                 obBatchAllocateTask.MerchantId = obBatch.MerchantId;
                                 obBatchAllocateTask.ObBatchId = obBatch.Id;

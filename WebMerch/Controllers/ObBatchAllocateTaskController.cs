@@ -74,5 +74,12 @@ namespace WebMerch.Controllers
 
             return Json(ResultType.Success, pageEntity, "");
         }
+
+
+        [HttpPost]
+        public CustomJsonResult Allocate(RopObBatchAllocateTaskAllocate rop)
+        {
+            return MerchServiceFactory.ObBatchAllocateTask.Allocate(this.CurrentUserId, this.CurrentMerchantId, rop);
+        }
     }
 }

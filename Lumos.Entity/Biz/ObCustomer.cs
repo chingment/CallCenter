@@ -37,5 +37,7 @@ namespace Lumos.Entity
         public DateTime ExpiryTime { get; set; }
         public DateTime RecoveryTime { get; set; }
         public int FollowDelayDays { get; set; }
+
+        public string ObBatchAllocateTaskId { get; set; }
     }
 }

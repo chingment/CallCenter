@@ -4,6 +4,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using System.Transactions;
 
 namespace Lumos.BLL.Service.Merch
 {
@@ -46,60 +47,73 @@ namespace Lumos.BLL.Service.Merch
         {
             CustomJsonResult result = new CustomJsonResult();
 
-            var obBatchAllocateTask = CurrentDb.ObBatchAllocateTask.Where(m => m.Id == rop.Id).FirstOrDefault();
-            if (obBatchAllocateTask == null)
+
+            using (TransactionScope ts = new TransactionScope())
             {
-                return new CustomJsonResult(ResultType.Failure, ResultCode.Failure, "此任务ID未找到");
+                var obBatchAllocateTask = CurrentDb.ObBatchAllocateTask.Where(m => m.Id == rop.Id).FirstOrDefault();
+                if (obBatchAllocateTask == null)
+                {
+                    return new CustomJsonResult(ResultType.Failure, ResultCode.Failure, "此任务ID未找到");
+                }
+
+                if (rop.BelongUsers == null || rop.BelongUsers.Count <= 0)
+                {
+                    return new CustomJsonResult(ResultType.Failure, ResultCode.Failure, "分配的对象为空");
+                }
+
+                int allocatedCount = rop.BelongUsers.Sum(m => m.AllocatedCount);
+
+                if (allocatedCount == 0)
+                {
+                    return new CustomJsonResult(ResultType.Failure, ResultCode.Failure, "请输入分配的数量");
+                }
+
+                if (allocatedCount > obBatchAllocateTask.UnAllocatedCount)
+                {
+                    return new CustomJsonResult(ResultType.Failure, ResultCode.Failure, "分配的总数量大于批次的数量");
+                }
+
+
+                obBatchAllocateTask.UnAllocatedCount -= allocatedCount;
+                obBatchAllocateTask.Mender = operater;
+                obBatchAllocateTask.MendTime = this.DateTime;
+
+                foreach (var item in rop.BelongUsers)
+                {
+                    var new_task = new ObBatchAllocateTask();
+                    new_task.Id = GuidUtil.New();
+                    new_task.PId = obBatchAllocateTask.Id;
+                    new_task.MerchantId = obBatchAllocateTask.MerchantId;
+                    new_task.ObBatchId = obBatchAllocateTask.ObBatchId;
+                    new_task.DataCount = allocatedCount;
+                    new_task.AllocatedCount = 0;
+                    new_task.UnAllocatedCount = item.AllocatedCount;
+                    new_task.UsedCount = 0;
+                    new_task.UnUsedCount = 0;
+                    new_task.BelongUserId = item.UserId;
+                    new_task.BelongOrganizationId = item.OrganizationId;
+                    new_task.Creator = operater;
+                    new_task.CreateTime = this.DateTime;
+                    CurrentDb.ObBatchAllocateTask.Add(new_task);
+
+
+                    var obCustomers = CurrentDb.ObCustomer.Where(x => x.BelongUserId == obBatchAllocateTask.BelongUserId).OrderBy(x => Guid.NewGuid()).Take(item.AllocatedCount).ToList();
+
+                    foreach (var obCustomer in obCustomers)
+                    {
+                        obCustomer.BelongUserId = item.UserId;
+                        obCustomer.BelongOrganizationId = item.OrganizationId;
+                        obCustomer.ObBatchAllocateTaskId = new_task.Id;
+                        obCustomer.Mender = operater;
+                        obCustomer.MendTime = this.DateTime;
+                    }
+                }
+
+                CurrentDb.SaveChanges();
+                ts.Complete();
+
+                result = new CustomJsonResult(ResultType.Success, ResultCode.Success, "新建成功");
             }
-
-            if (rop.BelongUsers == null || rop.BelongUsers.Count <= 0)
-            {
-                return new CustomJsonResult(ResultType.Failure, ResultCode.Failure, "分配的对象为空");
-            }
-
-            int allocatedCount = rop.BelongUsers.Sum(m => m.AllocatedCount);
-
-            if (allocatedCount == 0)
-            {
-                return new CustomJsonResult(ResultType.Failure, ResultCode.Failure, "请输入分配的数量");
-            }
-
-            if (allocatedCount > obBatchAllocateTask.UnAllocatedCount)
-            {
-                return new CustomJsonResult(ResultType.Failure, ResultCode.Failure, "分配的总数量大于批次的数量");
-            }
-
-
-            obBatchAllocateTask.UnAllocatedCount -= allocatedCount;
-
-            foreach (var item in rop.BelongUsers)
-            {
-                var new_task = new ObBatchAllocateTask();
-                new_task.Id = GuidUtil.New();
-                new_task.PId = obBatchAllocateTask.Id;
-                new_task.MerchantId = obBatchAllocateTask.MerchantId;
-                new_task.ObBatchId = obBatchAllocateTask.ObBatchId;
-                new_task.DataCount = allocatedCount;
-                new_task.AllocatedCount = 0;
-                new_task.UnAllocatedCount = allocatedCount;
-                new_task.UsedCount = 0;
-                new_task.UnUsedCount = 0;
-                new_task.BelongUserId = item.UserId;
-                new_task.BelongOrganizationId = item.OrganizationId;
-                new_task.Creator = operater;
-                new_task.CreateTime = this.DateTime;
-                CurrentDb.ObBatchAllocateTask.Add(new_task);
-
-            }
-
-
-
-
-            //CurrentDb.ObBatch.Add(obBatch);
-            //CurrentDb.SaveChanges();
-
-
-            result = new CustomJsonResult(ResultType.Success, ResultCode.Success, "新建成功");
 
             return result;
         }
