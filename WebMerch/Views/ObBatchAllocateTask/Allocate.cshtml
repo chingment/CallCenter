@@ -44,9 +44,9 @@
                         $.each(data.belongUsers, function (index, value) {
 
                             var l_StrRows = "";
-                            l_StrRows += "<tr organizationId=\"" + value.organizationId + "\" userId=\"" + value.id + "\" >";
+                            l_StrRows += "<tr organizationId=\"" + value.organizationId + "\" userId=\"" + value.userId + "\" >";
                             l_StrRows += "<td>" + (index + 1) + "</td>";
-                            l_StrRows += "<td>" + value.name + "</td>";
+                            l_StrRows += "<td>" + value.userName + "</td>";
                             l_StrRows += "<td><input type=\"text\" autocomplete=\"off\"  name=\"allocatedCount\" style=\"width:100px;\" class=\"input-control\" value=\"0\" /></td>";
                             l_StrRows += "</tr>";
 
@@ -72,11 +72,11 @@
 
             var belongUsers = []
             $.each(tr_belongUsers, function (e) {
-                var id = $(this).attr("userId");
+                var userId = $(this).attr("userId");
                 var organizationId = $(this).attr("organizationId");
                 var allocatedCount = $(this).find(" input[name=allocatedCount]").val();
 
-                belongUsers.push({ id: id, organizationId: organizationId, allocatedCount: allocatedCount });
+                belongUsers.push({ userId: userId, organizationId: organizationId, allocatedCount: allocatedCount });
 
                 //if (!$.lumos.isInt(allocatedCount)) {
                 //    alert(allocatedCount)

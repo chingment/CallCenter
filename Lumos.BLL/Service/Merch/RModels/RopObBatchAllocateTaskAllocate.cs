@@ -7,8 +7,13 @@ using Lumos.Entity;
 
 namespace Lumos.BLL.Service.Merch
 {
-    public class ObBatchAllocateTaskAllocate
+    public class RopObBatchAllocateTaskAllocate
     {
+        public RopObBatchAllocateTaskAllocate()
+        {
+            this.BelongUsers = new List<BelongUser>();
+        }
+
         public string Id { get; set; }
 
         public List<BelongUser> BelongUsers { get; set; }
@@ -17,7 +22,7 @@ namespace Lumos.BLL.Service.Merch
 
         public class BelongUser
         {
-            public string Id { get; set; }
+            public string UserId { get; set; }
 
             public string OrganizationId { get; set; }
 
