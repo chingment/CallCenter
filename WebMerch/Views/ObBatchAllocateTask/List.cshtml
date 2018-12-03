@@ -23,6 +23,7 @@
                 l_StrRows += "<td class=\"no\" >" + (p_index + 1) + "</td>";
                 l_StrRows += "<td class=\"overflow tipitem\" title=\"" + p_row.obBatchName + "\"   >" + p_row.obBatchName + "</td>";
                 l_StrRows += "<td class=\"overflow\" title=\"" + p_row.obBatchCode + "\">" + p_row.obBatchCode + "</td>";
+                l_StrRows += "<td class=\"overflow\" title=\"" + p_row.soureName + "\">" + p_row.soureName + "</td>";
                 l_StrRows += "<td class=\"overflow\" title=\"" + p_row.dataCount + "\">" + p_row.dataCount + "</td>";
                 l_StrRows += "<td class=\"overflow\" title=\"" + p_row.unAllocatedCount + "\">" + p_row.unAllocatedCount + "</td>";
                 l_StrRows += "<td class=\"overflow\" title=\"" + p_row.allocatedCount + "\">" + p_row.allocatedCount + "</td>";
@@ -90,6 +91,9 @@
                         批次标签
                     </th>
                     <th style="width:10%">
+                        来源
+                    </th>
+                    <th style="width:10%">
                         数据量
                     </th>
                     <th style="width:10%">
@@ -112,7 +116,7 @@
             <tbody></tbody>
             <tfoot>
                 <tr>
-                    <td colspan="9">
+                    <td colspan="10">
                         <div class="pull-left">
                             <span class="load-tip"></span>
                         </div>

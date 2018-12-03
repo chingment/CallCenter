@@ -135,7 +135,7 @@ namespace Lumos.BLL.Service.Merch
                         obCustomerBelongTrack.ObBatchDataId = obCustomer.ObBatchId;
                         obCustomerBelongTrack.ObCustomerId = obCustomer.Id;
                         obCustomerBelongTrack.BelongUserId = item.UserId;
-                        obCustomerBelongTrack.Description = string.Format("分配给用户：{0}（1}）", belongUser.FullName, belongUser.UserName);
+                        obCustomerBelongTrack.Description = string.Format("分配给用户：{0}（{1}）", belongUser.FullName, belongUser.UserName);
                         obCustomerBelongTrack.Creator = operater;
                         obCustomerBelongTrack.CreateTime = this.DateTime;
                         CurrentDb.ObCustomerBelongTrack.Add(obCustomerBelongTrack);

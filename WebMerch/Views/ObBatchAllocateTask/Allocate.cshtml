@@ -98,7 +98,7 @@
                     success: function (d) {
                         if (d.result == $.lumos.resultType.success) {
                             $.lumos.parentDialog.refresh(2);
-                            $.lumos.tips(d.message);
+                            $.lumos.tips(d.message, true);
                         }
                         else {
                             $.lumos.tips(d.message);

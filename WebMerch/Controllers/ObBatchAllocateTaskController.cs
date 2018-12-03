@@ -39,7 +39,7 @@ namespace WebMerch.Controllers
                          u.BelongUserId == this.CurrentUserId
                          &&
                          u.MerchantId == this.CurrentMerchantId
-                         select new { u.Id, ObBatchName = b.Name, ObBatchCode = b.Code, u.DataCount, u.AllocatedCount, u.UnAllocatedCount, u.UnUsedCount, u.UsedCount, u.CreateTime });
+                         select new { u.Id, ObBatchName = b.Name, u.SoureName, ObBatchCode = b.Code, u.DataCount, u.AllocatedCount, u.UnAllocatedCount, u.UnUsedCount, u.UsedCount, u.CreateTime });
 
             int total = query.Count();
 
@@ -58,6 +58,7 @@ namespace WebMerch.Controllers
                 olist.Add(new
                 {
                     Id = item.Id,
+                    SoureName = item.SoureName,
                     ObBatchName = item.ObBatchName,
                     ObBatchCode = item.ObBatchCode,
                     DataCount = item.DataCount,
