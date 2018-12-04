@@ -12,6 +12,7 @@ namespace Lumos.BLL.Service.Merch
         public RopObBatchAllocateTaskAllocate()
         {
             this.BelongUsers = new List<BelongUser>();
+            this.Filters = new RupObCustomerGetList();
         }
 
         public string Id { get; set; }
@@ -28,5 +29,7 @@ namespace Lumos.BLL.Service.Merch
 
             public int AllocatedCount { get; set; }
         }
+
+        public RupObCustomerGetList Filters { get; set; }
     }
 }

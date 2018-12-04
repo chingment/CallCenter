@@ -117,7 +117,29 @@ namespace Lumos.BLL.Service.Merch
 
                     var belongUser = CurrentDb.SysUser.Where(m => m.Id == item.UserId).FirstOrDefault();
 
-                    var obCustomers = CurrentDb.ObCustomer.Where(x => x.BelongUserId == obBatchAllocateTask.BelongUserId).OrderBy(x => Guid.NewGuid()).Take(item.AllocatedCount).ToList();
+                    List<ObCustomer> obCustomers = new List<ObCustomer>();
+
+
+                    if (rop.Mode == Enumeration.ObBatchAllocateTaskAllocateMode.Random)
+                    {
+                        //随机分配
+                        obCustomers = CurrentDb.ObCustomer.Where(x => x.BelongUserId == obBatchAllocateTask.BelongUserId).OrderBy(x => Guid.NewGuid()).Take(item.AllocatedCount).ToList();
+                    }
+                    else if (rop.Mode == Enumeration.ObBatchAllocateTaskAllocateMode.Filter)
+                    {
+                        //过滤分配
+                        obCustomers = CurrentDb.ObCustomer.Where(x =>
+                                     x.BelongUserId == obBatchAllocateTask.BelongUserId
+                                     &&
+                                     (rop.Filters.CarPlateNo == null || x.CarPlateNo.Contains(rop.Filters.CarPlateNo)) &&
+                                     (rop.Filters.CarModel == null || x.CarModel.Contains(rop.Filters.CarModel)) &&
+                                     (rop.Filters.CarEngineNo == null || x.CarEngineNo.Contains(rop.Filters.CarEngineNo)) &&
+                                     (rop.Filters.CsrAddress == null || x.CsrAddress.Contains(rop.Filters.CsrAddress)) &&
+                                     (rop.Filters.CsrPhoneNumber == null || x.CsrPhoneNumber.Contains(rop.Filters.CsrPhoneNumber)) &&
+                                     (rop.Filters.CsrName == null || x.CsrName.Contains(rop.Filters.CsrName)) &&
+                                     (rop.Filters.CsrIdNumber == null || x.CsrIdNumber.Contains(rop.Filters.CsrIdNumber)) &&
+                                     (rop.Filters.CarInsLastCompany == null || x.CarInsLastCompany.Contains(rop.Filters.CarInsLastCompany))).OrderBy(x => Guid.NewGuid()).Take(item.AllocatedCount).ToList();
+                    }
 
                     foreach (var obCustomer in obCustomers)
                     {
