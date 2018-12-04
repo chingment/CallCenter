@@ -30,6 +30,7 @@ namespace WebMerch.Controllers
                          u.ObBatchAllocateId == rup.ObBatchAllocateId
                          &&
                          u.MerchantId == this.CurrentMerchantId &&
+
                          (rup.CarPlateNo == null || u.CarPlateNo.Contains(rup.CarPlateNo)) &&
                          (rup.CarModel == null || u.CarModel.Contains(rup.CarModel)) &&
                          (rup.CarEngineNo == null || u.CarEngineNo.Contains(rup.CarEngineNo)) &&
@@ -37,7 +38,12 @@ namespace WebMerch.Controllers
                          (rup.CsrPhoneNumber == null || u.CsrPhoneNumber.Contains(rup.CsrPhoneNumber)) &&
                          (rup.CsrName == null || u.CsrName.Contains(rup.CsrName)) &&
                          (rup.CsrIdNumber == null || u.CsrIdNumber.Contains(rup.CsrIdNumber)) &&
-                         (rup.CarInsLastCompany == null || u.CarInsLastCompany.Contains(rup.CarInsLastCompany))
+                         (rup.CarInsLastCompany == null || u.CarInsLastCompany.Contains(rup.CarInsLastCompany)) &&
+                         (rup.CarRegisterDateStart == null || u.CarRegisterDate >= rup.CarRegisterDateStart) &&
+                         (rup.CarRegisterDateEnd == null || u.CarRegisterDate <= rup.CarRegisterDateEnd) &&
+                         (rup.CarInsLastStartTime == null || u.CarInsLastStartTime >= rup.CarInsLastStartTime) &&
+                         (rup.CarInsLastEndTime == null || u.CarRegisterDate <= rup.CarInsLastEndTime)
+
                          select new { u.Id, u.CsrName, u.CsrPhoneNumber, u.CsrAddress, u.CsrIdNumber, u.CarRegisterDate, u.CarPlateNo, u.CarModel, u.CarEngineNo, u.CarVin, u.CarInsLastQzNo, u.CarInsLastSyNo, u.CarInsLastCompany, u.CarInsLastStartTime, u.CarInsLastEndTime, u.CreateTime });
 
             int total = query.Count();

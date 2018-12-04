@@ -28,5 +28,10 @@ namespace Lumos.Entity
         public string Mender { get; set; }
         public DateTime? MendTime { get; set; }
 
+        public Enumeration.ObBatchAllocateMode AllocateMode { get; set; }
+
+        public string Description { get; set; }
+
+        public string Filters { get; set; }
     }
 }

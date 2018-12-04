@@ -95,7 +95,7 @@ namespace Lumos.Entity
             Complete = 3,
         }
 
-        public enum ObBatchAllocateTaskAllocateMode
+        public enum ObBatchAllocateMode
         {
             [Remark("未知")]
             Unknow = 0,

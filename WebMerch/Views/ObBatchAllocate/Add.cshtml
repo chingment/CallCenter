@@ -11,7 +11,7 @@
         var unAllocatedCountRandom = 0;
         var unAllocatedCountFilter = 0;
         $(this).ready(function () {
-            $('input[name=ObBatchAllocateTaskId]').val(id);
+            $('input[name=ObBatchAllocateId]').val(id);
             $.formValidator.initConfig({ formID: "form1", onError: function (msg) { $.lumos.tips(msg); } });
             $("#sel_Modes").formValidator().inputValidator({ min: 1, max: 500, onError: "请选择分配方式" });
 
@@ -154,12 +154,18 @@
                 var csrAddress = $('#txt_CsrAddress').val();
                 var csrPhoneNumber = $('#txt_CsrPhoneNumber').val();
                 var csrName = $('#txt_CsrName').val();
+                var description = $('#txt_Description').val();
+
+                var carRegisterDateStart = $('#txt_CarRegisterDateStart').val();
+                var carRegisterDateEnd = $('#txt_CarRegisterDateEnd').val();
+                var carInsLastStartTime = $('#txt_CarInsLastStartTime').val();
+                var carInsLastEndTime = $('#txt_CarInsLastEndTime').val();
 
 
                 $.lumos.postJson({
-                    url: "/ObBatchAllocateTask/Allocate",
+                    url: "/ObBatchAllocate/Add",
                     isUseHandling: true,
-                    data: { id: id, mode: mode, belongUsers: belongUsers, filters: { carPlateNo: carPlateNo, carModel: carModel, carEngineNo: carEngineNo, csrAddress: csrAddress, csrPhoneNumber: csrPhoneNumber, csrName: csrName } },
+                    data: { id: id, mode: mode, belongUsers: belongUsers, description: description, filters: { carPlateNo: carPlateNo, carModel: carModel, carEngineNo: carEngineNo, csrAddress: csrAddress, csrPhoneNumber: csrPhoneNumber, csrName: csrName, carRegisterDateStart: carRegisterDateStart, carRegisterDateEnd: carRegisterDateEnd, carInsLastStartTime: carInsLastStartTime, carInsLastEndTime: carInsLastEndTime } },
                     success: function (d) {
                         if (d.result == $.lumos.resultType.success) {
                             $.lumos.parentDialog.refresh(2);
@@ -217,20 +223,20 @@
             <td class="f-tb-c">
 
                 <form id="form_ObCustomer" name="form_ObCustomer">
-                    <input id="ObBatchAllocateTaskId" name="ObBatchAllocateTaskId" type="hidden" value="" />
+                    <input id="ObBatchAllocateId" name="ObBatchAllocateId" type="hidden" value="" />
                     <div class="search-bar">
                         <div class="filter">
                             <span class="filter-label">初登日期：</span>
                             <span class="filter-input">
-                                <input type="text" class="input-control" name="Name" style="width:138px;" />至
-                                <input type="text" class="input-control" name="Name" style="width:138px;" />
+                                <input id="txt_CarRegisterDateStart" type="text" name="CarRegisterDateStart" class="input-control" style="width:80px;" onfocus="WdatePicker({ dateFmt: 'yyyy-MM-dd', maxDate: '#F{$dp.$D(\'txt_CarRegisterDateEnd\')}' })" value="" />
+                                至<input id="txt_CarRegisterDateEnd" type="text" name="CarRegisterDateEnd" class="input-control" style="width:80px;" onfocus="WdatePicker({ dateFmt: 'yyyy-MM-dd', minDate: '#F{$dp.$D(\'txt_CarRegisterDateStart\')}' })" value="" />
                             </span>
                         </div>
                         <div class="filter">
                             <span class="filter-label">起保日：</span>
                             <span class="filter-input">
-                                <input type="text" class="input-control" name="Name" style="width:120px;" />至
-                                <input type="text" class="input-control" name="Name" style="width:120px;" />
+                                <input id="txt_CarInsLastStartTime" type="text" name="CarInsLastStartTime" class="input-control" style="width:80px;" onfocus="WdatePicker({ dateFmt: 'yyyy-MM-dd', maxDate: '#F{$dp.$D(\'txt_CarInsLastEndTime\')}' })" value="" />
+                                至<input id="txt_CarInsLastEndTime" type="text" name="CarInsLastEndTime" class="input-control" style="width:80px;" onfocus="WdatePicker({ dateFmt: 'yyyy-MM-dd', minDate: '#F{$dp.$D(\'txt_CarInsLastStartTime\')}' })" value="" />
                             </span>
                         </div>
                         <div class="filter">
@@ -395,6 +401,14 @@
                     </table>
                 </div>
 
+            </td>
+        </tr>
+        <tr>
+            <td class="f-tb-t" style="width:120px;">
+                描述：
+            </td>
+            <td class="f-tb-c">
+                <input id="txt_Description" class="input-control" type="text" style="width: 600px;" autocomplete="off" />
             </td>
         </tr>
         <tr style="display:none">

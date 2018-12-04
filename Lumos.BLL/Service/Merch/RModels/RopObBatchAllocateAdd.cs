@@ -19,7 +19,9 @@ namespace Lumos.BLL.Service.Merch
 
         public List<BelongUser> BelongUsers { get; set; }
 
-        public Enumeration.ObBatchAllocateTaskAllocateMode Mode { get; set; }
+        public Enumeration.ObBatchAllocateMode Mode { get; set; }
+
+        public string Description { get; set; }
 
         public class BelongUser
         {

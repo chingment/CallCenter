@@ -89,7 +89,7 @@ namespace WebMerch.Controllers
                          &&
                          u.MerchantId == this.CurrentMerchantId &&
                            (rup.Code == null || b.Code.Contains(rup.Code))
-                         select new { u.Id, ObBatchName = b.Name, u.SoureName, ObBatchCode = b.Code, u.DataCount, u.AllocatedCount, u.UnAllocatedCount, u.UnUsedCount, u.UsedCount, u.CreateTime, u.BelongUserName });
+                         select new { u.Id, ObBatchName = b.Name, u.SoureName, u.AllocateMode, ObBatchCode = b.Code, u.DataCount, u.AllocatedCount, u.UnAllocatedCount, u.UnUsedCount, u.UsedCount, u.CreateTime, u.BelongUserName, u.Description, u.Filters });
 
             int total = query.Count();
 
@@ -112,11 +112,13 @@ namespace WebMerch.Controllers
                     BelongUserName = item.BelongUserName,
                     ObBatchName = item.ObBatchName,
                     ObBatchCode = item.ObBatchCode,
+                    AllocateMode = item.AllocateMode.GetCnName(),
                     DataCount = item.DataCount,
                     AllocatedCount = item.AllocatedCount,
                     UnAllocatedCount = item.UnAllocatedCount,
                     UnUsedCount = item.UnUsedCount,
                     UsedCount = item.UsedCount,
+                    Description = item.Description,
                     CreateTime = item.CreateTime.ToUnifiedFormatDateTime()
                 });
             }

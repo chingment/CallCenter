@@ -18,5 +18,13 @@ namespace Lumos.BLL.Service.Merch
         public string CarPlateNo { get; set; }
         public string CarModel { get; set; }
         public string CarEngineNo { get; set; }
+
+        public DateTime? CarRegisterDateStart { get; set; }
+
+        public DateTime? CarRegisterDateEnd { get; set; }
+
+        public DateTime? CarInsLastStartTime { get; set; }
+        public DateTime? CarInsLastEndTime { get; set; }
+
     }
 }

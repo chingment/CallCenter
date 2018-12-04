@@ -55,6 +55,11 @@ namespace Lumos.BLL.Service.Merch
             return new CustomJsonResult(ResultType.Success, ResultCode.Success, "获取成功", ret);
         }
 
+        private string GetFilters(RupObCustomerGetList Filters)
+        {
+            return "";
+        }
+
         public CustomJsonResult Add(string operater, string merchantId, RopObBatchAllocateAdd rop)
         {
             CustomJsonResult result = new CustomJsonResult();
@@ -97,7 +102,7 @@ namespace Lumos.BLL.Service.Merch
                 foreach (var item in belongUsers)
                 {
                     var belongUser = CurrentDb.SysUser.Where(m => m.Id == item.UserId).FirstOrDefault();
-                    var belongOrganization=CurrentDb.Organization.Where(m => m.Id== item.OrganizationId).FirstOrDefault();
+                    var belongOrganization = CurrentDb.Organization.Where(m => m.Id == item.OrganizationId).FirstOrDefault();
 
                     var new_Allocate = new ObBatchAllocate();
                     new_Allocate.Id = GuidUtil.New();
@@ -110,25 +115,25 @@ namespace Lumos.BLL.Service.Merch
                     new_Allocate.UsedCount = 0;
                     new_Allocate.UnUsedCount = 0;
                     new_Allocate.BelongUserId = item.UserId;
-                    new_Allocate.BelongUserName= string.Format("{0}机构：{1}({2})", belongOrganization.FullName, belongUser.FullName, belongUser.UserName);
+                    new_Allocate.BelongUserName = string.Format("{0}机构：{1}({2})", belongOrganization.FullName, belongUser.FullName, belongUser.UserName);
                     new_Allocate.BelongOrganizationId = item.OrganizationId;
                     new_Allocate.Creator = operater;
                     new_Allocate.CreateTime = this.DateTime;
                     new_Allocate.SoureName = string.Format("上级分配人：{0}（{1}）", soureUser.FullName, soureUser.UserName);
-                    CurrentDb.ObBatchAllocate.Add(new_Allocate);
-
-
+                    new_Allocate.AllocateMode = rop.Mode;
+                    new_Allocate.Description = rop.Description;
 
                     List<ObCustomer> obCustomers = new List<ObCustomer>();
 
 
-                    if (rop.Mode == Enumeration.ObBatchAllocateTaskAllocateMode.Random)
+                    if (rop.Mode == Enumeration.ObBatchAllocateMode.Random)
                     {
                         //随机分配
                         obCustomers = CurrentDb.ObCustomer.Where(x => x.BelongUserId == obBatchAllocate.BelongUserId).OrderBy(x => Guid.NewGuid()).Take(item.AllocatedCount).ToList();
                     }
-                    else if (rop.Mode == Enumeration.ObBatchAllocateTaskAllocateMode.Filter)
+                    else if (rop.Mode == Enumeration.ObBatchAllocateMode.Filter)
                     {
+                        new_Allocate.Filters = GetFilters(rop.Filters);
                         //过滤分配
                         obCustomers = CurrentDb.ObCustomer.Where(x =>
                                      x.BelongUserId == obBatchAllocate.BelongUserId
@@ -140,7 +145,12 @@ namespace Lumos.BLL.Service.Merch
                                      (rop.Filters.CsrPhoneNumber == null || x.CsrPhoneNumber.Contains(rop.Filters.CsrPhoneNumber)) &&
                                      (rop.Filters.CsrName == null || x.CsrName.Contains(rop.Filters.CsrName)) &&
                                      (rop.Filters.CsrIdNumber == null || x.CsrIdNumber.Contains(rop.Filters.CsrIdNumber)) &&
-                                     (rop.Filters.CarInsLastCompany == null || x.CarInsLastCompany.Contains(rop.Filters.CarInsLastCompany))).OrderBy(x => Guid.NewGuid()).Take(item.AllocatedCount).ToList();
+                                     (rop.Filters.CarInsLastCompany == null || x.CarInsLastCompany.Contains(rop.Filters.CarInsLastCompany)) &&
+                                     (rop.Filters.CarRegisterDateStart == null || x.CarRegisterDate >= rop.Filters.CarRegisterDateStart) &&
+                                     (rop.Filters.CarRegisterDateEnd == null || x.CarRegisterDate <= rop.Filters.CarRegisterDateEnd) &&
+                                     (rop.Filters.CarInsLastStartTime == null || x.CarInsLastStartTime >= rop.Filters.CarInsLastStartTime) &&
+                                     (rop.Filters.CarInsLastEndTime == null || x.CarRegisterDate <= rop.Filters.CarInsLastEndTime)
+                                     ).OrderBy(x => Guid.NewGuid()).Take(item.AllocatedCount).ToList();
                     }
 
                     foreach (var obCustomer in obCustomers)
@@ -164,7 +174,10 @@ namespace Lumos.BLL.Service.Merch
                         obCustomerBelongTrack.CreateTime = this.DateTime;
                         CurrentDb.ObCustomerBelongTrack.Add(obCustomerBelongTrack);
                     }
+
+                    CurrentDb.ObBatchAllocate.Add(new_Allocate);
                 }
+
 
                 CurrentDb.SaveChanges();
                 ts.Complete();
