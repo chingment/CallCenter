@@ -166,6 +166,7 @@
     <Compile Include="Service\Merch\RModels\RopUserEdit.cs" />
     <Compile Include="Service\Merch\RModels\RupObBatchGetList.cs" />
     <Compile Include="Service\Merch\RModels\RupObBatchDataGetListByCarIns.cs" />
+    <Compile Include="Service\Merch\RModels\RupObCustomerGetList.cs" />
     <Compile Include="Service\Merch\RModels\RupStaffUserGetList.cs" />
     <Compile Include="Service\Merch\UserProvider.cs" />
     <Compile Include="SnUtil.cs" />

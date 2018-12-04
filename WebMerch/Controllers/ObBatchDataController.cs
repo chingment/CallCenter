@@ -10,8 +10,6 @@ namespace WebMerch.Controllers
 {
     public class ObBatchDataController : OwnBaseController
     {
-
-
         public CustomJsonResult GetListByCarIns(RupDataBatchGetListByCarIns rup)
         {
             var query = (from u in CurrentDb.ObBatchData

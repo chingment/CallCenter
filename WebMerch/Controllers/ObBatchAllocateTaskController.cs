@@ -82,5 +82,6 @@ namespace WebMerch.Controllers
         {
             return MerchServiceFactory.ObBatchAllocateTask.Allocate(this.CurrentUserId, this.CurrentMerchantId, rop);
         }
+
     }
 }
