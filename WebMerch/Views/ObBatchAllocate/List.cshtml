@@ -95,10 +95,12 @@
     function refresh(type) {
         switch (type) {
             case 1:
-                listTable.loadData();
+                list_Allocate.loadData();
+                list_Allocated.loadData();
                 break;
             case 2:
-                listTable.loadData("c");
+                list_Allocate.loadData("c");
+                list_Allocated.loadData("c");
                 break;
         }
     }
