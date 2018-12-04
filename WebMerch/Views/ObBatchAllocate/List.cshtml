@@ -68,10 +68,8 @@
                 l_StrRows += "<td class=\"overflow\" title=\"" + p_row.dataCount + "\">" + p_row.dataCount + "</td>";
                 l_StrRows += "<td class=\"overflow\" title=\"" + p_row.usedCount + "\">" + p_row.usedCount + "</td>";
                 l_StrRows += "<td class=\"overflow\" title=\"" + p_row.unUsedCount + "\">" + p_row.unUsedCount + "</td>";
+                l_StrRows += "<td class=\"overflow\" title=\"" + p_row.description + "\">" + p_row.description + "</td>";
                 l_StrRows += "<td class=\"overflow\" title=\"" + p_row.createTime + "\">" + p_row.createTime + "</td>";
-                l_StrRows += "<td class=\"operation\">";
-                l_StrRows += l_Strlimt;
-                l_StrRows += "</td>";
                 l_StrRows += "</tr>";
                 return l_StrRows;
             },
@@ -234,10 +232,10 @@
                         未使用(条)
                     </th>
                     <th style="width:10%">
-                        分配时间
+                        描述
                     </th>
-                    <th style="width:25px" class="operation">
-                        操作
+                    <th style="width:10%">
+                        分配时间
                     </th>
                 </tr>
             </thead>

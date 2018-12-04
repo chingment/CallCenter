@@ -39,5 +39,9 @@ namespace Lumos.Entity
         public int FollowDelayDays { get; set; }
 
         public string ObBatchAllocateId { get; set; }
+
+        public bool IsTake { get; set; }
+
+        public DateTime? TakeTime { get; set; }
     }
 }

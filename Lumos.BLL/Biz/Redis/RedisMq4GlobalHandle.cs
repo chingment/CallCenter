@@ -52,20 +52,22 @@ namespace Lumos.BLL.Biz
         {
             LumosDbContext CurrentDb = new LumosDbContext();
 
+            var obBatch = CurrentDb.ObBatch.Where(m => m.Id == rop.Id && m.Status == Entity.Enumeration.DataBatchStatus.WaitHandle).FirstOrDefault();
+
+            if (obBatch == null)
+            {
+                LogUtil.Info("找不到处理的批次");
+                return;
+            }
+
+            obBatch.Status = Entity.Enumeration.DataBatchStatus.Handling;
+            obBatch.Mender = GuidUtil.New();
+            obBatch.MendTime = DateTime.Now;
+            CurrentDb.SaveChanges();
+
             using (TransactionScope ts = new TransactionScope())
             {
-                var obBatch = CurrentDb.ObBatch.Where(m => m.Id == rop.Id && m.Status == Entity.Enumeration.DataBatchStatus.WaitHandle).FirstOrDefault();
 
-                if (obBatch == null)
-                {
-                    LogUtil.Info("找不到处理的批次");
-                    return;
-                }
-
-                obBatch.Status = Entity.Enumeration.DataBatchStatus.Handling;
-                obBatch.Mender = GuidUtil.New();
-                obBatch.MendTime = DateTime.Now;
-                CurrentDb.SaveChanges();
 
                 var obBatchAllocateId = GuidUtil.New();
 
@@ -228,7 +230,7 @@ namespace Lumos.BLL.Biz
                                 obBatchAllocate.AllocatedCount = 0;
                                 obBatchAllocate.UnAllocatedCount = validCount;
                                 obBatchAllocate.UsedCount = 0;
-                                obBatchAllocate.UnUsedCount = 0;
+                                obBatchAllocate.UnUsedCount = validCount;
                                 obBatchAllocate.Creator = obBatch.Creator;
                                 obBatchAllocate.CreateTime = obBatch.CreateTime;
                                 obBatchAllocate.BelongUserId = obBatch.BelongUserId;

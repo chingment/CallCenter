@@ -5,6 +5,7 @@ using Lumos;
 using System.Collections.Generic;
 using Lumos.BLL.Service.Admin;
 using Lumos.Entity;
+using Lumos.BLL.Service.Merch;
 
 namespace WebMerch.Controllers
 {
@@ -59,6 +60,7 @@ namespace WebMerch.Controllers
 
         public ViewResult Main()
         {
+            MerchServiceFactory.ObCallout.Get(this.CurrentUserId, this.CurrentMerchantId, "8f9e6852859d495ca16468c7f3f92c7a");
             return View();
         }
 

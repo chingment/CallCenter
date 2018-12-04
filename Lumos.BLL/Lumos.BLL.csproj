@@ -152,6 +152,7 @@
     <Compile Include="Service\Merch\ObBatchAllocateProvider.cs" />
     <Compile Include="Service\Merch\ObBatchProvider.cs" />
     <Compile Include="Service\Merch\MerchServiceFactory.cs" />
+    <Compile Include="Service\Merch\ObCalloutProvider.cs" />
     <Compile Include="Service\Merch\OrganizationProvider.cs" />
     <Compile Include="Service\Merch\RModels\RetObBatchAllocateTaskGetDetails.cs" />
     <Compile Include="Service\Merch\RModels\RetObBatchGetDetails.cs" />

@@ -43,6 +43,13 @@ namespace Lumos.BLL.Service.Merch
             }
         }
 
+        public static ObCalloutProvider ObCallout
+        {
+            get
+            {
+                return new ObCalloutProvider();
+            }
+        }
 
     }
 }

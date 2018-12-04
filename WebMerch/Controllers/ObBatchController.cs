@@ -64,9 +64,9 @@ namespace WebMerch.Controllers
                     Code = item.Code,
                     Name = item.Name,
                     SoureName = string.Format("（{0}）{1}", item.SoureType.GetCnName(), item.SoureName),
-                    DataCount = item.DataCount,
-                    ValidCount = item.ValidCount,
-                    InValidCount = item.InValidCount,
+                    DataCount = item.Status != Enumeration.DataBatchStatus.Complete ? "-" : item.DataCount.ToString(),
+                    ValidCount = item.Status != Enumeration.DataBatchStatus.Complete ? "-" : item.ValidCount.ToString(),
+                    InValidCount = item.Status != Enumeration.DataBatchStatus.Complete ? "-" : item.InValidCount.ToString(),
                     StatusName = item.Status.GetCnName(),
                     Description = item.Description,
                     CreateTime = item.CreateTime.ToUnifiedFormatDateTime()
@@ -144,7 +144,7 @@ namespace WebMerch.Controllers
                     excelFormatCheckUtil.AddCheckCellIsString(10, "起保日期", 0, 200);
                     excelFormatCheckUtil.AddCheckCellIsString(11, "终保日期", 0, 200);
                     excelFormatCheckUtil.AddCheckCellIsString(12, "保险公司", 0, 200);
-                    #endregion 
+                    #endregion
                     break;
                 default:
                     return new CustomJsonResult(ResultType.Failure, ResultCode.Failure, "业务类型不符合");
@@ -169,7 +169,7 @@ namespace WebMerch.Controllers
             rop.FileName = file.FileName;
             rop.FilePath = filePath;
             rop.BelongUserId = belongOrganization.HeaderId;
-            rop.BelongUserName= string.Format("{0}机构负责人：{1}({2})", belongOrganization.FullName, belongUser.FullName, belongUser.UserName);
+            rop.BelongUserName = string.Format("{0}机构负责人：{1}({2})", belongOrganization.FullName, belongUser.FullName, belongUser.UserName);
             rop.BelongOrganizationId = belongOrganization.Id;
             result = MerchServiceFactory.ObBatch.AddByFile(this.CurrentUserId, this.CurrentMerchantId, rop);
 
