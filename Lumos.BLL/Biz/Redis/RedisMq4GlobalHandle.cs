@@ -67,7 +67,7 @@ namespace Lumos.BLL.Biz
                 obBatch.MendTime = DateTime.Now;
                 CurrentDb.SaveChanges();
 
-                var obBatchAllocateTaskId = GuidUtil.New();
+                var obBatchAllocateId = GuidUtil.New();
 
                 if (obBatch.SoureType == Entity.Enumeration.DataBatchSoureType.File)
                 {
@@ -159,7 +159,7 @@ namespace Lumos.BLL.Biz
                                     obCustomer.MerchantId = obBatch.MerchantId;
                                     obCustomer.ObBatchId = obBatch.Id;
                                     obCustomer.ObBatchDataId = obBatchData.Id;
-                                    obCustomer.ObBatchAllocateTaskId = obBatchAllocateTaskId;
+                                    obCustomer.ObBatchAllocateId = obBatchAllocateId;
                                     obCustomer.CsrName = obBatchData.CsrName;
                                     obCustomer.CsrPhoneNumber = csrPhoneNumber;
                                     obCustomer.CsrAddress = obBatchData.CsrAddress;
@@ -219,22 +219,22 @@ namespace Lumos.BLL.Biz
 
                             if (validCount > 0)
                             {
-                                var obBatchAllocateTask = new ObBatchAllocateTask();
-                                obBatchAllocateTask.Id = obBatchAllocateTaskId;
-                                obBatchAllocateTask.PId = GuidUtil.Empty();
-                                obBatchAllocateTask.MerchantId = obBatch.MerchantId;
-                                obBatchAllocateTask.ObBatchId = obBatch.Id;
-                                obBatchAllocateTask.DataCount = validCount;
-                                obBatchAllocateTask.AllocatedCount = 0;
-                                obBatchAllocateTask.UnAllocatedCount = validCount;
-                                obBatchAllocateTask.UsedCount = 0;
-                                obBatchAllocateTask.UnUsedCount = 0;
-                                obBatchAllocateTask.Creator = obBatch.Creator;
-                                obBatchAllocateTask.CreateTime = obBatch.CreateTime;
-                                obBatchAllocateTask.BelongUserId = obBatch.BelongUserId;
-                                obBatchAllocateTask.BelongOrganizationId = obBatch.BelongOrganizationId;
-                                obBatchAllocateTask.SoureName = string.Format("数据文件:{0}", rop.SoureName);
-                                CurrentDb.ObBatchAllocateTask.Add(obBatchAllocateTask);
+                                var obBatchAllocate = new ObBatchAllocate();
+                                obBatchAllocate.Id = obBatchAllocateId;
+                                obBatchAllocate.PId = GuidUtil.Empty();
+                                obBatchAllocate.MerchantId = obBatch.MerchantId;
+                                obBatchAllocate.ObBatchId = obBatch.Id;
+                                obBatchAllocate.DataCount = validCount;
+                                obBatchAllocate.AllocatedCount = 0;
+                                obBatchAllocate.UnAllocatedCount = validCount;
+                                obBatchAllocate.UsedCount = 0;
+                                obBatchAllocate.UnUsedCount = 0;
+                                obBatchAllocate.Creator = obBatch.Creator;
+                                obBatchAllocate.CreateTime = obBatch.CreateTime;
+                                obBatchAllocate.BelongUserId = obBatch.BelongUserId;
+                                obBatchAllocate.BelongOrganizationId = obBatch.BelongOrganizationId;
+                                obBatchAllocate.SoureName = string.Format("数据文件:{0}", rop.SoureName);
+                                CurrentDb.ObBatchAllocate.Add(obBatchAllocate);
                                 CurrentDb.SaveChanges();
                             }
                         }

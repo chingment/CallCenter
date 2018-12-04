@@ -164,8 +164,7 @@
     <Compile Include="Controllers\CommonController.cs" />
     <Compile Include="Controllers\ObBatchController.cs" />
     <Compile Include="Controllers\HomeController.cs" />
-    <Compile Include="Controllers\ObBatchAllocateTaskController.cs" />
-    <Compile Include="Controllers\ObBatchDataController.cs" />
+    <Compile Include="Controllers\ObBatchAllocateController.cs" />
     <Compile Include="Controllers\ObCustomerController.cs" />
     <Compile Include="Controllers\OrganizationController.cs" />
     <Compile Include="Controllers\UserController.cs" />
@@ -206,8 +205,8 @@
     <Content Include="Views\ObBatch\AddByFile.cshtml" />
     <Content Include="Views\ObBatch\Details.cshtml" />
     <Content Include="Views\User\ListBySelect.cshtml" />
-    <Content Include="Views\ObBatchAllocateTask\List.cshtml" />
-    <Content Include="Views\ObBatchAllocateTask\Allocate.cshtml" />
+    <Content Include="Views\ObBatchAllocate\List.cshtml" />
+    <Content Include="Views\ObBatchAllocate\Add.cshtml" />
     <None Include="Web.config">
       <SubType>Designer</SubType>
     </None>

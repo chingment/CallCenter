@@ -38,6 +38,6 @@ namespace Lumos.Entity
         public DateTime RecoveryTime { get; set; }
         public int FollowDelayDays { get; set; }
 
-        public string ObBatchAllocateTaskId { get; set; }
+        public string ObBatchAllocateId { get; set; }
     }
 }

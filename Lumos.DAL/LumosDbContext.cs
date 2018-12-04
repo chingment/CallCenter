@@ -34,7 +34,7 @@ namespace Lumos.DAL
 
         public IDbSet<ObBatchData> ObBatchData { get; set; }
 
-        public IDbSet<ObBatchAllocateTask> ObBatchAllocateTask { get; set; }
+        public IDbSet<ObBatchAllocate> ObBatchAllocate { get; set; }
 
         public IDbSet<ObCustomer> ObCustomer { get; set; }
 

@@ -8,26 +8,26 @@ using System.Transactions;
 
 namespace Lumos.BLL.Service.Merch
 {
-    public class ObBatchAllocateTaskProvider : BaseProvider
+    public class ObBatchAllocateProvider : BaseProvider
     {
         public CustomJsonResult GetDetails(string operater, string merchantId, string id)
         {
             var ret = new RetObBatchAllocateTaskGetDetails();
 
-            var obBatchDataAllocate = CurrentDb.ObBatchAllocateTask.Where(m => m.MerchantId == merchantId && m.Id == id).FirstOrDefault();
+            var obBatchAllocate = CurrentDb.ObBatchAllocate.Where(m => m.MerchantId == merchantId && m.Id == id).FirstOrDefault();
 
-            if (obBatchDataAllocate != null)
+            if (obBatchAllocate != null)
             {
-                var obBatch = CurrentDb.ObBatch.Where(m => m.Id == obBatchDataAllocate.ObBatchId).FirstOrDefault();
+                var obBatch = CurrentDb.ObBatch.Where(m => m.Id == obBatchAllocate.ObBatchId).FirstOrDefault();
 
-                ret.Id = obBatchDataAllocate.Id ?? ""; ;
+                ret.Id = obBatchAllocate.Id ?? ""; ;
                 ret.ObBatchId = obBatch.Id;
                 ret.ObBatchCode = obBatch.Code ?? ""; ;
                 ret.ObBatchName = obBatch.Name ?? ""; ;
-                ret.UnAllocatedCount = obBatchDataAllocate.UnAllocatedCount;
+                ret.UnAllocatedCount = obBatchAllocate.UnAllocatedCount;
 
 
-                var organizations = CurrentDb.Organization.Where(m => m.PId == obBatchDataAllocate.BelongOrganizationId && m.IsDelete == false).OrderBy(m => m.Priority).ToList();
+                var organizations = CurrentDb.Organization.Where(m => m.PId == obBatchAllocate.BelongOrganizationId && m.IsDelete == false).OrderBy(m => m.Priority).ToList();
                 if (organizations.Count > 0)
                 {
                     foreach (var item in organizations)
@@ -42,7 +42,7 @@ namespace Lumos.BLL.Service.Merch
                 else
                 {
 
-                    var sysMerchantUsers = CurrentDb.SysMerchantUser.Where(m => m.MerchantId == merchantId && m.OrganizationId == obBatchDataAllocate.BelongOrganizationId).ToList();
+                    var sysMerchantUsers = CurrentDb.SysMerchantUser.Where(m => m.MerchantId == merchantId && m.OrganizationId == obBatchAllocate.BelongOrganizationId).ToList();
 
                     foreach (var sysMerchantUser in sysMerchantUsers)
                     {
@@ -55,16 +55,15 @@ namespace Lumos.BLL.Service.Merch
             return new CustomJsonResult(ResultType.Success, ResultCode.Success, "获取成功", ret);
         }
 
-
-        public CustomJsonResult Allocate(string operater, string merchantId, RopObBatchAllocateTaskAllocate rop)
+        public CustomJsonResult Add(string operater, string merchantId, RopObBatchAllocateAdd rop)
         {
             CustomJsonResult result = new CustomJsonResult();
 
 
             using (TransactionScope ts = new TransactionScope())
             {
-                var obBatchAllocateTask = CurrentDb.ObBatchAllocateTask.Where(m => m.Id == rop.Id).FirstOrDefault();
-                if (obBatchAllocateTask == null)
+                var obBatchAllocate = CurrentDb.ObBatchAllocate.Where(m => m.Id == rop.Id).FirstOrDefault();
+                if (obBatchAllocate == null)
                 {
                     return new CustomJsonResult(ResultType.Failure, ResultCode.Failure, "此任务ID未找到");
                 }
@@ -81,38 +80,38 @@ namespace Lumos.BLL.Service.Merch
                     return new CustomJsonResult(ResultType.Failure, ResultCode.Failure, "请输入分配的数量");
                 }
 
-                if (allocatedCount > obBatchAllocateTask.UnAllocatedCount)
+                if (allocatedCount > obBatchAllocate.UnAllocatedCount)
                 {
                     return new CustomJsonResult(ResultType.Failure, ResultCode.Failure, "分配的总数量大于批次的数量");
                 }
 
-                obBatchAllocateTask.AllocatedCount += allocatedCount;
-                obBatchAllocateTask.UnAllocatedCount -= allocatedCount;
-                obBatchAllocateTask.Mender = operater;
-                obBatchAllocateTask.MendTime = this.DateTime;
+                obBatchAllocate.AllocatedCount += allocatedCount;
+                obBatchAllocate.UnAllocatedCount -= allocatedCount;
+                obBatchAllocate.Mender = operater;
+                obBatchAllocate.MendTime = this.DateTime;
 
-                var soureUser = CurrentDb.SysUser.Where(m => m.Id == obBatchAllocateTask.BelongUserId).FirstOrDefault();
+                var soureUser = CurrentDb.SysUser.Where(m => m.Id == obBatchAllocate.BelongUserId).FirstOrDefault();
 
                 var belongUsers = rop.BelongUsers.Where(m => m.AllocatedCount > 0).ToList();
 
                 foreach (var item in belongUsers)
                 {
-                    var new_task = new ObBatchAllocateTask();
-                    new_task.Id = GuidUtil.New();
-                    new_task.PId = obBatchAllocateTask.Id;
-                    new_task.MerchantId = obBatchAllocateTask.MerchantId;
-                    new_task.ObBatchId = obBatchAllocateTask.ObBatchId;
-                    new_task.DataCount = item.AllocatedCount;
-                    new_task.AllocatedCount = 0;
-                    new_task.UnAllocatedCount = item.AllocatedCount;
-                    new_task.UsedCount = 0;
-                    new_task.UnUsedCount = 0;
-                    new_task.BelongUserId = item.UserId;
-                    new_task.BelongOrganizationId = item.OrganizationId;
-                    new_task.Creator = operater;
-                    new_task.CreateTime = this.DateTime;
-                    new_task.SoureName = string.Format("上级分配人：{0}（{1}）", soureUser.FullName, soureUser.UserName);
-                    CurrentDb.ObBatchAllocateTask.Add(new_task);
+                    var new_Allocate = new ObBatchAllocate();
+                    new_Allocate.Id = GuidUtil.New();
+                    new_Allocate.PId = obBatchAllocate.Id;
+                    new_Allocate.MerchantId = obBatchAllocate.MerchantId;
+                    new_Allocate.ObBatchId = obBatchAllocate.ObBatchId;
+                    new_Allocate.DataCount = item.AllocatedCount;
+                    new_Allocate.AllocatedCount = 0;
+                    new_Allocate.UnAllocatedCount = item.AllocatedCount;
+                    new_Allocate.UsedCount = 0;
+                    new_Allocate.UnUsedCount = 0;
+                    new_Allocate.BelongUserId = item.UserId;
+                    new_Allocate.BelongOrganizationId = item.OrganizationId;
+                    new_Allocate.Creator = operater;
+                    new_Allocate.CreateTime = this.DateTime;
+                    new_Allocate.SoureName = string.Format("上级分配人：{0}（{1}）", soureUser.FullName, soureUser.UserName);
+                    CurrentDb.ObBatchAllocate.Add(new_Allocate);
 
 
                     var belongUser = CurrentDb.SysUser.Where(m => m.Id == item.UserId).FirstOrDefault();
@@ -123,13 +122,13 @@ namespace Lumos.BLL.Service.Merch
                     if (rop.Mode == Enumeration.ObBatchAllocateTaskAllocateMode.Random)
                     {
                         //随机分配
-                        obCustomers = CurrentDb.ObCustomer.Where(x => x.BelongUserId == obBatchAllocateTask.BelongUserId).OrderBy(x => Guid.NewGuid()).Take(item.AllocatedCount).ToList();
+                        obCustomers = CurrentDb.ObCustomer.Where(x => x.BelongUserId == obBatchAllocate.BelongUserId).OrderBy(x => Guid.NewGuid()).Take(item.AllocatedCount).ToList();
                     }
                     else if (rop.Mode == Enumeration.ObBatchAllocateTaskAllocateMode.Filter)
                     {
                         //过滤分配
                         obCustomers = CurrentDb.ObCustomer.Where(x =>
-                                     x.BelongUserId == obBatchAllocateTask.BelongUserId
+                                     x.BelongUserId == obBatchAllocate.BelongUserId
                                      &&
                                      (rop.Filters.CarPlateNo == null || x.CarPlateNo.Contains(rop.Filters.CarPlateNo)) &&
                                      (rop.Filters.CarModel == null || x.CarModel.Contains(rop.Filters.CarModel)) &&
@@ -145,7 +144,7 @@ namespace Lumos.BLL.Service.Merch
                     {
                         obCustomer.BelongUserId = item.UserId;
                         obCustomer.BelongOrganizationId = item.OrganizationId;
-                        obCustomer.ObBatchAllocateTaskId = new_task.Id;
+                        obCustomer.ObBatchAllocateId = new_Allocate.Id;
                         obCustomer.Mender = operater;
                         obCustomer.MendTime = this.DateTime;
 
@@ -172,5 +171,6 @@ namespace Lumos.BLL.Service.Merch
 
             return result;
         }
+
     }
 }

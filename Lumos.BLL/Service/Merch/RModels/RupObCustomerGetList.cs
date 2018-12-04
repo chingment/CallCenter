@@ -8,7 +8,7 @@ namespace Lumos.BLL.Service.Merch
 {
     public class RupObCustomerGetList:RupObBatchGetList
     {
-        public string ObBatchAllocateTaskId { get; set; }
+        public string ObBatchAllocateId { get; set; }
 
         public string CsrName { get; set; }
         public string CsrPhoneNumber { get; set; }

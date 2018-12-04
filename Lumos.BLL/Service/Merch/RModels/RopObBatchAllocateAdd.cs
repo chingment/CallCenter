@@ -7,9 +7,9 @@ using Lumos.Entity;
 
 namespace Lumos.BLL.Service.Merch
 {
-    public class RopObBatchAllocateTaskAllocate
+    public class RopObBatchAllocateAdd
     {
-        public RopObBatchAllocateTaskAllocate()
+        public RopObBatchAllocateAdd()
         {
             this.BelongUsers = new List<BelongUser>();
             this.Filters = new RupObCustomerGetList();

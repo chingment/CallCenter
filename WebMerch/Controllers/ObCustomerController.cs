@@ -27,7 +27,7 @@ namespace WebMerch.Controllers
 
             var query = (from u in CurrentDb.ObCustomer
                          where
-                         u.ObBatchAllocateTaskId == rup.ObBatchAllocateTaskId
+                         u.ObBatchAllocateId == rup.ObBatchAllocateId
                          &&
                          u.MerchantId == this.CurrentMerchantId &&
                          (rup.CarPlateNo == null || u.CarPlateNo.Contains(rup.CarPlateNo)) &&
