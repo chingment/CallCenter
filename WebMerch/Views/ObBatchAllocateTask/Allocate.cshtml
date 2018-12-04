@@ -51,6 +51,9 @@
                     l_StrRows += "<td class=\"overflow\" title=\"" + p_row.carInsLastEndTime + "\">" + p_row.carInsLastEndTime + "</td>";
                     l_StrRows += "</tr>";
                     return l_StrRows;
+                },
+                success: function (data) {
+                    $('#lbl_UnAllocatedCount').text(data.totalRecord);
                 }
             });
         });

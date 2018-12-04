@@ -24,18 +24,20 @@ namespace WebMerch.Controllers
 
         public CustomJsonResult GetList(RupObCustomerGetList rup)
         {
+
             var query = (from u in CurrentDb.ObCustomer
                          where
                          u.ObBatchAllocateTaskId == rup.ObBatchAllocateTaskId
                          &&
-                         u.MerchantId == this.CurrentMerchantId&&
-                         (rup.CarPlateNo == null || u.CarPlateNo.Contains(rup.CarPlateNo))&&
-                         (rup.CarModel == null || u.CarModel.Contains(rup.CarModel))&&
-                         (rup.CarEngineNo == null || u.CarEngineNo.Contains(rup.CarEngineNo))&&
-                         (rup.CsrAddress == null || u.CsrAddress.Contains(rup.CsrAddress))&&
-                         (rup.CsrPhoneNumber == null || u.CsrPhoneNumber.Contains(rup.CsrPhoneNumber))&&
-                         (rup.CsrName == null || u.CsrName.Contains(rup.CsrName))&&
-                         (rup.CsrIdNumber == null || u.CsrIdNumber.Contains(rup.CsrIdNumber))
+                         u.MerchantId == this.CurrentMerchantId &&
+                         (rup.CarPlateNo == null || u.CarPlateNo.Contains(rup.CarPlateNo)) &&
+                         (rup.CarModel == null || u.CarModel.Contains(rup.CarModel)) &&
+                         (rup.CarEngineNo == null || u.CarEngineNo.Contains(rup.CarEngineNo)) &&
+                         (rup.CsrAddress == null || u.CsrAddress.Contains(rup.CsrAddress)) &&
+                         (rup.CsrPhoneNumber == null || u.CsrPhoneNumber.Contains(rup.CsrPhoneNumber)) &&
+                         (rup.CsrName == null || u.CsrName.Contains(rup.CsrName)) &&
+                         (rup.CsrIdNumber == null || u.CsrIdNumber.Contains(rup.CsrIdNumber)) &&
+                         (rup.CarInsLastCompany == null || u.CarInsLastCompany.Contains(rup.CarInsLastCompany))
                          select new { u.Id, u.CsrName, u.CsrPhoneNumber, u.CsrAddress, u.CsrIdNumber, u.CarRegisterDate, u.CarPlateNo, u.CarModel, u.CarEngineNo, u.CarVin, u.CarInsLastQzNo, u.CarInsLastSyNo, u.CarInsLastCompany, u.CarInsLastStartTime, u.CarInsLastEndTime, u.CreateTime });
 
             int total = query.Count();
