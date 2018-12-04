@@ -94,13 +94,20 @@ namespace WebMerch.Controllers
                 return new CustomJsonResult(ResultType.Failure, ResultCode.Failure, "文件格式类型不符合，必须为.xls文件");
             }
 
-            var organization = CurrentDb.Organization.Where(m => m.Dept == 0 && m.MerchantId == this.CurrentMerchantId).FirstOrDefault();
+            var belongOrganization = CurrentDb.Organization.Where(m => m.Dept == 0 && m.MerchantId == this.CurrentMerchantId).FirstOrDefault();
 
-            if (string.IsNullOrEmpty(organization.HeaderId))
+            if (belongOrganization == null)
             {
-                return new CustomJsonResult(ResultType.Failure, ResultCode.Failure, string.Format("请机构[{0}]设置负责人，该负责人是用于分配数据", organization.Name));
+                return new CustomJsonResult(ResultType.Failure, ResultCode.Failure, "请先设置机构");
             }
 
+
+            var belongUser = CurrentDb.SysMerchantUser.Where(m => m.MerchantId == this.CurrentMerchantId && m.Id == belongOrganization.HeaderId).FirstOrDefault();
+
+            if (belongUser == null)
+            {
+                return new CustomJsonResult(ResultType.Failure, ResultCode.Failure, string.Format("请机构[{0}]设置负责人，该负责人是用于分配数据", belongOrganization.Name));
+            }
 
             var result = new CustomJsonResult();
 
@@ -161,8 +168,9 @@ namespace WebMerch.Controllers
 
             rop.FileName = file.FileName;
             rop.FilePath = filePath;
-            rop.BelongUserId = organization.HeaderId;
-            rop.BelongOrganizationId = organization.Id;
+            rop.BelongUserId = belongOrganization.HeaderId;
+            rop.BelongUserName= string.Format("{0}机构负责人：{1}({2})", belongOrganization.FullName, belongUser.FullName, belongUser.UserName);
+            rop.BelongOrganizationId = belongOrganization.Id;
             result = MerchServiceFactory.ObBatch.AddByFile(this.CurrentUserId, this.CurrentMerchantId, rop);
 
             return result;

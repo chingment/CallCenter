@@ -27,6 +27,8 @@ namespace Lumos.BLL.Service.Merch
 
         public string BelongUserId { get; set; }
 
+        public string BelongUserName { get; set; }
+
         public string BelongOrganizationId { get; set; }
     }
 

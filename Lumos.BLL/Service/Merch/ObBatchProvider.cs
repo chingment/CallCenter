@@ -30,16 +30,7 @@ namespace Lumos.BLL.Service.Merch
                 ret.RecoveryTime = obBatch.RecoveryTime.ToUnifiedFormatDate() ?? "";
                 ret.HandleReport = obBatch.HandleReport ?? "";
                 ret.FollowDelayDays = obBatch.FollowDelayDays;
-                var belongOrganization = CurrentDb.Organization.Where(m => m.MerchantId == merchantId && m.Id == obBatch.BelongOrganizationId).FirstOrDefault();
-                if (belongOrganization != null)
-                {
-                    var belongUser = CurrentDb.SysMerchantUser.Where(m => m.MerchantId == merchantId && m.Id == obBatch.BelongUserId).FirstOrDefault();
-                    if (belongUser != null)
-                    {
-                        ret.BelongUserName = string.Format("{0}机构负责人：{1}({2})", belongOrganization.FullName, belongUser.FullName, belongUser.UserName);
-                    }
-
-                }
+                ret.BelongUserName = obBatch.BelongUserName;
             }
 
             return new CustomJsonResult(ResultType.Success, ResultCode.Success, "获取成功", ret);
@@ -69,6 +60,7 @@ namespace Lumos.BLL.Service.Merch
             obBatch.SoureName = rop.FileName;
             obBatch.FilePath = rop.FilePath;
             obBatch.BelongUserId = rop.BelongUserId;
+            obBatch.BelongUserName = rop.BelongUserName;
             obBatch.BelongOrganizationId = rop.BelongOrganizationId;
             obBatch.Status = Enumeration.DataBatchStatus.WaitHandle;
             obBatch.Creator = operater;

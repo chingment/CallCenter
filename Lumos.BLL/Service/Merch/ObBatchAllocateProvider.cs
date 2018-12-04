@@ -96,6 +96,9 @@ namespace Lumos.BLL.Service.Merch
 
                 foreach (var item in belongUsers)
                 {
+                    var belongUser = CurrentDb.SysUser.Where(m => m.Id == item.UserId).FirstOrDefault();
+                    var belongOrganization=CurrentDb.Organization.Where(m => m.Id== item.OrganizationId).FirstOrDefault();
+
                     var new_Allocate = new ObBatchAllocate();
                     new_Allocate.Id = GuidUtil.New();
                     new_Allocate.PId = obBatchAllocate.Id;
@@ -107,6 +110,7 @@ namespace Lumos.BLL.Service.Merch
                     new_Allocate.UsedCount = 0;
                     new_Allocate.UnUsedCount = 0;
                     new_Allocate.BelongUserId = item.UserId;
+                    new_Allocate.BelongUserName= string.Format("{0}机构：{1}({2})", belongOrganization.FullName, belongUser.FullName, belongUser.UserName);
                     new_Allocate.BelongOrganizationId = item.OrganizationId;
                     new_Allocate.Creator = operater;
                     new_Allocate.CreateTime = this.DateTime;
@@ -114,7 +118,6 @@ namespace Lumos.BLL.Service.Merch
                     CurrentDb.ObBatchAllocate.Add(new_Allocate);
 
 
-                    var belongUser = CurrentDb.SysUser.Where(m => m.Id == item.UserId).FirstOrDefault();
 
                     List<ObCustomer> obCustomers = new List<ObCustomer>();
 
