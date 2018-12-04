@@ -15,7 +15,7 @@ namespace Lumos.Entity
         public string CsrPhoneNumber { get; set; }
         public string CsrAddress { get; set; }
         public string CsrIdNumber { get; set; }
-        public string CarRegisterDate { get; set; }
+        public DateTime? CarRegisterDate { get; set; }
         public string CarPlateNo { get; set; }
         public string CarModel { get; set; }
         public string CarEngineNo { get; set; }
@@ -23,8 +23,8 @@ namespace Lumos.Entity
         public string CarInsLastQzNo { get; set; }
         public string CarInsLastSyNo { get; set; }
         public string CarInsLastCompany { get; set; }
-        public string CarInsLastStartTime { get; set; }
-        public string CarInsLastEndTime { get; set; }
+        public DateTime? CarInsLastStartTime { get; set; }
+        public DateTime? CarInsLastEndTime { get; set; }
         public bool IsValid { get; set; }
         public string HandleReport { get; set; }
         public string Creator { get; set; }

@@ -42,7 +42,7 @@ namespace WebMerch.Controllers
                     CsrPhoneNumber = item.CsrPhoneNumber,
                     CsrAddress = item.CsrAddress,
                     CsrIdNumber = item.CsrIdNumber,
-                    CarRegisterDate = item.CarRegisterDate,
+                    CarRegisterDate = item.CarRegisterDate.ToUnifiedFormatDate(),
                     CarPlateNo = item.CarPlateNo,
                     CarModel = item.CarModel,
                     CarEngineNo = item.CarEngineNo,
@@ -50,8 +50,8 @@ namespace WebMerch.Controllers
                     IsValid = item.IsValid,
                     CarInsLastQzNo = item.CarInsLastQzNo,
                     CarInsLastCompany = item.CarInsLastCompany,
-                    CarInsLastStartTime = item.CarInsLastStartTime,
-                    CarInsLastEndTime = item.CarInsLastEndTime,
+                    CarInsLastStartTime = item.CarInsLastStartTime.ToUnifiedFormatDate(),
+                    CarInsLastEndTime = item.CarInsLastEndTime.ToUnifiedFormatDate(),
                     HandleReport = item.HandleReport,
                     CreateTime = item.CreateTime.ToUnifiedFormatDateTime()
                 });
