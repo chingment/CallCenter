@@ -7,6 +7,9 @@
     <script type="text/javascript">
         var id = $.lumos.getUrlParamValue("id");
         var listTable;
+        var unAllocatedCount = 0;
+        var unAllocatedCountRandom = 0;
+        var unAllocatedCountFilter = 0;
         $(this).ready(function () {
             $('input[name=ObBatchAllocateTaskId]').val(id);
             $.formValidator.initConfig({ formID: "form1", onError: function (msg) { $.lumos.tips(msg); } });
@@ -14,11 +17,12 @@
 
             $("#sel_Modes").chosen().on("change", function (evt, params) {
                 var val = $(this).val();
-                //alert(val)
                 if (val == "1") {
+                    $('#lbl_UnAllocatedCount').text(unAllocatedCountRandom);
                     $('#tr_filterdata').hide();
                 }
                 else {
+                    $('#lbl_UnAllocatedCount').text(unAllocatedCountFilter);
                     $('#tr_filterdata').show();
                 }
             });
@@ -53,6 +57,8 @@
                     return l_StrRows;
                 },
                 success: function (data) {
+                    unAllocatedCount = data.totalRecord;
+                    unAllocatedCountFilter = data.totalRecord;
                     $('#lbl_UnAllocatedCount').text(data.totalRecord);
                 }
             });
@@ -72,6 +78,9 @@
                         $('#lbl_ObBatchCode').text(data.obBatchCode);
                         $("#lbl_ObBatchName").text(data.obBatchName);
                         $("#lbl_UnAllocatedCount").text(data.unAllocatedCount);
+
+                        unAllocatedCount = data.unAllocatedCount;
+                        unAllocatedCountRandom = data.unAllocatedCount;
 
                         $.each(data.belongUsers, function (index, value) {
 
@@ -102,7 +111,9 @@
                 return false;
             }
 
-            var belongUsers = []
+            var belongUsers = [];
+            var isFlagCountFormat = false;
+            var sumAllocatedCount = 0;
             $.each(tr_belongUsers, function (e) {
                 var userId = $(this).attr("userId");
                 var organizationId = $(this).attr("organizationId");
@@ -110,14 +121,25 @@
 
                 belongUsers.push({ userId: userId, organizationId: organizationId, allocatedCount: allocatedCount });
 
-                //if (!$.lumos.isInt(allocatedCount)) {
-                //    alert(allocatedCount)
-                //    $.lumos.tips("请输入正整数");
-                //    return;
-                //}
+                if (!$.lumos.isInt(allocatedCount)) {
+                    isFlagCountFormat = true;
+                    return;
+                }
+                else {
+                    sumAllocatedCount += parseInt(allocatedCount);
+                }
             });
 
-            //alert(JSON.stringify(belongUsers))
+            if (isFlagCountFormat) {
+                $.lumos.tips("数量请输入正数字格式");
+                return false;
+            }
+
+            if (sumAllocatedCount > unAllocatedCount) {
+                $.lumos.tips("分配的数量超出可分配量");
+                return false;
+            }
+
 
             art.dialog.confirm('确定要保存？', function () {
 
@@ -141,6 +163,7 @@
 
             return false;
         }
+
     </script>
 }
 
