@@ -17,6 +17,7 @@ namespace Lumos.Entity
         public string SoureName { get; set; }
         public string FilePath { get; set; }
         public Enumeration.DataBatchBizType BizType { get; set; }
+        public int DataCount { get; set; }
         public int ValidCount { get; set; }
         public int InValidCount { get; set; }
         public Enumeration.DataBatchStatus Status { get; set; }

@@ -22,13 +22,24 @@ namespace Lumos.BLL.Service.Merch
                 ret.Id = obBatch.Id ?? ""; ;
                 ret.Code = obBatch.Code ?? ""; ;
                 ret.Name = obBatch.Name ?? ""; ;
-                ret.SoureName = obBatch.SoureName ?? "";
+                ret.SoureName = string.Format("（{0}）{1}", obBatch.SoureType.GetCnName(), obBatch.SoureName);
+                ret.DataCount = obBatch.DataCount;
                 ret.ValidCount = obBatch.ValidCount;
                 ret.InValidCount = obBatch.InValidCount;
                 ret.ExpiryTime = obBatch.ExpiryTime.ToUnifiedFormatDate() ?? "";
                 ret.RecoveryTime = obBatch.RecoveryTime.ToUnifiedFormatDate() ?? "";
                 ret.HandleReport = obBatch.HandleReport ?? "";
                 ret.FollowDelayDays = obBatch.FollowDelayDays;
+                var belongOrganization = CurrentDb.Organization.Where(m => m.MerchantId == merchantId && m.Id == obBatch.BelongOrganizationId).FirstOrDefault();
+                if (belongOrganization != null)
+                {
+                    var belongUser = CurrentDb.SysMerchantUser.Where(m => m.MerchantId == merchantId && m.Id == obBatch.BelongUserId).FirstOrDefault();
+                    if (belongUser != null)
+                    {
+                        ret.BelongUserName = string.Format("{0}机构负责人：{1}({2})", belongOrganization.FullName, belongUser.FullName, belongUser.UserName);
+                    }
+
+                }
             }
 
             return new CustomJsonResult(ResultType.Success, ResultCode.Success, "获取成功", ret);

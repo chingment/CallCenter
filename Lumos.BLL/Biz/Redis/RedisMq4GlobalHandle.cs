@@ -6,6 +6,7 @@ using NPOI.SS.UserModel;
 using System;
 using System.IO;
 using System.Linq;
+using System.Text;
 using System.Threading;
 using System.Transactions;
 
@@ -51,22 +52,23 @@ namespace Lumos.BLL.Biz
         {
             LumosDbContext CurrentDb = new LumosDbContext();
 
-            var obBatch = CurrentDb.ObBatch.Where(m => m.Id == rop.Id && m.Status == Entity.Enumeration.DataBatchStatus.WaitHandle).FirstOrDefault();
-
-            if (obBatch == null)
-            {
-                LogUtil.Info("找不到处理的批次");
-                return;
-            }
-
-            obBatch.Status = Entity.Enumeration.DataBatchStatus.Handling;
-            obBatch.Mender = GuidUtil.New();
-            obBatch.MendTime = DateTime.Now;
-            CurrentDb.SaveChanges();
-
-            var obBatchAllocateTaskId = GuidUtil.New();
             using (TransactionScope ts = new TransactionScope())
             {
+                var obBatch = CurrentDb.ObBatch.Where(m => m.Id == rop.Id && m.Status == Entity.Enumeration.DataBatchStatus.WaitHandle).FirstOrDefault();
+
+                if (obBatch == null)
+                {
+                    LogUtil.Info("找不到处理的批次");
+                    return;
+                }
+
+                obBatch.Status = Entity.Enumeration.DataBatchStatus.Handling;
+                obBatch.Mender = GuidUtil.New();
+                obBatch.MendTime = DateTime.Now;
+                CurrentDb.SaveChanges();
+
+                var obBatchAllocateTaskId = GuidUtil.New();
+
                 if (obBatch.SoureType == Entity.Enumeration.DataBatchSoureType.File)
                 {
                     if (!string.IsNullOrEmpty(obBatch.FilePath))
@@ -84,6 +86,8 @@ namespace Lumos.BLL.Biz
                             int inValidCount = 0;
                             for (int i = 1; i < rowCount; i++)
                             {
+                                #region 数据去重处理
+
                                 IRow row = sheet.GetRow(i);
 
                                 var csrPhoneNumber = NPOIHelperUtil.GetCellValue(row.GetCell(8));
@@ -180,7 +184,6 @@ namespace Lumos.BLL.Biz
                                     CurrentDb.ObCustomer.Add(obCustomer);
                                     CurrentDb.SaveChanges();
 
-
                                     var obCustomerBelongTrack = new ObCustomerBelongTrack();
                                     obCustomerBelongTrack.Id = GuidUtil.New();
                                     obCustomerBelongTrack.MerchantId = obBatch.MerchantId;
@@ -194,17 +197,28 @@ namespace Lumos.BLL.Biz
                                     CurrentDb.ObCustomerBelongTrack.Add(obCustomerBelongTrack);
 
                                 }
+                                #endregion
                             }
 
+                            obBatch.DataCount = validCount + inValidCount;
                             obBatch.ValidCount = validCount;
                             obBatch.InValidCount = inValidCount;
                             obBatch.Status = Entity.Enumeration.DataBatchStatus.Complete;
+
+                            //StringBuilder obBatchHandleReport = new StringBuilder();
+                            //obBatchHandleReport.Append("导入数据总数有{0}条");
+                            //obBatchHandleReport.Append("有效数据有{0}条");
+                            //obBatchHandleReport.Append("无效数据{0}条");
+                            //obBatchHandleReport.Append("导入数据总数为{0}条");
+                            //obBatchHandleReport.Append("导入数据总数为{0}条");
+
+                            //obBatch.HandleReport = obBatchHandleReport.ToString();
+
                             obBatch.Mender = GuidUtil.New();
                             obBatch.MendTime = DateTime.Now;
 
                             if (validCount > 0)
                             {
-
                                 var obBatchAllocateTask = new ObBatchAllocateTask();
                                 obBatchAllocateTask.Id = obBatchAllocateTaskId;
                                 obBatchAllocateTask.PId = GuidUtil.Empty();
@@ -222,13 +236,10 @@ namespace Lumos.BLL.Biz
                                 obBatchAllocateTask.SoureName = string.Format("数据文件:{0}", rop.SoureName);
                                 CurrentDb.ObBatchAllocateTask.Add(obBatchAllocateTask);
                                 CurrentDb.SaveChanges();
-
                             }
                         }
 
-
                         CurrentDb.SaveChanges();
-
 
                         ts.Complete();
                     }

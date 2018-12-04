@@ -6,16 +6,12 @@
     <script type="text/javascript">
 
         $(this).ready(function () {
-
             $.formValidator.initConfig({ formID: "form1", onError: function (msg) { $.lumos.tips(msg); } });
             $("#txt_Code").formValidator().inputValidator({ min: 1, max: 50, onError: "批次号须填，且不能超过50个字符" });
-            $("#txt_Name").formValidator().inputValidator({ min: 1, max: 50, onError: "标签须填，且不能超过50个字符" });
             $("#txt_ExpiryDays").formValidator().regexValidator({ regExp: regexEnum.intege1, onError: "有效期天数格式为大于1的正整数" });
             $("#txt_FollowDelayDays").formValidator().regexValidator({ regExp: regexEnum.intege1, onError: "跟进延迟天数格式为大于1的正整数" });
             $("#txt_RecoveryDays").formValidator().regexValidator({ regExp: regexEnum.intege1, onError: "回收期天数格式为大于1的正整数" });
-
             $("#markupload_file").formValidator().inputValidator({ min: 1, max: 2000, onError: "请选择上次文件" });
-
         });
 
 
@@ -29,7 +25,7 @@
             var followDelayDays = parseInt($("#txt_FollowDelayDays").val());
             var recoveryDays = parseInt($("#txt_RecoveryDays").val());
 
-            if (recoveryDays < followDelayDays) {
+            if (recoveryDays <= followDelayDays) {
                 $.lumos.tips("回收期天数必须大于跟进延迟天数")
                 return;
             }
@@ -93,14 +89,6 @@
                 </td>
                 <td class="f-tb-c">
                     <input id="txt_Code" name="code" class="input-control" type="text" style="width: 224px;" autocomplete="off" />
-                </td>
-            </tr>
-            <tr>
-                <td class="f-tb-t">
-                    <span class="required-symbol">*</span>标签：
-                </td>
-                <td class="f-tb-c">
-                    <input id="txt_Name" name="name" class="input-control" type="text" style="width: 224px;" autocomplete="off" />
                 </td>
             </tr>
             <tr>

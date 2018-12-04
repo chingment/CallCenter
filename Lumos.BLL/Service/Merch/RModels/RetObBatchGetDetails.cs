@@ -27,5 +27,10 @@ namespace Lumos.BLL.Service.Merch
         public int FollowDelayDays { get; set; }
 
         public string HandleReport { get; set; }
+
+        public string BelongUserName { get; set; }
+
+        public int DataCount { get; set; }
+
     }
 }

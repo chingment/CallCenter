@@ -57,11 +57,14 @@
                         $('#lbl_Code').text(data.code);
                         $('#lbl_Name').text(data.name);
                         $('#lbl_SoureName').text(data.soureName);
+                        $("#lbl_DataCount").text(data.dataCount);
                         $("#lbl_ValidCount").text(data.validCount);
                         $("#lbl_InValidCount").text(data.inValidCount);
                         $("#lbl_ExpiryTime").text(data.expiryTime);
                         $("#lbl_RecoveryTime").text(data.recoveryTime);
                         $("#lbl_FollowDelayDays").text(data.followDelayDays);
+                        $("#lbl_BelongUserName").text(data.belongUserName);
+                        $("#lbl_HandleReport").text(data.handleReport);
                     }
                 }
             });
@@ -92,14 +95,6 @@
                         </tr>
                         <tr>
                             <td class="f-tb-t">
-                                标签：
-                            </td>
-                            <td class="f-tb-c">
-                                <span id="lbl_Name"></span>
-                            </td>
-                        </tr>
-                        <tr>
-                            <td class="f-tb-t">
                                 来源：
                             </td>
                             <td class="f-tb-c">
@@ -108,17 +103,21 @@
                         </tr>
                         <tr>
                             <td class="f-tb-t">
-                                有效数据：
+                                数据所属：
                             </td>
                             <td class="f-tb-c">
-                                <span id="lbl_ValidCount"></span>条
+                                <span id="lbl_BelongUserName"></span>
                             </td>
                         </tr>
                         <tr>
                             <td class="f-tb-t">
-                                无效数据：
+                                数据：
                             </td>
                             <td class="f-tb-c">
+                                数据量<span id="lbl_DataCount"></span>条,
+                                有效数据：
+                                <span id="lbl_ValidCount"></span>条,
+                                无效数据：
                                 <span id="lbl_InValidCount"></span>条
                             </td>
                         </tr>
@@ -144,6 +143,14 @@
                             </td>
                             <td class="f-tb-c">
                                 <span id="lbl_RecoveryTime"></span>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td class="f-tb-t">
+                                导入报告：
+                            </td>
+                            <td class="f-tb-c">
+                                <span id="lbl_HandleReport"></span>
                             </td>
                         </tr>
                     </table>

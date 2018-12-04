@@ -177,16 +177,18 @@ namespace Lumos.Entity
             AdminJuniorOperators = 101,
             [Remark("商户端管理员")]
             MerchantAdministrator = 200,
+            [Remark("商户端总部负责人")]
+            MerchantGM = 201,
             [Remark("商户端场地负责人")]
-            MerchantUM = 201,
+            MerchantUM = 202,
             [Remark("商户端小组负责人")]
-            MerchantTL = 202,
+            MerchantTL = 203,
             [Remark("商户端电话外呼人员")]
-            MerchantTSR = 203,
+            MerchantTSR = 204,
             [Remark("商户端后勤负责人")]
-            MerchantHL = 204,
+            MerchantHL = 205,
             [Remark("商户端后勤人员")]
-            MerchantHQR = 205
+            MerchantHQR = 206
         }
     }
 }
