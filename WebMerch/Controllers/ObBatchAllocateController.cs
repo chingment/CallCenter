@@ -89,7 +89,7 @@ namespace WebMerch.Controllers
                          &&
                          u.MerchantId == this.CurrentMerchantId &&
                            (rup.Code == null || b.Code.Contains(rup.Code))
-                         select new { u.Id, ObBatchName = b.Name, u.SoureName, ObBatchCode = b.Code, u.DataCount, u.AllocatedCount, u.UnAllocatedCount, u.UnUsedCount, u.UsedCount, u.CreateTime });
+                         select new { u.Id, ObBatchName = b.Name, u.SoureName, ObBatchCode = b.Code, u.DataCount, u.AllocatedCount, u.UnAllocatedCount, u.UnUsedCount, u.UsedCount, u.CreateTime, u.BelongUserName });
 
             int total = query.Count();
 
@@ -109,6 +109,7 @@ namespace WebMerch.Controllers
                 {
                     Id = item.Id,
                     SoureName = item.SoureName,
+                    BelongUserName = item.BelongUserName,
                     ObBatchName = item.ObBatchName,
                     ObBatchCode = item.ObBatchCode,
                     DataCount = item.DataCount,
