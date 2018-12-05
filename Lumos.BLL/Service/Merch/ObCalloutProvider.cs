@@ -27,33 +27,60 @@ namespace Lumos.BLL.Service.Merch
             return query.ToList().Concat(query.ToList().SelectMany(t => GetFatherObBatchAllocateList(list, t.PId)));
         }
 
-        public CustomJsonResult Get(string operater, string merchantId, string userId)
+        public CustomJsonResult TakeData(string operater, string merchantId, string takerId)
         {
             CustomJsonResult result = new CustomJsonResult();
 
             using (TransactionScope ts = new TransactionScope())
             {
-                var obCustomer = CurrentDb.ObCustomer.Where(m => m.MerchantId == merchantId && m.IsTake == false && m.BelongUserId == userId).OrderBy(x => Guid.NewGuid()).FirstOrDefault();
+                var ret = new RetObCalloutTakeData();
 
+                var obCustomer = CurrentDb.ObCustomer.Where(m => m.MerchantId == merchantId && m.IsUseCall == false && m.TakerId == takerId).FirstOrDefault();
                 if (obCustomer == null)
                 {
-                    return new CustomJsonResult(ResultType.Failure, ResultCode.Failure, "没有可取的数据");
+                    obCustomer = CurrentDb.ObCustomer.Where(m => m.MerchantId == merchantId && m.IsTake == false && m.BelongUserId == takerId).OrderBy(x => Guid.NewGuid()).FirstOrDefault();
+
+                    if (obCustomer == null)
+                    {
+                        return new CustomJsonResult(ResultType.Failure, ResultCode.Failure, "没有可取的数据");
+                    }
+
+                    obCustomer.TakerId = takerId;
+                    obCustomer.IsTake = true;
+                    obCustomer.TakeTime = this.DateTime;
+                    obCustomer.IsUseCall = false;
+
+                    var obBatchAllocates = GetFatherObBatchAllocates(merchantId, obCustomer.ObBatchAllocateId);
+
+                    foreach (var obBatchAllocate in obBatchAllocates)
+                    {
+                        obBatchAllocate.UnUsedCount -= 1;
+                        obBatchAllocate.UsedCount += 1;
+                    }
+
+                    CurrentDb.SaveChanges();
+                    ts.Complete();
                 }
 
-                obCustomer.IsTake = true;
-                obCustomer.TakeTime = this.DateTime;
+                ret.Customer.Name = obCustomer.CsrName;
+                ret.Customer.PhoneNumber = obCustomer.CsrPhoneNumber;
+                ret.Customer.IdNumber = obCustomer.CsrIdNumber;
+                ret.Customer.Address = obCustomer.CsrAddress;
 
-                var obBatchAllocates = GetFatherObBatchAllocates(merchantId, obCustomer.ObBatchAllocateId);
 
-                foreach (var obBatchAllocate in obBatchAllocates)
-                {
-                    obBatchAllocate.UnUsedCount -= 1;
-                    obBatchAllocate.UsedCount += 1;
-                }
+                ret.Car.RegisterDate = obCustomer.CarRegisterDate.ToUnifiedFormatDate();
+                ret.Car.PlateNo = obCustomer.CarPlateNo;
+                ret.Car.Model = obCustomer.CarModel;
+                ret.Car.EngineNo = obCustomer.CarEngineNo;
+                ret.Car.Vin = obCustomer.CarVin;
+                ret.Car.InsLastQzNo = obCustomer.CarInsLastQzNo;
+                ret.Car.InsLastSyNo = obCustomer.CarInsLastSyNo;
+                ret.Car.InsLastCompany = obCustomer.CarInsLastCompany;
+                ret.Car.InsLastStartTime = obCustomer.CarInsLastStartTime.ToUnifiedFormatDate();
+                ret.Car.InsLastEndTime = obCustomer.CarInsLastEndTime.ToUnifiedFormatDate();
 
-                CurrentDb.SaveChanges();
 
-                ts.Complete();
+                result = new CustomJsonResult(ResultType.Success, ResultCode.Success, "获取成功", ret);
             }
 
             return result;

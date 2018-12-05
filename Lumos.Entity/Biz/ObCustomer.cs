@@ -43,5 +43,11 @@ namespace Lumos.Entity
         public bool IsTake { get; set; }
 
         public DateTime? TakeTime { get; set; }
+
+        public string TakerId { get; set; }
+
+        public bool IsUseCall{ get; set; }
+
+        public DateTime? UseCallTime { get; set; }
     }
 }

@@ -41,13 +41,13 @@
             $('a[gotopage]').live("click", function () {
                 var target = $(this).attr("target");
                 var gotopage = $(this).attr("gotopage");
-
+                var name = $(this).find(".name").text();
 
                 $('a[gotopage]').parent().removeClass('active');
                 $(this).parent().addClass('active');
 
 
-
+                $('.breadcrumb').find('li').eq(1).find("span").text(name);
 
                 window.frames[target].document.location = gotopage;
             });
@@ -149,7 +149,7 @@
                                     {{each(i,item2) item1.subMenus}}
                                     <li>
                                         <a gotopage="${item2.url}" target="iframeMain">
-                                            <span class="icon"></span><span>${item2.name}</span>
+                                            <span class="icon"></span><span class="name">${item2.name}</span>
                                         </a>
                                     </li>
                                     {{/each}}
@@ -164,7 +164,7 @@
                         <div class="gbr-row gbr-row-breadcrumb">
                             <ul class="breadcrumb">
                                 <li><a target="iframeMain" href="/home/main" class="root">&nbsp;</a></li>
-                                <li><span class="site">主界面</span></li>
+                                <li><span class="site"></span></li>
                             </ul>
                         </div>
                         <div class="gbr-row gbr-row-functionpage">
