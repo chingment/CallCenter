@@ -232,7 +232,7 @@ namespace Lumos.BLL.Biz
                                 obBatchAllocate.AllocatedCount = 0;
                                 obBatchAllocate.UnAllocatedCount = validCount;
                                 obBatchAllocate.UsedCount = 0;
-                                obBatchAllocate.UnUsedCount = validCount;
+                                obBatchAllocate.UnUsedCount = 0;
                                 obBatchAllocate.Creator = obBatch.Creator;
                                 obBatchAllocate.CreateTime = obBatch.CreateTime;
                                 obBatchAllocate.BelongUserId = obBatch.BelongUserId;

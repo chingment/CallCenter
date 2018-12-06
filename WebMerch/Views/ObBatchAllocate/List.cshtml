@@ -27,8 +27,8 @@
                 l_StrRows += "<td class=\"overflow\" title=\"" + p_row.dataCount + "\">" + p_row.dataCount + "</td>";
                 l_StrRows += "<td class=\"overflow\" title=\"" + p_row.unAllocatedCount + "\">" + p_row.unAllocatedCount + "</td>";
                 l_StrRows += "<td class=\"overflow\" title=\"" + p_row.allocatedCount + "\">" + p_row.allocatedCount + "</td>";
-                l_StrRows += "<td class=\"overflow\" title=\"" + p_row.usedCount + "\">" + p_row.usedCount + "</td>";
                 l_StrRows += "<td class=\"overflow\" title=\"" + p_row.unUsedCount + "\">" + p_row.unUsedCount + "</td>";
+                l_StrRows += "<td class=\"overflow\" title=\"" + p_row.usedCount + "\">" + p_row.usedCount + "</td>";
                 l_StrRows += "<td class=\"operation\">";
                 l_StrRows += l_Strlimt;
                 l_StrRows += "</td>";
@@ -66,8 +66,8 @@
                 l_StrRows += "<td class=\"overflow\" title=\"" + p_row.belongUserName + "\">" + p_row.belongUserName + "</td>";
                 l_StrRows += "<td class=\"overflow\" title=\"" + p_row.allocateMode + "\">" + p_row.allocateMode + "</td>";
                 l_StrRows += "<td class=\"overflow\" title=\"" + p_row.dataCount + "\">" + p_row.dataCount + "</td>";
-                l_StrRows += "<td class=\"overflow\" title=\"" + p_row.usedCount + "\">" + p_row.usedCount + "</td>";
                 l_StrRows += "<td class=\"overflow\" title=\"" + p_row.unUsedCount + "\">" + p_row.unUsedCount + "</td>";
+                l_StrRows += "<td class=\"overflow\" title=\"" + p_row.usedCount + "\">" + p_row.usedCount + "</td>";
                 l_StrRows += "<td class=\"overflow\" title=\"" + p_row.description + "\">" + p_row.description + "</td>";
                 l_StrRows += "<td class=\"overflow\" title=\"" + p_row.createTime + "\">" + p_row.createTime + "</td>";
                 l_StrRows += "</tr>";
@@ -150,10 +150,10 @@
                         已分配(条)
                     </th>
                     <th style="width:10%">
-                        已使用(条)
+                        未使用(条)
                     </th>
                     <th style="width:10%">
-                        未使用(条)
+                        已使用(条)
                     </th>
                     <th style="width:25px" class="operation">
                         操作
@@ -226,10 +226,10 @@
                         分配数量(条)
                     </th>
                     <th style="width:10%">
-                        已使用(条)
+                        未使用(条)
                     </th>
                     <th style="width:10%">
-                        未使用(条)
+                        已使用(条)
                     </th>
                     <th style="width:10%">
                         描述

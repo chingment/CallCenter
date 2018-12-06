@@ -18,10 +18,12 @@
             $("#sel_Modes").chosen().on("change", function (evt, params) {
                 var val = $(this).val();
                 if (val == "1") {
+                    unAllocatedCount = unAllocatedCountRandom;
                     $('#lbl_UnAllocatedCount').text(unAllocatedCountRandom);
                     $('#tr_filterdata').hide();
                 }
                 else {
+                    unAllocatedCount = unAllocatedCountFilter;
                     $('#lbl_UnAllocatedCount').text(unAllocatedCountFilter);
                     $('#tr_filterdata').show();
                 }
@@ -134,6 +136,12 @@
                 $.lumos.tips("数量请输入正数字格式");
                 return false;
             }
+
+            if (sumAllocatedCount < 1) {
+                $.lumos.tips("分配的数量不能都为0");
+                return false;
+            }
+
 
             if (sumAllocatedCount > unAllocatedCount) {
                 $.lumos.tips("分配的数量超出可分配量");

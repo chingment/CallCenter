@@ -5,13 +5,15 @@ using System.ComponentModel.DataAnnotations.Schema;
 
 namespace Lumos.Entity
 {
-    [Table("ObBatchAllocate")]
+    [Table("ObCallOutResultCode")]
     public class ObCallOutResultCode
     {
         [Key]
         public string Code { get; set; }
         public string FCode { get; set; }
         public string Name { get; set; }
-        public Enumeration.DataBizType BizType { get; set; }
+        public Enumeration.DataBizType DataBizType { get; set; }
+
+        public int Priority { get; set; }
     }
 }

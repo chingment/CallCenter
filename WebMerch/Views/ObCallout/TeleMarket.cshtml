@@ -104,6 +104,9 @@
                         $('#lbl_CarEngineNo').text(data.car.engineNo);
                         $('#lbl_CarVin').text(data.car.vin);
 
+
+                        $('#sel_CallOutResultCode').myChosen({ urlParams: { type: "ObCallOutResultCode" } });
+
                     }
                 }
             });
@@ -213,30 +216,34 @@
 
 
 
-<form id="form_CallRecord" name="form_CallRecord" method="post" style="display:none;">
-    <table class="f-tb" cellpadding="0" cellspacing="1">
+<form id="form_CallRecord" name="form_CallRecord" method="post" style="width:500px;display:none">
+
+
+    <table class="f-tb" cellpadding="0" cellspacing="1" style="width:500px;">
         <tr>
             <td class="f-tb-t" style="width:90px">
                 通话结果：
             </td>
             <td class="f-tb-c">
-        
+
+                <select id="sel_CallOutResultCode" data-placeholder="请选择" class="chosen-select" style="width:200px">
+                    <option value="-1"></option>
+                </select>
+
             </td>
         </tr>
         <tr>
             <td class="f-tb-t">
                 下次回拨时间：
             </td>
-            <td class="f-tb-c">
-                
-            </td>
+            <td class="f-tb-c"></td>
         </tr>
         <tr>
             <td class="f-tb-t">
                 备注：
             </td>
             <td class="f-tb-c">
-                <textarea rows="5"  style="width:92%;" id="txt_Description" class="input-control"></textarea>
+                <textarea rows="5" style="width:92%;" id="txt_Description" class="input-control"></textarea>
             </td>
         </tr>
     </table>

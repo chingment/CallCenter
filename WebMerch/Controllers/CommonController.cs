@@ -205,6 +205,21 @@ namespace WebMerch.Controllers
                     }
                     #endregion 
                     break;
+                case "obcalloutresultcode":
+                    #region obcalloutresultcode
+
+
+                    var obCallOutResultCodes = CurrentDb.ObCallOutResultCode.Where(m => m.DataBizType == Enumeration.DataBizType.CarIns && m.Code.Length == 4).OrderBy(m => m.Priority).ToList();
+
+                    foreach (var item in obCallOutResultCodes)
+                    {
+                        var field = new FieldModel();
+                        field.Value = item.Code;
+                        field.Name = item.Name;
+                        fields.Add(field);
+                    }
+                    #endregion 
+                    break;
             }
 
 

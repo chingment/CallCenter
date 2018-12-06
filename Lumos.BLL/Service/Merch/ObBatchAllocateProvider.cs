@@ -114,7 +114,7 @@ namespace Lumos.BLL.Service.Merch
                     new_Allocate.AllocatedCount = 0;
                     new_Allocate.UnAllocatedCount = item.AllocatedCount;
                     new_Allocate.UsedCount = 0;
-                    new_Allocate.UnUsedCount = item.AllocatedCount;
+                    new_Allocate.UnUsedCount = 0;
                     new_Allocate.BelongUserId = item.UserId;
                     new_Allocate.BelongUserName = string.Format("{0}机构：{1}({2})", belongOrganization.FullName, belongUser.FullName, belongUser.UserName);
                     new_Allocate.BelongOrganizationId = item.OrganizationId;
@@ -150,8 +150,13 @@ namespace Lumos.BLL.Service.Merch
                                      (rop.Filters.CarRegisterDateStart == null || x.CarRegisterDate >= rop.Filters.CarRegisterDateStart) &&
                                      (rop.Filters.CarRegisterDateEnd == null || x.CarRegisterDate <= rop.Filters.CarRegisterDateEnd) &&
                                      (rop.Filters.CarInsLastStartTime == null || x.CarInsLastStartTime >= rop.Filters.CarInsLastStartTime) &&
-                                     (rop.Filters.CarInsLastEndTime == null || x.CarRegisterDate <= rop.Filters.CarInsLastEndTime)
+                                     (rop.Filters.CarInsLastEndTime == null || x.CarInsLastEndTime <= rop.Filters.CarInsLastEndTime)
                                      ).OrderBy(x => Guid.NewGuid()).Take(item.AllocatedCount).ToList();
+                    }
+
+                    if (obCustomers.Count != item.AllocatedCount)
+                    {
+                        return new CustomJsonResult(ResultType.Failure, ResultCode.Failure, "分配的总数量与库存数据不一致");
                     }
 
                     foreach (var obCustomer in obCustomers)
@@ -161,7 +166,7 @@ namespace Lumos.BLL.Service.Merch
                         obCustomer.ObBatchAllocateId = new_Allocate.Id;
                         obCustomer.Mender = operater;
                         obCustomer.MendTime = this.DateTime;
-
+                        CurrentDb.SaveChanges();
 
                         var obCustomerBelongTrack = new ObCustomerBelongTrack();
                         obCustomerBelongTrack.Id = GuidUtil.New();
