@@ -10,6 +10,7 @@ using Lumos.DAL;
 using Lumos.BLL;
 using Lumos;
 using Lumos.BLL.Service.Merch;
+using System.Collections.Generic;
 
 namespace WebMerch.Controllers
 {
@@ -41,27 +42,49 @@ namespace WebMerch.Controllers
 
         public CustomJsonResult GetList(RupUserGetList rup)
         {
-            var list = (from u in CurrentDb.SysMerchantUser
-                        where (rup.UserName == null || u.UserName.Contains(rup.UserName)) &&
-                        (rup.FullName == null || u.FullName.Contains(rup.FullName)) &&
-                        u.IsDelete == false &&
-                        u.MerchantId == this.CurrentMerchantId
-                        select new { u.Id, u.UserName, u.FullName, u.Email, u.PhoneNumber, u.CreateTime, u.IsDelete });
+            var query = (from u in CurrentDb.SysMerchantUser
+                         join o in CurrentDb.Organization on u.OrganizationId equals o.Id
+                         where (rup.UserName == null || u.UserName.Contains(rup.UserName)) &&
+                         (rup.FullName == null || u.FullName.Contains(rup.FullName)) &&
+                         u.IsDelete == false &&
+                         u.MerchantId == this.CurrentMerchantId
+                         select new { u.Id, u.UserName, u.FullName, u.PositionId, OrganizationName = o.FullName, u.Email, u.PhoneNumber, u.CreateTime, u.IsDelete });
 
-            int total = list.Count();
+            int total = query.Count();
 
             int pageIndex = rup.PageIndex;
             int pageSize = 10;
-            list = list.OrderByDescending(r => r.CreateTime).Skip(pageSize * (pageIndex)).Take(pageSize);
+            query = query.OrderByDescending(r => r.CreateTime).Skip(pageSize * (pageIndex)).Take(pageSize);
 
-            PageEntity pageEntity = new PageEntity { PageSize = pageSize, TotalRecord = total, Rows = list };
+            var list = query.ToList();
+
+            List<object> olist = new List<object>();
+
+            foreach (var item in list)
+            {
+
+                olist.Add(new
+                {
+                    Id = item.Id,
+                    UserName = item.UserName,
+                    FullName = item.FullName,
+                    Email = item.Email,
+                    OrganizationName = item.OrganizationName,
+                    PositionName = item.PositionId.GetCnName(),
+                    PhoneNumber = item.PhoneNumber,
+                    CreateTime = item.CreateTime.ToUnifiedFormatDateTime()
+                });
+            }
+
+
+            PageEntity pageEntity = new PageEntity { PageSize = pageSize, TotalRecord = total, Rows = olist };
 
             return Json(ResultType.Success, pageEntity, "");
         }
 
         public CustomJsonResult GetDetails(string id)
         {
-            return MerchServiceFactory.User.GetDetails(this.CurrentUserId,this.CurrentMerchantId, id);
+            return MerchServiceFactory.User.GetDetails(this.CurrentUserId, this.CurrentMerchantId, id);
         }
 
         [HttpPost]

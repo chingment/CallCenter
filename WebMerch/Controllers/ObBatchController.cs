@@ -127,9 +127,9 @@ namespace WebMerch.Controllers
 
             ExcelFormatCheckUtil excelFormatCheckUtil = new ExcelFormatCheckUtil(sheet);
 
-            switch (rop.BizType)
+            switch (rop.DataBizType)
             {
-                case Enumeration.DataBatchBizType.CarIns:
+                case Enumeration.DataBizType.CarIns:
                     #region 车险模板
                     excelFormatCheckUtil.AddCheckCellIsString(0, "初登日期", 0, 200);
                     excelFormatCheckUtil.AddCheckCellIsString(1, "车牌", 0, 200);

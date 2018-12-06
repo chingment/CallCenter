@@ -72,6 +72,7 @@ namespace Lumos.BLL.Service.Admin
                 sysMerchatUser.UserName = string.Format("M{0}", rop.UserName);
                 sysMerchatUser.PasswordHash = PassWordHelper.HashPassword(rop.Password);
                 sysMerchatUser.SecurityStamp = Guid.NewGuid().ToString();
+                sysMerchatUser.FullName = rop.ContactName;
                 sysMerchatUser.RegisterTime = this.DateTime;
                 sysMerchatUser.Status = Enumeration.UserStatus.Normal;
                 sysMerchatUser.BelongSite = Enumeration.BelongSite.Merchant;
@@ -142,18 +143,22 @@ namespace Lumos.BLL.Service.Admin
                     return new CustomJsonResult(ResultType.Failure, ResultCode.Failure, "数据为空");
                 }
 
+                if (!string.IsNullOrEmpty(rop.Password))
+                {
+                    sysMerchantUser.PasswordHash = PassWordHelper.HashPassword(rop.Password);
+                }
+
+                sysMerchantUser.FullName = rop.ContactName;
+                sysMerchantUser.MendTime = this.DateTime;
+                sysMerchantUser.Mender = operater;
+
+
                 merchant.ContactName = rop.ContactName;
                 merchant.ContactPhone = rop.ContactPhone;
                 merchant.ContactAddress = rop.ContactAddress;
                 merchant.MendTime = this.DateTime;
                 merchant.Mender = operater;
 
-                if (!string.IsNullOrEmpty(rop.Password))
-                {
-                    sysMerchantUser.PasswordHash = PassWordHelper.HashPassword(rop.Password);
-                    sysMerchantUser.MendTime = this.DateTime;
-                    sysMerchantUser.Mender = operater;
-                }
 
                 CurrentDb.SaveChanges();
                 ts.Complete();

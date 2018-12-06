@@ -45,7 +45,7 @@ namespace WebAdmin
         /// <returns></returns>
         public static string GetWebName()
         {
-            return "云呼系统管理端";
+            return "云呼中心管理平台";
         }
     }
 }

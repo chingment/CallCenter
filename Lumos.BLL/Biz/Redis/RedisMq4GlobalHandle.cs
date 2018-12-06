@@ -147,6 +147,7 @@ namespace Lumos.BLL.Biz
                                 obBatchData.CarInsLastCompany = NPOIHelperUtil.GetCellValue(row.GetCell(12));
                                 obBatchData.CarInsLastStartTime = CommonUtil.ConverToStartTime(NPOIHelperUtil.GetCellValue(row.GetCell(10)));
                                 obBatchData.CarInsLastEndTime = CommonUtil.ConverToEndTime(NPOIHelperUtil.GetCellValue(row.GetCell(11)));
+                                obBatchData.DataBizType = obBatch.DataBizType;
                                 obBatchData.IsValid = isValid;
                                 obBatchData.HandleReport = handleReport;
                                 obBatchData.Creator = obBatch.Creator;
@@ -181,6 +182,7 @@ namespace Lumos.BLL.Biz
                                     obCustomer.FollowDelayDays = obBatch.FollowDelayDays;
                                     obCustomer.BelongOrganizationId = obBatch.BelongOrganizationId;
                                     obCustomer.BelongUserId = obBatch.BelongUserId;
+                                    obCustomer.DataBizType = obBatch.DataBizType;
                                     obCustomer.Creator = obBatch.Creator;
                                     obCustomer.CreateTime = obBatch.CreateTime;
                                     CurrentDb.ObCustomer.Add(obCustomer);

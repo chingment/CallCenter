@@ -23,6 +23,8 @@
                 l_StrRows += "<td class=\"no\" >" + (p_index + 1) + "</td>";
                 l_StrRows += "<td class=\"overflow tipitem\" title=\"" + p_row.userName + "\"   >" + p_row.userName + "</td>";
                 l_StrRows += "<td class=\"overflow\" title=\"" + p_row.fullName + "\">" + p_row.fullName + "</td>";
+                l_StrRows += "<td class=\"overflow\" title=\"" + p_row.organizationName + "\">" + p_row.organizationName + "</td>";
+                l_StrRows += "<td class=\"overflow\" title=\"" + p_row.positionName + "\">" + p_row.positionName + "</td>";
                 l_StrRows += "<td class=\"overflow\" title=\"" + p_row.phoneNumber + "\">" + p_row.phoneNumber + "</td>";
                 l_StrRows += "<td class=\"overflow\" title=\"" + p_row.email + "\">" + p_row.email + "</td>";
                 l_StrRows += "<td class=\"overflow\" title=\"" + p_row.createTime + "\">" + p_row.createTime + "</td>";
@@ -98,7 +100,7 @@
         <table id="list_table" class="list-tb" cellpadding="0" cellspacing="0">
             <thead>
                 <tr>
-                    <th style="width:15%" class="no">
+                    <th style="width:25px" class="no">
                         序号
                     </th>
                     <th style="width:15%">
@@ -108,6 +110,12 @@
                         姓名
                     </th>
                     <th style="width:15%">
+                        所属机构
+                    </th>
+                    <th style="width:15%">
+                        职位
+                    </th>
+                    <th style="width:10%">
                         手机
                     </th>
                     <th style="width:15%">
@@ -116,7 +124,7 @@
                     <th style="width:15%">
                         创建时间
                     </th>
-                    <th style="width:10%" class="operation">
+                    <th style="width:25px" class="operation">
                         操作
                     </th>
                 </tr>
@@ -124,7 +132,7 @@
             <tbody></tbody>
             <tfoot>
                 <tr>
-                    <td colspan="7">
+                    <td colspan="9">
                         <div class="pull-left">
                             <span class="load-tip"></span>
                         </div>

@@ -67,7 +67,7 @@ namespace Lumos.Entity
             Invalid = 2
         }
 
-        public enum DataBatchBizType
+        public enum DataBizType
         {
             [Remark("未知")]
             Unknow = 0,

@@ -42,15 +42,11 @@
                     if (d.result == $.lumos.resultType.success) {
                         var data = d.data;
 
+                        //alert(JSON.stringify(data))
                         $('#lbl_UserName').text(data.userName);
                         $("#txt_FullName").val(data.fullName);
                         $("#txt_Email").val(data.email);
                         $("#txt_PhoneNumber").val(data.phoneNumber);
-
-                        //alert(getTopId(data.configOrganizations))
-                        //alert(JSON.stringify(toTree(data.configOrganizations, getTopId(data.configOrganizations))))
-
-      
                         $('#sel_Positions').myChosen({ urlParams: { type: "SysPosition" }, selectedValue: data.positionId });
                         $('#sel_Organizations').myChosen({ urlParams: { type: "SysOrganization" }, selectedValue: data.organizationId });
 
@@ -152,6 +148,7 @@
                 </select>
             </td>
         </tr>
+
         <tr>
             <td class="f-tb-t">
                 <span class="required-symbol">*</span>职位：

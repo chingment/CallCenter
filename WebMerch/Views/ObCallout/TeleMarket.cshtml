@@ -3,82 +3,115 @@
     Layout = "~/Views/Shared/_Layout.cshtml";
 }
 
+@section styles{
+    <style type="text/css">
+        .teleMarket {
+            display: flex;
+        }
 
-<script type="text/javascript">
+        .customerInfo {
+            flex: 1;
+        }
+
+        .teleInfo {
+            width: 300px;
+            margin-left: 5px;
+            margin-right: 5px;
+        }
 
 
-    $(this).ready(function () {
-        takeData();
-    });
+        .infobox {
+            width: 100%;
+        }
 
+            .infobox .t {
+                background: #fc9f06;
+                color: #fff;
+                height: 27px;
+                line-height: 27px;
+                padding: 5px;
+                font-size: 14px;
+            }
 
-    function takeData() {
+            .infobox .b {
+                border: 1px solid #d3d3d3;
+                padding: 5px;
+            }
 
-        $.lumos.getJson({
-            url: "/ObCallout/TakeData",
-            isUseHandling: true,
-            success: function (d) {
-                if (d.result == $.lumos.resultType.success) {
-                    var data = d.data;
-                    //alert(JSON.stringify(data))
-                    $('#lbl_CsrName').text(data.customer.name);
-                    $('#lbl_CsrPhoneNumber').text(data.customer.phoneNumber);
-                    $('#lbl_CsrAddress').text(data.customer.address);
-                    $('#lbl_CsrIdNumber').text(data.customer.idNumber);
-
-                    $('#lbl_CarRegisterDate').text(data.car.registerDate);
-                    $('#lbl_CarPlateNo').text(data.car.plateNo);
-                    $('#lbl_CarModel').text(data.car.model);
-                    $('#lbl_CarEngineNo').text(data.car.engineNo);
-                    $('#lbl_CarVin').text(data.car.vin);
-
+                .infobox .b ul li {
+                    height: 32px;
+                    line-height: 32px;
                 }
-            }
+    </style>
+}
+
+@section scripts{
+    <script type="text/javascript">
+
+
+        $(this).ready(function () {
+            takeData();
+
+            $('#btn_SaveCallRecord').live("click", function () {
+
+                var form2 = document.getElementById('form_CallRecord');
+
+                var dialog = window.top.art.dialog({
+                    title: '通话记录', content: form2, width: '500px', id: 'EF893L', lock: true, drag: false, cancelVal: '关闭', cancel: true, okVal: '保存',
+                    ok: function () {
+                        art.dialog.confirm('确定要保存？', function () {
+                            dialog.close()
+                            //var salePrice = $('#txt_SalePrice').val();
+                            //$.lumos.postJson({
+                            //    isUseHandling: true,
+                            //    url: "/ProductSku/EditBySalePrice",
+                            //    data: { storeId: obj.storeId, productSkuId: obj.productSkuId, salePrice: salePrice },
+                            //    success: function (d) {
+                            //        $.lumos.tips(d.message);
+                            //        if (d.result == $.lumos.resultType.success) {
+                            //            listTable.loadData("c");
+                            //            dialog.close();
+                            //        }
+                            //    }
+                            //});
+                        });
+
+                        return false;
+                    }
+                });
+
+            });
         });
-    }
-
-</script>
 
 
-<style type="text/css">
-    .teleMarket {
-        display: flex;
-    }
+        function takeData() {
 
-    .customerInfo {
-        flex: 1;
-    }
+            $.lumos.getJson({
+                url: "/ObCallout/TakeData",
+                isUseHandling: true,
+                success: function (d) {
+                    if (d.result == $.lumos.resultType.success) {
+                        var data = d.data;
+                        //alert(JSON.stringify(data))
+                        $('#lbl_CsrName').text(data.customer.name);
+                        $('#lbl_CsrPhoneNumber').text(data.customer.phoneNumber);
+                        $('#lbl_CsrAddress').text(data.customer.address);
+                        $('#lbl_CsrIdNumber').text(data.customer.idNumber);
 
-    .teleInfo {
-        width: 300px;
-        margin-left:5px;
-        margin-right: 5px;
-    }
+                        $('#lbl_CarRegisterDate').text(data.car.registerDate);
+                        $('#lbl_CarPlateNo').text(data.car.plateNo);
+                        $('#lbl_CarModel').text(data.car.model);
+                        $('#lbl_CarEngineNo').text(data.car.engineNo);
+                        $('#lbl_CarVin').text(data.car.vin);
 
-
-    .infobox {
-        width: 100%;
-    }
-
-        .infobox .t {
-            background: #fc9f06;
-            color: #fff;
-            height: 27px;
-            line-height: 27px;
-            padding: 5px;
-            font-size: 14px;
+                    }
+                }
+            });
         }
 
-        .infobox .b {
-            border: 1px solid #d3d3d3;
-            padding:5px;
-        }
+    </script>
+}
 
-            .infobox .b ul li {
-                height: 32px;
-                line-height: 32px;
-            }
-</style>
 
 
 <div class="teleMarket">
@@ -86,14 +119,14 @@
 
     <div class="customerInfo">
         <div class="search-bar">
-            <div class="filter">
+            <div class="filter" id="btn_SaveCallRecord">
                 <span class="status-bar-btn selected">保存通话记录</span>
             </div>
             <div class="filter">
                 <span class="status-bar-btn">编辑客户资料</span>
             </div>
         </div>
-       
+
         <div class="gbr-row-title clearfix">
             <div class="pull-left">
                 <h5>基本信息</h5>
@@ -101,7 +134,7 @@
             <div class="f-tb1-item-pull-right">
 
                 <div class="remark-tips"><span class="t">提醒：</span><span class="c">客户数据<span style="color:#fb4760">系统自动</span>取出，如需取下一条数据，请<span style="color:#fb4760">保存当前通话记录</span>后，系统会自动取出.</span></div>
-            
+
             </div>
         </div>
         <table class="f-tb1-detail" style="width:800px;">
@@ -170,7 +203,7 @@
                     <li><div class="name">已拨数量</div><div class="value"></div></li>
                     <li><div class="name">未联系</div><div class="value"></div></li>
                     <li><div class="name">目标</div><div class="value"></div></li>
-                    <li><div class="name">拒绝</div><div class="value"></div></li>
+                    <li><div class="name">无效</div><div class="value"></div></li>
                 </ul>
             </div>
         </div>
@@ -178,4 +211,34 @@
 
 </div>
 
+
+
+<form id="form_CallRecord" name="form_CallRecord" method="post" style="display:none;">
+    <table class="f-tb" cellpadding="0" cellspacing="1">
+        <tr>
+            <td class="f-tb-t" style="width:90px">
+                通话结果：
+            </td>
+            <td class="f-tb-c">
+        
+            </td>
+        </tr>
+        <tr>
+            <td class="f-tb-t">
+                下次回拨时间：
+            </td>
+            <td class="f-tb-c">
+                
+            </td>
+        </tr>
+        <tr>
+            <td class="f-tb-t">
+                备注：
+            </td>
+            <td class="f-tb-c">
+                <textarea rows="5"  style="width:92%;" id="txt_Description" class="input-control"></textarea>
+            </td>
+        </tr>
+    </table>
+</form>
 

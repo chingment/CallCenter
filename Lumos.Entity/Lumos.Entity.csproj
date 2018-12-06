@@ -62,6 +62,7 @@
     <Compile Include="Biz\ObBatchData.cs" />
     <Compile Include="Biz\Merchant.cs" />
     <Compile Include="Biz\ObBatchAllocate.cs" />
+    <Compile Include="Biz\ObCallOutResultCode.cs" />
     <Compile Include="Biz\ObCustomer.cs" />
     <Compile Include="Biz\ObCustomerBelongTrack.cs" />
     <Compile Include="Biz\Organization.cs" />

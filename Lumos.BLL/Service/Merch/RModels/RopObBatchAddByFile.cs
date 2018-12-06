@@ -23,7 +23,7 @@ namespace Lumos.BLL.Service.Merch
 
         public string FilePath { get; set; }
 
-        public Enumeration.DataBatchBizType BizType { get; set; }
+        public Enumeration.DataBizType DataBizType { get; set; }
 
         public string BelongUserId { get; set; }
 

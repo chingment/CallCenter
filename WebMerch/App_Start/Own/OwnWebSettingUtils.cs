@@ -45,7 +45,7 @@ namespace WebMerch
         /// <returns></returns>
         public static string GetWebName()
         {
-            return "云呼平台";
+            return "云呼中心业务平台";
         }
 
     }

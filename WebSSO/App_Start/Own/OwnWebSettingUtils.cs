@@ -14,7 +14,7 @@ namespace WebSSO
         /// <returns></returns>
         public static string GetWebName()
         {
-            return "云呼系统-登录";
+            return "云呼中心-登录";
         }
     }
 }

@@ -52,7 +52,7 @@ namespace Lumos.BLL.Service.Merch
             obBatch.MerchantId = merchantId;
             obBatch.Code = rop.Code;
             obBatch.Name = rop.Name;
-            obBatch.BizType = rop.BizType;
+            obBatch.DataBizType = rop.DataBizType;
             obBatch.SoureType = Enumeration.DataBatchSoureType.File;
             obBatch.ExpiryTime = this.DateTime.AddDays(rop.ExpiryDays);
             obBatch.FollowDelayDays = rop.FollowDelayDays;

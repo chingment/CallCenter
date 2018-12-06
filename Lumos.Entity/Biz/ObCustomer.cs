@@ -49,5 +49,7 @@ namespace Lumos.Entity
         public bool IsUseCall{ get; set; }
 
         public DateTime? UseCallTime { get; set; }
+
+        public Enumeration.DataBizType DataBizType { get; set; }
     }
 }
