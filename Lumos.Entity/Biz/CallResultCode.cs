@@ -5,8 +5,8 @@ using System.ComponentModel.DataAnnotations.Schema;
 
 namespace Lumos.Entity
 {
-    [Table("ObCallOutResultCode")]
-    public class ObCallOutResultCode
+    [Table("CallResultCode")]
+    public class CallResultCode
     {
         [Key]
         public string Code { get; set; }

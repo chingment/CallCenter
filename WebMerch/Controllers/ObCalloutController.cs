@@ -17,7 +17,14 @@ namespace WebMerch.Controllers
 
         public CustomJsonResult TakeData()
         {
-            return MerchServiceFactory.ObCallout.TakeData(this.CurrentUserId, this.CurrentMerchantId,this.CurrentUserId);
+            return MerchServiceFactory.ObCallout.TakeData(this.CurrentUserId, this.CurrentMerchantId, this.CurrentUserId);
+        }
+
+        public CustomJsonResult SaveCallRecored(RopObCalloutSaveCallRecored rop)
+        {
+            rop.TakerId = this.CurrentUserId;
+
+            return MerchServiceFactory.ObCallout.SaveCallRecored(this.CurrentUserId, this.CurrentMerchantId, rop);
         }
     }
 }

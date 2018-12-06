@@ -60,20 +60,25 @@
                     title: '通话记录', content: form2, width: '500px', id: 'EF893L', lock: true, drag: false, cancelVal: '关闭', cancel: true, okVal: '保存',
                     ok: function () {
                         art.dialog.confirm('确定要保存？', function () {
-                            dialog.close()
-                            //var salePrice = $('#txt_SalePrice').val();
-                            //$.lumos.postJson({
-                            //    isUseHandling: true,
-                            //    url: "/ProductSku/EditBySalePrice",
-                            //    data: { storeId: obj.storeId, productSkuId: obj.productSkuId, salePrice: salePrice },
-                            //    success: function (d) {
-                            //        $.lumos.tips(d.message);
-                            //        if (d.result == $.lumos.resultType.success) {
-                            //            listTable.loadData("c");
-                            //            dialog.close();
-                            //        }
-                            //    }
-                            //});
+
+                            var obCustomerId = takeDataResult.obCustomerId;
+                            var resultCode = $(form2).find('#sel_ResultCode').val();
+                            var nextCallTime = $(form2).find('#txt_NextCallTime').val();
+                            var remark = $(form2).find('#txt_Remark').val();
+
+
+                            $.lumos.postJson({
+                                isUseHandling: true,
+                                url: "/ObCallout/SaveCallRecored",
+                                data: { obCustomerId: obCustomerId, resultCode: resultCode, nextCallTime: nextCallTime, remark },
+                                success: function (d) {
+                                    $.lumos.tips(d.message);
+                                    if (d.result == $.lumos.resultType.success) {
+                                        dialog.close();
+                                        takeData();
+                                    }
+                                }
+                            });
                         });
 
                         return false;
@@ -83,6 +88,7 @@
             });
         });
 
+        var takeDataResult = null;
 
         function takeData() {
 
@@ -90,8 +96,13 @@
                 url: "/ObCallout/TakeData",
                 isUseHandling: true,
                 success: function (d) {
+
+                    $.lumos.tips(d.message);
+
                     if (d.result == $.lumos.resultType.success) {
                         var data = d.data;
+
+                        takeDataResult = data;
                         //alert(JSON.stringify(data))
                         $('#lbl_CsrName').text(data.customer.name);
                         $('#lbl_CsrPhoneNumber').text(data.customer.phoneNumber);
@@ -105,7 +116,7 @@
                         $('#lbl_CarVin').text(data.car.vin);
 
 
-                        $('#sel_CallOutResultCode').myChosen({ urlParams: { type: "ObCallOutResultCode" } });
+                        $('#sel_ResultCode').myChosen({ urlParams: { type: "callresultcode" } });
 
                     }
                 }
@@ -226,7 +237,7 @@
             </td>
             <td class="f-tb-c">
 
-                <select id="sel_CallOutResultCode" data-placeholder="请选择" class="chosen-select" style="width:200px">
+                <select id="sel_ResultCode" data-placeholder="请选择" class="chosen-select" style="width:200px">
                     <option value="-1"></option>
                 </select>
 
@@ -236,14 +247,18 @@
             <td class="f-tb-t">
                 下次回拨时间：
             </td>
-            <td class="f-tb-c"></td>
+            <td class="f-tb-c">
+
+                <input id="txt_NextCallTime" type="text" class="input-control" style="width:80px;" onfocus="WdatePicker({ dateFmt: 'yyyy-MM-dd', minDate: '@DateTime.Now.ToUnifiedFormatDate()' })" value="@DateTime.Now.AddDays(1).ToUnifiedFormatDate()" />
+
+            </td>
         </tr>
         <tr>
             <td class="f-tb-t">
                 备注：
             </td>
             <td class="f-tb-c">
-                <textarea rows="5" style="width:92%;" id="txt_Description" class="input-control"></textarea>
+                <textarea rows="5" style="width:92%;" id="txt_Remark" class="input-control"></textarea>
             </td>
         </tr>
     </table>

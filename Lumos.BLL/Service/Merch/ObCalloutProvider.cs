@@ -42,7 +42,7 @@ namespace Lumos.BLL.Service.Merch
 
                     if (obCustomer == null)
                     {
-                        return new CustomJsonResult(ResultType.Failure, ResultCode.Failure, "没有可取的数据");
+                        return new CustomJsonResult(ResultType.Failure, ResultCode.Failure, "没有可外呼的数据");
                     }
 
                     obCustomer.TakerId = takerId;
@@ -72,6 +72,8 @@ namespace Lumos.BLL.Service.Merch
                     ts.Complete();
                 }
 
+                ret.ObCustomerId = obCustomer.Id;
+
                 ret.Customer.Name = obCustomer.CsrName;
                 ret.Customer.PhoneNumber = obCustomer.CsrPhoneNumber;
                 ret.Customer.IdNumber = obCustomer.CsrIdNumber;
@@ -95,6 +97,43 @@ namespace Lumos.BLL.Service.Merch
 
             return result;
 
+        }
+
+        public CustomJsonResult SaveCallRecored(string operater, string merchantId, RopObCalloutSaveCallRecored rop)
+        {
+            CustomJsonResult result = new CustomJsonResult();
+
+            using (TransactionScope ts = new TransactionScope())
+            {
+                var obCustomer = CurrentDb.ObCustomer.Where(m => m.MerchantId == merchantId && m.IsTake == true && m.TakerId == rop.TakerId).FirstOrDefault();
+                if (obCustomer == null)
+                {
+                    return new CustomJsonResult(ResultType.Failure, ResultCode.Failure, "客户资料不存在");
+                }
+
+                if (obCustomer.IsUseCall)
+                {
+                    return new CustomJsonResult(ResultType.Failure, ResultCode.Failure, "已经保存通话记录");
+                }
+
+                obCustomer.IsUseCall = true;
+                obCustomer.UseCallTime = this.DateTime;
+
+                var callRecord = new CallRecord();
+                callRecord.Id = GuidUtil.New();
+                callRecord.MerchantId = merchantId;
+                callRecord.CustomerId = rop.ObCustomerId;
+                callRecord.ResultCode = rop.ResultCode;
+                callRecord.NextCallTime = rop.NextCallTime;
+                callRecord.Remark = rop.Remark;
+                callRecord.Creator = operater;
+                callRecord.CreateTime = this.DateTime;
+                CurrentDb.CallRecord.Add(callRecord);
+                CurrentDb.SaveChanges();
+                ts.Complete();
+                result = new CustomJsonResult(ResultType.Success, ResultCode.Success, "保存成功");
+            }
+            return result;
         }
     }
 }

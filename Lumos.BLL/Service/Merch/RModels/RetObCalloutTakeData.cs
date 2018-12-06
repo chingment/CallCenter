@@ -8,6 +8,8 @@ namespace Lumos.BLL.Service.Merch
 {
     public class RetObCalloutTakeData
     {
+        public string ObCustomerId { get; set; }
+
         public RetObCalloutTakeData()
         {
             this.Customer = new ObCustomerModel();

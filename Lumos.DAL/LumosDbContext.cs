@@ -40,8 +40,8 @@ namespace Lumos.DAL
 
         public IDbSet<ObCustomerBelongTrack> ObCustomerBelongTrack { get; set; }
 
-        public IDbSet<ObCallOutResultCode> ObCallOutResultCode { get; set; }
-
+        public IDbSet<CallResultCode> CallResultCode { get; set; }
+        public IDbSet<CallRecord> CallRecord { get; set; }
         protected override void OnModelCreating(DbModelBuilder modelBuilder)
         {
             base.OnModelCreating(modelBuilder);

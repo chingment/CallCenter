@@ -163,6 +163,7 @@
     <Compile Include="Service\Merch\RModels\RetUserGetDetails.cs" />
     <Compile Include="Service\Merch\RModels\RopObBatchAddByFile.cs" />
     <Compile Include="Service\Merch\RModels\RopObBatchAllocateAdd.cs" />
+    <Compile Include="Service\Merch\RModels\RopObCalloutSaveCallRecored.cs" />
     <Compile Include="Service\Merch\RModels\RopOrganizationAdd.cs" />
     <Compile Include="Service\Merch\RModels\RopOrganizationEdit.cs" />
     <Compile Include="Service\Merch\RModels\RopOrganizationEditSort.cs" />

@@ -13,5 +13,7 @@ namespace Lumos.BLL.Service.Merch
         public string Address { get; set; }
         public string IdNumber { get; set; }
 
+
+
     }
 }

@@ -205,13 +205,13 @@ namespace WebMerch.Controllers
                     }
                     #endregion 
                     break;
-                case "obcalloutresultcode":
-                    #region obcalloutresultcode
+                case "callresultcode":
+                    #region callresultcode
 
 
-                    var obCallOutResultCodes = CurrentDb.ObCallOutResultCode.Where(m => m.DataBizType == Enumeration.DataBizType.CarIns && m.Code.Length == 4).OrderBy(m => m.Priority).ToList();
+                    var callResultCodes = CurrentDb.CallResultCode.Where(m => m.DataBizType == Enumeration.DataBizType.CarIns && m.Code.Length == 4).OrderBy(m => m.Priority).ToList();
 
-                    foreach (var item in obCallOutResultCodes)
+                    foreach (var item in callResultCodes)
                     {
                         var field = new FieldModel();
                         field.Value = item.Code;
