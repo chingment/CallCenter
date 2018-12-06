@@ -130,6 +130,11 @@
                         $('#lbl_CarVin').text(data.car.vin);
 
 
+                        $('#lbl_CarInsLastCompany').text(data.car.insLastCompany);
+                        $('#lbl_CarInsTime').text(data.car.insTime);
+                        $('#lbl_CarInsLastQzNo').text(data.car.insLastQzNo);
+
+
                         $('#sel_ResultCode').myChosen({ urlParams: { type: "callresultcode" } });
 
                     }
@@ -161,7 +166,7 @@
             </div>
             <div class="f-tb1-item-pull-right">
 
-                <div class="remark-tips"><span class="t">提醒：</span><span class="c">客户数据<span class="red-t">系统自动</span>取出，如需取下一条数据，请<span class="red-t">保存当前通话记录</span>后，系统会自动取出.</span></div>
+                <div class="remark-tips"><span class="t">提醒：</span><span class="c">客户数据<span class="red-t">系统自动</span>取出，如需取下一条数据，请<span class="red-t">保存通话记录</span>后，系统会自动取出.</span></div>
 
             </div>
         </div>
@@ -207,11 +212,23 @@
                 <td class="t">车架号码：</td>
                 <td class="c"><span id="lbl_CarVin"></span></td>
             </tr>
+            <tr>
+                <td class="t">上一年保险公司：</td>
+                <td class="c">
+                    <span id="lbl_CarInsLastCompany"></span>
+                </td>
+                <td class="t">承保期间：</td>
+                <td class="c">
+                    <span id="lbl_CarInsTime"></span>
+                </td>
+                <td class="t">保单号：</td>
+                <td class="c"><span id="lbl_CarInsLastQzNo"></span></td>
+            </tr>
         </table>
 
         <div class="gbr-row-title clearfix">
             <div class="pull-left">
-                <h5>车险信息</h5>
+                <h5>投保信息</h5>
             </div>
             <div class="pull-right f-tb1-item-pull-right">
                 <h6></h6>

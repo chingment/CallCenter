@@ -16,7 +16,6 @@ namespace Lumos.BLL.Service.Merch
         public string InsLastQzNo { get; set; }
         public string InsLastSyNo { get; set; }
         public string InsLastCompany { get; set; }
-        public string InsLastStartTime { get; set; }
-        public string InsLastEndTime { get; set; }
+        public string InsTime { get; set; }
     }
 }

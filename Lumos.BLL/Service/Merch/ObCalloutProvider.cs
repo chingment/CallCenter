@@ -88,8 +88,8 @@ namespace Lumos.BLL.Service.Merch
                 ret.Car.InsLastQzNo = obCustomer.CarInsLastQzNo;
                 ret.Car.InsLastSyNo = obCustomer.CarInsLastSyNo;
                 ret.Car.InsLastCompany = obCustomer.CarInsLastCompany;
-                ret.Car.InsLastStartTime = obCustomer.CarInsLastStartTime.ToUnifiedFormatDate();
-                ret.Car.InsLastEndTime = obCustomer.CarInsLastEndTime.ToUnifiedFormatDate();
+                ret.Car.InsTime = obCustomer.CarInsLastStartTime.ToUnifiedFormatDate() + " 至 " + obCustomer.CarInsLastEndTime.ToUnifiedFormatDate();
+
 
 
                 result = new CustomJsonResult(ResultType.Success, ResultCode.Success, "取出成功", ret);
