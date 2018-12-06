@@ -61,7 +61,7 @@
                     ok: function () {
                         art.dialog.confirm('确定要保存？', function () {
 
-                            var obCustomerId = takeDataResult.obCustomerId;
+                            var customerId = takeDataResult.obCustomerId;
                             var resultCode = $(form2).find('#sel_ResultCode').val();
                             var nextCallTime = $(form2).find('#txt_NextCallTime').val();
                             var remark = $(form2).find('#txt_Remark').val();
@@ -70,7 +70,7 @@
                             $.lumos.postJson({
                                 isUseHandling: true,
                                 url: "/ObCallout/SaveCallRecored",
-                                data: { obCustomerId: obCustomerId, resultCode: resultCode, nextCallTime: nextCallTime, remark },
+                                data: { customerId: customerId, resultCode: resultCode, nextCallTime: nextCallTime, remark },
                                 success: function (d) {
                                     $.lumos.tips(d.message);
                                     if (d.result == $.lumos.resultType.success) {
@@ -147,7 +147,7 @@
             </div>
             <div class="f-tb1-item-pull-right">
 
-                <div class="remark-tips"><span class="t">提醒：</span><span class="c">客户数据<span style="color:#fb4760">系统自动</span>取出，如需取下一条数据，请<span style="color:#fb4760">保存当前通话记录</span>后，系统会自动取出.</span></div>
+                <div class="remark-tips"><span class="t">提醒：</span><span class="c">客户数据<span class="red-t">系统自动</span>取出，如需取下一条数据，请<span class="red-t">保存当前通话记录</span>后，系统会自动取出.</span></div>
 
             </div>
         </div>
@@ -229,6 +229,7 @@
 
 <form id="form_CallRecord" name="form_CallRecord" method="post" style="width:500px;display:none">
 
+    <div class="remark-tips"><span class="t">提醒：</span><span class="c">通话记录须有进行<span class="red-t">通话后</span>才能保存成功</span></div>
 
     <table class="f-tb" cellpadding="0" cellspacing="1" style="width:500px;">
         <tr>

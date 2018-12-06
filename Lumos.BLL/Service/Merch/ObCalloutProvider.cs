@@ -92,7 +92,7 @@ namespace Lumos.BLL.Service.Merch
                 ret.Car.InsLastEndTime = obCustomer.CarInsLastEndTime.ToUnifiedFormatDate();
 
 
-                result = new CustomJsonResult(ResultType.Success, ResultCode.Success, "获取成功", ret);
+                result = new CustomJsonResult(ResultType.Success, ResultCode.Success, "取出成功", ret);
             }
 
             return result;
@@ -105,7 +105,7 @@ namespace Lumos.BLL.Service.Merch
 
             using (TransactionScope ts = new TransactionScope())
             {
-                var obCustomer = CurrentDb.ObCustomer.Where(m => m.MerchantId == merchantId && m.IsTake == true && m.TakerId == rop.TakerId).FirstOrDefault();
+                var obCustomer = CurrentDb.ObCustomer.Where(m => m.MerchantId == merchantId && m.IsTake == true && m.TakerId == rop.TakerId && m.Id == rop.CustomerId).FirstOrDefault();
                 if (obCustomer == null)
                 {
                     return new CustomJsonResult(ResultType.Failure, ResultCode.Failure, "客户资料不存在");
@@ -122,7 +122,7 @@ namespace Lumos.BLL.Service.Merch
                 var callRecord = new CallRecord();
                 callRecord.Id = GuidUtil.New();
                 callRecord.MerchantId = merchantId;
-                callRecord.CustomerId = rop.ObCustomerId;
+                callRecord.CustomerId = rop.CustomerId;
                 callRecord.ResultCode = rop.ResultCode;
                 callRecord.NextCallTime = rop.NextCallTime;
                 callRecord.Remark = rop.Remark;
