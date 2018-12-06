@@ -181,7 +181,7 @@ namespace Lumos.BLL.Service.Merch
 
             }
 
-            return  new CustomJsonResult(ResultType.Success, ResultCode.Success, "保存成功", carInsPKindModels);
+            return new CustomJsonResult(ResultType.Success, ResultCode.Success, "保存成功", new { carInsKinds = carInsPKindModels });
         }
     }
 }

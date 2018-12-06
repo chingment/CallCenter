@@ -22,6 +22,8 @@
 
         .infobox {
             width: 100%;
+            border: 1px solid #d3d3d3;
+            border-radius:3px;
         }
 
             .infobox .t {
@@ -34,7 +36,6 @@
             }
 
             .infobox .b {
-                border: 1px solid #d3d3d3;
                 padding: 5px;
             }
 
@@ -153,7 +154,11 @@
                 success: function (d) {
                     if (d.result == $.lumos.resultType.success) {
 
-                        alert(JSON.stringify(d))
+
+                        //alert(JSON.stringify(d))
+
+                        $('#carInsKindsBox').html($("#tmpl_carInsKinds").tmpl(d.data));
+
 
                     }
                 }
@@ -247,13 +252,9 @@
             </tr>
         </table>
 
-        <div class="gbr-row-title clearfix">
-            <div class="pull-left">
-                <h5>投保信息</h5>
-            </div>
-            <div class="pull-right f-tb1-item-pull-right">
-                <h6></h6>
-            </div>
+
+        <div id="carInsKindsBox">
+
         </div>
     </div>
 
@@ -317,3 +318,55 @@
     </table>
 </form>
 
+
+<script id="tmpl_carInsKinds" type="text/x-jquery-tmpl">
+
+    <div class="gbr-row-title clearfix">
+        <div class="pull-left">
+            <h5>投保信息</h5>
+        </div>
+        <div class="pull-right f-tb1-item-pull-right">
+            <h6></h6>
+        </div>
+    </div>
+
+    <div class="list">
+        {{each(j,item) carInsKinds}}
+        <div>
+            <span>${item.name}</span>
+        </div>
+        <table id="list_table" class="list-tb" cellpadding="0" cellspacing="0">
+            <thead>
+                <tr>
+                    <th style="width:50%" class="no">
+                        险别
+                    </th>
+                    <th style="width:20%">
+                        保额金额/赔偿限额
+                    </th>
+                    <th style="width:20%">
+                        不计免赔
+                    </th>
+                    <th style="width:10%">
+                        选择
+                    </th>
+                </tr>
+            </thead>
+            <tbody>
+
+                {{each(i,item2) item.child}}
+
+                <tr>
+                    <td>${item2.name}</td>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                </tr>
+                {{/each}}
+            </tbody>
+        </table>
+
+        {{/each}}
+    </div>
+
+</script>
