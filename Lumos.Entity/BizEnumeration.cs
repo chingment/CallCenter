@@ -105,6 +105,21 @@ namespace Lumos.Entity
             Filter = 2,
         }
 
+        public enum CarKindInputType
+        {
+            Unknow = 0,
+            None = 1,
+            Text = 2,
+            DropDownList = 3
+        }
+        public enum CarKindType
+        {
+            Unknow = 0,
+            Compulsory = 1,
+            Commercial = 2,
+            AdditionalRisk = 3
+        }
+
 
     }
 }

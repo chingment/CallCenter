@@ -135,5 +135,53 @@ namespace Lumos.BLL.Service.Merch
             }
             return result;
         }
+
+
+        public CustomJsonResult GetCarInsKind(string operater, string merchantId)
+        {
+            CustomJsonResult result = new CustomJsonResult();
+            List<CarInsPKindModel> carInsPKindModels = new List<CarInsPKindModel>();
+
+            var carKinds = CurrentDb.CarInsKind.OrderByDescending(m => m.Priority).ToList();
+
+            var carPKinds = carKinds.Where(m => m.PId == 0).ToList();
+
+            foreach (var carPKind in carPKinds)
+            {
+                CarInsPKindModel carPInsKindModel = new CarInsPKindModel();
+                carPInsKindModel.Id = carPKind.Id;
+                carPInsKindModel.Name = carPKind.Name;
+
+                var carCKinds = carKinds.Where(m => m.PId == carPKind.Id).ToList();
+
+                foreach (var carCKind in carCKinds)
+                {
+                    var carInsCKindModel = new CarInsCKindModel();
+                    carInsCKindModel.Id = carCKind.Id;
+                    carInsCKindModel.PId = carCKind.PId;
+                    carInsCKindModel.Name = carCKind.Name;
+                    carInsCKindModel.Type = carCKind.Type;
+                    carInsCKindModel.CanWaiverDeductible = carCKind.CanWaiverDeductible;
+                    carInsCKindModel.IsWaiverDeductible = carCKind.IsWaiverDeductible;
+                    carInsCKindModel.InputType = carCKind.InputType;
+                    carInsCKindModel.InputUnit = carCKind.InputUnit;
+                    carInsCKindModel.InputValue = carCKind.InputValue;
+                    if (!string.IsNullOrEmpty(carCKind.InputOption))
+                    {
+                        carInsCKindModel.InputOption = Newtonsoft.Json.JsonConvert.DeserializeObject<List<string>>(carCKind.InputOption);
+                    }
+
+                    carInsCKindModel.IsHasDetails = carCKind.IsHasDetails;
+                    carInsCKindModel.IsCheck = carCKind.IsCheck;
+
+                    carPInsKindModel.Child.Add(carInsCKindModel);
+                }
+
+                carInsPKindModels.Add(carPInsKindModel);
+
+            }
+
+            return  new CustomJsonResult(ResultType.Success, ResultCode.Success, "保存成功", carInsPKindModels);
+        }
     }
 }

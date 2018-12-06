@@ -50,6 +50,9 @@
 
 
         $(this).ready(function () {
+
+            initConfig();
+
             takeData();
 
             $('#btn_SaveCallRecord').live("click", function () {
@@ -142,6 +145,24 @@
             });
         }
 
+        function initConfig() {
+
+            $.lumos.getJson({
+                url: "/ObCallout/GetCarInsKind",
+                isShowLoading: true,
+                success: function (d) {
+                    if (d.result == $.lumos.resultType.success) {
+
+                        alert(JSON.stringify(d))
+
+                    }
+                }
+            });
+        }
+
+        function refresh() {
+
+        }
     </script>
 }
 

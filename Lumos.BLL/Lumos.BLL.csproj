@@ -150,6 +150,7 @@
     <Compile Include="Service\Admin\Sys\SysPositionProvider.cs" />
     <Compile Include="Service\Admin\Sys\SysRoleProvider.cs" />
     <Compile Include="Service\Merch\Models\CarInfoModel.cs" />
+    <Compile Include="Service\Merch\Models\CarInsKindModel.cs" />
     <Compile Include="Service\Merch\Models\ObCustomerModel.cs" />
     <Compile Include="Service\Merch\ObBatchAllocateProvider.cs" />
     <Compile Include="Service\Merch\ObBatchProvider.cs" />

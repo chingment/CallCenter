@@ -26,22 +26,16 @@ namespace Lumos.DAL
         public IDbSet<WxAutoReply> WxAutoReply { get; set; }
         public IDbSet<WxMsgPushLog> WxMsgPushLog { get; set; }
         public IDbSet<WxUserInfo> WxUserInfo { get; set; }
-
         public IDbSet<Merchant> Merchant { get; set; }
         public IDbSet<Organization> Organization { get; set; }
-
         public IDbSet<ObBatch> ObBatch { get; set; }
-
         public IDbSet<ObBatchData> ObBatchData { get; set; }
-
         public IDbSet<ObBatchAllocate> ObBatchAllocate { get; set; }
-
         public IDbSet<ObCustomer> ObCustomer { get; set; }
-
         public IDbSet<ObCustomerBelongTrack> ObCustomerBelongTrack { get; set; }
-
         public IDbSet<CallResultCode> CallResultCode { get; set; }
         public IDbSet<CallRecord> CallRecord { get; set; }
+        public IDbSet<CarInsKind> CarInsKind { get; set; }
         protected override void OnModelCreating(DbModelBuilder modelBuilder)
         {
             base.OnModelCreating(modelBuilder);
