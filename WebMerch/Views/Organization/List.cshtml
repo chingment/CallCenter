@@ -108,12 +108,12 @@
                     $.lumos.postJson({
                         url: "/Organization/Edit",
                         data: { id: id, name: name, description: description, headerId, headerId, status: status },
-                                success: function (d) {
+                        success: function (d) {
                             $.lumos.tips(d.message);
                             if (d.result == $.lumos.resultType.success) {
                                 mainTreeLoadData();
                             }
-                                }
+                        }
                     });
                 });
 

@@ -54,19 +54,33 @@
 
             $('#btn_SaveCallRecord').live("click", function () {
 
-                var form2 = document.getElementById('form_CallRecord');
+                var form_CallRecord = document.getElementById('form_CallRecord');
+
+                var sel_ResultCode = $(form_CallRecord).find('#sel_ResultCode');
+                var txt_NextCallTime = $(form_CallRecord).find('#txt_NextCallTime');
+                var txt_Remark = $(form_CallRecord).find('#txt_Remark');
+
+                $(sel_ResultCode).find("option[value='-1']").attr("selected", true);
+                $(sel_ResultCode).trigger("chosen:updated");
+                $(txt_NextCallTime).val("");
+                $(txt_Remark).val("");
 
                 var dialog = window.top.art.dialog({
-                    title: '通话记录', content: form2, width: '500px', id: 'EF893L', lock: true, drag: false, cancelVal: '关闭', cancel: true, okVal: '保存',
+                    title: '通话记录', content: form_CallRecord, width: '500px', id: 'EF893L', lock: true, drag: false, cancelVal: '关闭', cancel: true, okVal: '保存',
                     ok: function () {
+
+                        var resultCode = $(sel_ResultCode).find("option:selected").val();
+
+                        if (resultCode == "-1") {
+                            $.lumos.tips("请选择通话结果");
+                            return false;
+                        }
+
                         art.dialog.confirm('确定要保存？', function () {
 
                             var customerId = takeDataResult.obCustomerId;
-                            var resultCode = $(form2).find('#sel_ResultCode').val();
-                            var nextCallTime = $(form2).find('#txt_NextCallTime').val();
-                            var remark = $(form2).find('#txt_Remark').val();
-
-
+                            var nextCallTime = $(txt_NextCallTime).val();
+                            var remark = $(txt_Remark).val();
                             $.lumos.postJson({
                                 isUseHandling: true,
                                 url: "/ObCallout/SaveCallRecored",
@@ -250,7 +264,7 @@
             </td>
             <td class="f-tb-c">
 
-                <input id="txt_NextCallTime" type="text" class="input-control" style="width:80px;" onfocus="WdatePicker({ dateFmt: 'yyyy-MM-dd', minDate: '@DateTime.Now.ToUnifiedFormatDate()' })" value="@DateTime.Now.AddDays(1).ToUnifiedFormatDate()" />
+                <input id="txt_NextCallTime" type="text" class="Wdate input-control" style="width:80px;" onfocus="WdatePicker({ dateFmt: 'yyyy-MM-dd', minDate: '@DateTime.Now.ToUnifiedFormatDate()' })" value="" />
 
             </td>
         </tr>
