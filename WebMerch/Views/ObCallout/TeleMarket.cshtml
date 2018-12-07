@@ -334,7 +334,7 @@
     </div>
 
     <div class="teleInfo">
-        <div class="infobox">
+        <div class="infobox" style="margin-top:5px;">
             <div class="t">
                 <span class="title">我的状态</span>
             </div>
@@ -455,11 +455,11 @@
                         <span></span>
                         {{else item2.inputType==2}}
 
-                        <input type="text" />
+                        <input type="text" style="height:30px;" />
 
                         {{else item2.inputType==3}}
 
-                        <select>
+                        <select style="height:30px;">
                             {{each(i,option) item2.inputOption}}
 
                             <option> ${option}</option>
