@@ -106,160 +106,164 @@
 
 </script>
 
-<div class="gbr-row-title clearfix">
-    <div class="pull-left">
-        <h5>可分配批次</h5>
-    </div>
-    <div class="pull-right f-tb1-item-pull-right">
-        <h6></h6>
-    </div>
-</div>
 
-<form id="form1" name="form1">
-    <div class="search-bar">
-        <div class="filter">
-            <span class="filter-label">批次号：</span>
-            <span class="filter-input">
-                <input type="text" class="input-control" name="Code" style="width:120px;" />
-            </span>
+<div class="gbr-row gbr-page">
+
+    <div class="gbr-row-title clearfix">
+        <div class="pull-left">
+            <h5>可分配批次</h5>
         </div>
-
-        <div class="filter"><input type="button" class="btn btn-search" id="btn_Search" value="查询" /> </div>
-
-    </div>
-    <div class="list">
-        <table id="list_Allocate" class="list-tb" cellpadding="0" cellspacing="0">
-            <thead>
-                <tr>
-                    <th style="width:25px" class="no">
-                        序号
-                    </th>
-                    <th style="width:20%">
-                        批次号
-                    </th>
-                    <th style="width:20%">
-                        来源
-                    </th>
-                    <th style="width:15%">
-                        数据量(条)
-                    </th>
-                    <th style="width:15%">
-                        可分配(条)
-                    </th>
-                    <th style="width:10%">
-                        已分配(条)
-                    </th>
-                    <th style="width:10%">
-                        未使用(条)
-                    </th>
-                    <th style="width:10%">
-                        已使用(条)
-                    </th>
-                    <th style="width:25px" class="operation">
-                        操作
-                    </th>
-                </tr>
-            </thead>
-            <tbody></tbody>
-            <tfoot>
-                <tr>
-                    <td colspan="9">
-                        <div class="pull-left">
-                            <span class="load-tip"></span>
-                        </div>
-                        <div class="pull-right pagination">
-                            <div class="pagination-info">
-
-                            </div>
-                            <div class="pagination-index">
-
-                            </div>
-                            <div class="pagination-goto">
-
-                            </div>
-                        </div>
-                    </td>
-                </tr>
-            </tfoot>
-        </table>
-    </div>
-</form>
-
-<div class="gbr-row-title clearfix">
-    <div class="pull-left">
-        <h5>分配历史</h5>
-    </div>
-    <div class="pull-right f-tb1-item-pull-right">
-        <h6></h6>
-    </div>
-</div>
-
-<form id="form2" name="form2">
-    <div class="search-bar">
-        <div class="filter">
-            <span class="filter-label">批次号：</span>
-            <span class="filter-input">
-                <input type="text" class="input-control" name="Code" style="width:120px;" />
-            </span>
+        <div class="pull-right f-tb1-item-pull-right">
+            <h6></h6>
         </div>
-
-        <div class="filter"><input type="button" class="btn btn-search" id="btn_Search" value="查询" /> </div>
-
     </div>
-    <div class="list">
-        <table id="list_Allocated" class="list-tb" cellpadding="0" cellspacing="0">
-            <thead>
-                <tr>
-                    <th style="width:25px" class="no">
-                        序号
-                    </th>
-                    <th style="width:20%">
-                        批次号
-                    </th>
-                    <th style="width:20%">
-                        分配对象
-                    </th>
-                    <th style="width:20%">
-                        分配方式
-                    </th>
-                    <th style="width:15%">
-                        分配数量(条)
-                    </th>
-                    <th style="width:10%">
-                        未使用(条)
-                    </th>
-                    <th style="width:10%">
-                        已使用(条)
-                    </th>
-                    <th style="width:10%">
-                        描述
-                    </th>
-                    <th style="width:10%">
-                        分配时间
-                    </th>
-                </tr>
-            </thead>
-            <tbody></tbody>
-            <tfoot>
-                <tr>
-                    <td colspan="9">
-                        <div class="pull-left">
-                            <span class="load-tip"></span>
-                        </div>
-                        <div class="pull-right pagination">
-                            <div class="pagination-info">
 
-                            </div>
-                            <div class="pagination-index">
+    <form id="form1" name="form1">
+        <div class="search-bar">
+            <div class="filter">
+                <span class="filter-label">批次号：</span>
+                <span class="filter-input">
+                    <input type="text" class="input-control" name="Code" style="width:120px;" />
+                </span>
+            </div>
 
-                            </div>
-                            <div class="pagination-goto">
+            <div class="filter"><input type="button" class="btn btn-search" id="btn_Search" value="查询" /> </div>
 
+        </div>
+        <div class="list">
+            <table id="list_Allocate" class="list-tb" cellpadding="0" cellspacing="0">
+                <thead>
+                    <tr>
+                        <th style="width:25px" class="no">
+                            序号
+                        </th>
+                        <th style="width:20%">
+                            批次号
+                        </th>
+                        <th style="width:20%">
+                            来源
+                        </th>
+                        <th style="width:15%">
+                            数据量(条)
+                        </th>
+                        <th style="width:15%">
+                            可分配(条)
+                        </th>
+                        <th style="width:10%">
+                            已分配(条)
+                        </th>
+                        <th style="width:10%">
+                            未使用(条)
+                        </th>
+                        <th style="width:10%">
+                            已使用(条)
+                        </th>
+                        <th style="width:25px" class="operation">
+                            操作
+                        </th>
+                    </tr>
+                </thead>
+                <tbody></tbody>
+                <tfoot>
+                    <tr>
+                        <td colspan="9">
+                            <div class="pull-left">
+                                <span class="load-tip"></span>
                             </div>
-                        </div>
-                    </td>
-                </tr>
-            </tfoot>
-        </table>
+                            <div class="pull-right pagination">
+                                <div class="pagination-info">
+
+                                </div>
+                                <div class="pagination-index">
+
+                                </div>
+                                <div class="pagination-goto">
+
+                                </div>
+                            </div>
+                        </td>
+                    </tr>
+                </tfoot>
+            </table>
+        </div>
+    </form>
+
+    <div class="gbr-row-title clearfix">
+        <div class="pull-left">
+            <h5>分配历史</h5>
+        </div>
+        <div class="pull-right f-tb1-item-pull-right">
+            <h6></h6>
+        </div>
     </div>
-</form>
+
+    <form id="form2" name="form2">
+        <div class="search-bar">
+            <div class="filter">
+                <span class="filter-label">批次号：</span>
+                <span class="filter-input">
+                    <input type="text" class="input-control" name="Code" style="width:120px;" />
+                </span>
+            </div>
+
+            <div class="filter"><input type="button" class="btn btn-search" id="btn_Search" value="查询" /> </div>
+
+        </div>
+        <div class="list">
+            <table id="list_Allocated" class="list-tb" cellpadding="0" cellspacing="0">
+                <thead>
+                    <tr>
+                        <th style="width:25px" class="no">
+                            序号
+                        </th>
+                        <th style="width:20%">
+                            批次号
+                        </th>
+                        <th style="width:20%">
+                            分配对象
+                        </th>
+                        <th style="width:20%">
+                            分配方式
+                        </th>
+                        <th style="width:15%">
+                            分配数量(条)
+                        </th>
+                        <th style="width:10%">
+                            未使用(条)
+                        </th>
+                        <th style="width:10%">
+                            已使用(条)
+                        </th>
+                        <th style="width:10%">
+                            描述
+                        </th>
+                        <th style="width:10%">
+                            分配时间
+                        </th>
+                    </tr>
+                </thead>
+                <tbody></tbody>
+                <tfoot>
+                    <tr>
+                        <td colspan="9">
+                            <div class="pull-left">
+                                <span class="load-tip"></span>
+                            </div>
+                            <div class="pull-right pagination">
+                                <div class="pagination-info">
+
+                                </div>
+                                <div class="pagination-index">
+
+                                </div>
+                                <div class="pagination-goto">
+
+                                </div>
+                            </div>
+                        </td>
+                    </tr>
+                </tfoot>
+            </table>
+        </div>
+    </form>
+</div>

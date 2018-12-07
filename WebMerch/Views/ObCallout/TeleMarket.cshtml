@@ -180,7 +180,7 @@
 
             });
 
-           
+
 
             var fdiv = $(".search-bar");
             var itop = fdiv.offset().top;
@@ -196,7 +196,7 @@
                     }
                 });
             }
-  
+
         });
 
         var takeDataResult = null;
@@ -266,153 +266,153 @@
     </script>
 }
 
+<div class="gbr-row gbr-page">
+
+    <div class="teleMarket">
 
 
-<div class="teleMarket">
-
-
-    <div class="customerInfo">
-        <div class="search-bar" style="background-color:#fff;">
-            <div class="filter" id="btn_SaveCallRecord">
-                <span class="status-bar-btn selected">保存通话记录</span>
+        <div class="customerInfo">
+            <div class="search-bar" style="background-color:#fff;">
+                <div class="filter" id="btn_SaveCallRecord">
+                    <span class="status-bar-btn selected">保存通话记录</span>
+                </div>
+                <div class="filter">
+                    <span class="status-bar-btn">编辑客户资料</span>
+                </div>
             </div>
-            <div class="filter">
-                <span class="status-bar-btn">编辑客户资料</span>
+
+            <div class="gbr-row-title clearfix">
+                <div class="pull-left">
+                    <h5>基本信息</h5>
+                </div>
+                <div class="f-tb1-item-pull-right">
+
+                    <div class="remark-tips"><span class="t">提醒：</span><span class="c">客户数据<span class="red-t">系统自动</span>取出，如需取下一条数据，请<span class="red-t">保存通话记录</span>后，系统会自动取出.</span></div>
+
+                </div>
+            </div>
+            <table class="f-tb1-detail" style="width:800px;">
+                <tr>
+                    <td class="t">客户姓名：</td>
+                    <td class="c"><span id="lbl_CsrName"></span> </td>
+                    <td class="t">客户电话：</td>
+                    <td class="c" colspan="3"><span id="lbl_CsrPhoneNumber"></span></td>
+                </tr>
+                <tr>
+                    <td class="t">身份证号：</td>
+                    <td class="c"><span id="lbl_CsrIdNumber"></span></td>
+                    <td class="t">客户地址：</td>
+                    <td class="c" colspan="3"><span id="lbl_CsrAddress"></span></td>
+                </tr>
+            </table>
+            <div class="gbr-row-title clearfix">
+                <div class="pull-left">
+                    <h5>车辆信息</h5>
+                </div>
+                <div class="pull-right f-tb1-item-pull-right">
+                    <h6></h6>
+                </div>
+            </div>
+
+            <table class="f-tb1-detail" style="width:800px;">
+                <tr>
+                    <td class="t">车牌号码：</td>
+                    <td class="c">
+                        <span id="lbl_CarPlateNo"></span>
+                    </td>
+                    <td class="t">初登日期：</td>
+                    <td class="c" colspan="3">
+                        <span id="lbl_CarRegisterDate"></span>
+                    </td>
+                </tr>
+                <tr>
+                    <td class="t">厂牌型号：</td>
+                    <td class="c"><span id="lbl_CarModel"></span></td>
+                    <td class="t">发动机号：</td>
+                    <td class="c"><span id="lbl_CarEngineNo"></span></td>
+                    <td class="t">车架号码：</td>
+                    <td class="c"><span id="lbl_CarVin"></span></td>
+                </tr>
+                <tr>
+                    <td class="t">上一年保险公司：</td>
+                    <td class="c">
+                        <span id="lbl_CarInsLastCompany"></span>
+                    </td>
+                    <td class="t">承保期间：</td>
+                    <td class="c">
+                        <span id="lbl_CarInsTime"></span>
+                    </td>
+                    <td class="t">保单号：</td>
+                    <td class="c"><span id="lbl_CarInsLastQzNo"></span></td>
+                </tr>
+            </table>
+
+
+            <div id="carInsKindsBox">
+
             </div>
         </div>
 
-        <div class="gbr-row-title clearfix">
-            <div class="pull-left">
-                <h5>基本信息</h5>
-            </div>
-            <div class="f-tb1-item-pull-right">
-
-                <div class="remark-tips"><span class="t">提醒：</span><span class="c">客户数据<span class="red-t">系统自动</span>取出，如需取下一条数据，请<span class="red-t">保存通话记录</span>后，系统会自动取出.</span></div>
-
-            </div>
-        </div>
-        <table class="f-tb1-detail" style="width:800px;">
-            <tr>
-                <td class="t">客户姓名：</td>
-                <td class="c"><span id="lbl_CsrName"></span> </td>
-                <td class="t">客户电话：</td>
-                <td class="c" colspan="3"><span id="lbl_CsrPhoneNumber"></span></td>
-            </tr>
-            <tr>
-                <td class="t">身份证号：</td>
-                <td class="c"><span id="lbl_CsrIdNumber"></span></td>
-                <td class="t">客户地址：</td>
-                <td class="c" colspan="3"><span id="lbl_CsrAddress"></span></td>
-            </tr>
-        </table>
-        <div class="gbr-row-title clearfix">
-            <div class="pull-left">
-                <h5>车辆信息</h5>
-            </div>
-            <div class="pull-right f-tb1-item-pull-right">
-                <h6></h6>
+        <div class="teleInfo">
+            <div class="infobox" style="margin-top:5px;">
+                <div class="t">
+                    <span class="title">我的状态</span>
+                </div>
+                <div class="b">
+                    <ul>
+                        <li><div class="name">任务数量</div><div class="value"></div></li>
+                        <li><div class="name">未拨数量</div><div class="value"></div></li>
+                        <li><div class="name">已拨数量</div><div class="value"></div></li>
+                        <li><div class="name">未联系</div><div class="value"></div></li>
+                        <li><div class="name">目标</div><div class="value"></div></li>
+                        <li><div class="name">无效</div><div class="value"></div></li>
+                    </ul>
+                </div>
             </div>
         </div>
 
-        <table class="f-tb1-detail" style="width:800px;">
-            <tr>
-                <td class="t">车牌号码：</td>
-                <td class="c">
-                    <span id="lbl_CarPlateNo"></span>
-                </td>
-                <td class="t">初登日期：</td>
-                <td class="c" colspan="3">
-                    <span id="lbl_CarRegisterDate"></span>
-                </td>
-            </tr>
-            <tr>
-                <td class="t">厂牌型号：</td>
-                <td class="c"><span id="lbl_CarModel"></span></td>
-                <td class="t">发动机号：</td>
-                <td class="c"><span id="lbl_CarEngineNo"></span></td>
-                <td class="t">车架号码：</td>
-                <td class="c"><span id="lbl_CarVin"></span></td>
-            </tr>
-            <tr>
-                <td class="t">上一年保险公司：</td>
-                <td class="c">
-                    <span id="lbl_CarInsLastCompany"></span>
-                </td>
-                <td class="t">承保期间：</td>
-                <td class="c">
-                    <span id="lbl_CarInsTime"></span>
-                </td>
-                <td class="t">保单号：</td>
-                <td class="c"><span id="lbl_CarInsLastQzNo"></span></td>
-            </tr>
-        </table>
-
-
-        <div id="carInsKindsBox">
-
-        </div>
     </div>
 
-    <div class="teleInfo">
-        <div class="infobox" style="margin-top:5px;">
-            <div class="t">
-                <span class="title">我的状态</span>
-            </div>
-            <div class="b">
-                <ul>
-                    <li><div class="name">任务数量</div><div class="value"></div></li>
-                    <li><div class="name">未拨数量</div><div class="value"></div></li>
-                    <li><div class="name">已拨数量</div><div class="value"></div></li>
-                    <li><div class="name">未联系</div><div class="value"></div></li>
-                    <li><div class="name">目标</div><div class="value"></div></li>
-                    <li><div class="name">无效</div><div class="value"></div></li>
-                </ul>
-            </div>
-        </div>
-    </div>
 
+
+    <form id="form_CallRecord" name="form_CallRecord" method="post" style="width:500px;display:none">
+
+        <div class="remark-tips"><span class="t">提醒：</span><span class="c">通话记录须有进行<span class="red-t">通话后</span>才能保存成功</span></div>
+
+        <table class="f-tb" cellpadding="0" cellspacing="1" style="width:500px;">
+            <tr>
+                <td class="f-tb-t" style="width:90px">
+                    通话结果：
+                </td>
+                <td class="f-tb-c">
+
+                    <select id="sel_ResultCode" data-placeholder="请选择" class="chosen-select" style="width:200px">
+                        <option value="-1"></option>
+                    </select>
+
+                </td>
+            </tr>
+            <tr>
+                <td class="f-tb-t">
+                    下次回拨时间：
+                </td>
+                <td class="f-tb-c">
+
+                    <input id="txt_NextCallTime" type="text" class="Wdate input-control" style="width:80px;" onfocus="WdatePicker({ dateFmt: 'yyyy-MM-dd', minDate: '@DateTime.Now.ToUnifiedFormatDate()' })" value="" />
+
+                </td>
+            </tr>
+            <tr>
+                <td class="f-tb-t">
+                    备注：
+                </td>
+                <td class="f-tb-c">
+                    <textarea rows="5" style="width:92%;" id="txt_Remark" class="input-control"></textarea>
+                </td>
+            </tr>
+        </table>
+    </form>
 </div>
-
-
-
-<form id="form_CallRecord" name="form_CallRecord" method="post" style="width:500px;display:none">
-
-    <div class="remark-tips"><span class="t">提醒：</span><span class="c">通话记录须有进行<span class="red-t">通话后</span>才能保存成功</span></div>
-
-    <table class="f-tb" cellpadding="0" cellspacing="1" style="width:500px;">
-        <tr>
-            <td class="f-tb-t" style="width:90px">
-                通话结果：
-            </td>
-            <td class="f-tb-c">
-
-                <select id="sel_ResultCode" data-placeholder="请选择" class="chosen-select" style="width:200px">
-                    <option value="-1"></option>
-                </select>
-
-            </td>
-        </tr>
-        <tr>
-            <td class="f-tb-t">
-                下次回拨时间：
-            </td>
-            <td class="f-tb-c">
-
-                <input id="txt_NextCallTime" type="text" class="Wdate input-control" style="width:80px;" onfocus="WdatePicker({ dateFmt: 'yyyy-MM-dd', minDate: '@DateTime.Now.ToUnifiedFormatDate()' })" value="" />
-
-            </td>
-        </tr>
-        <tr>
-            <td class="f-tb-t">
-                备注：
-            </td>
-            <td class="f-tb-c">
-                <textarea rows="5" style="width:92%;" id="txt_Remark" class="input-control"></textarea>
-            </td>
-        </tr>
-    </table>
-</form>
-
 
 <script id="tmpl_carInsKinds" type="text/x-jquery-tmpl">
 

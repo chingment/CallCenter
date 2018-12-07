@@ -71,16 +71,42 @@
         });
 
         function reinitIframe() {
+
             var iframe = document.getElementById("iframeMain");
+            var scrolling = $(iframe).attr("scrolling");
+
             try {
-                var bHeight = iframe.contentWindow.document.body.scrollHeight;
-                var dHeight = iframe.contentWindow.document.documentElement.scrollHeight;
-                var height = Math.max(bHeight, dHeight);
+                if (scrolling == "no") {
+                    var bHeight = iframe.contentWindow.document.body.scrollHeight;
+                    var dHeight = iframe.contentWindow.document.documentElement.scrollHeight;
+                    var height = Math.max(bHeight, dHeight);
 
-                var heightss = $(iframe).contents().find("body").height()
-                var height = Math.max(bHeight, dHeight);
+                    var heightss = $(iframe).contents().find("body").height()
+                    var height = Math.max(bHeight, dHeight);
 
-                iframe.height = heightss;
+                    iframe.height = heightss;
+
+                    var tree_tab_left = $('.ztree');
+                    if (tree_tab_left.length > 0) {
+                        console.log($(tree_tab_left).height())
+                    }
+                }
+                else if (scrolling == "yes") {
+                    $('body').css("overflow", "hidden");
+                    var wHeight = $(window).height();
+                    var wWidth = $(window).width();
+                    wHeight = wHeight - 88;
+                    iframe.height = wHeight;
+
+                    //if (wWidth < 1000) {
+                    //    $('body').css("overflow-x", "visible");
+                    //}
+                    //else
+                    //{
+                    //    $('body').css("overflow-x", "hidden");
+                    //}
+                }
+
             } catch (ex) { }
         }
 

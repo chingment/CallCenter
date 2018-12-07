@@ -73,78 +73,79 @@
 </script>
 
 
+<div class="gbr-row gbr-page">
+    <form id="form1" name="form1">
+        <div class="search-bar">
+            <div class="filter">
+                <span class="filter-label">批次号：</span>
+                <span class="filter-input">
+                    <input type="text" class="input-control" name="Code" style="width:120px;" />
+                </span>
+            </div>
 
-<form id="form1" name="form1">
-    <div class="search-bar">
-        <div class="filter">
-            <span class="filter-label">批次号：</span>
-            <span class="filter-input">
-                <input type="text" class="input-control" name="Code" style="width:120px;" />
-            </span>
+
+            <div class="filter"><input type="button" class="btn btn-search" id="btn_Search" value="查询" /> </div>
+
+            <div class="filter" style="float:right">
+                <input type="button" class="btn btn-add" id="btn_Add" value="导入" />
+            </div>
         </div>
+        <div class="list">
+            <table id="list_table" class="list-tb" cellpadding="0" cellspacing="0">
+                <thead>
+                    <tr>
+                        <th style="width:25px" class="no">
+                            序号
+                        </th>
+                        <th style="width:20%">
+                            批次号
+                        </th>
+                        <th style="width:20%">
+                            来源
+                        </th>
+                        <th style="width:15%">
+                            数据量(条)
+                        </th>
+                        <th style="width:15%">
+                            有效(条)
+                        </th>
+                        <th style="width:10%">
+                            无效(条)
+                        </th>
+                        <th style="width:10%">
+                            状态
+                        </th>
+                        <th style="width:10%">
+                            导入时间
+                        </th>
+                        <th style="width:25px" class="operation">
+                            操作
+                        </th>
+                    </tr>
+                </thead>
+                <tbody></tbody>
+                <tfoot>
+                    <tr>
+                        <td colspan="9">
+                            <div class="pull-left">
+                                <span class="load-tip"></span>
+                            </div>
+                            <div class="pull-right pagination">
+                                <div class="pagination-info">
 
+                                </div>
+                                <div class="pagination-index">
 
-        <div class="filter"><input type="button" class="btn btn-search" id="btn_Search" value="查询" /> </div>
+                                </div>
+                                <div class="pagination-goto">
 
-        <div class="filter" style="float:right">
-            <input type="button" class="btn btn-add" id="btn_Add" value="导入" />
+                                </div>
+                            </div>
+                        </td>
+                    </tr>
+                </tfoot>
+            </table>
         </div>
-    </div>
-    <div class="list">
-        <table id="list_table" class="list-tb" cellpadding="0" cellspacing="0">
-            <thead>
-                <tr>
-                    <th style="width:25px" class="no">
-                        序号
-                    </th>
-                    <th style="width:20%">
-                        批次号
-                    </th>
-                    <th style="width:20%">
-                        来源
-                    </th>
-                    <th style="width:15%">
-                        数据量(条)
-                    </th>
-                    <th style="width:15%">
-                        有效(条)
-                    </th>
-                    <th style="width:10%">
-                        无效(条)
-                    </th>
-                    <th style="width:10%">
-                        状态
-                    </th>
-                    <th style="width:10%">
-                        导入时间
-                    </th>
-                    <th style="width:25px" class="operation">
-                        操作
-                    </th>
-                </tr>
-            </thead>
-            <tbody></tbody>
-            <tfoot>
-                <tr>
-                    <td colspan="9">
-                        <div class="pull-left">
-                            <span class="load-tip"></span>
-                        </div>
-                        <div class="pull-right pagination">
-                            <div class="pagination-info">
+    </form>
 
-                            </div>
-                            <div class="pagination-index">
-
-                            </div>
-                            <div class="pagination-goto">
-
-                            </div>
-                        </div>
-                    </td>
-                </tr>
-            </tfoot>
-        </table>
-    </div>
-</form>
-
+</div>
