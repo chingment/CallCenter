@@ -98,7 +98,6 @@
         .btn-switch[data-state="off"] .btn_fath {
             background-color: #828282;
         }
-
     </style>
 }
 
@@ -243,7 +242,7 @@
 
         }
 
- 
+
     </script>
 }
 
@@ -407,13 +406,7 @@
     </div>
 
     <div class="list">
-        {{each(j,item) carInsKinds}}
 
-        <div class="block-title1 clearfix">
-            <div class="pull-left">
-                <span>${item.name}</span>
-            </div>
-        </div>
         <table id="list_table" class="list-tb" cellpadding="0" cellspacing="0">
             <thead>
                 <tr>
@@ -432,7 +425,23 @@
                     </th>
                 </tr>
             </thead>
+
+
+
             <tbody>
+
+
+                {{each(j,item) carInsKinds}}
+
+                <tr insKindId="${item.id}">
+                    <td colspan="4">
+                        <div class="block-title1 clearfix">
+                            <div class="pull-left">
+                                <span>${item.name}</span>
+                            </div>
+                        </div>
+                    </td>
+                </tr>
 
                 {{each(i,item2) item.child}}
 
@@ -440,7 +449,28 @@
                     <td>
                         ${item2.name}
                     </td>
-                    <td></td>
+                    <td>
+
+                        {{if item2.inputType==1}}
+                        <span></span>
+                        {{else item2.inputType==2}}
+
+                        <input type="text" />
+
+                        {{else item2.inputType==3}}
+
+                        <select>
+                            {{each(i,option) item2.inputOption}}
+
+                            <option> ${option}</option>
+
+                            {{/each}}
+                        </select>
+
+
+                        {{/if}}
+                        ${item2.inputUnit}
+                    </td>
                     <td>
 
                         {{if item2.canWaiverDeductible}}
@@ -450,7 +480,7 @@
                         {{/if}}
                     </td>
                     <td>
-                        <div class="btn-switch"  data-state="on">
+                        <div class="btn-switch" data-state="on">
                             <div class="btn_fath clearfix">
                                 <div class="move"></div>
                                 <div class="switch-status switch-status-on"></div>
@@ -460,10 +490,15 @@
                     </td>
                 </tr>
                 {{/each}}
+
+
+                {{/each}}
+
+
             </tbody>
         </table>
 
-        {{/each}}
+
     </div>
 
 </script>
