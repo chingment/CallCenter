@@ -23,7 +23,7 @@
         .infobox {
             width: 100%;
             border: 1px solid #d3d3d3;
-            border-radius:3px;
+            border-radius: 3px;
         }
 
             .infobox .t {
@@ -43,6 +43,63 @@
                     height: 32px;
                     line-height: 32px;
                 }
+
+
+
+        .btn-switch {
+            width: 60px;
+            height: 26px;
+            overflow:hidden;
+        }
+
+            .btn-switch .btn_fath {
+                position: relative;
+                border-radius: 20px;
+                height: 100%;
+            }
+
+            .btn-switch .switch-status-on {
+                float: left;
+            }
+
+            .btn-switch .switch-status-off {
+                float: right;
+            }
+
+            .btn-switch .switch-status {
+                height: 100%;
+                width: 100%;
+                border: none;
+                font-size: 16px;
+                text-align: center;
+                z-index: 1;
+            }
+
+            .btn-switch .move {
+                z-index: 100;
+                width: 40%;
+                height: 92%;
+                border-radius: 20px;
+                position: absolute;
+                cursor: pointer;
+                border: 1px solid #828282;
+                background-color: #f1eff0;
+                /*box-shadow: 1px 2px 2px 1px #fff inset,0 0 5px 1px #999;*/
+            }
+
+            .btn-switch[data-state="on"] .btn_fath .move {
+                right: 0px;
+            }
+
+            .btn-switch[data-state="on"] .btn_fath {
+                background-color: #44b549;
+            }
+
+            .btn-switch[data-state="off"] .btn_fath {
+                background-color: #828282;
+            }
+            
+   
     </style>
 }
 
@@ -167,6 +224,27 @@
 
         function refresh() {
 
+        }
+
+        function toogle(th) {
+            var _this = $(th);
+            var _move = $(_this).find(".move");
+            if (_this.attr("data-state") == "on") {
+                _move.animate({
+                    left: "1"
+                }, 300, function () {
+                    _this.attr("data-state", "off");
+                });
+            } else if (_this.attr("data-state") == "off") {
+                
+                var left = $(_move).parent().width() - $(_move).width() - 2;
+                _move.animate({
+                    left: left
+                }, 300, function () {
+                    $(_this).attr("data-state", "on");
+                });
+
+            }
         }
     </script>
 }
@@ -359,8 +437,22 @@
                 <tr>
                     <td>${item2.name}</td>
                     <td></td>
-                    <td></td>
-                    <td></td>
+                    <td>
+
+                        <div class="btn_check" data-state="on">
+                            &nbsp;
+                        </div>
+
+                    </td>
+                    <td>
+                        <div class="btn-switch" onclick="toogle(this)" data-state="on">
+                            <div class="btn_fath clearfix">
+                                <div class="move"></div>
+                                <div class="switch-status switch-status-on"></div>
+                                <div class="switch-status switch-status-off "></div>
+                            </div>
+                        </div>
+                    </td>
                 </tr>
                 {{/each}}
             </tbody>
