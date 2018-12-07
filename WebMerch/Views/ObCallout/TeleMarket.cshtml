@@ -26,80 +26,79 @@
             border-radius: 3px;
         }
 
-            .infobox .t {
-                background: #fc9f06;
-                color: #fff;
-                height: 27px;
-                line-height: 27px;
-                padding: 5px;
-                font-size: 14px;
-            }
+        .infobox .t {
+            background: #fc9f06;
+            color: #fff;
+            height: 27px;
+            line-height: 27px;
+            padding: 5px;
+            font-size: 14px;
+        }
 
-            .infobox .b {
-                padding: 5px;
-            }
+        .infobox .b {
+            padding: 5px;
+        }
 
-                .infobox .b ul li {
-                    height: 32px;
-                    line-height: 32px;
-                }
+        .infobox .b ul li {
+            height: 32px;
+            line-height: 32px;
+        }
 
 
 
         .btn-switch {
             width: 60px;
             height: 26px;
-            overflow:hidden;
+            overflow: hidden;
         }
 
-            .btn-switch .btn_fath {
-                position: relative;
-                border-radius: 20px;
-                height: 100%;
-            }
+        .btn-switch .btn_fath {
+            position: relative;
+            border-radius: 20px;
+            height: 100%;
+        }
 
-            .btn-switch .switch-status-on {
-                float: left;
-            }
+        .btn-switch .switch-status-on {
+            float: left;
+        }
 
-            .btn-switch .switch-status-off {
-                float: right;
-            }
+        .btn-switch .switch-status-off {
+            float: right;
+        }
 
-            .btn-switch .switch-status {
-                height: 100%;
-                width: 100%;
-                border: none;
-                font-size: 16px;
-                text-align: center;
-                z-index: 1;
-            }
+        .btn-switch .switch-status {
+            height: 100%;
+            width: 100%;
+            border: none;
+            font-size: 16px;
+            text-align: center;
+            z-index: 1;
+        }
 
-            .btn-switch .move {
-                z-index: 100;
-                width: 40%;
-                height: 92%;
-                border-radius: 20px;
-                position: absolute;
-                cursor: pointer;
-                border: 1px solid #828282;
-                background-color: #f1eff0;
-                /*box-shadow: 1px 2px 2px 1px #fff inset,0 0 5px 1px #999;*/
-            }
+        .btn-switch .move {
+            z-index: 100;
+            width: 40%;
+            height: 92%;
+            border-radius: 20px;
+            position: absolute;
+            cursor: pointer;
+            border: 1px solid #828282;
+            background-color: #f1eff0;
+            /*box-shadow: 1px 2px 2px 1px #fff inset,0 0 5px 1px #999;*/
+        }
 
-            .btn-switch[data-state="on"] .btn_fath .move {
-                right: 0px;
-            }
+        .btn-switch[data-state="on"] .btn_fath .move {
+            right: 0px;
+        }
 
-            .btn-switch[data-state="on"] .btn_fath {
-                background-color: #44b549;
-            }
+        .btn-switch[data-state="on"] .btn_fath {
+            background-color: #44b549;
+        }
 
-            .btn-switch[data-state="off"] .btn_fath {
-                background-color: #828282;
-            }
-            
-   
+        .btn-switch[data-state="off"] .btn_fath {
+            background-color: #828282;
+        }
+
     </style>
 }
 
@@ -113,7 +112,25 @@
 
             takeData();
 
+            $('.btn-switch').myBtnSwitch();
+            $('.btn-check').myBtnCheck();
+
             $('#btn_SaveCallRecord').live("click", function () {
+
+
+                var trCarInsKinds = $('#carInsKindsBox').find(' tbody tr');
+
+                var carInsKinds = [];
+                $.each(trCarInsKinds, function (e) {
+
+
+                    var isChecked = $(this).find('.btn-switch').attr("data-state")
+                    var insKindId = $(this).attr('insKindId');
+
+                    carInsKinds.push({ insKindId: insKindId, isChecked: isChecked });
+                });
+
+                alert(JSON.stringify(carInsKinds));
 
                 var form_CallRecord = document.getElementById('form_CallRecord');
 
@@ -226,26 +243,7 @@
 
         }
 
-        function toogle(th) {
-            var _this = $(th);
-            var _move = $(_this).find(".move");
-            if (_this.attr("data-state") == "on") {
-                _move.animate({
-                    left: "1"
-                }, 300, function () {
-                    _this.attr("data-state", "off");
-                });
-            } else if (_this.attr("data-state") == "off") {
-                
-                var left = $(_move).parent().width() - $(_move).width() - 2;
-                _move.animate({
-                    left: left
-                }, 300, function () {
-                    $(_this).attr("data-state", "on");
-                });
-
-            }
-        }
+ 
     </script>
 }
 
@@ -410,14 +408,18 @@
 
     <div class="list">
         {{each(j,item) carInsKinds}}
-        <div>
-            <span>${item.name}</span>
+
+        <div class="block-title1 clearfix">
+            <div class="pull-left">
+                <span>${item.name}</span>
+            </div>
         </div>
         <table id="list_table" class="list-tb" cellpadding="0" cellspacing="0">
             <thead>
                 <tr>
                     <th style="width:50%" class="no">
                         险别
+
                     </th>
                     <th style="width:20%">
                         保额金额/赔偿限额
@@ -434,18 +436,21 @@
 
                 {{each(i,item2) item.child}}
 
-                <tr>
-                    <td>${item2.name}</td>
+                <tr insKindId="${item2.id}">
+                    <td>
+                        ${item2.name}
+                    </td>
                     <td></td>
                     <td>
 
-                        <div class="btn_check" data-state="on">
+                        {{if item2.canWaiverDeductible}}
+                        <div class="btn-check" data-state="on">
                             &nbsp;
                         </div>
-
+                        {{/if}}
                     </td>
                     <td>
-                        <div class="btn-switch" onclick="toogle(this)" data-state="on">
+                        <div class="btn-switch"  data-state="on">
                             <div class="btn_fath clearfix">
                                 <div class="move"></div>
                                 <div class="switch-status switch-status-on"></div>
