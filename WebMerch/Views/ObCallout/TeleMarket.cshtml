@@ -98,6 +98,8 @@
         .btn-switch[data-state="off"] .btn_fath {
             background-color: #828282;
         }
+
+        .SerFix{ position:fixed; top:0; z-index:100;}
     </style>
 }
 
@@ -177,6 +179,24 @@
                 });
 
             });
+
+           
+
+            var fdiv = $(".search-bar");
+            var itop = fdiv.offset().top;
+
+            window.onload = function(){
+                $(window).scroll( function() {
+                    var top = $(window).scrollTop();
+                    console.log("top:" + top + ",itop:" + itop)
+                    if(top > itop){
+                        fdiv.addClass("SerFix");
+                    } else{
+                        fdiv.removeClass("SerFix");
+                    }
+                });
+            }
+  
         });
 
         var takeDataResult = null;
@@ -252,7 +272,7 @@
 
 
     <div class="customerInfo">
-        <div class="search-bar">
+        <div class="search-bar" style="background-color:#fff;">
             <div class="filter" id="btn_SaveCallRecord">
                 <span class="status-bar-btn selected">保存通话记录</span>
             </div>
