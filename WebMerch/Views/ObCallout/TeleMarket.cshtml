@@ -42,8 +42,16 @@
         .infobox .b ul li {
             height: 32px;
             line-height: 32px;
+            display: flex;
         }
 
+        .infobox .b ul li .name {
+            width:80px;
+        }
+
+        .infobox .b ul li .value {
+            flex: 1;
+        }
 
 
         .btn-switch {
@@ -99,7 +107,11 @@
             background-color: #828282;
         }
 
-        .SerFix{ position:fixed; top:0; z-index:100;}
+        .SerFix {
+            position: fixed;
+            top: 0;
+            z-index: 100;
+        }
     </style>
 }
 
@@ -185,13 +197,13 @@
             var fdiv = $(".search-bar");
             var itop = fdiv.offset().top;
 
-            window.onload = function(){
-                $(window).scroll( function() {
+            window.onload = function () {
+                $(window).scroll(function () {
                     var top = $(window).scrollTop();
                     console.log("top:" + top + ",itop:" + itop)
-                    if(top > itop){
+                    if (top > itop) {
                         fdiv.addClass("SerFix");
-                    } else{
+                    } else {
                         fdiv.removeClass("SerFix");
                     }
                 });
@@ -360,12 +372,12 @@
                 </div>
                 <div class="b">
                     <ul>
-                        <li><div class="name">任务数量</div><div class="value"></div></li>
-                        <li><div class="name">未拨数量</div><div class="value"></div></li>
-                        <li><div class="name">已拨数量</div><div class="value"></div></li>
-                        <li><div class="name">未联系</div><div class="value"></div></li>
-                        <li><div class="name">目标</div><div class="value"></div></li>
-                        <li><div class="name">无效</div><div class="value"></div></li>
+                        <li><div class="name">任务数量</div><div class="value">0</div></li>
+                        <li><div class="name">未拨数量</div><div class="value">0</div></li>
+                        <li><div class="name">已拨数量</div><div class="value">0</div></li>
+                        <li><div class="name">未联系</div><div class="value">0</div></li>
+                        <li><div class="name">目标</div><div class="value">0</div></li>
+                        <li><div class="name">无效</div><div class="value">0</div></li>
                     </ul>
                 </div>
             </div>
