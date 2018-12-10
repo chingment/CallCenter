@@ -49,6 +49,8 @@ namespace Lumos.BLL.Service.Merch
                     obCustomer.IsTake = true;
                     obCustomer.TakeTime = this.DateTime;
                     obCustomer.IsUseCall = false;
+                    obCustomer.Mender = operater;
+                    obCustomer.MendTime = this.DateTime;
 
                     var obBatchAllocates = GetFatherObBatchAllocates(merchantId, obCustomer.ObBatchAllocateId);
 
@@ -66,6 +68,8 @@ namespace Lumos.BLL.Service.Merch
                         }
 
                         obBatchAllocate.UnUsedCount = obBatchAllocate.AllocatedCount - obBatchAllocate.UsedCount;
+                        obBatchAllocate.Mender = operater;
+                        obBatchAllocate.MendTime = this.DateTime;
                     }
 
                     CurrentDb.SaveChanges();
