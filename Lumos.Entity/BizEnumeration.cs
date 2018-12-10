@@ -121,5 +121,12 @@ namespace Lumos.Entity
         }
 
 
+        public enum DataRightType
+        {
+            Unknow = 0,
+            Self = 1,
+            Organization = 2
+        }
+
     }
 }

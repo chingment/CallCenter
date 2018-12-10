@@ -32,7 +32,7 @@
             getDetails();
 
             listTable = $("#list_ObCustomer").loadDataTable({
-                url: "/ObCustomer/GetList",
+                url: "/ObBatchAllocate/GetObCustomerList",
                 pageIndex: 0,
                 pageSize: 5,
                 searchParams: $("#form_ObCustomer").serializeArray(),

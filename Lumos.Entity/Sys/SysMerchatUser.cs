@@ -12,5 +12,6 @@ namespace Lumos.Entity
         public string OrganizationId { get; set; }
 
         public Enumeration.SysPositionId PositionId { get; set; }
+
     }
 }

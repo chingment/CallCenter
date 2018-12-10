@@ -18,7 +18,6 @@ namespace Lumos.BLL.Service.Merch
 
         public Enumeration.SysPositionId PositionId { get; set; }
 
-
         public string SimpleCode { get; set; }
     }
 }

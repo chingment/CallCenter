@@ -8,6 +8,7 @@ using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
+using System.Linq.Expressions;
 using System.Web;
 using System.Web.Mvc;
 
@@ -15,22 +16,31 @@ namespace WebMerch.Controllers
 {
     public class ObCustomerController : OwnBaseController
     {
-        // GET: ObCustomer
-        public ActionResult Index()
+        public ActionResult List()
         {
             return View();
         }
 
+        public Expression<Func<ObCustomer, bool>> predicate()
+        {
+
+            Expression<Func<ObCustomer, bool>> predicate = null;
+
+
+            predicate = f => f.BelongUserId == "";
+
+            return predicate;
+        }
 
         public CustomJsonResult GetList(RupObCustomerGetList rup)
         {
+            var accessUserIds = MerchServiceFactory.User.GetCanAccessUserIds(this.CurrentUserId, this.CurrentMerchantId, this.CurrentUserId);
 
             var query = (from u in CurrentDb.ObCustomer
                          where
-                         u.ObBatchAllocateId == rup.ObBatchAllocateId
-                         &&
-                         u.MerchantId == this.CurrentMerchantId &&
 
+                         u.MerchantId == this.CurrentMerchantId &&
+                           accessUserIds.Contains(u.BelongUserId) &&
                          (rup.CarPlateNo == null || u.CarPlateNo.Contains(rup.CarPlateNo)) &&
                          (rup.CarModel == null || u.CarModel.Contains(rup.CarModel)) &&
                          (rup.CarEngineNo == null || u.CarEngineNo.Contains(rup.CarEngineNo)) &&
@@ -45,6 +55,9 @@ namespace WebMerch.Controllers
                          (rup.CarInsLastEndTime == null || u.CarInsLastEndTime <= rup.CarInsLastEndTime)
 
                          select new { u.Id, u.CsrName, u.CsrPhoneNumber, u.CsrAddress, u.CsrIdNumber, u.CarRegisterDate, u.CarPlateNo, u.CarModel, u.CarEngineNo, u.CarVin, u.CarInsLastQzNo, u.CarInsLastSyNo, u.CarInsLastCompany, u.CarInsLastStartTime, u.CarInsLastEndTime, u.CreateTime });
+
+            // var s = predicate();
+            // query = query.Where();
 
             int total = query.Count();
 

@@ -15,9 +15,13 @@
             $("#sel_Positions").formValidator().inputValidator({ min: 1, max: 500, onError: "请选择职位" });
             $("#txt_Email").formValidator().regexValidator({ min: 0, max: 100, regExp: regexEnum.email, onError: "邮箱格式且不能超过100个字符" });
             $("#txt_PhoneNumber").formValidator().regexValidator({ min: 0, max: 100, regExp: regexEnum.mobile, onError: "手机号码格式" });
+            //$("#sel_DataRightTypes").formValidator().inputValidator({ min: 1, max: 500, onError: "请选择数据访问" });
 
             $('#sel_Positions').myChosen({ urlParams: { type: "SysPosition" } });
             $('#sel_Organizations').myChosen({ urlParams: { type: "SysOrganization" } });
+
+            //$('#sel_DataRightTypes').myChosen({ isUseUrl: false });
+
 
             getDetails();
         });
@@ -54,9 +58,11 @@
                 var phoneNumber = $("#txt_PhoneNumber").val();
                 var positionId = $("#sel_Positions").val();
                 var organizationId = $("#sel_Organizations").val();
+                //var dataRightType = $("#sel_DataRightTypes").val();
+
                 $.lumos.postJson({
                     url: "/User/Add",
-                    data: { userName: userName, password: password, fullName: fullName, email: email, phoneNumber: phoneNumber, positionId: positionId, organizationId: organizationId },
+                    data: { userName: userName, password: password, fullName: fullName, email: email, phoneNumber: phoneNumber, positionId: positionId, organizationId: organizationId, dataRightType: 0 },
                     isUseHandling: true,
                     success: function (d) {
                         if (d.result == $.lumos.resultType.success) {
@@ -119,7 +125,7 @@
                 <span class="required-symbol">*</span>所属机构：
             </td>
             <td class="f-tb-c">
-                <select id="sel_Organizations" data-placeholder="请选择" class="chosen-select" style="width:200px" >
+                <select id="sel_Organizations" data-placeholder="请选择" class="chosen-select" style="width:200px">
                     <option value="-1"></option>
                 </select>
             </td>
@@ -150,6 +156,18 @@
                 <input id="txt_PhoneNumber" class="input-control" type="text" style="width: 224px;" autocomplete="off" />
             </td>
         </tr>
+        @*<tr>
+            <td class="f-tb-t">
+                <span class="required-symbol">*</span>数据访问：
+            </td>
+            <td class="f-tb-c">
+                <select id="sel_DataRightTypes" data-placeholder="请选择" class="chosen-select" style="width:200px">
+                    <option value="-1"></option>
+                    <option value="1">仅自己</option>
+                    <option value="2">本机构及下属机构</option>
+                </select>
+            </td>
+        </tr>*@
         <tr style="display:none">
             <td class="f-tb-t"></td>
             <td class="f-tb-c">

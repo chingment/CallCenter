@@ -210,6 +210,7 @@
     <Content Include="Views\ObBatchAllocate\List.cshtml" />
     <Content Include="Views\ObBatchAllocate\Add.cshtml" />
     <Content Include="Views\ObCallout\TeleMarket.cshtml" />
+    <Content Include="Views\ObCustomer\List.cshtml" />
     <None Include="Web.config">
       <SubType>Designer</SubType>
     </None>
@@ -222,7 +223,6 @@
   </ItemGroup>
   <ItemGroup>
     <Folder Include="Scripts\ckeditor\" />
-    <Folder Include="Views\ObCustomer\" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="fonts\glyphicons-halflings-regular.woff" />

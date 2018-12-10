@@ -29,7 +29,7 @@ namespace Lumos.BLL.Service.Merch
             return query.ToList().Concat(query.ToList().SelectMany(t => GetFatherList(list, t.PId)));
         }
 
-        private List<Organization> GetSons(string merchantId, string id)
+        public List<Organization> GetSons(string merchantId, string id)
         {
             var sysOrganizations = CurrentDb.Organization.Where(m => m.MerchantId == merchantId).ToList();
             var sysOrganization = sysOrganizations.Where(p => p.Id == id).ToList();

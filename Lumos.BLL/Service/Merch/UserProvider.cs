@@ -11,6 +11,38 @@ namespace Lumos.BLL.Service.Merch
 {
     public class UserProvider : BaseProvider
     {
+
+        public List<string> GetCanAccessUserIds(string operater, string merchantId, string id)
+        {
+            List<string> userIds = new List<string>();
+            var user = CurrentDb.SysMerchantUser.Where(m => m.MerchantId == merchantId && m.Id == id).FirstOrDefault();
+            if (user == null)
+                return userIds;
+            var position = CurrentDb.SysPosition.Where(m => m.Id == user.PositionId).FirstOrDefault();
+            if (position == null)
+                return userIds;
+
+            if (position.DataRightType == Enumeration.DataRightType.Self)
+            {
+                userIds.Add(user.Id);
+            }
+            else if (position.DataRightType == Enumeration.DataRightType.Organization)
+            {
+                List<Organization> organizations = MerchServiceFactory.Organization.GetSons(merchantId, user.OrganizationId);
+
+                List<string> organizationIds = organizations.Select(m => m.Id).ToList<string>();
+
+                var users = CurrentDb.SysMerchantUser.Where(m => organizationIds.Contains(m.OrganizationId)).ToList();
+
+                foreach (var m_user in users)
+                {
+                    userIds.Add(m_user.Id);
+                }
+            }
+
+            return userIds;
+        }
+
         public CustomJsonResult GetDetails(string operater, string merchantId, string id)
         {
             var ret = new RetUserGetDetails();

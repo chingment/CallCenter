@@ -137,7 +137,7 @@ namespace Lumos.BLL.Service.Merch
         }
 
 
-        public CustomJsonResult GetCarInsKind(string operater, string merchantId)
+        public CustomJsonResult CarInsGetKind(string operater, string merchantId)
         {
             CustomJsonResult result = new CustomJsonResult();
             List<CarInsPKindModel> carInsPKindModels = new List<CarInsPKindModel>();
@@ -182,6 +182,15 @@ namespace Lumos.BLL.Service.Merch
             }
 
             return new CustomJsonResult(ResultType.Success, ResultCode.Success, "保存成功", new { carInsKinds = carInsPKindModels });
+        }
+
+
+        public CustomJsonResult CarInsSubmitInsure(string operater, string merchantId, RopObCalloutCarInsSubmitInsure rop)
+        {
+            CustomJsonResult result = new CustomJsonResult();
+
+
+            return result;
         }
     }
 }

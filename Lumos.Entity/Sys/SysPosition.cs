@@ -29,5 +29,8 @@ namespace Lumos.Entity
 
         public Enumeration.BelongSite BelongSite { get; set; }
 
+
+        public Enumeration.DataRightType DataRightType { get; set; }
+
     }
 }

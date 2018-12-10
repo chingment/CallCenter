@@ -27,9 +27,15 @@ namespace WebMerch.Controllers
             return MerchServiceFactory.ObCallout.SaveCallRecored(this.CurrentUserId, this.CurrentMerchantId, rop);
         }
 
-        public CustomJsonResult GetCarInsKind()
+        public CustomJsonResult CarInsGetKind()
         {
-            return MerchServiceFactory.ObCallout.GetCarInsKind(this.CurrentUserId, this.CurrentMerchantId);
+            return MerchServiceFactory.ObCallout.CarInsGetKind(this.CurrentUserId, this.CurrentMerchantId);
         }
+
+        public CustomJsonResult CarInsSubmitInsure()
+        {
+            return MerchServiceFactory.ObCallout.CarInsGetKind(this.CurrentUserId, this.CurrentMerchantId);
+        }
+
     }
 }
