@@ -37,10 +37,11 @@ namespace WebMerch.Controllers
                          join b in CurrentDb.ObBatch on u.ObBatchId equals b.Id
                          where
                          u.BelongUserId == this.CurrentUserId
+                         && u.Allocater != this.CurrentUserId
                          &&
                          u.MerchantId == this.CurrentMerchantId &&
                            (rup.Code == null || b.Code.Contains(rup.Code))
-                         select new { u.Id, ObBatchName = b.Name, u.SoureName, ObBatchCode = b.Code, u.DataCount, u.AllocatedCount, u.UnAllocatedCount, u.UnUsedCount, u.UsedCount, u.CreateTime });
+                         select new { u.Id, ObBatchName = b.Name, u.SoureName, ObBatchCode = b.Code, u.DataCount, u.AllocatedCount, u.UnAllocatedCount, u.UsedCount, u.CreateTime });
 
             int total = query.Count();
 
@@ -65,7 +66,7 @@ namespace WebMerch.Controllers
                     DataCount = item.DataCount,
                     AllocatedCount = item.AllocatedCount,
                     UnAllocatedCount = item.UnAllocatedCount,
-                    UnUsedCount = item.UnUsedCount,
+                    UnUsedCount = item.AllocatedCount - item.UsedCount,
                     UsedCount = item.UsedCount,
                     CreateTime = item.CreateTime.ToUnifiedFormatDateTime()
                 });
@@ -89,7 +90,7 @@ namespace WebMerch.Controllers
                          &&
                          u.MerchantId == this.CurrentMerchantId &&
                            (rup.Code == null || b.Code.Contains(rup.Code))
-                         select new { u.Id, ObBatchName = b.Name, u.SoureName, u.AllocateMode, ObBatchCode = b.Code, u.DataCount, u.AllocatedCount, u.UnAllocatedCount, u.UnUsedCount, u.UsedCount, u.CreateTime, u.BelongUserName, u.Description, u.Filters });
+                         select new { u.Id, ObBatchName = b.Name, u.SoureName, u.AllocateMode, ObBatchCode = b.Code, u.DataCount, u.AllocatedCount, u.UnAllocatedCount, u.UsedCount, u.CreateTime, u.BelongUserName, u.Description, u.Filters });
 
             int total = query.Count();
 
@@ -116,7 +117,7 @@ namespace WebMerch.Controllers
                     DataCount = item.DataCount,
                     AllocatedCount = item.AllocatedCount,
                     UnAllocatedCount = item.UnAllocatedCount,
-                    UnUsedCount = item.UnUsedCount,
+                    UnUsedCount = item.DataCount - item.UsedCount,
                     UsedCount = item.UsedCount,
                     Description = item.Description,
                     CreateTime = item.CreateTime.ToUnifiedFormatDateTime()

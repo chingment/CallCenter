@@ -92,7 +92,6 @@ namespace Lumos.BLL.Service.Merch
 
                 obBatchAllocate.AllocatedCount += allocatedCount;
                 obBatchAllocate.UnAllocatedCount -= allocatedCount;
-                obBatchAllocate.UnUsedCount += allocatedCount;
                 obBatchAllocate.Mender = operater;
                 obBatchAllocate.MendTime = this.DateTime;
 
@@ -114,10 +113,10 @@ namespace Lumos.BLL.Service.Merch
                     new_Allocate.AllocatedCount = 0;
                     new_Allocate.UnAllocatedCount = item.AllocatedCount;
                     new_Allocate.UsedCount = 0;
-                    new_Allocate.UnUsedCount = 0;
                     new_Allocate.BelongUserId = item.UserId;
                     new_Allocate.BelongUserName = string.Format("{0}机构：{1}({2})", belongOrganization.FullName, belongUser.FullName, belongUser.UserName);
                     new_Allocate.BelongOrganizationId = item.OrganizationId;
+                    new_Allocate.Allocater = soureUser.Id;
                     new_Allocate.Creator = operater;
                     new_Allocate.CreateTime = this.DateTime;
                     new_Allocate.SoureName = string.Format("上级分配人：{0}（{1}）", soureUser.FullName, soureUser.UserName);

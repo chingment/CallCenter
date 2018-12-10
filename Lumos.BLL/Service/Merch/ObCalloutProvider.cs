@@ -58,14 +58,14 @@ namespace Lumos.BLL.Service.Merch
                         {
                             obBatchAllocate.AllocatedCount += 1;
                             obBatchAllocate.UnAllocatedCount -= 1;
-                            obBatchAllocate.UnUsedCount = 0;
                             obBatchAllocate.UsedCount += 1;
                         }
                         else
                         {
-                            obBatchAllocate.UnUsedCount -= 1;
                             obBatchAllocate.UsedCount += 1;
                         }
+
+                        obBatchAllocate.UnUsedCount = obBatchAllocate.AllocatedCount - obBatchAllocate.UsedCount;
                     }
 
                     CurrentDb.SaveChanges();
