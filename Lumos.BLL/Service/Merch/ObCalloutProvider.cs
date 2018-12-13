@@ -197,7 +197,15 @@ namespace Lumos.BLL.Service.Merch
             {
                 var obCustomer = CurrentDb.ObCustomer.Where(m => m.Id == rop.ObCustomerId).FirstOrDefault();
 
-                var order2CarIns = new Order2CarIns();
+                var order2CarIns = CurrentDb.Order2CarIns.Where(m => m.ObCustomerId == rop.ObCustomerId && (m.FollowStatus == Enumeration.OrderFollowStatus.CarInsWtUnderwrie || m.FollowStatus == Enumeration.OrderFollowStatus.CarInsInUnderwrie)).FirstOrDefault();
+
+                if (order2CarIns != null)
+                {
+                    return new CustomJsonResult(ResultType.Failure, ResultCode.Failure, "该客户已在核保中，不能重复提交，请耐心等候");
+                }
+
+                order2CarIns = new Order2CarIns();
+
                 order2CarIns.Id = GuidUtil.New();
                 order2CarIns.Sn = SnUtil.Build(Enumeration.BizSnType.Order2CarIns, merchantId);
                 order2CarIns.Type = Enumeration.OrderType.CarIns;
