@@ -14,10 +14,8 @@ namespace Lumos.Entity
             Unknow = 0,
             [Remark("订单号")]
             Order = 1,
-            [Remark("入库单号")]
-            Order2StockIn = 2,
-            [Remark("出库单号")]
-            Order2StockOut = 3
+            [Remark("车险订单")]
+            Order2CarIns = 2
         }
         public enum WxUserInfoFrom
         {
@@ -126,6 +124,61 @@ namespace Lumos.Entity
             Unknow = 0,
             Self = 1,
             Organization = 2
+        }
+
+        public enum OrderType
+        {
+            Unknow = 0,
+            [Remark("普通商品")]
+            Goods = 1,
+            [Remark("保险产品")]
+            Insure = 2,
+            [Remark("业务")]
+            Biz = 3,
+            [Remark("车险订单")]
+            CarIns = 300001,
+        }
+
+        public enum OrderPayWay
+        {
+            [Remark("未知")]
+            Unknow = 0,
+            [Remark("POS")]
+            POS = 1,
+            [Remark("微信")]
+            Wechat = 2,
+            [Remark("支付宝")]
+            Alipay = 3,
+            [Remark("现金")]
+            Cash = 4,
+        }
+
+        public enum OrderStatus
+        {
+            [Remark("未知")]
+            Unknow = 0,
+            [Remark("已提交")]
+            Submitted = 1,
+            [Remark("跟进中")]
+            Follow = 2,
+            [Remark("待支付")]
+            WaitPay = 3,
+            [Remark("已完成")]
+            Completed = 4,
+            [Remark("已取消")]
+            Cancled = 5
+        }
+
+        public enum OrderFollowStatus
+        {
+            [Remark("未知")]
+            Unknow = 0,
+            [Remark("待核保")]
+            CarInsWtUnderwrie = 6201,
+            [Remark("核保中")]
+            CarInsInUnderwrie = 6202,
+            [Remark("已核保")]
+            CarInsAlUnderwrie = 6203
         }
 
     }

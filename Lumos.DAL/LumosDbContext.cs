@@ -36,6 +36,10 @@ namespace Lumos.DAL
         public IDbSet<CallResultCode> CallResultCode { get; set; }
         public IDbSet<CallRecord> CallRecord { get; set; }
         public IDbSet<CarInsKind> CarInsKind { get; set; }
+
+        public IDbSet<Order> Order { get; set; }
+        public IDbSet<Order2CarIns> Order2CarIns { get; set; }
+        public IDbSet<Order2CarInsKind> Order2CarInsKind { get; set; }
         protected override void OnModelCreating(DbModelBuilder modelBuilder)
         {
             base.OnModelCreating(modelBuilder);

@@ -15,19 +15,19 @@ namespace Lumos.BLL.Service.Merch
             this.Child = new List<CarInsCKindModel>();
         }
 
-        public int Id { get; set; }
+        public string Id { get; set; }
         public String Name { get; set; }
         public List<CarInsCKindModel> Child { get; set; }
     }
 
     public class CarInsCKindModel
     {
-        public int Id { get; set; }
-        public int PId { get; set; }
+        public string Id { get; set; }
+        public string PId { get; set; }
         public String Name { get; set; }
-        public bool IsCheck { get; set; }
+        public bool IsSelected { get; set; }
         public bool CanWaiverDeductible { get; set; }
-        public bool IsWaiverDeductible { get; set; }
+        public bool IsSelectedWaiverDeductible { get; set; }
         public Enumeration.CarKindType Type { get; set; }
         public Enumeration.CarKindInputType InputType { get; set; }
         public string InputUnit { get; set; }

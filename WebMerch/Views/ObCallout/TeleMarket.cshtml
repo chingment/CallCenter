@@ -46,7 +46,7 @@
         }
 
         .infobox .b ul li .name {
-            width:80px;
+            width: 80px;
         }
 
         .infobox .b ul li .value {
@@ -131,20 +131,6 @@
             $('#btn_SaveCallRecord').live("click", function () {
 
 
-                var trCarInsKinds = $('#carInsKindsBox').find(' tbody tr');
-
-                var carInsKinds = [];
-                $.each(trCarInsKinds, function (e) {
-
-
-                    var isChecked = $(this).find('.btn-switch').attr("data-state")
-                    var insKindId = $(this).attr('insKindId');
-
-                    carInsKinds.push({ insKindId: insKindId, isChecked: isChecked });
-                });
-
-                alert(JSON.stringify(carInsKinds));
-
                 var form_CallRecord = document.getElementById('form_CallRecord');
 
                 var sel_ResultCode = $(form_CallRecord).find('#sel_ResultCode');
@@ -192,7 +178,49 @@
 
             });
 
+            $('#btn_CarInsSubmitInsure').live("click", function () {
 
+                var trCarInsKinds = $('#carInsKindsBox').find(' tbody tr');
+
+                var kinds = [];
+                $.each(trCarInsKinds, function (e) {
+
+
+                    var isChecked = $(this).find('.btn-switch').attr("data-state")
+                    var isWaiverDeductible = $(this).find('.btn-check').attr("data-state")
+                    var value = $(this).find('.txt-value').val()
+                    var insKindId = $(this).attr('insKindId');
+                    if (isChecked == "on") {
+                        isWaiverDeductible = isWaiverDeductible == "on" ? true : false;
+
+                        kinds.push({ id: insKindId, value: value, isWaiverDeductible: isWaiverDeductible });
+                    }
+                });
+
+                var customerId = takeDataResult.obCustomerId;
+                var compulsoryAmount = $('#txt_CompulsoryAmount').val();
+                var travelTaxAmount = $('#txt_TravelTaxAmount').val();
+                var commercialAmount = $('#txt_CommercialAmount').val();
+
+                art.dialog.confirm('确定要提交核保？', function () {
+
+                    $.lumos.postJson({
+                        isUseHandling: true,
+                        url: "/ObCallout/CarInsSubmitUnderwriting",
+                        data: { obCustomerId: customerId, travelTaxAmount: travelTaxAmount, compulsoryAmount: compulsoryAmount, commercialAmount: commercialAmount, kinds: kinds },
+                        success: function (d) {
+                            $.lumos.tips(d.message);
+                            if (d.result == $.lumos.resultType.success) {
+
+
+                            }
+                        }
+                    });
+
+                });
+
+
+            });
 
             var fdiv = $("#top_bar");
             var itop = fdiv.offset().top;
@@ -487,14 +515,14 @@
                         <span></span>
                         {{else item2.inputType==2}}
 
-                        <input type="text" style="height:30px;width:100px;" />
+                        <input class="txt-value" type="text" style="height:30px;width:100px;" />
 
                         {{else item2.inputType==3}}
 
-                        <select style="height:30px;">
+                        <select class="txt-value" style="height:30px;">
                             {{each(i,option) item2.inputOption}}
 
-                            <option> ${option}</option>
+                            <option value="${option}" ${item2.inputValue==option?"selected":""}> ${option}</option>
 
                             {{/each}}
                         </select>
@@ -506,13 +534,13 @@
                     <td>
 
                         {{if item2.canWaiverDeductible}}
-                        <div class="btn-check" data-state="on">
+                        <div class="btn-check" data-state="${item2.isSelectedWaiverDeductible==true?" on":"off"}">
                             &nbsp;
                         </div>
                         {{/if}}
                     </td>
                     <td>
-                        <div class="btn-switch" data-state="on">
+                        <div class="btn-switch" data-state=${item2.isSelected==true?"on":"off"}>
                             <div class="btn_fath clearfix">
                                 <div class="move"></div>
                                 <div class="switch-status switch-status-on"></div>
@@ -534,14 +562,14 @@
 
 
         <div style="margin:10px 0px;">
-            交强险：<input type="text" autocomplete="off" id="txt_Name" style="width:50px;" class="input-control" />
-            车船税：<input type="text" autocomplete="off" id="txt_Name" style="width:50px;" class="input-control" />
-            商业险：<input type="text" autocomplete="off" id="txt_Name" style="width:50px;" class="input-control" />
+            交强险：<input type="text" autocomplete="off" id="txt_CompulsoryAmount" style="width:50px;" class="input-control" />
+            车船税：<input type="text" autocomplete="off" id="txt_TravelTaxAmount" style="width:50px;" class="input-control" />
+            商业险：<input type="text" autocomplete="off" id="txt_CommercialAmount" style="width:50px;" class="input-control" />
             合计：<span id="lbl">0.00</span>
         </div>
 
         <div id="top_bar" class="search-bar" style="background-color:#fff;">
-            <div class="filter" id="btn_SaveCallRecord">
+            <div class="filter" id="btn_CarInsSubmitInsure">
                 <span class="status-bar-btn selected">提交核保</span>
             </div>
         </div>

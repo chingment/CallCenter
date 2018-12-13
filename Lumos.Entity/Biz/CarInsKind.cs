@@ -12,8 +12,8 @@ namespace Lumos.Entity
     public class CarInsKind
     {
         [Key]
-        public int Id { get; set; }
-        public int PId { get; set; }
+        public string Id { get; set; }
+        public string PId { get; set; }
         [MaxLength(128)]
         public string Name { get; set; }
 
@@ -22,7 +22,7 @@ namespace Lumos.Entity
 
         public bool CanWaiverDeductible { get; set; }
 
-        public bool IsWaiverDeductible { get; set; }
+        public bool IsSelectedWaiverDeductible { get; set; }
 
         public Enumeration.CarKindType Type { get; set; }
 
@@ -41,15 +41,15 @@ namespace Lumos.Entity
 
         public int Priority { get; set; }
 
-        public int Creator { get; set; }
+        public string Creator { get; set; }
 
         public DateTime CreateTime { get; set; }
 
-        public int? Mender { get; set; }
+        public string Mender { get; set; }
 
-        public DateTime? LastUpdateTime { get; set; }
+        public DateTime? MendTime { get; set; }
 
-        public bool IsCheck { get; set; }
+        public bool IsSelected { get; set; }
 
     }
 }

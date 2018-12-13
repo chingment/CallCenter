@@ -61,17 +61,8 @@ namespace Lumos.BLL
                 case Entity.Enumeration.BizSnType.Order:
                     prefix = "61";
                     break;
-                //case Entity.Enumeration.BizSnType.FundTrans:
-                //    prefix = "10";
-                //    break;
-                //case Entity.Enumeration.BizSnType.Withraw:
-                //    prefix = "20";
-                //    break;
-                case Entity.Enumeration.BizSnType.Order2StockIn:
-                    prefix = "30";
-                    break;
-                case Entity.Enumeration.BizSnType.Order2StockOut:
-                    prefix = "31";
+                case Entity.Enumeration.BizSnType.Order2CarIns:
+                    prefix = "62";
                     break;
             }
 

@@ -32,9 +32,9 @@ namespace WebMerch.Controllers
             return MerchServiceFactory.ObCallout.CarInsGetKind(this.CurrentUserId, this.CurrentMerchantId);
         }
 
-        public CustomJsonResult CarInsSubmitInsure()
+        public CustomJsonResult CarInsSubmitUnderwriting(RopObCalloutCarInsSubmitUnderwriting rop)
         {
-            return MerchServiceFactory.ObCallout.CarInsGetKind(this.CurrentUserId, this.CurrentMerchantId);
+            return MerchServiceFactory.ObCallout.CarInsSubmitUnderwriting(this.CurrentUserId, this.CurrentMerchantId, rop);
         }
 
     }

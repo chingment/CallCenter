@@ -146,9 +146,9 @@ namespace Lumos.BLL.Service.Merch
             CustomJsonResult result = new CustomJsonResult();
             List<CarInsPKindModel> carInsPKindModels = new List<CarInsPKindModel>();
 
-            var carKinds = CurrentDb.CarInsKind.OrderByDescending(m => m.Priority).ToList();
+            var carKinds = CurrentDb.CarInsKind.OrderBy(m => m.Priority).ToList();
 
-            var carPKinds = carKinds.Where(m => m.PId == 0).ToList();
+            var carPKinds = carKinds.Where(m => m.PId == "0").ToList();
 
             foreach (var carPKind in carPKinds)
             {
@@ -166,7 +166,7 @@ namespace Lumos.BLL.Service.Merch
                     carInsCKindModel.Name = carCKind.Name;
                     carInsCKindModel.Type = carCKind.Type;
                     carInsCKindModel.CanWaiverDeductible = carCKind.CanWaiverDeductible;
-                    carInsCKindModel.IsWaiverDeductible = carCKind.IsWaiverDeductible;
+                    carInsCKindModel.IsSelectedWaiverDeductible = carCKind.IsSelectedWaiverDeductible;
                     carInsCKindModel.InputType = carCKind.InputType;
                     carInsCKindModel.InputUnit = carCKind.InputUnit;
                     carInsCKindModel.InputValue = carCKind.InputValue;
@@ -176,7 +176,7 @@ namespace Lumos.BLL.Service.Merch
                     }
 
                     carInsCKindModel.IsHasDetails = carCKind.IsHasDetails;
-                    carInsCKindModel.IsCheck = carCKind.IsCheck;
+                    carInsCKindModel.IsSelected = carCKind.IsSelected;
 
                     carPInsKindModel.Child.Add(carInsCKindModel);
                 }
@@ -189,10 +189,60 @@ namespace Lumos.BLL.Service.Merch
         }
 
 
-        public CustomJsonResult CarInsSubmitInsure(string operater, string merchantId, RopObCalloutCarInsSubmitInsure rop)
+        public CustomJsonResult CarInsSubmitUnderwriting(string operater, string merchantId, RopObCalloutCarInsSubmitUnderwriting rop)
         {
             CustomJsonResult result = new CustomJsonResult();
 
+            using (TransactionScope ts = new TransactionScope())
+            {
+                var obCustomer = CurrentDb.ObCustomer.Where(m => m.Id == rop.ObCustomerId).FirstOrDefault();
+
+                var order2CarIns = new Order2CarIns();
+                order2CarIns.Id = GuidUtil.New();
+                order2CarIns.Sn = SnUtil.Build(Enumeration.BizSnType.Order2CarIns, merchantId);
+                order2CarIns.Type = Enumeration.OrderType.CarIns;
+                order2CarIns.MerchantId = merchantId;
+                order2CarIns.ObCustomerId = rop.ObCustomerId;
+                order2CarIns.CompanyId = "";
+                order2CarIns.CompanyName = "";
+                order2CarIns.CompulsoryAmount = rop.CompulsoryAmount;
+                order2CarIns.TravelTaxAmount = rop.TravelTaxAmount;
+                order2CarIns.CommercialAmount = rop.CommercialAmount;
+                order2CarIns.TotalAmount = rop.CompulsoryAmount + rop.TravelTaxAmount + rop.CommercialAmount;
+                order2CarIns.CarOwner = obCustomer.CsrName;
+                order2CarIns.CarOwnerPhoneNumber = obCustomer.CsrPhoneNumber;
+                order2CarIns.CarOwnerAddress = obCustomer.CsrAddress;
+                order2CarIns.CarOwnerIdNumber = obCustomer.CsrIdNumber;
+                order2CarIns.CarRegisterDate = obCustomer.CarRegisterDate;
+                order2CarIns.CarPlateNo = obCustomer.CarPlateNo;
+                order2CarIns.CarModel = obCustomer.CarModel;
+                order2CarIns.CarEngineNo = obCustomer.CarEngineNo;
+                order2CarIns.CarVin = obCustomer.CarVin;
+                order2CarIns.PayWay = Enumeration.OrderPayWay.Unknow;
+                order2CarIns.Status = Enumeration.OrderStatus.Submitted;
+                order2CarIns.FollowStatus = Enumeration.OrderFollowStatus.CarInsWtUnderwrie;
+                order2CarIns.SubmitTime = this.DateTime;
+                order2CarIns.Creator = operater;
+                order2CarIns.CreateTime = this.DateTime;
+                CurrentDb.Order2CarIns.Add(order2CarIns);
+
+                foreach (var kind in rop.Kinds)
+                {
+                    var order2CarInsKind = new Order2CarInsKind();
+                    order2CarInsKind.Id = GuidUtil.New();
+                    order2CarInsKind.OrderId = order2CarIns.Id;
+                    order2CarInsKind.KindId = kind.Id;
+                    order2CarInsKind.KindValue = kind.Value;
+                    order2CarInsKind.KindIsWaiverDeductible = kind.IsWaiverDeductible;
+                    order2CarInsKind.CreateTime = this.DateTime;
+                    order2CarInsKind.Creator = operater;
+                    CurrentDb.Order2CarInsKind.Add(order2CarInsKind);
+                }
+
+                CurrentDb.SaveChanges();
+                ts.Complete();
+                result = new CustomJsonResult(ResultType.Success, ResultCode.Success, "提交成功");
+            }
 
             return result;
         }
