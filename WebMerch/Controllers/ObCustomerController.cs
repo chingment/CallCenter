@@ -27,7 +27,7 @@ namespace WebMerch.Controllers
             Expression<Func<ObCustomer, bool>> predicate = null;
 
 
-            predicate = f => f.BelongUserId == "";
+            predicate = f => f.BelongerId == "";
 
             return predicate;
         }
@@ -40,7 +40,7 @@ namespace WebMerch.Controllers
                          where
 
                          u.MerchantId == this.CurrentMerchantId &&
-                           accessUserIds.Contains(u.BelongUserId) &&
+                           accessUserIds.Contains(u.BelongerId) &&
                          (rup.CarPlateNo == null || u.CarPlateNo.Contains(rup.CarPlateNo)) &&
                          (rup.CarModel == null || u.CarModel.Contains(rup.CarModel)) &&
                          (rup.CarEngineNo == null || u.CarEngineNo.Contains(rup.CarEngineNo)) &&

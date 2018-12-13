@@ -30,7 +30,7 @@ namespace Lumos.BLL.Service.Merch
                 ret.RecoveryTime = obBatch.RecoveryTime.ToUnifiedFormatDate() ?? "";
                 ret.HandleReport = obBatch.HandleReport ?? "";
                 ret.FollowDelayDays = obBatch.FollowDelayDays;
-                ret.BelongUserName = obBatch.BelongUserName;
+                ret.BelongerName = obBatch.BelongerName;
             }
 
             return new CustomJsonResult(ResultType.Success, ResultCode.Success, "获取成功", ret);
@@ -59,9 +59,9 @@ namespace Lumos.BLL.Service.Merch
             obBatch.RecoveryTime = obBatch.ExpiryTime.AddDays(rop.ExpiryDays);
             obBatch.SoureName = rop.FileName;
             obBatch.FilePath = rop.FilePath;
-            obBatch.BelongUserId = rop.BelongUserId;
-            obBatch.BelongUserName = rop.BelongUserName;
-            obBatch.BelongOrganizationId = rop.BelongOrganizationId;
+            obBatch.BelongerId = rop.BelongerId;
+            obBatch.BelongerName = rop.BelongerName;
+            obBatch.BelongerOrganizationId = rop.BelongerOrganizationId;
             obBatch.Status = Enumeration.DataBatchStatus.WaitHandle;
             obBatch.Creator = operater;
             obBatch.CreateTime = this.DateTime;

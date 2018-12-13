@@ -19,10 +19,10 @@ namespace Lumos.Entity
         public int UnAllocatedCount { get; set; }
         public int UsedCount { get; set; }
         public int UnUsedCount { get; set; }
-        public string BelongUserId { get; set; }
-        public string BelongUserName { get; set; }
-        public string BelongOrganizationId { get; set; }
-        public string Allocater { get; set; }
+        public string BelongerId { get; set; }
+        public string BelongerName { get; set; }
+        public string BelongerOrganizationId { get; set; }
+        public string AllocaterId { get; set; }
         public string Creator { get; set; }
         public DateTime CreateTime { get; set; }
         public string Mender { get; set; }

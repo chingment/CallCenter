@@ -26,9 +26,9 @@ namespace Lumos.Entity
         public string CarInsLastCompany { get; set; }
         public DateTime? CarInsLastStartTime { get; set; }
         public DateTime? CarInsLastEndTime { get; set; }
-        public string BelongUserId { get; set; }
+        public string BelongerId { get; set; }
 
-        public string BelongOrganizationId { get; set; }
+        public string BelongerOrganizationId { get; set; }
 
         public string Creator { get; set; }
         public DateTime CreateTime { get; set; }

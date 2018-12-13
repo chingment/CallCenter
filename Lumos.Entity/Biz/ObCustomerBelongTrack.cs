@@ -14,7 +14,7 @@ namespace Lumos.Entity
         public string ObBatchId { get; set; }
         public string ObBatchDataId { get; set; }
         public string ObCustomerId { get; set; }
-        public string BelongUserId { get; set; }
+        public string BelongerId { get; set; }
         public string Description { get; set; }
         public string Creator { get; set; }
         public DateTime CreateTime { get; set; }

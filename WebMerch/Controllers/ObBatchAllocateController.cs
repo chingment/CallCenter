@@ -36,8 +36,8 @@ namespace WebMerch.Controllers
             var query = (from u in CurrentDb.ObBatchAllocate
                          join b in CurrentDb.ObBatch on u.ObBatchId equals b.Id
                          where
-                         u.BelongUserId == this.CurrentUserId
-                         && u.Allocater != this.CurrentUserId
+                         u.BelongerId == this.CurrentUserId
+                         && u.AllocaterId != this.CurrentUserId
                          &&
                          u.MerchantId == this.CurrentMerchantId &&
                            (rup.Code == null || b.Code.Contains(rup.Code))
@@ -81,7 +81,7 @@ namespace WebMerch.Controllers
         public CustomJsonResult GetAlreadyAllocateList(RupObBatchAllocateTaskGetList rup)
         {
 
-            var obBatchAllocateIds = CurrentDb.ObBatchAllocate.Where(m => m.BelongUserId == this.CurrentUserId).Select(m => m.Id).ToArray();
+            var obBatchAllocateIds = CurrentDb.ObBatchAllocate.Where(m => m.BelongerId == this.CurrentUserId).Select(m => m.Id).ToArray();
 
             var query = (from u in CurrentDb.ObBatchAllocate
                          join b in CurrentDb.ObBatch on u.ObBatchId equals b.Id
@@ -90,7 +90,7 @@ namespace WebMerch.Controllers
                          &&
                          u.MerchantId == this.CurrentMerchantId &&
                            (rup.Code == null || b.Code.Contains(rup.Code))
-                         select new { u.Id, ObBatchName = b.Name, u.SoureName, u.AllocateMode, ObBatchCode = b.Code, u.DataCount, u.AllocatedCount, u.UnAllocatedCount, u.UsedCount, u.CreateTime, u.BelongUserName, u.Description, u.Filters });
+                         select new { u.Id, ObBatchName = b.Name, u.SoureName, u.AllocateMode, ObBatchCode = b.Code, u.DataCount, u.AllocatedCount, u.UnAllocatedCount, u.UsedCount, u.CreateTime, u.BelongerName, u.Description, u.Filters });
 
             int total = query.Count();
 
@@ -110,7 +110,7 @@ namespace WebMerch.Controllers
                 {
                     Id = item.Id,
                     SoureName = item.SoureName,
-                    BelongUserName = item.BelongUserName,
+                    BelongerName = item.BelongerName,
                     ObBatchName = item.ObBatchName,
                     ObBatchCode = item.ObBatchCode,
                     AllocateMode = item.AllocateMode.GetCnName(),

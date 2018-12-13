@@ -38,7 +38,7 @@ namespace Lumos.BLL.Service.Merch
                 var obCustomer = CurrentDb.ObCustomer.Where(m => m.MerchantId == merchantId && m.IsUseCall == false && m.TakerId == takerId).FirstOrDefault();
                 if (obCustomer == null)
                 {
-                    obCustomer = CurrentDb.ObCustomer.Where(m => m.MerchantId == merchantId && m.IsTake == false && m.BelongUserId == takerId).OrderBy(x => Guid.NewGuid()).FirstOrDefault();
+                    obCustomer = CurrentDb.ObCustomer.Where(m => m.MerchantId == merchantId && m.IsTake == false && m.BelongerId == takerId).OrderBy(x => Guid.NewGuid()).FirstOrDefault();
 
                     if (obCustomer == null)
                     {
@@ -253,6 +253,12 @@ namespace Lumos.BLL.Service.Merch
             }
 
             return result;
+        }
+
+
+        public CustomJsonResult CarInsGetUnderwritingOrder(string operater, string merchantId,string userId)
+        {
+            return null;
         }
     }
 }

@@ -28,7 +28,7 @@ namespace Lumos.BLL.Service.Merch
 
         public string HandleReport { get; set; }
 
-        public string BelongUserName { get; set; }
+        public string BelongerName { get; set; }
 
         public int DataCount { get; set; }
 

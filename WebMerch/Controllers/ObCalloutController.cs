@@ -32,6 +32,11 @@ namespace WebMerch.Controllers
             return MerchServiceFactory.ObCallout.CarInsGetKind(this.CurrentUserId, this.CurrentMerchantId);
         }
 
+        public CustomJsonResult CarInsGetUnderwritingOrder()
+        {
+            return MerchServiceFactory.ObCallout.CarInsGetKind(this.CurrentUserId, this.CurrentMerchantId);
+        }
+
         public CustomJsonResult CarInsSubmitUnderwriting(RopObCalloutCarInsSubmitUnderwriting rop)
         {
             return MerchServiceFactory.ObCallout.CarInsSubmitUnderwriting(this.CurrentUserId, this.CurrentMerchantId, rop);

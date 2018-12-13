@@ -32,10 +32,10 @@ namespace Lumos.Entity
 
         public string HandleReport { get; set; }
 
-        public string BelongUserId { get; set; }
+        public string BelongerId { get; set; }
 
-        public string BelongUserName { get; set; }
+        public string BelongerName { get; set; }
 
-        public string BelongOrganizationId { get; set; }
+        public string BelongerOrganizationId { get; set; }
     }
 }

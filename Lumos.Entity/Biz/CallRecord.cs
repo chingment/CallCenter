@@ -12,6 +12,8 @@ namespace Lumos.Entity
         public string Id { get; set; }
         public string MerchantId { get; set; }
         public string CustomerId { get; set; }
+
+        public string BelongerId { get; set; }
         public string ResultCode { get; set; }
         public DateTime? NextCallTime { get; set; }
         public string Remark { get; set; }

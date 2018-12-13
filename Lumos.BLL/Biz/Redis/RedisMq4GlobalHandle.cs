@@ -77,7 +77,7 @@ namespace Lumos.BLL.Biz
                     {
                         if (File.Exists(obBatch.FilePath))
                         {
-                            var belongUser = CurrentDb.SysUser.Where(m => m.Id == obBatch.BelongUserId).FirstOrDefault();
+                            var belongUser = CurrentDb.SysUser.Where(m => m.Id == obBatch.BelongerId).FirstOrDefault();
 
                             FileStream fsRead = new FileStream(obBatch.FilePath, FileMode.Open);
                             HSSFWorkbook workbook = new HSSFWorkbook(fsRead);
@@ -180,8 +180,8 @@ namespace Lumos.BLL.Biz
                                     obCustomer.ExpiryTime = obBatch.ExpiryTime;
                                     obCustomer.RecoveryTime = obBatch.RecoveryTime;
                                     obCustomer.FollowDelayDays = obBatch.FollowDelayDays;
-                                    obCustomer.BelongOrganizationId = obBatch.BelongOrganizationId;
-                                    obCustomer.BelongUserId = obBatch.BelongUserId;
+                                    obCustomer.BelongerOrganizationId = obBatch.BelongerOrganizationId;
+                                    obCustomer.BelongerId = obBatch.BelongerId;
                                     obCustomer.DataBizType = obBatch.DataBizType;
                                     obCustomer.Creator = obBatch.Creator;
                                     obCustomer.CreateTime = obBatch.CreateTime;
@@ -194,7 +194,7 @@ namespace Lumos.BLL.Biz
                                     obCustomerBelongTrack.ObBatchId = obBatch.Id;
                                     obCustomerBelongTrack.ObBatchDataId = obBatchData.Id;
                                     obCustomerBelongTrack.ObCustomerId = obCustomer.Id;
-                                    obCustomerBelongTrack.BelongUserId = obBatch.BelongUserId;
+                                    obCustomerBelongTrack.BelongerId = obBatch.BelongerId;
                                     obCustomerBelongTrack.Description = string.Format("分配给用户：{0}，姓名：{1}", belongUser.UserName, belongUser.FullName);
                                     obCustomerBelongTrack.Creator = obBatch.Creator;
                                     obCustomerBelongTrack.CreateTime = obBatch.CreateTime;
@@ -234,8 +234,8 @@ namespace Lumos.BLL.Biz
                                 obBatchAllocate.UsedCount = 0;
                                 obBatchAllocate.Creator = obBatch.Creator;
                                 obBatchAllocate.CreateTime = obBatch.CreateTime;
-                                obBatchAllocate.BelongUserId = obBatch.BelongUserId;
-                                obBatchAllocate.BelongOrganizationId = obBatch.BelongOrganizationId;
+                                obBatchAllocate.BelongerId = obBatch.BelongerId;
+                                obBatchAllocate.BelongerOrganizationId = obBatch.BelongerOrganizationId;
                                 obBatchAllocate.SoureName = string.Format("数据文件:{0}", rop.SoureName);
                                 CurrentDb.ObBatchAllocate.Add(obBatchAllocate);
                                 CurrentDb.SaveChanges();

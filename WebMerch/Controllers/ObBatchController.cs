@@ -168,9 +168,9 @@ namespace WebMerch.Controllers
 
             rop.FileName = file.FileName;
             rop.FilePath = filePath;
-            rop.BelongUserId = belongOrganization.HeaderId;
-            rop.BelongUserName = string.Format("{0}机构负责人：{1}({2})", belongOrganization.FullName, belongUser.FullName, belongUser.UserName);
-            rop.BelongOrganizationId = belongOrganization.Id;
+            rop.BelongerId = belongOrganization.HeaderId;
+            rop.BelongerName = string.Format("{0}机构负责人：{1}({2})", belongOrganization.FullName, belongUser.FullName, belongUser.UserName);
+            rop.BelongerOrganizationId = belongOrganization.Id;
             result = MerchServiceFactory.ObBatch.AddByFile(this.CurrentUserId, this.CurrentMerchantId, rop);
 
             return result;
