@@ -9,6 +9,6 @@ namespace Lumos.BLL.Service.Merch
 {
     public class RupGetListByHandleUnderwritingOrder : RupBaseGetList
     {
-        public Enumeration.OrderFollowStatus OrderFollowStatus { get; set; }
+        public Enumeration.OrderFollowStatus FollowStatus { get; set; }
     }
 }

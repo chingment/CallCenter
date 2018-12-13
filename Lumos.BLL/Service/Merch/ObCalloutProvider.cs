@@ -189,7 +189,7 @@ namespace Lumos.BLL.Service.Merch
         }
 
 
-        public CustomJsonResult CarInsSubmitUnderwriting(string operater, string merchantId, RopObCalloutCarInsSubmitUnderwriting rop)
+        public CustomJsonResult CarInsSubmitUnderwriting(string operater, string merchantId,string belongerId, RopObCalloutCarInsSubmitUnderwriting rop)
         {
             CustomJsonResult result = new CustomJsonResult();
 
@@ -230,6 +230,7 @@ namespace Lumos.BLL.Service.Merch
                 order2CarIns.Status = Enumeration.OrderStatus.Submitted;
                 order2CarIns.FollowStatus = Enumeration.OrderFollowStatus.CarInsWtUnderwrie;
                 order2CarIns.SubmitTime = this.DateTime;
+                order2CarIns.BelongerId = belongerId;
                 order2CarIns.Creator = operater;
                 order2CarIns.CreateTime = this.DateTime;
                 CurrentDb.Order2CarIns.Add(order2CarIns);

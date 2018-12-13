@@ -7,20 +7,21 @@
     <script type="text/javascript">
 
         var listTable;
-        var auditStatus = { "wait": 6001, "in": 6102 };
+        var followStatus = { "wait": 6201, "in": 6202 };
         $(document).ready(function () {
 
-            $("#AuditStatus").val(auditStatus.wait);
-            $('#btn_Wait').attr("auditStatus", auditStatus.wait);
-            $('#btn_In').attr("auditStatus", auditStatus.in);
+            $("#FollowStatus").val(followStatus.wait);
+            $('#btn_Wait').attr("followStatus", followStatus.wait);
+            $('#btn_In').attr("followStatus", followStatus.in);
+
             $('#btn_In,#btn_Wait').live('click', function () {
-                var status = $(this).attr("auditStatus");
-                $("#AuditStatus").val(status);
+                var status = $(this).attr("followStatus");
+                $("#FollowStatus").val(status);
                 listTable.loadData(0);
             });
 
             listTable = $("#list_table").loadDataTable({
-                url: "/Biz/TalentDemand/GetListByDealt",
+                url: "/CarIns/GetListByDealtUnderwritingOrder",
                 pageIndex: 0,
                 searchParams: $("#form1").serializeArray(),
                 searchButtonId: "btn_Search",
@@ -32,12 +33,12 @@
                     l_StrRows += "<tr>";
                     l_StrRows += "<td class=\"no\" >" + (p_index + 1) + "</td>";
                     l_StrRows += "<td class=\"overflow tipitem\" title=\"" + p_row.sn + "\"   >" + p_row.sn + "</td>";
-                    l_StrRows += "<td class=\"overflow\" title=\"" + p_row.clientCode + "\">" + p_row.clientCode + "</td>";
-                    l_StrRows += "<td class=\"overflow\" title=\"" + p_row.yyzZ_Name + "\">" + p_row.yyzZ_Name + "</td>";
-                    l_StrRows += "<td class=\"overflow\" title=\"" + p_row.contactName + "\">" + p_row.contactName + "</td>";
-                    l_StrRows += "<td class=\"overflow\" title=\"" + p_row.contactPhoneNumber + "\">" + p_row.contactPhoneNumber + "</td>";
-                    l_StrRows += "<td class=\"overflow\" title=\"" + p_row.workJob + "\">" + p_row.workJob + "</td>";
-                    l_StrRows += "<td class=\"overflow\" title=\"" + p_row.quantity + "\">" + p_row.quantity + "</td>";
+                    l_StrRows += "<td class=\"overflow\" title=\"" + p_row.carOwner + "\">" + p_row.carOwner + "</td>";
+                    l_StrRows += "<td class=\"overflow\" title=\"" + p_row.carPlateNo + "\">" + p_row.carPlateNo + "</td>";
+                    l_StrRows += "<td class=\"overflow\" title=\"" + p_row.carOwnerIdNumber + "\">" + p_row.carOwnerIdNumber + "</td>";
+                    l_StrRows += "<td class=\"overflow\" title=\"" + p_row.carOwnerAddress + "\">" + p_row.carOwnerAddress + "</td>";
+                    l_StrRows += "<td class=\"overflow\" title=\"" + p_row.carOwnerPhoneNumber + "\">" + p_row.carOwnerPhoneNumber + "</td>";
+                    l_StrRows += "<td class=\"overflow\" title=\"" + p_row.salerName + "\">" + p_row.salerName + "</td>";
                     l_StrRows += "<td class=\"overflow\" title=\"" + p_row.submitTime + "\">" + p_row.submitTime + "</td>";
                     l_StrRows += "<td class=\"operation\">";
                     l_StrRows += l_Strlimt;
@@ -54,7 +55,7 @@
                     "dealt": function (obj) {
 
                         function dealt(obj) {
-                            var url = '/Biz/TalentDemand/Dealt?id=' + obj.id + "&auditStatus=" + obj.auditStatus;
+                            var url = '/CarIns/DealtUnderwritingOrder?id=' + obj.id;
                             var title = '处理订单-' + obj.sn;
                             var dialog = art.dialog.open(url, {
                                 id: "openDialog2",
@@ -106,7 +107,7 @@
                             });
                         }
 
-                        if (obj.auditStatus == auditStatus.wait) {
+                        if (obj.followStatus == followStatus.wait) {
                             art.dialog.confirm('您确定要处理订单号' + obj.sn + '，确定后该订单由您来处理？', function () {
                                 dealt(obj)
                             });
@@ -124,75 +125,77 @@
     </script>
 }
 
-<form id="form1" name="form1">
+<div class="gbr-row gbr-page">
+    <form id="form1" name="form1">
 
-    <input type="hidden" name="AuditStatus" id="AuditStatus" />
-    <div class="search-bar status-bar">
-        <div class="filter">
-            <span id="btn_Wait" class="status-bar-btn selected">待处理<span class="waitCount">(<span id="waitCount">0</span>)</span></span>
+        <input type="hidden" name="FollowStatus" id="FollowStatus" />
+        <div class="search-bar status-bar">
+            <div class="filter">
+                <span id="btn_Wait" class="status-bar-btn selected">待处理<span class="waitCount">(<span id="waitCount">0</span>)</span></span>
+            </div>
+            <div class="filter">
+                <span id="btn_In" class="status-bar-btn">处理中<span class="inCount"> (<span id="inCount">0</span>)</span></span>
+            </div>
+            <div class="clear"></div>
         </div>
-        <div class="filter">
-            <span id="btn_In" class="status-bar-btn">处理中<span class="inCount"> (<span id="inCount">0</span>)</span></span>
+        <div class="list">
+            <table id="list_table" class="list-tb" cellpadding="0" cellspacing="0">
+                <thead>
+                    <tr>
+                        <th style="width:5%" class="no">
+                            序号
+                        </th>
+                        <th style="width:10%">
+                            流水号
+                        </th>
+                        <th style="width:10%">
+                            车主
+                        </th>
+                        <th style="width:15%">
+                            车牌号码
+                        </th>
+                        <th style="width:10%">
+                            身份证号
+                        </th>
+                        <th style="width:10%">
+                            地址
+                        </th>
+                        <th style="width:15%">
+                            手机号码
+                        </th>
+                        <th style="width:10%">
+                            业务员
+                        </th>
+                        <th style="width:10%">
+                            提交时间
+                        </th>
+                        <th style="width:5%" class="operation">
+                            操作
+                        </th>
+                    </tr>
+                </thead>
+                <tbody></tbody>
+                <tfoot>
+                    <tr>
+                        <td colspan="10">
+                            <div class="pull-left">
+                                <span class="load-tip"></span>
+                            </div>
+                            <div class="pull-right pagination">
+                                <div class="pagination-info">
+
+                                </div>
+                                <div class="pagination-index">
+
+                                </div>
+                                <div class="pagination-goto">
+
+                                </div>
+                            </div>
+                        </td>
+                    </tr>
+                </tfoot>
+            </table>
         </div>
-        <div class="clear"></div>
-    </div>
-    <div class="list">
-        <table id="list_table" class="list-tb" cellpadding="0" cellspacing="0">
-            <thead>
-                <tr>
-                    <th style="width:5%" class="no">
-                        序号
-                    </th>
-                    <th style="width:10%">
-                        订单号
-                    </th>
-                    <th style="width:10%">
-                        商户代码
-                    </th>
-                    <th style="width:15%">
-                        商户名称
-                    </th>
-                    <th style="width:10%">
-                        商户联系人
-                    </th>
-                    <th style="width:10%">
-                        联系电话
-                    </th>
-                    <th style="width:15%">
-                        需求工种
-                    </th>
-                    <th style="width:10%">
-                        人数
-                    </th>
-                    <th style="width:10%">
-                        提交时间
-                    </th>
-                    <th style="width:5%" class="operation">
-                        操作
-                    </th>
-                </tr>
-            </thead>
-            <tbody></tbody>
-            <tfoot>
-                <tr>
-                    <td colspan="10">
-                        <div class="pull-left">
-                            <span class="load-tip"></span>
-                        </div>
-                        <div class="pull-right pagination">
-                            <div class="pagination-info">
-
-                            </div>
-                            <div class="pagination-index">
-
-                            </div>
-                            <div class="pagination-goto">
-
-                            </div>
-                        </div>
-                    </td>
-                </tr>
-            </tfoot>
-        </table>
-    </div>
-</form>
+    </form>
+</div>

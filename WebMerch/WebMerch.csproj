@@ -212,7 +212,8 @@
     <Content Include="Views\ObBatchAllocate\Add.cshtml" />
     <Content Include="Views\ObCallout\TeleMarket.cshtml" />
     <Content Include="Views\ObCustomer\List.cshtml" />
-    <Content Include="Views\CarIns\ListByHandleUnderwritingOrder.cshtml" />
+    <Content Include="Views\CarIns\ListByDealtUnderwritingOrder.cshtml" />
+    <Content Include="Views\CarIns\DealtUnderwritingOrder.cshtml" />
     <None Include="Web.config">
       <SubType>Designer</SubType>
     </None>

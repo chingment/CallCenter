@@ -11,13 +11,18 @@ namespace WebMerch.Controllers
 {
     public class CarInsController : OwnBaseController
     {
-        public ActionResult ListByHandleUnderwritingOrder()
+        public ActionResult ListByDealtUnderwritingOrder()
+        {
+            return View();
+        }
+
+        public ActionResult DealtUnderwritingOrder()
         {
             return View();
         }
 
 
-        public CustomJsonResult GetListByHandleUnderwritingOrder(RupGetListByHandleUnderwritingOrder rup)
+        public CustomJsonResult GetListByDealtUnderwritingOrder(RupGetListByHandleUnderwritingOrder rup)
         {
 
             var accessUserIds = MerchServiceFactory.User.GetCanAccessUserIds(this.CurrentUserId, this.CurrentMerchantId, this.CurrentUserId);
@@ -30,12 +35,12 @@ namespace WebMerch.Controllers
                          where u.MerchantId == this.CurrentMerchantId
                        && accessUserIds.Contains(u.BelongerId)
 
-                         select new { u.Id, u.Sn, u.CarOwner, u.CarPlateNo, u.CarOwnerIdNumber, u.CarOwnerAddress, u.CarOwnerPhoneNumber, u.CreateTime, u.FollowStatus });
+                         select new { u.Id, u.Sn, u.CarOwner, u.CarPlateNo, u.CarOwnerIdNumber, u.CarOwnerAddress, u.CarOwnerPhoneNumber, u.CreateTime, u.FollowStatus, u.SubmitTime });
 
 
-            if (rup.OrderFollowStatus != Enumeration.OrderFollowStatus.Unknow)
+            if (rup.FollowStatus != Enumeration.OrderFollowStatus.Unknow)
             {
-                query = query.Where(m => m.FollowStatus == rup.OrderFollowStatus);
+                query = query.Where(m => m.FollowStatus == rup.FollowStatus);
             }
 
             int total = query.Count();
@@ -60,12 +65,16 @@ namespace WebMerch.Controllers
                     CarOwnerIdNumber = item.CarOwnerIdNumber,
                     CarOwnerAddress = item.CarOwnerAddress,
                     CarOwnerPhoneNumber = item.CarOwnerPhoneNumber,
+                    SalerName = "",
+                    FollowStatus = item.FollowStatus,
+                    SubmitTime = item.SubmitTime.ToUnifiedFormatDateTime(),
                     CreateTime = item.CreateTime.ToUnifiedFormatDateTime()
                 });
             }
 
 
-            PageEntity pageEntity = new PageEntity { PageSize = pageSize, TotalRecord = total, Rows = olist };
+            PageEntity pageEntity = new PageEntity { PageSize = pageSize, TotalRecord = total, Rows = list, Status = new { waitCount = waitCount, inCount = inCount } };
+
 
             return Json(ResultType.Success, pageEntity, "");
         }
