@@ -256,9 +256,42 @@ namespace Lumos.BLL.Service.Merch
         }
 
 
-        public CustomJsonResult CarInsGetUnderwritingOrder(string operater, string merchantId,string userId)
+        public CustomJsonResult CarInsGetUnderwritingOrder(string operater, string merchantId, string userId)
         {
-            return null;
+            var accessUserIds = MerchServiceFactory.User.GetCanAccessUserIds(operater, merchantId, userId);
+
+            var order2CarInss = CurrentDb.Order2CarIns.Where(m => m.MerchantId == merchantId &&
+                           accessUserIds.Contains(m.BelongerId)).ToList();
+
+
+            CustomJsonResult result = new CustomJsonResult();
+
+
+            var ret = new RetObCalloutCarInsGetUnderwritingOrder();
+
+
+            foreach (var order2CarIns in order2CarInss)
+            {
+
+                string customer = string.Format("{0}[{1}]", order2CarIns.CarOwner, order2CarIns.CarPlateNo);
+                string tips = "";
+                switch (order2CarIns.FollowStatus)
+                {
+                    case Enumeration.OrderFollowStatus.CarInsWtUnderwrie:
+                        tips = "等待后勤人员取单核保";
+                        break;
+                    case Enumeration.OrderFollowStatus.CarInsInUnderwrie:
+                        tips = "后勤人员核保中";
+                        break;
+                    case Enumeration.OrderFollowStatus.CarInsAlUnderwrie:
+                        tips = "核保已经完成";
+                        break;
+                }
+                ret.UnderwritingOrders.Add(new RetObCalloutCarInsGetUnderwritingOrder.UnderwritingOrder { Customer = customer, Tips = tips });
+            }
+
+
+            return new CustomJsonResult(ResultType.Success, ResultCode.Success, "获取成功", ret);
         }
     }
 }

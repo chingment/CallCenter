@@ -159,6 +159,7 @@
     <Compile Include="Service\Merch\OrganizationProvider.cs" />
     <Compile Include="Service\Merch\RModels\RetObBatchAllocateTaskGetDetails.cs" />
     <Compile Include="Service\Merch\RModels\RetObBatchGetDetails.cs" />
+    <Compile Include="Service\Merch\RModels\RetObCalloutCarInsGetUnderwritingOrder.cs" />
     <Compile Include="Service\Merch\RModels\RetObCalloutTakeData.cs" />
     <Compile Include="Service\Merch\RModels\RetOrganizationGetDetails.cs" />
     <Compile Include="Service\Merch\RModels\RetUserGetDetails.cs" />
@@ -171,6 +172,7 @@
     <Compile Include="Service\Merch\RModels\RopOrganizationEditSort.cs" />
     <Compile Include="Service\Merch\RModels\RopUserAdd.cs" />
     <Compile Include="Service\Merch\RModels\RopUserEdit.cs" />
+    <Compile Include="Service\Merch\RModels\RupGetListByHandleUnderwritingOrder.cs" />
     <Compile Include="Service\Merch\RModels\RupObBatchAllocateTaskGetList.cs" />
     <Compile Include="Service\Merch\RModels\RupObBatchGetList.cs" />
     <Compile Include="Service\Merch\RModels\RupObBatchDataGetList.cs" />

@@ -24,5 +24,6 @@ namespace Lumos.Entity
         public string CarModel { get; set; }
         public string CarEngineNo { get; set; }
         public string CarVin { get; set; }
+        public string UnderwriterId { get; set; }
     }
 }

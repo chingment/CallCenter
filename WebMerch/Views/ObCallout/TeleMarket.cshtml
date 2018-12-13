@@ -394,7 +394,7 @@
         </div>
 
         <div class="teleInfo">
-            <div class="infobox" style="margin-top:5px;">
+            <div id="taskInfo" class="infobox" style="margin-top:5px;">
                 <div class="t">
                     <span class="title">我的状态</span>
                 </div>
@@ -409,7 +409,27 @@
                     </ul>
                 </div>
             </div>
+
+
+            <div id="carInsInfo" class="infobox" style="margin-top:5px;">
+                <div class="t">
+                    <span class="title">核保信息</span>
+                </div>
+                <div class="b">
+                    <ul id="">
+                        <li><div class="name">任务数量</div><div class="value">0</div></li>
+                        <li><div class="name">未拨数量</div><div class="value">0</div></li>
+                        <li><div class="name">已拨数量</div><div class="value">0</div></li>
+                        <li><div class="name">未联系</div><div class="value">0</div></li>
+                        <li><div class="name">目标</div><div class="value">0</div></li>
+                        <li><div class="name">无效</div><div class="value">0</div></li>
+                    </ul>
+                </div>
+            </div>
+
         </div>
+
+
 
     </div>
 
@@ -534,13 +554,13 @@
                     <td>
 
                         {{if item2.canWaiverDeductible}}
-                        <div class="btn-check" data-state="${item2.isSelectedWaiverDeductible==true?" on":"off"}">
+                        <div class="btn-check" data-state='${item2.isSelectedWaiverDeductible==true?"on":"off"}'>
                             &nbsp;
                         </div>
                         {{/if}}
                     </td>
                     <td>
-                        <div class="btn-switch" data-state=${item2.isSelected==true?"on":"off"}>
+                        <div class="btn-switch" data-state='${item2.isSelected==true?"on":"off"}'>
                             <div class="btn_fath clearfix">
                                 <div class="move"></div>
                                 <div class="switch-status switch-status-on"></div>
