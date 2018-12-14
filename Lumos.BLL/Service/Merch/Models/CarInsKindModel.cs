@@ -34,5 +34,7 @@ namespace Lumos.BLL.Service.Merch
         public string InputValue { get; set; }
         public List<string> InputOption { get; set; }
         public bool IsHasDetails { get; set; }
+        public string Details { get; set; }
     }
+
 }

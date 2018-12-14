@@ -51,5 +51,13 @@ namespace Lumos.BLL.Service.Merch
             }
         }
 
+        public static CarInsProvider CarIns
+        {
+            get
+            {
+                return new CarInsProvider();
+            }
+        }
+
     }
 }

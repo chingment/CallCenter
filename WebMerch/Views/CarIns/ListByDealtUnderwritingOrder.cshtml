@@ -60,8 +60,8 @@
                             var dialog = art.dialog.open(url, {
                                 id: "openDialog2",
                                 title: title,
-                                width: '900px',
-                                height: '600px',
+                                width: '80%',
+                                height: '80%',
                                 lock: true,
                                 drag: false,
                                 cancelVal: '关闭',
@@ -108,7 +108,7 @@
                         }
 
                         if (obj.followStatus == followStatus.wait) {
-                            art.dialog.confirm('您确定要处理订单号' + obj.sn + '，确定后该订单由您来处理？', function () {
+                            art.dialog.confirm('您确定要处理流水号' + obj.sn + '，确定后该单由您来处理？', function () {
                                 dealt(obj)
                             });
                         }

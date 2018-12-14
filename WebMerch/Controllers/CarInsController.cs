@@ -78,5 +78,13 @@ namespace WebMerch.Controllers
 
             return Json(ResultType.Success, pageEntity, "");
         }
+
+        public CustomJsonResult GetDealtUnderwritingOrderDetails(string orderId)
+        {
+            return MerchServiceFactory.CarIns.GetDealtUnderwritingOrderDetails(this.CurrentUserId, this.CurrentMerchantId, orderId);
+        }
+
+
+
     }
 }

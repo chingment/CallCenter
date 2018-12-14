@@ -29,17 +29,17 @@ namespace WebMerch.Controllers
 
         public CustomJsonResult CarInsGetKind()
         {
-            return MerchServiceFactory.ObCallout.CarInsGetKind(this.CurrentUserId, this.CurrentMerchantId);
+            return MerchServiceFactory.CarIns.CarInsGetKind(this.CurrentUserId, this.CurrentMerchantId);
         }
 
         public CustomJsonResult CarInsGetUnderwritingOrder()
         {
-            return MerchServiceFactory.ObCallout.CarInsGetKind(this.CurrentUserId, this.CurrentMerchantId);
+            return MerchServiceFactory.CarIns.CarInsGetKind(this.CurrentUserId, this.CurrentMerchantId);
         }
 
         public CustomJsonResult CarInsSubmitUnderwriting(RopObCalloutCarInsSubmitUnderwriting rop)
         {
-            return MerchServiceFactory.ObCallout.CarInsSubmitUnderwriting(this.CurrentUserId, this.CurrentMerchantId, this.CurrentUserId, rop);
+            return MerchServiceFactory.CarIns.CarInsSubmitUnderwriting(this.CurrentUserId, this.CurrentMerchantId, this.CurrentUserId, rop);
         }
 
     }

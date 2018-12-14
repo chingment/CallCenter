@@ -149,6 +149,7 @@
     <Compile Include="Service\Admin\Sys\SysOrganizationProvider.cs" />
     <Compile Include="Service\Admin\Sys\SysPositionProvider.cs" />
     <Compile Include="Service\Admin\Sys\SysRoleProvider.cs" />
+    <Compile Include="Service\Merch\CarInsProvider.cs" />
     <Compile Include="Service\Merch\Models\CarInfoModel.cs" />
     <Compile Include="Service\Merch\Models\CarInsKindModel.cs" />
     <Compile Include="Service\Merch\Models\ObCustomerModel.cs" />
@@ -157,6 +158,7 @@
     <Compile Include="Service\Merch\MerchServiceFactory.cs" />
     <Compile Include="Service\Merch\ObCalloutProvider.cs" />
     <Compile Include="Service\Merch\OrganizationProvider.cs" />
+    <Compile Include="Service\Merch\RModels\RetCarInsGetDealtUnderwritingOrderDetails.cs" />
     <Compile Include="Service\Merch\RModels\RetObBatchAllocateTaskGetDetails.cs" />
     <Compile Include="Service\Merch\RModels\RetObBatchGetDetails.cs" />
     <Compile Include="Service\Merch\RModels\RetObCalloutCarInsGetUnderwritingOrder.cs" />

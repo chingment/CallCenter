@@ -12,8 +12,5 @@ namespace Lumos.BLL.Service.Merch
         public string PhoneNumber { get; set; }
         public string Address { get; set; }
         public string IdNumber { get; set; }
-
-
-
     }
 }

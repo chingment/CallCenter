@@ -1,17 +1,176 @@
-﻿
-@{
-    Layout = null;
+﻿@{
+    ViewBag.Title = "";
+    Layout = "~/Views/Shared/_Layout.cshtml";
 }
 
-<!DOCTYPE html>
+@section scripts{
+    <script type="text/javascript">
+        var id = $.lumos.getUrlParamValue("id");
+        $(this).ready(function () {
 
-<html>
-<head>
-    <meta name="viewport" content="width=device-width" />
-    <title>DealtUnderwritingOrder</title>
-</head>
-<body>
-    <div> 
+            getDetails();
+
+        });
+
+        function getDetails() {
+            $.lumos.getJson({
+                url: "/CarIns/GetDealtUnderwritingOrderDetails",
+                urlParams: { orderId: id },
+                isUseHandling: true,
+                success: function (d) {
+                    if (d.result == $.lumos.resultType.success) {
+                        var data = d.data;
+                        alert(JSON.stringify(data))
+
+                        $('#gbr_page').html($("#page_tmpl").tmpl(data));
+                    }
+                }
+            });
+        }
+
+    </script>
+}
+
+<div id="gbr_page" class="gbr-row gbr-dialog">
+
+
+</div>
+
+
+<script id="page_tmpl" type="text/x-jquery-tmpl">
+
+    <div class="gbr-row-title clearfix">
+        <div class="pull-left">
+            <h5>基本信息</h5>
+        </div>
+        <div class="f-tb1-item-pull-right">
+        </div>
     </div>
-</body>
-</html>
+    <table class="f-tb1-detail" style="width:100%;">
+        <tr>
+            <td class="t">客户姓名：</td>
+            <td class="c"><span id="lbl_CsrName">${customer.name}</span> </td>
+            <td class="t">客户电话：</td>
+            <td class="c" colspan="3"><span id="lbl_CsrPhoneNumber">${customer.phoneNumber}</span></td>
+        </tr>
+        <tr>
+            <td class="t">身份证号：</td>
+            <td class="c"><span id="lbl_CsrIdNumber">${customer.idNumber}</span></td>
+            <td class="t">客户地址：</td>
+            <td class="c"><span id="lbl_CsrAddress">${customer.address}</span></td>
+            <td class="t">业务员：</td>
+            <td class="c"></td>
+        </tr>
+    </table>
+    <div class="gbr-row-title clearfix">
+        <div class="pull-left">
+            <h5>车辆信息</h5>
+        </div>
+        <div class="pull-right f-tb1-item-pull-right">
+            <h6></h6>
+        </div>
+    </div>
+    <table class="f-tb1-detail" style="width:100%;">
+        <tr>
+            <td class="t">车牌号码：</td>
+            <td class="c">
+                <span id="lbl_CarPlateNo">${car.plateNo}</span>
+            </td>
+            <td class="t">初登日期：</td>
+            <td class="c" colspan="3">
+                <span id="lbl_CarRegisterDate">${car.registerDate}</span>
+            </td>
+        </tr>
+        <tr>
+            <td class="t">厂牌型号：</td>
+            <td class="c"><span id="lbl_CarModel">${car.model}</span></td>
+            <td class="t">发动机号：</td>
+            <td class="c"><span id="lbl_CarEngineNo">${car.engineNo}</span></td>
+            <td class="t">车架号码：</td>
+            <td class="c"><span id="lbl_CarVin">${car.vin}</span></td>
+        </tr>
+    </table>
+    <div class="gbr-row-title clearfix">
+        <div class="pull-left">
+            <h5>核保信息</h5>
+        </div>
+        <div class="pull-right f-tb1-item-pull-right">
+            <h6></h6>
+        </div>
+    </div>
+    <div class="list">
+
+        <table id="list_table" class="list-tb" cellpadding="0" cellspacing="0">
+            <thead>
+                <tr>
+                    <th style="width:50%" class="no">
+                        险别
+
+                    </th>
+                    <th style="width:25%">
+                        保额金额/赔偿限额
+                    </th>
+                    <th style="width:25%">
+                        不计免赔
+                    </th>
+                </tr>
+            </thead>
+
+            <tbody>
+
+                {{each(j,item) carInsKinds}}
+
+                <tr insKindId="${item.id}">
+                    <td colspan="4">
+                        <div class="block-title1 clearfix">
+                            <div class="pull-left">
+                                <span>${item.name}</span>
+                            </div>
+                        </div>
+                    </td>
+                </tr>
+
+                {{each(i,item2) item.child}}
+
+                <tr insKindId="${item2.id}">
+                    <td>
+                        ${item2.name}
+                    </td>
+                    <td>
+                        ${item2.inputValue}
+                        ${item2.inputUnit}
+                    </td>
+                    <td>
+
+                        {{if item2.canWaiverDeductible}}
+                        <div class="btn-check" data-state='${item2.isSelectedWaiverDeductible==true?"on":"off"}'>
+                            &nbsp;
+                        </div>
+                        {{/if}}
+                    </td>
+                </tr>
+                {{/each}}
+
+
+                {{/each}}
+
+
+            </tbody>
+
+        </table>
+
+
+        <div style="margin:10px 0px;">
+            交强险：<input type="text" autocomplete="off" id="txt_CompulsoryAmount" style="width:50px;" class="input-control" />
+            车船税：<input type="text" autocomplete="off" id="txt_TravelTaxAmount" style="width:50px;" class="input-control" />
+            商业险：<input type="text" autocomplete="off" id="txt_CommercialAmount" style="width:50px;" class="input-control" />
+            合计：<span id="lbl">0.00</span>
+        </div>
+
+
+    </div>
+
+</script>
+
+
+
