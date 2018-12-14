@@ -54,7 +54,7 @@
                 operate: {
                     "dealt": function (obj) {
 
-                        function dealt(obj) {
+                        function dealt() {
                             var url = '/CarIns/DealtUnderwritingOrder?id=' + obj.id;
                             var title = '处理订单-' + obj.sn;
                             var dialog = art.dialog.open(url, {
@@ -67,40 +67,16 @@
                                 cancelVal: '关闭',
                                 cancel: true,
                                 button: [{
-                                    name: '处理完成',
+                                    name: '核保完成',
                                     callback: function () {
-
-                                        this.iframe.contentWindow.submit(operateType.submit, function (d) {
-                                            if (d.result == resultType.success) {
-                                                dialog.close();
-                                                listTable.loadData();
-                                            }
-                                            $.lumos.tips(d.message);
-                                        });
+                                        this.iframe.contentWindow.dealt();
                                         return false;
                                     },
                                     focus: true
-                                },
-                                {
-                                    name: '处理失败',
-                                    callback: function () {
-
-                                        this.iframe.contentWindow.submit(operateType.cancle, function (d) {
-                                            if (d.result == resultType.success) {
-                                                dialog.close();
-                                                listTable.loadData();
-                                            }
-                                            $.lumos.tips(d.message);
-                                        });
-                                        return false;
-                                    }
                                 }, {
                                     name: '暂存',
                                     callback: function () {
-
-                                        this.iframe.contentWindow.submit(operateType.save, function (d) {
-                                            $.lumos.tips(d.message);
-                                        });
+                                        this.iframe.contentWindow.save();
                                         return false;
                                     }
                                 }]
@@ -109,11 +85,11 @@
 
                         if (obj.followStatus == followStatus.wait) {
                             art.dialog.confirm('您确定要处理流水号' + obj.sn + '，确定后该单由您来处理？', function () {
-                                dealt(obj)
+                                dealt()
                             });
                         }
                         else {
-                            dealt(obj);
+                            dealt();
                         }
                     }
                 }
