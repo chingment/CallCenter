@@ -8,6 +8,7 @@ using log4net;
 using System.Reflection;
 using Lumos;
 using System.Security.Cryptography;
+using Newtonsoft.Json.Serialization;
 
 namespace LxtSdk
 {
@@ -70,7 +71,13 @@ namespace LxtSdk
 
             string realServerUrl = request.ApiUrl;
             WebUtils webUtils = new WebUtils();
-            string str_PostData = JsonConvert.SerializeObject(postData);
+
+
+            JsonSerializerSettings jsonSerializerSettings=new JsonSerializerSettings();
+            jsonSerializerSettings.ContractResolver = new CamelCasePropertyNamesContractResolver();
+
+            string str_PostData = JsonConvert.SerializeObject(postData, jsonSerializerSettings);
+
             LogUtil.Info(string.Format("WeiXinSdk-Post->{0}", postData));
             string responseString = webUtils.DoPost(realServerUrl, str_PostData);
             LogUtil.Info(string.Format("WeiXinSdk-Result->{0}", responseString));

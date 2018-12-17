@@ -177,14 +177,24 @@ namespace Test
     {
         static void Main(string[] args)
         {
-            int num = 100;
-            Thread[] th = new Thread[num];
-            for (int i = 0; i < num; i++)
-            {
-                Thread n = new Thread(DoWork);
-                th[i] = n;
-                th[i].Start();
-            }
+
+            var p1 = new AgentQueryStatusRequestData();
+            p1.Agent = "a";
+            p1.Seq = "112323";
+            p1.UserData = "23233";
+
+            var req1 = new AgentQueryStatusRequest(p1);
+            var lxt = new LxtApi();
+            var lxtResult = lxt.DoPost(req1);
+
+            //int num = 100;
+            //Thread[] th = new Thread[num];
+            //for (int i = 0; i < num; i++)
+            //{
+            //    Thread n = new Thread(DoWork);
+            //    th[i] = n;
+            //    th[i].Start();
+            //}
         }
 
         public static void DoWork()
