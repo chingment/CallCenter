@@ -10,11 +10,11 @@ namespace Lumos.BLL.Service.Merch
     {
         public string ObCustomerId { get; set; }
 
-        public decimal TravelTaxAmount { get; set; }
+        public decimal OfTravelTaxAmount { get; set; }
 
-        public decimal CompulsoryAmount { get; set; }
+        public decimal OfCompulsoryAmount { get; set; }
 
-        public decimal CommercialAmount { get; set; }
+        public decimal OfCommercialAmount { get; set; }
 
         public List<CarInsKindModel> Kinds { get; set; }
 

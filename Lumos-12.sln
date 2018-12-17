@@ -63,6 +63,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Task4Mq2Global", "Task4Mq2G
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "WebStaticResource", "..\SelfStoreCloudPlatform\WebStaticResource\WebStaticResource.csproj", "{AC49AF1C-4839-4E24-AB5F-85BFAB60B577}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "LxtSdk", "LxtSdk\LxtSdk.csproj", "{B6437E71-E6D0-432D-BAB8-07D4080AF91E}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -145,6 +147,10 @@ Global
 		{AC49AF1C-4839-4E24-AB5F-85BFAB60B577}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{AC49AF1C-4839-4E24-AB5F-85BFAB60B577}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{AC49AF1C-4839-4E24-AB5F-85BFAB60B577}.Release|Any CPU.Build.0 = Release|Any CPU
+		{B6437E71-E6D0-432D-BAB8-07D4080AF91E}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{B6437E71-E6D0-432D-BAB8-07D4080AF91E}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{B6437E71-E6D0-432D-BAB8-07D4080AF91E}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{B6437E71-E6D0-432D-BAB8-07D4080AF91E}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -172,6 +178,7 @@ Global
 		{8479FCAF-4AEF-40D4-B76D-246282522FB7} = {B9F5CF6E-4C95-4363-B034-5435590A600A}
 		{07512FBE-69F4-44E3-B2C7-812992040930} = {C4D00A02-7646-4B0F-A1E8-6E32EECA404A}
 		{AC49AF1C-4839-4E24-AB5F-85BFAB60B577} = {C8075FA3-87E2-4ECC-A24D-D62589930D31}
+		{B6437E71-E6D0-432D-BAB8-07D4080AF91E} = {B9F5CF6E-4C95-4363-B034-5435590A600A}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {7679AC8E-76C6-48FD-923B-B6DD2F49F3B2}

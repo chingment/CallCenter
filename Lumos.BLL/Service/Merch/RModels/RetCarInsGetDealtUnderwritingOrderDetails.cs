@@ -18,10 +18,10 @@ namespace Lumos.BLL.Service.Merch
 
         public ObCustomerModel Customer { get; set; }
         public CarInfoModel Car { get; set; }
-        public string CompulsoryAmount { get; set; }
-        public string TravelTaxAmount { get; set; }
-        public string CommercialAmount { get; set; }
-        public string TotalAmount { get; set; }
+        public string OfCompulsoryAmount { get; set; }
+        public string OfTravelTaxAmount { get; set; }
+        public string OfCommercialAmount { get; set; }
+        public string OfTotalAmount { get; set; }
         public List<CarInsPKindModel> CarInsKinds { get; set; }
     }
 }

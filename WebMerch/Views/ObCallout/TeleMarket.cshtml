@@ -198,16 +198,16 @@
                 });
 
                 var customerId = takeDataResult.obCustomerId;
-                var compulsoryAmount = $('#txt_CompulsoryAmount').val();
-                var travelTaxAmount = $('#txt_TravelTaxAmount').val();
-                var commercialAmount = $('#txt_CommercialAmount').val();
+                var ofCompulsoryAmount = $('#txt_OfCompulsoryAmount').val();
+                var ofTravelTaxAmount = $('#txt_OfTravelTaxAmount').val();
+                var ofCommercialAmount = $('#txt_OfCommercialAmount').val();
 
                 art.dialog.confirm('确定要提交核保？', function () {
 
                     $.lumos.postJson({
                         isUseHandling: true,
                         url: "/ObCallout/CarInsSubmitUnderwriting",
-                        data: { obCustomerId: customerId, travelTaxAmount: travelTaxAmount, compulsoryAmount: compulsoryAmount, commercialAmount: commercialAmount, kinds: kinds },
+                        data: { obCustomerId: customerId, ofTravelTaxAmount: ofTravelTaxAmount, ofCompulsoryAmount: ofCompulsoryAmount, ofCommercialAmount: ofCommercialAmount, kinds: kinds },
                         success: function (d) {
                             $.lumos.tips(d.message);
                             if (d.result == $.lumos.resultType.success) {
@@ -582,9 +582,9 @@
 
 
         <div style="margin:10px 0px;">
-            交强险：<input type="text" autocomplete="off" id="txt_CompulsoryAmount" style="width:50px;" class="input-control" />
-            车船税：<input type="text" autocomplete="off" id="txt_TravelTaxAmount" style="width:50px;" class="input-control" />
-            商业险：<input type="text" autocomplete="off" id="txt_CommercialAmount" style="width:50px;" class="input-control" />
+            交强险：<input type="text" autocomplete="off" id="txt_OfCompulsoryAmount" style="width:50px;" class="input-control" />
+            车船税：<input type="text" autocomplete="off" id="txt_OfTravelTaxAmount" style="width:50px;" class="input-control" />
+            商业险：<input type="text" autocomplete="off" id="txt_OfCommercialAmount" style="width:50px;" class="input-control" />
             合计：<span id="lbl">0.00</span>
         </div>
 

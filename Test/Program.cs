@@ -1,5 +1,6 @@
 ﻿using Autofac;
 using Lumos.BLL;
+using LxtSdk;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -188,6 +189,17 @@ namespace Test
 
         public static void DoWork()
         {
+
+            var p1 = new AgentQueryStatusRequestData();
+            p1.Agent = "a";
+            p1.Seq = "112323";
+            p1.UserData = "23233";
+            
+            var req1 = new AgentQueryStatusRequest(p1);
+            var lxt = new LxtApi();
+            var lxtResult = lxt.DoPost(req1);
+
+            //lxtResult.
 
             //builder.RegisterModule(new LoggingModule());
             //builder.RegisterType<Test>();

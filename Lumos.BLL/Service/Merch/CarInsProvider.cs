@@ -28,10 +28,10 @@ namespace Lumos.BLL.Service.Merch
             ret.Car.EngineNo = order2CarIns.CarEngineNo;
             ret.Car.Vin = order2CarIns.CarVin;
 
-            ret.CommercialAmount = order2CarIns.CommercialAmount.ToF2Price();
-            ret.CompulsoryAmount = order2CarIns.CompulsoryAmount.ToF2Price();
-            ret.TravelTaxAmount = order2CarIns.TravelTaxAmount.ToF2Price();
-            ret.TotalAmount = order2CarIns.TotalAmount.ToF2Price();
+            ret.OfCommercialAmount = order2CarIns.OfCommercialAmount.ToF2Price();
+            ret.OfCompulsoryAmount = order2CarIns.OfCompulsoryAmount.ToF2Price();
+            ret.OfTravelTaxAmount = order2CarIns.OfTravelTaxAmount.ToF2Price();
+            ret.OfTotalAmount = order2CarIns.OfTotalAmount.ToF2Price();
 
 
             var order2CarInsKinds = CurrentDb.Order2CarInsKind.Where(m => m.OrderId == orderId).ToList();
@@ -167,10 +167,10 @@ namespace Lumos.BLL.Service.Merch
                 order2CarIns.ObCustomerId = rop.ObCustomerId;
                 order2CarIns.CompanyId = "";
                 order2CarIns.CompanyName = "";
-                order2CarIns.CompulsoryAmount = rop.CompulsoryAmount;
-                order2CarIns.TravelTaxAmount = rop.TravelTaxAmount;
-                order2CarIns.CommercialAmount = rop.CommercialAmount;
-                order2CarIns.TotalAmount = rop.CompulsoryAmount + rop.TravelTaxAmount + rop.CommercialAmount;
+                order2CarIns.OfCompulsoryAmount = rop.OfCompulsoryAmount;
+                order2CarIns.OfTravelTaxAmount = rop.OfTravelTaxAmount;
+                order2CarIns.OfCommercialAmount = rop.OfCommercialAmount;
+                order2CarIns.OfTotalAmount = rop.OfCompulsoryAmount + rop.OfTravelTaxAmount + rop.OfCommercialAmount;
                 order2CarIns.CarOwner = obCustomer.CsrName;
                 order2CarIns.CarOwnerPhoneNumber = obCustomer.CsrPhoneNumber;
                 order2CarIns.CarOwnerAddress = obCustomer.CsrAddress;

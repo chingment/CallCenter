@@ -11,10 +11,16 @@ namespace Lumos.Entity
         public string ObCustomerId { get; set; }
         public string CompanyId { get; set; }
         public string CompanyName { get; set; }
-        public decimal CompulsoryAmount { get; set; }
-        public decimal TravelTaxAmount { get; set; }
-        public decimal CommercialAmount { get; set; }
-        public decimal TotalAmount { get; set; }
+        public decimal OfCompulsoryAmount { get; set; }
+        public decimal OfTravelTaxAmount { get; set; }
+        public decimal OfCommercialAmount { get; set; }
+        public decimal OfTotalAmount { get; set; }
+
+        public decimal UnCompulsoryAmount { get; set; }
+        public decimal UnTravelTaxAmount { get; set; }
+        public decimal UnCommercialAmount { get; set; }
+        public decimal UnTotalAmount { get; set; }
+
         public string CarOwner { get; set; }
         public string CarOwnerPhoneNumber { get; set; }
         public string CarOwnerAddress { get; set; }
