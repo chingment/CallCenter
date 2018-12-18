@@ -121,6 +121,9 @@
 
         $(this).ready(function () {
 
+
+
+
             initConfig();
 
             takeData();
@@ -221,13 +224,23 @@
 
             });
 
+            $('#txt_OfCompulsoryAmount,#txt_OfTravelTaxAmount,#txt_OfCommercialAmount').live("keyup", function () {
+
+                var n1 = parseFloat($('#txt_OfCompulsoryAmount').val());
+                var n2 = parseFloat($('#txt_OfTravelTaxAmount').val());
+                var n3 = parseFloat($('#txt_OfCommercialAmount').val());
+                //console.log("n1:" + n1 + ",n2:" + n2 + ",n3:" + n3);
+                $('#lbl_OfTotalAmount').text(n1 + n2 + n3)
+            })
+
+
             var fdiv = $("#top_bar");
             var itop = fdiv.offset().top;
 
             window.onload = function () {
                 $(window).scroll(function () {
                     var top = $(window).scrollTop();
-                    console.log("top:" + top + ",itop:" + itop)
+                    //console.log("top:" + top + ",itop:" + itop)
                     if (top > itop) {
                         fdiv.addClass("SerFix");
                     } else {
@@ -275,6 +288,10 @@
 
 
                         $('#sel_ResultCode').myChosen({ urlParams: { type: "callresultcode" } });
+
+                        $('#txt_OfCompulsoryAmount').decimalInput(2);
+                        $('#txt_OfTravelTaxAmount').decimalInput(2);
+                        $('#txt_OfCommercialAmount').decimalInput(2);
 
                     }
                 }
@@ -611,10 +628,10 @@
 
 
         <div style="margin:10px 0px;">
-            交强险：<input type="text" autocomplete="off" id="txt_OfCompulsoryAmount" style="width:50px;" class="input-control" />
-            车船税：<input type="text" autocomplete="off" id="txt_OfTravelTaxAmount" style="width:50px;" class="input-control" />
-            商业险：<input type="text" autocomplete="off" id="txt_OfCommercialAmount" style="width:50px;" class="input-control" />
-            合计：<span id="lbl">0.00</span>
+            交强险：<input type="text" autocomplete="off" id="txt_OfCompulsoryAmount" style="width:80px;" value="0" class="input-control" />
+            车船税：<input type="text" autocomplete="off" id="txt_OfTravelTaxAmount" style="width:80px;" value="0" class="input-control" />
+            商业险：<input type="text" autocomplete="off" id="txt_OfCommercialAmount" style="width:80px;" value="0" class="input-control" />
+            合计：<span id="lbl_OfTotalAmount">0.00</span>
         </div>
 
         <div id="top_bar" class="search-bar" style="background-color:#fff;">
