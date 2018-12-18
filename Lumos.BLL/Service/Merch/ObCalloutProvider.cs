@@ -150,7 +150,13 @@ namespace Lumos.BLL.Service.Merch
 
             foreach (var item in customerDealtTracks)
             {
-                tracks.Add(new CustomerDealtTrackModel { Message = item.Remarks, DealtTime = item.DealtTime.ToUnifiedFormatDateTime(), Url = "" });
+                string url = "";
+                if (item.OrderFollowStatus == Enumeration.OrderFollowStatus.CarInsAlUnderwrie)
+                {
+                    url = "wwww.baidu.ciom";
+                }
+
+                tracks.Add(new CustomerDealtTrackModel { Message = item.Remarks, DealtTime = item.DealtTime.ToUnifiedFormatDateTime(), Url = url });
 
             }
 

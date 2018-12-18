@@ -319,10 +319,17 @@
 
                         if (d.data.length > 0) {
                             $.each(d.data, function (i, item) {
-                                $(ul_dealtTrack).append("<li>[" + item.dealtTime + "]" + item.message + "</li>");
+
+                                var msg = "<li>[" + item.dealtTime + "]" + item.message + "</li>";
+                                if (item.url != "") {
+                                    msg = "<li><a href=\"javascript:void(0)\" goUrl=\"" + item.url + "\" class=\"a-btn a-btn-edit\" operate=\"dealt\">[" + item.dealtTime + "]" + item.message + "</a></li>";
+                                }
+
+
+                                $(ul_dealtTrack).append(msg);
                             })
                         }
-                        else  {
+                        else {
                             $(ul_dealtTrack).append("<li>暂无信息</li>");
                         }
                     }
@@ -344,8 +351,8 @@
                     <span class="status-bar-btn selected">保存通话记录</span>
                 </div>
                 @*<div class="filter">
-                    <span class="status-bar-btn">编辑客户资料</span>
-                </div>*@
+                        <span class="status-bar-btn">编辑客户资料</span>
+                    </div>*@
             </div>
 
             <div class="gbr-row-title clearfix">
