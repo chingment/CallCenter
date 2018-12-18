@@ -27,15 +27,15 @@ namespace WebMerch.Controllers
 
             var accessUserIds = MerchServiceFactory.User.GetCanAccessUserIds(this.CurrentUserId, this.CurrentMerchantId, this.CurrentUserId);
 
-            var waitCount = (from h in CurrentDb.Order2CarIns where h.MerchantId == this.CurrentMerchantId && h.FollowStatus == Lumos.Entity.Enumeration.OrderFollowStatus.CarInsWtUnderwrie && accessUserIds.Contains(h.BelongerId) select h.Id).Count();
-            var inCount = (from h in CurrentDb.Order2CarIns where h.MerchantId == this.CurrentMerchantId && h.FollowStatus == Lumos.Entity.Enumeration.OrderFollowStatus.CarInsInUnderwrie && accessUserIds.Contains(h.BelongerId) select h.Id).Count();
+            var waitCount = (from h in CurrentDb.Order2CarIns where h.MerchantId == this.CurrentMerchantId && h.FollowStatus == Lumos.Entity.Enumeration.OrderFollowStatus.CarInsWtUnderwrie && accessUserIds.Contains(h.SalesmanId) select h.Id).Count();
+            var inCount = (from h in CurrentDb.Order2CarIns where h.MerchantId == this.CurrentMerchantId && h.FollowStatus == Lumos.Entity.Enumeration.OrderFollowStatus.CarInsInUnderwrie && accessUserIds.Contains(h.SalesmanId) select h.Id).Count();
 
             var query = (from u in CurrentDb.Order2CarIns
 
                          where u.MerchantId == this.CurrentMerchantId
-                       && accessUserIds.Contains(u.BelongerId)
+                       && accessUserIds.Contains(u.SalesmanId)
 
-                         select new { u.Id, u.Sn, u.CarOwner, u.CarPlateNo, u.CarOwnerIdNumber, u.CarOwnerAddress, u.CarOwnerPhoneNumber, u.CreateTime, u.FollowStatus, u.SubmitTime });
+                         select new { u.Id, u.Sn, u.CarOwner, u.CarPlateNo, u.CarOwnerIdNumber, u.CarOwnerAddress, u.CarOwnerPhoneNumber, u.CreateTime, u.FollowStatus, u.SalesmanName, u.SalesmanId, u.SubmitTime });
 
 
             if (rup.FollowStatus != Enumeration.OrderFollowStatus.Unknow)
@@ -55,7 +55,6 @@ namespace WebMerch.Controllers
 
             foreach (var item in list)
             {
-
                 olist.Add(new
                 {
                     Id = item.Id,
@@ -68,7 +67,9 @@ namespace WebMerch.Controllers
                     SalerName = "",
                     FollowStatus = item.FollowStatus,
                     SubmitTime = item.SubmitTime.ToUnifiedFormatDateTime(),
-                    CreateTime = item.CreateTime.ToUnifiedFormatDateTime()
+                    CreateTime = item.CreateTime.ToUnifiedFormatDateTime(),
+                    SalesmanName = item.SalesmanName,
+                    SalesmanId = item.SalesmanId
                 });
             }
 
@@ -81,10 +82,14 @@ namespace WebMerch.Controllers
 
         public CustomJsonResult GetDealtUnderwritingOrderDetails(string orderId)
         {
-            return MerchServiceFactory.CarIns.GetDealtUnderwritingOrderDetails(this.CurrentUserId, this.CurrentMerchantId, orderId);
+            return MerchServiceFactory.CarIns.GetDealtUnderwritingOrderDetails(this.CurrentUserId, this.CurrentMerchantId,this.CurrentUserId, orderId);
         }
 
-
+        [HttpPost]
+        public CustomJsonResult DealtUnderwritingOrder(RopCarInsDealtUnderwritingOrder rop)
+        {
+            return MerchServiceFactory.CarIns.DealtUnderwritingOrder(this.CurrentUserId, this.CurrentMerchantId, this.CurrentUserId, rop);
+        }
 
     }
 }

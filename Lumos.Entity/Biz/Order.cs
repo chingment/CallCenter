@@ -26,7 +26,7 @@ namespace Lumos.Entity
         public DateTime CreateTime { get; set; }
         public string Mender { get; set; }
         public DateTime? MendTime { get; set; }
-
-        public string BelongerId { get; set; }
+        public string SalesmanId { get; set; }
+        public string SalesmanName { get; set; }
     }
 }

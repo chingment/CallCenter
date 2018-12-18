@@ -11,11 +11,14 @@ namespace Lumos.BLL.Service.Merch
     {
         public RetCarInsGetDealtUnderwritingOrderDetails()
         {
+            this.Salesman = new SalesmanModel();
+           
             this.Customer = new ObCustomerModel();
             this.Car = new CarInfoModel();
             this.CarInsKinds = new List<CarInsPKindModel>();
         }
 
+        public SalesmanModel Salesman { get; set; }
         public ObCustomerModel Customer { get; set; }
         public CarInfoModel Car { get; set; }
         public string OfCompulsoryAmount { get; set; }
@@ -23,5 +26,7 @@ namespace Lumos.BLL.Service.Merch
         public string OfCommercialAmount { get; set; }
         public string OfTotalAmount { get; set; }
         public List<CarInsPKindModel> CarInsKinds { get; set; }
+
+        public string UnderwriterAuditComments { get; set; }
     }
 }

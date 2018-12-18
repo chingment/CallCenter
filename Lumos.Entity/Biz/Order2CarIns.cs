@@ -15,12 +15,10 @@ namespace Lumos.Entity
         public decimal OfTravelTaxAmount { get; set; }
         public decimal OfCommercialAmount { get; set; }
         public decimal OfTotalAmount { get; set; }
-
         public decimal UnCompulsoryAmount { get; set; }
         public decimal UnTravelTaxAmount { get; set; }
         public decimal UnCommercialAmount { get; set; }
         public decimal UnTotalAmount { get; set; }
-
         public string CarOwner { get; set; }
         public string CarOwnerPhoneNumber { get; set; }
         public string CarOwnerAddress { get; set; }
@@ -31,5 +29,8 @@ namespace Lumos.Entity
         public string CarEngineNo { get; set; }
         public string CarVin { get; set; }
         public string UnderwriterId { get; set; }
+        public string UnderwriterName { get; set; }
+
+        public string UnderwriterAuditComments { get; set; }
     }
 }

@@ -10,11 +10,40 @@ namespace Lumos.BLL.Service.Merch
 {
     public class CarInsProvider : BaseProvider
     {
-        public CustomJsonResult GetDealtUnderwritingOrderDetails(string operater, string merchantId, string orderId)
+        public CustomJsonResult GetDealtUnderwritingOrderDetails(string operater, string merchantId, string underwriterId, string orderId)
         {
             var ret = new RetCarInsGetDealtUnderwritingOrderDetails();
 
             var order2CarIns = CurrentDb.Order2CarIns.Where(m => m.MerchantId == merchantId && m.Id == orderId).FirstOrDefault();
+
+            if (string.IsNullOrEmpty(order2CarIns.UnderwriterId))
+            {
+                if (order2CarIns.FollowStatus == Enumeration.OrderFollowStatus.CarInsWtUnderwrie)
+                {
+                    var underwriter = CurrentDb.SysMerchantUser.Where(m => m.Id == underwriterId).FirstOrDefault();
+                    order2CarIns.FollowStatus = Enumeration.OrderFollowStatus.CarInsInUnderwrie;
+                    order2CarIns.UnderwriterId = underwriter.Id;
+                    order2CarIns.UnderwriterName = underwriter.FullName;
+                    order2CarIns.Mender = operater;
+                    order2CarIns.MendTime = this.DateTime;
+                    CurrentDb.SaveChanges();
+                }
+            }
+            else
+            {
+                if (order2CarIns.FollowStatus == Enumeration.OrderFollowStatus.CarInsInUnderwrie)
+                {
+                    if (order2CarIns.UnderwriterId != underwriterId)
+                    {
+
+                    }
+                }
+            }
+
+
+            ret.Salesman.Id = order2CarIns.SalesmanId;
+            ret.Salesman.Name = order2CarIns.SalesmanName;
+
 
 
             ret.Customer.Name = order2CarIns.CarOwner;
@@ -33,6 +62,7 @@ namespace Lumos.BLL.Service.Merch
             ret.OfTravelTaxAmount = order2CarIns.OfTravelTaxAmount.ToF2Price();
             ret.OfTotalAmount = order2CarIns.OfTotalAmount.ToF2Price();
 
+            ret.UnderwriterAuditComments = order2CarIns.UnderwriterAuditComments;
 
             var order2CarInsKinds = CurrentDb.Order2CarInsKind.Where(m => m.OrderId == orderId).ToList();
 
@@ -94,6 +124,40 @@ namespace Lumos.BLL.Service.Merch
             return new CustomJsonResult(ResultType.Success, ResultCode.Success, "获取成功", ret);
         }
 
+        public CustomJsonResult DealtUnderwritingOrder(string operater, string merchantId, string underwriterId, RopCarInsDealtUnderwritingOrder rop)
+        {
+            var ret = new RetCarInsGetDealtUnderwritingOrderDetails();
+
+            var order2CarIns = CurrentDb.Order2CarIns.Where(m => m.MerchantId == merchantId && m.Id == rop.OrderId).FirstOrDefault();
+
+
+            if (order2CarIns.UnderwriterId != underwriterId)
+            {
+                return new CustomJsonResult(ResultType.Failure, ResultCode.Failure, "您没有权限");
+            }
+
+
+            switch (rop.Operate)
+            {
+                case Enumeration.OperateType.Save:
+
+                    break;
+                case Enumeration.OperateType.Submit:
+                    order2CarIns.Status = Enumeration.OrderStatus.WaitPay;
+                    order2CarIns.FollowStatus = Enumeration.OrderFollowStatus.CarInsAlUnderwrie;
+                    break;
+                default:
+                    return new CustomJsonResult(ResultType.Failure, ResultCode.Failure, "未知道操作");
+
+            }
+
+            order2CarIns.UnderwriterAuditComments = rop.UnderwriterAuditComments;
+            order2CarIns.Mender = operater;
+            order2CarIns.MendTime = this.DateTime;
+            CurrentDb.SaveChanges();
+
+            return new CustomJsonResult(ResultType.Success, ResultCode.Success, "提交成功", ret);
+        }
 
         public CustomJsonResult CarInsGetKind(string operater, string merchantId)
         {
@@ -143,12 +207,14 @@ namespace Lumos.BLL.Service.Merch
         }
 
 
-        public CustomJsonResult CarInsSubmitUnderwriting(string operater, string merchantId, string belongerId, RopObCalloutCarInsSubmitUnderwriting rop)
+        public CustomJsonResult CarInsSubmitUnderwriting(string operater, string merchantId, string salesmanId, RopObCalloutCarInsSubmitUnderwriting rop)
         {
             CustomJsonResult result = new CustomJsonResult();
 
             using (TransactionScope ts = new TransactionScope())
             {
+                var salesman = CurrentDb.SysMerchantUser.Where(m => m.Id == salesmanId).FirstOrDefault();
+
                 var obCustomer = CurrentDb.ObCustomer.Where(m => m.Id == rop.ObCustomerId).FirstOrDefault();
 
                 var order2CarIns = CurrentDb.Order2CarIns.Where(m => m.ObCustomerId == rop.ObCustomerId && (m.FollowStatus == Enumeration.OrderFollowStatus.CarInsWtUnderwrie || m.FollowStatus == Enumeration.OrderFollowStatus.CarInsInUnderwrie)).FirstOrDefault();
@@ -184,7 +250,8 @@ namespace Lumos.BLL.Service.Merch
                 order2CarIns.Status = Enumeration.OrderStatus.Submitted;
                 order2CarIns.FollowStatus = Enumeration.OrderFollowStatus.CarInsWtUnderwrie;
                 order2CarIns.SubmitTime = this.DateTime;
-                order2CarIns.BelongerId = belongerId;
+                order2CarIns.SalesmanId = salesman.Id;
+                order2CarIns.SalesmanName = salesman.FullName;
                 order2CarIns.Creator = operater;
                 order2CarIns.CreateTime = this.DateTime;
                 CurrentDb.Order2CarIns.Add(order2CarIns);
@@ -216,7 +283,7 @@ namespace Lumos.BLL.Service.Merch
             var accessUserIds = MerchServiceFactory.User.GetCanAccessUserIds(operater, merchantId, userId);
 
             var order2CarInss = CurrentDb.Order2CarIns.Where(m => m.MerchantId == merchantId &&
-                           accessUserIds.Contains(m.BelongerId)).ToList();
+                           accessUserIds.Contains(m.SalesmanId)).ToList();
 
 
             CustomJsonResult result = new CustomJsonResult();
@@ -248,5 +315,7 @@ namespace Lumos.BLL.Service.Merch
 
             return new CustomJsonResult(ResultType.Success, ResultCode.Success, "获取成功", ret);
         }
+
+
     }
 }

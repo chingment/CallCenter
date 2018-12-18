@@ -153,6 +153,9 @@
     <Compile Include="Service\Merch\Models\CarInfoModel.cs" />
     <Compile Include="Service\Merch\Models\CarInsKindModel.cs" />
     <Compile Include="Service\Merch\Models\ObCustomerModel.cs" />
+    <Compile Include="Service\Merch\Models\RopCarInsDealtUnderwritingOrder.cs" />
+    <Compile Include="Service\Merch\Models\SalesmanModel.cs" />
+    <Compile Include="Service\Merch\Models\UnderwriterModel.cs" />
     <Compile Include="Service\Merch\ObBatchAllocateProvider.cs" />
     <Compile Include="Service\Merch\ObBatchProvider.cs" />
     <Compile Include="Service\Merch\MerchServiceFactory.cs" />

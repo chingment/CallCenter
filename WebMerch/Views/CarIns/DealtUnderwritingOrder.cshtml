@@ -5,7 +5,7 @@
 
 @section scripts{
     <script type="text/javascript">
-        var id = $.lumos.getUrlParamValue("id");
+        var orderId = $.lumos.getUrlParamValue("orderId");
         $(this).ready(function () {
 
             getDetails();
@@ -15,7 +15,7 @@
         function getDetails() {
             $.lumos.getJson({
                 url: "/CarIns/GetDealtUnderwritingOrderDetails",
-                urlParams: { orderId: id },
+                urlParams: { orderId: orderId },
                 isUseHandling: true,
                 success: function (d) {
                     if (d.result == $.lumos.resultType.success) {
@@ -27,6 +27,37 @@
                 }
             });
         }
+
+
+        function dealt(operate) {
+
+        
+
+            art.dialog.confirm('确定要保存？', function () {
+
+                var underwriterAuditComments = $("#txt_UnderwriterAuditComments").val();
+
+                $.lumos.postJson({
+                    url: "/CarIns/DealtUnderwritingOrder",
+                    isUseHandling: true,
+                    data: { operate: operate, orderId: orderId, underwriterAuditComments: underwriterAuditComments },
+                    success: function (d) {
+                        if (d.result == $.lumos.resultType.success) {
+                            $.lumos.parentDialog.refresh(2);
+                            $.lumos.tips(d.message);
+                        }
+                        else {
+                            $.lumos.tips(d.message);
+                        }
+                    }
+                });
+            });
+
+            return false;
+        }
+
+
+
 
     </script>
 }
@@ -59,7 +90,7 @@
             <td class="t">客户地址：</td>
             <td class="c"><span id="lbl_CsrAddress">${customer.address}</span></td>
             <td class="t">业务员：</td>
-            <td class="c"></td>
+            <td class="c">${salesman.name}</td>
         </tr>
     </table>
     <div class="gbr-row-title clearfix">
@@ -168,13 +199,20 @@
         </div>
 
         <div style="margin:10px 0px;">
-            交强险：<input type="text" autocomplete="off" id="txt_CompulsoryAmount" style="width:50px;" class="input-control" />
-            车船税：<input type="text" autocomplete="off" id="txt_TravelTaxAmount" style="width:50px;" class="input-control" />
-            商业险：<input type="text" autocomplete="off" id="txt_CommercialAmount" style="width:50px;" class="input-control" />
-            合计：<span id="lbl">0.00</span>
+            交强险：<span>${ofCompulsoryAmount}</span>
+            车船税：<span>${ofTravelTaxAmount}</span>
+            商业险：<span>${ofCommercialAmount}</span>
+            合计：<span id="lbl">${ofTotalAmount}</span>
         </div>
-
-
+        <div class="gbr-row-title clearfix">
+            <div class="pull-left">
+                <h5>告知备注</h5>
+            </div>
+            <div class="pull-right f-tb1-item-pull-right">
+                <h6></h6>
+            </div>
+        </div>
+        <textarea class="input-control" id="txt_UnderwriterAuditComments" style="width:98%;">${underwriterAuditComments}</textarea>
     </div>
 
 </script>
