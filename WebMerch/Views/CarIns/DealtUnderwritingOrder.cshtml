@@ -10,6 +10,8 @@
 
             getDetails();
 
+            $.lumos.parentDialog.refresh(2);
+
         });
 
         function getDetails() {
@@ -20,8 +22,6 @@
                 success: function (d) {
                     if (d.result == $.lumos.resultType.success) {
                         var data = d.data;
-                        alert(JSON.stringify(data))
-
                         $('#gbr_page').html($("#page_tmpl").tmpl(data));
                     }
                 }
@@ -31,9 +31,17 @@
 
         function dealt(operate) {
 
-        
 
-            art.dialog.confirm('确定要保存？', function () {
+            var msg = "";
+            if (operate == $.lumos.operateType.save) {
+                msg = "确定要暂存";
+            }
+            else if (operate == $.lumos.operateType.submit) {
+                msg = "确定要核保完成";
+            }
+
+
+            art.dialog.confirm(msg, function () {
 
                 var underwriterAuditComments = $("#txt_UnderwriterAuditComments").val();
 
@@ -43,8 +51,14 @@
                     data: { operate: operate, orderId: orderId, underwriterAuditComments: underwriterAuditComments },
                     success: function (d) {
                         if (d.result == $.lumos.resultType.success) {
-                            $.lumos.parentDialog.refresh(2);
-                            $.lumos.tips(d.message);
+
+                            if (operate == $.lumos.operateType.submit) {
+                                $.lumos.tips(d.message, true);
+                                $.lumos.parentDialog.refresh(2);
+                            }
+                            else {
+                                $.lumos.tips(d.message);
+                            }
                         }
                         else {
                             $.lumos.tips(d.message);

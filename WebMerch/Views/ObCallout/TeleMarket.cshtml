@@ -26,32 +26,32 @@
             border-radius: 3px;
         }
 
-        .infobox .t {
-            background: #fc9f06;
-            color: #fff;
-            height: 27px;
-            line-height: 27px;
-            padding: 5px;
-            font-size: 14px;
-        }
+            .infobox .t {
+                background: #fc9f06;
+                color: #fff;
+                height: 27px;
+                line-height: 27px;
+                padding: 5px;
+                font-size: 14px;
+            }
 
-        .infobox .b {
-            padding: 5px;
-        }
+            .infobox .b {
+                padding: 5px;
+            }
 
-        .infobox .b ul li {
-            height: 32px;
-            line-height: 32px;
-            display: flex;
-        }
+                .infobox .b ul li {
+                    height: 32px;
+                    line-height: 32px;
+                    display: flex;
+                }
 
-        .infobox .b ul li .name {
-            width: 80px;
-        }
+                    .infobox .b ul li .name {
+                        width: 80px;
+                    }
 
-        .infobox .b ul li .value {
-            flex: 1;
-        }
+                    .infobox .b ul li .value {
+                        flex: 1;
+                    }
 
 
         .btn-switch {
@@ -60,52 +60,52 @@
             overflow: hidden;
         }
 
-        .btn-switch .btn_fath {
-            position: relative;
-            border-radius: 20px;
-            height: 100%;
-        }
+            .btn-switch .btn_fath {
+                position: relative;
+                border-radius: 20px;
+                height: 100%;
+            }
 
-        .btn-switch .switch-status-on {
-            float: left;
-        }
+            .btn-switch .switch-status-on {
+                float: left;
+            }
 
-        .btn-switch .switch-status-off {
-            float: right;
-        }
+            .btn-switch .switch-status-off {
+                float: right;
+            }
 
-        .btn-switch .switch-status {
-            height: 100%;
-            width: 100%;
-            border: none;
-            font-size: 16px;
-            text-align: center;
-            z-index: 1;
-        }
+            .btn-switch .switch-status {
+                height: 100%;
+                width: 100%;
+                border: none;
+                font-size: 16px;
+                text-align: center;
+                z-index: 1;
+            }
 
-        .btn-switch .move {
-            z-index: 100;
-            width: 40%;
-            height: 92%;
-            border-radius: 20px;
-            position: absolute;
-            cursor: pointer;
-            border: 1px solid #828282;
-            background-color: #f1eff0;
-            /*box-shadow: 1px 2px 2px 1px #fff inset,0 0 5px 1px #999;*/
-        }
+            .btn-switch .move {
+                z-index: 100;
+                width: 40%;
+                height: 92%;
+                border-radius: 20px;
+                position: absolute;
+                cursor: pointer;
+                border: 1px solid #828282;
+                background-color: #f1eff0;
+                /*box-shadow: 1px 2px 2px 1px #fff inset,0 0 5px 1px #999;*/
+            }
 
-        .btn-switch[data-state="on"] .btn_fath .move {
-            right: 0px;
-        }
+            .btn-switch[data-state="on"] .btn_fath .move {
+                right: 0px;
+            }
 
-        .btn-switch[data-state="on"] .btn_fath {
-            background-color: #44b549;
-        }
+            .btn-switch[data-state="on"] .btn_fath {
+                background-color: #44b549;
+            }
 
-        .btn-switch[data-state="off"] .btn_fath {
-            background-color: #828282;
-        }
+            .btn-switch[data-state="off"] .btn_fath {
+                background-color: #828282;
+            }
 
         .SerFix {
             position: fixed;
@@ -237,6 +237,9 @@
                 });
             }
 
+            setInterval(function () {
+                getDealtTrack();
+            }, 1200);
         });
 
         var takeDataResult = null;
@@ -302,6 +305,26 @@
 
         }
 
+        function getDealtTrack() {
+
+            $.lumos.getJson({
+                url: "/ObCallout/GetDealtTrack",
+                urlParams: { customerId: takeDataResult.obCustomerId },
+                isShowLoading: true,
+                success: function (d) {
+                    if (d.result == $.lumos.resultType.success) {
+
+                        //alert(JSON.stringify(d))
+                        $('#dealtTrack').html('')
+                        $.each(d.data, function (i,item) {
+                            console.log(JSON.stringify(item))
+                            $('#dealtTrack').append("<li>[" + item.dealtTime + "]" + item.message + "</li>");
+                        })
+                        //$('#carInsKindsBox').html($("#tmpl_carInsKinds").tmpl(d.data));
+                    }
+                }
+            });
+        }
 
     </script>
 }
@@ -411,18 +434,13 @@
             </div>
 
 
-            <div id="carInsInfo" class="infobox" style="margin-top:5px;">
+            <div id="dealtTrackInfo" class="infobox" style="margin-top:5px;">
                 <div class="t">
-                    <span class="title">核保信息</span>
+                    <span class="title">流程跟踪</span>
                 </div>
                 <div class="b">
-                    <ul id="">
-                        <li><div class="name">任务数量</div><div class="value">0</div></li>
-                        <li><div class="name">未拨数量</div><div class="value">0</div></li>
-                        <li><div class="name">已拨数量</div><div class="value">0</div></li>
-                        <li><div class="name">未联系</div><div class="value">0</div></li>
-                        <li><div class="name">目标</div><div class="value">0</div></li>
-                        <li><div class="name">无效</div><div class="value">0</div></li>
+                    <ul id="dealtTrack">
+                        <li></li>
                     </ul>
                 </div>
             </div>

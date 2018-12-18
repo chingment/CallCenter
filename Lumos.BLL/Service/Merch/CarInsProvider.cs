@@ -27,6 +27,8 @@ namespace Lumos.BLL.Service.Merch
                     order2CarIns.Mender = operater;
                     order2CarIns.MendTime = this.DateTime;
                     CurrentDb.SaveChanges();
+
+                    MerchServiceFactory.Customer.AddDealtTrack(operater, underwriter.FullName + "，已取单核保中", order2CarIns.ObCustomerId, order2CarIns.Id, order2CarIns.FollowStatus);
                 }
             }
             else
@@ -145,6 +147,7 @@ namespace Lumos.BLL.Service.Merch
                 case Enumeration.OperateType.Submit:
                     order2CarIns.Status = Enumeration.OrderStatus.WaitPay;
                     order2CarIns.FollowStatus = Enumeration.OrderFollowStatus.CarInsAlUnderwrie;
+                    MerchServiceFactory.Customer.AddDealtTrack(operater, order2CarIns.UnderwriterName + ",核保完成", order2CarIns.ObCustomerId, order2CarIns.Id, order2CarIns.FollowStatus);
                     break;
                 default:
                     return new CustomJsonResult(ResultType.Failure, ResultCode.Failure, "未知道操作");
@@ -268,6 +271,8 @@ namespace Lumos.BLL.Service.Merch
                     order2CarInsKind.Creator = operater;
                     CurrentDb.Order2CarInsKind.Add(order2CarInsKind);
                 }
+
+                MerchServiceFactory.Customer.AddDealtTrack(operater, "提交报价单，等待取单核保", order2CarIns.ObCustomerId, order2CarIns.Id, order2CarIns.FollowStatus);
 
                 CurrentDb.SaveChanges();
                 ts.Complete();

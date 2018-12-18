@@ -40,6 +40,7 @@ namespace Lumos.DAL
         public IDbSet<Order> Order { get; set; }
         public IDbSet<Order2CarIns> Order2CarIns { get; set; }
         public IDbSet<Order2CarInsKind> Order2CarInsKind { get; set; }
+        public IDbSet<CustomerDealtTrack> CustomerDealtTrack { get; set; }
         protected override void OnModelCreating(DbModelBuilder modelBuilder)
         {
             base.OnModelCreating(modelBuilder);

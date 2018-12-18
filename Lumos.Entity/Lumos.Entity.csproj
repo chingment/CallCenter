@@ -70,6 +70,7 @@
     <Compile Include="Biz\Order.cs" />
     <Compile Include="Biz\Order2CarIns.cs" />
     <Compile Include="Biz\Order2CarInsKind.cs" />
+    <Compile Include="Biz\CustomerDealtTrack.cs" />
     <Compile Include="Biz\Organization.cs" />
     <Compile Include="Sys\SysClientUser.cs" />
     <Compile Include="Sys\SysMerchatUser.cs" />

@@ -140,6 +140,24 @@ namespace Lumos.BLL.Service.Merch
             return result;
         }
 
+        public CustomJsonResult GetDealtTrack(string operater, string merchantId, string customerId)
+        {
+            CustomJsonResult result = new CustomJsonResult();
+
+            var customerDealtTracks = CurrentDb.CustomerDealtTrack.Where(m => m.CustomerId == customerId).OrderByDescending(m => m.DealtTime).ToList();
+
+            var tracks = new List<CustomerDealtTrackModel>();
+
+            foreach (var item in customerDealtTracks)
+            {
+                tracks.Add(new CustomerDealtTrackModel { Message = item.Remarks, DealtTime = item.DealtTime.ToUnifiedFormatDateTime(), Url = "" });
+
+            }
+
+            result = new CustomJsonResult(ResultType.Success, ResultCode.Success, "保存成功", tracks);
+
+            return result;
+        }
 
     }
 }

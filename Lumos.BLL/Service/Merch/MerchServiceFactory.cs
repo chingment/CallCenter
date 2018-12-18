@@ -8,6 +8,13 @@ namespace Lumos.BLL.Service.Merch
 {
     public class MerchServiceFactory : BaseFactory
     {
+        public static CustomerProvider Customer
+        {
+            get
+            {
+                return new CustomerProvider();
+            }
+        }
 
         public static ObBatchProvider ObBatch
         {

@@ -42,5 +42,9 @@ namespace WebMerch.Controllers
             return MerchServiceFactory.CarIns.CarInsSubmitUnderwriting(this.CurrentUserId, this.CurrentMerchantId, this.CurrentUserId, rop);
         }
 
+        public CustomJsonResult GetDealtTrack(string customerId)
+        {
+            return MerchServiceFactory.ObCallout.GetDealtTrack(this.CurrentUserId, this.CurrentMerchantId, customerId);
+        }
     }
 }

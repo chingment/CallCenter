@@ -150,8 +150,10 @@
     <Compile Include="Service\Admin\Sys\SysPositionProvider.cs" />
     <Compile Include="Service\Admin\Sys\SysRoleProvider.cs" />
     <Compile Include="Service\Merch\CarInsProvider.cs" />
+    <Compile Include="Service\Merch\CustomerProvider.cs" />
     <Compile Include="Service\Merch\Models\CarInfoModel.cs" />
     <Compile Include="Service\Merch\Models\CarInsKindModel.cs" />
+    <Compile Include="Service\Merch\Models\CustomerDealtTrackModel.cs" />
     <Compile Include="Service\Merch\Models\ObCustomerModel.cs" />
     <Compile Include="Service\Merch\Models\RopCarInsDealtUnderwritingOrder.cs" />
     <Compile Include="Service\Merch\Models\SalesmanModel.cs" />
