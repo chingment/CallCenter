@@ -8,7 +8,7 @@ namespace Lumos.BLL.Service.Merch
 {
     public class RopObCalloutCarInsSubmitUnderwriting
     {
-        public string ObCustomerId { get; set; }
+        public string CustomerId { get; set; }
 
         public decimal OfTravelTaxAmount { get; set; }
 

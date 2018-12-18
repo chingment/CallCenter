@@ -13,6 +13,7 @@ namespace Lumos.Entity
     {
         [Key]
         public string Id { get; set; }
+        public string MerchantId { get; set; }
         public string CustomerId { get; set; }
         public string OrderId { get; set; }
         public Enumeration.OrderFollowStatus OrderFollowStatus { get; set; }

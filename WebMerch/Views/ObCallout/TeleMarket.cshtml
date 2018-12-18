@@ -207,11 +207,10 @@
                     $.lumos.postJson({
                         isUseHandling: true,
                         url: "/ObCallout/CarInsSubmitUnderwriting",
-                        data: { obCustomerId: customerId, ofTravelTaxAmount: ofTravelTaxAmount, ofCompulsoryAmount: ofCompulsoryAmount, ofCommercialAmount: ofCommercialAmount, kinds: kinds },
+                        data: { customerId: customerId, ofTravelTaxAmount: ofTravelTaxAmount, ofCompulsoryAmount: ofCompulsoryAmount, ofCommercialAmount: ofCommercialAmount, kinds: kinds },
                         success: function (d) {
                             $.lumos.tips(d.message);
                             if (d.result == $.lumos.resultType.success) {
-
 
                             }
                         }
@@ -293,6 +292,7 @@
 
                         //alert(JSON.stringify(d))
 
+
                         $('#carInsKindsBox').html($("#tmpl_carInsKinds").tmpl(d.data));
 
 
@@ -307,20 +307,24 @@
 
         function getDealtTrack() {
 
+            var ul_dealtTrack = $('#ul_dealtTrack');
+
             $.lumos.getJson({
                 url: "/ObCallout/GetDealtTrack",
                 urlParams: { customerId: takeDataResult.obCustomerId },
                 isShowLoading: true,
                 success: function (d) {
                     if (d.result == $.lumos.resultType.success) {
+                        $(ul_dealtTrack).html('')
 
-                        //alert(JSON.stringify(d))
-                        $('#dealtTrack').html('')
-                        $.each(d.data, function (i,item) {
-                            console.log(JSON.stringify(item))
-                            $('#dealtTrack').append("<li>[" + item.dealtTime + "]" + item.message + "</li>");
-                        })
-                        //$('#carInsKindsBox').html($("#tmpl_carInsKinds").tmpl(d.data));
+                        if (d.data.length > 0) {
+                            $.each(d.data, function (i, item) {
+                                $(ul_dealtTrack).append("<li>[" + item.dealtTime + "]" + item.message + "</li>");
+                            })
+                        }
+                        else  {
+                            $(ul_dealtTrack).append("<li>暂无信息</li>");
+                        }
                     }
                 }
             });
@@ -339,9 +343,9 @@
                 <div class="filter" id="btn_SaveCallRecord">
                     <span class="status-bar-btn selected">保存通话记录</span>
                 </div>
-                <div class="filter">
+                @*<div class="filter">
                     <span class="status-bar-btn">编辑客户资料</span>
-                </div>
+                </div>*@
             </div>
 
             <div class="gbr-row-title clearfix">
@@ -439,7 +443,7 @@
                     <span class="title">流程跟踪</span>
                 </div>
                 <div class="b">
-                    <ul id="dealtTrack">
+                    <ul id="ul_dealtTrack">
                         <li></li>
                     </ul>
                 </div>

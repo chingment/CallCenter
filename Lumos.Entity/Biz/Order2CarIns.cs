@@ -8,7 +8,7 @@ namespace Lumos.Entity
     [Table("Order2CarIns")]
     public class Order2CarIns:Order
     {
-        public string ObCustomerId { get; set; }
+        public string CustomerId { get; set; }
         public string CompanyId { get; set; }
         public string CompanyName { get; set; }
         public decimal OfCompulsoryAmount { get; set; }

@@ -7,11 +7,7 @@
     <script type="text/javascript">
         var orderId = $.lumos.getUrlParamValue("orderId");
         $(this).ready(function () {
-
             getDetails();
-
-            $.lumos.parentDialog.refresh(2);
-
         });
 
         function getDetails() {
@@ -23,6 +19,7 @@
                     if (d.result == $.lumos.resultType.success) {
                         var data = d.data;
                         $('#gbr_page').html($("#page_tmpl").tmpl(data));
+                        $.lumos.parentDialog.refresh(2);
                     }
                 }
             });

@@ -9,10 +9,11 @@ namespace Lumos.BLL.Service.Merch
 {
     public class CustomerProvider:BaseProvider
     {
-        public void AddDealtTrack(string dealterId,string remarks, string customerId,string orderId, Entity.Enumeration.OrderFollowStatus orderFollowStatus)
+        public void AddDealtTrack(string dealterId,string remarks,string merchantId, string customerId,string orderId, Entity.Enumeration.OrderFollowStatus orderFollowStatus)
         {
             var customerDealtTrack = new CustomerDealtTrack();
             customerDealtTrack.Id = GuidUtil.New();
+            customerDealtTrack.MerchantId = merchantId;
             customerDealtTrack.CustomerId = customerId;
             customerDealtTrack.OrderId = orderId;
             customerDealtTrack.OrderFollowStatus = orderFollowStatus;

@@ -28,7 +28,7 @@ namespace Lumos.BLL.Service.Merch
                     order2CarIns.MendTime = this.DateTime;
                     CurrentDb.SaveChanges();
 
-                    MerchServiceFactory.Customer.AddDealtTrack(operater, underwriter.FullName + "，已取单核保中", order2CarIns.ObCustomerId, order2CarIns.Id, order2CarIns.FollowStatus);
+                    MerchServiceFactory.Customer.AddDealtTrack(operater, underwriter.FullName + "，已取单核保中", order2CarIns.MerchantId, order2CarIns.CustomerId, order2CarIns.Id, order2CarIns.FollowStatus);
                 }
             }
             else
@@ -147,7 +147,7 @@ namespace Lumos.BLL.Service.Merch
                 case Enumeration.OperateType.Submit:
                     order2CarIns.Status = Enumeration.OrderStatus.WaitPay;
                     order2CarIns.FollowStatus = Enumeration.OrderFollowStatus.CarInsAlUnderwrie;
-                    MerchServiceFactory.Customer.AddDealtTrack(operater, order2CarIns.UnderwriterName + ",核保完成", order2CarIns.ObCustomerId, order2CarIns.Id, order2CarIns.FollowStatus);
+                    MerchServiceFactory.Customer.AddDealtTrack(operater, order2CarIns.UnderwriterName + ",核保完成", order2CarIns.MerchantId, order2CarIns.CustomerId, order2CarIns.Id, order2CarIns.FollowStatus);
                     break;
                 default:
                     return new CustomJsonResult(ResultType.Failure, ResultCode.Failure, "未知道操作");
@@ -218,9 +218,9 @@ namespace Lumos.BLL.Service.Merch
             {
                 var salesman = CurrentDb.SysMerchantUser.Where(m => m.Id == salesmanId).FirstOrDefault();
 
-                var obCustomer = CurrentDb.ObCustomer.Where(m => m.Id == rop.ObCustomerId).FirstOrDefault();
+                var obCustomer = CurrentDb.ObCustomer.Where(m => m.Id == rop.CustomerId).FirstOrDefault();
 
-                var order2CarIns = CurrentDb.Order2CarIns.Where(m => m.ObCustomerId == rop.ObCustomerId && (m.FollowStatus == Enumeration.OrderFollowStatus.CarInsWtUnderwrie || m.FollowStatus == Enumeration.OrderFollowStatus.CarInsInUnderwrie)).FirstOrDefault();
+                var order2CarIns = CurrentDb.Order2CarIns.Where(m => m.CustomerId == rop.CustomerId && (m.FollowStatus == Enumeration.OrderFollowStatus.CarInsWtUnderwrie || m.FollowStatus == Enumeration.OrderFollowStatus.CarInsInUnderwrie)).FirstOrDefault();
 
                 if (order2CarIns != null)
                 {
@@ -233,7 +233,7 @@ namespace Lumos.BLL.Service.Merch
                 order2CarIns.Sn = SnUtil.Build(Enumeration.BizSnType.Order2CarIns, merchantId);
                 order2CarIns.Type = Enumeration.OrderType.CarIns;
                 order2CarIns.MerchantId = merchantId;
-                order2CarIns.ObCustomerId = rop.ObCustomerId;
+                order2CarIns.CustomerId = rop.CustomerId;
                 order2CarIns.CompanyId = "";
                 order2CarIns.CompanyName = "";
                 order2CarIns.OfCompulsoryAmount = rop.OfCompulsoryAmount;
@@ -272,7 +272,7 @@ namespace Lumos.BLL.Service.Merch
                     CurrentDb.Order2CarInsKind.Add(order2CarInsKind);
                 }
 
-                MerchServiceFactory.Customer.AddDealtTrack(operater, "提交报价单，等待取单核保", order2CarIns.ObCustomerId, order2CarIns.Id, order2CarIns.FollowStatus);
+                MerchServiceFactory.Customer.AddDealtTrack(operater, "提交报价单，等待取单核保", order2CarIns.MerchantId, order2CarIns.CustomerId, order2CarIns.Id, order2CarIns.FollowStatus);
 
                 CurrentDb.SaveChanges();
                 ts.Complete();
