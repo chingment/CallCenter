@@ -31,7 +31,7 @@ namespace Lumos.BLL.Service.Merch
 
         public List<Organization> GetSons(string merchantId, string id)
         {
-            var sysOrganizations = CurrentDb.Organization.Where(m => m.MerchantId == merchantId).ToList();
+            var sysOrganizations = CurrentDb.Organization.Where(m => m.MerchantId == merchantId && m.IsDelete == false).OrderBy(m => m.Priority).ToList();
             var sysOrganization = sysOrganizations.Where(p => p.Id == id).ToList();
             var list2 = sysOrganization.Concat(GetSonList(sysOrganizations, id));
             return list2.ToList();
@@ -39,7 +39,7 @@ namespace Lumos.BLL.Service.Merch
 
         private IEnumerable<Organization> GetSonList(IList<Organization> list, string pId)
         {
-            var query = list.Where(p => p.PId == pId).ToList();
+            var query = list.Where(p => p.PId == pId).OrderBy(m => m.Priority).ToList();
             return query.ToList().Concat(query.ToList().SelectMany(t => GetSonList(list, t.Id)));
         }
 
