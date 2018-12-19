@@ -47,8 +47,14 @@ namespace WebMerch.Controllers
                          where (rup.UserName == null || u.UserName.Contains(rup.UserName)) &&
                          (rup.FullName == null || u.FullName.Contains(rup.FullName)) &&
                          u.IsDelete == false &&
+                         u.IsCanDelete == true &&
                          u.MerchantId == this.CurrentMerchantId
-                         select new { u.Id, u.UserName, u.FullName, u.PositionId, OrganizationName = o.FullName, u.Email, u.PhoneNumber, u.CreateTime, u.IsDelete, u.Status });
+                         select new { u.Id, u.UserName, u.FullName, u.PositionId, OrganizationName = o.FullName, u.OrganizationId, u.Email, u.PhoneNumber, u.CreateTime, u.IsDelete, u.Status });
+
+            if (!string.IsNullOrEmpty(rup.OrganizationId))
+            {
+                query = query.Where(m => m.OrganizationId == rup.OrganizationId);
+            }
 
             int total = query.Count();
 

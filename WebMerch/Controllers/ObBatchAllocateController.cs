@@ -28,7 +28,7 @@ namespace WebMerch.Controllers
 
         public CustomJsonResult GetDetails(string id)
         {
-            return MerchServiceFactory.ObBatchAllocate.GetDetails(this.CurrentUserId, this.CurrentMerchantId, id);
+            return MerchServiceFactory.ObBatchAllocate.GetDetails(this.CurrentUserId, this.CurrentMerchantId, this.CurrentUserId, id);
         }
 
         public CustomJsonResult GetCanAllocateList(RupObBatchAllocateTaskGetList rup)

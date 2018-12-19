@@ -10,7 +10,7 @@ namespace Lumos.BLL.Service.Merch
 {
     public class ObBatchAllocateProvider : BaseProvider
     {
-        public CustomJsonResult GetDetails(string operater, string merchantId, string id)
+        public CustomJsonResult GetDetails(string operater, string merchantId, string allocaterId, string id)
         {
             var ret = new RetObBatchAllocateTaskGetDetails();
 
@@ -32,7 +32,7 @@ namespace Lumos.BLL.Service.Merch
                 {
                     foreach (var item in organizations)
                     {
-                        var sysUser = CurrentDb.SysUser.Where(m => m.Id == item.HeaderId).FirstOrDefault();
+                        var sysUser = CurrentDb.SysUser.Where(m => m.Id == item.HeaderId && m.Id != allocaterId).FirstOrDefault();
                         if (sysUser != null)
                         {
                             ret.BelongUsers.Add(new RetObBatchAllocateTaskGetDetails.BelongUser { UserId = sysUser.Id, UserName = string.Format("{0}:{1}（{2}）", item.FullName, sysUser.FullName, sysUser.UserName), OrganizationId = item.Id });
@@ -42,7 +42,7 @@ namespace Lumos.BLL.Service.Merch
                 else
                 {
 
-                    var sysMerchantUsers = CurrentDb.SysMerchantUser.Where(m => m.MerchantId == merchantId && m.OrganizationId == obBatchAllocate.BelongerOrganizationId).ToList();
+                    var sysMerchantUsers = CurrentDb.SysMerchantUser.Where(m => m.MerchantId == merchantId && m.OrganizationId == obBatchAllocate.BelongerOrganizationId && m.Id != allocaterId).ToList();
 
                     foreach (var sysMerchantUser in sysMerchantUsers)
                     {

@@ -8,6 +8,7 @@
 
         var mainTree_Id = "maintree";
         var mainTree_RPositions;
+        var mainTree_RUsers;
         var mainTab;
         $(this).ready(function () {
 
@@ -22,7 +23,7 @@
                             getMainTreeSelNodeDetails();
                             break;
                         case 1:
-                            //mainTree_RPositions.loadData();
+                            mainTree_RUsers.loadData();
                             break;
                     }
                     return true;
@@ -146,6 +147,44 @@
 
             });
 
+
+            mainTree_RUsers = $("#list_table_users").loadDataTable({
+                url: "/Organization/GetUserList",
+                pageIndex: 0,
+                searchParams: $("#form2").serializeArray(),
+                searchButtonId: "btn_Search",
+                containerId: "form2",
+                rowDataCombie: function (p_index, p_row) {
+                    var l_Strlimt = "";
+                    l_Strlimt += "@Html.IsInPermission("<a href=\\\"javascript:void(0)\\\" operate=\\\"edit\\\"  class=\\\"a-btn\\\" >修改</a>")";
+                    var l_StrRows = "";
+                    l_StrRows += "<tr>";
+                    l_StrRows += "<td class=\"no\" >" + (p_index + 1) + "</td>";
+                    l_StrRows += "<td class=\"overflow tipitem\" title=\"" + p_row.userName + "\"   >" + p_row.userName + "</td>";
+                    l_StrRows += "<td class=\"overflow\" title=\"" + p_row.fullName + "\">" + p_row.fullName + "</td>";
+                    l_StrRows += "<td class=\"overflow\" title=\"" + p_row.positionName + "\">" + p_row.positionName + "</td>";
+                    l_StrRows += "<td class=\"overflow\" title=\"" + p_row.phoneNumber + "\">" + p_row.phoneNumber + "</td>";
+                    l_StrRows += "<td class=\"overflow\" title=\"" + p_row.email + "\">" + p_row.email + "</td>";
+                    l_StrRows += "<td class=\"overflow\" title=\"" + p_row.statusName + "\">" + p_row.statusName + "</td>";
+                    l_StrRows += "<td class=\"operation\">";
+                    l_StrRows += l_Strlimt;
+                    l_StrRows += "</td>";
+                    l_StrRows += "</tr>";
+                    return l_StrRows;
+                },
+                operate: {
+                    "edit": function (obj) {
+                        var url = '/User/Edit?id=' + obj.id;
+                        var title = '修改';
+                        art.dialog.open(url, {
+                            id: "openDialog", title: title, width: '650px', height: '500px', lock: true, drag: false, cancelVal: '关闭', cancel: true, okVal: '保存', ok: function () {
+                                this.iframe.contentWindow.edit();
+                                return false;
+                            }
+                        });
+                    }
+                }
+            });
 
             @*mainTree_RPositions = $("#list_RPosition").loadDataTable({
                 url: "/Sys/Position/GetList",
@@ -308,7 +347,7 @@
                     mainTreeLoadData();
                     break;
                 case 2:
-                    //mainTree_RPositions.loadData('c');
+                    mainTree_RUsers.loadData();
                     break;
             }
         }
@@ -331,6 +370,7 @@
             $("#txt_HeaderId").val(obj.id);
             $('#lbl_Header_Name').text(obj.fullName + "(" + obj.userName + ")");
         }
+
     </script>
 }
 
@@ -345,7 +385,7 @@
                 <div class="tab-item">
                     <ul>
                         <li class="item first selected"><a class="a-btn-info" href="javascript:void(0)">基本信息</a></li>
-                        @*<li class="item"><a class="a-btn-info" href="javascript:void(0)">关联职位</a></li>*@
+                        <li class="item"><a class="a-btn-info" href="javascript:void(0)">关联用户</a></li>
                     </ul>
                 </div>
                 <div class="tab-content">
@@ -405,23 +445,43 @@
                             <input type="hidden" name="OrganizationId" />
                             <div class="search-bar">
                                 <div class="filter">
-                                    <span class="filter-label">名称：</span>
+                                    <span class="filter-label">用户名：</span>
                                     <span class="filter-input">
                                         <input type="text" class="input-control" name="UserName" style="width:120px;" />
                                     </span>
                                 </div>
+                                <div class="filter">
+                                    <span class="filter-label">姓名：</span>
+                                    <span class="filter-input">
+                                        <input type="text" class="input-control" name="FullName" style="width:120px;" />
+                                    </span>
+                                </div>
                                 <div class="filter"><input type="button" class="btn btn-search" id="btn_Search" value="查询" /> </div>
-                                <div class="filter"><input type="button" class="btn btn-add" id="maintree_add_position" value="添加" /></div>
                             </div>
                             <div class="list">
-                                <table id="list_RPosition" class="list-tb" cellpadding="0" cellspacing="0">
+                                <table id="list_table_users" class="list-tb" cellpadding="0" cellspacing="0">
                                     <thead>
                                         <tr>
                                             <th style="width:5%" class="no">
                                                 序号
                                             </th>
-                                            <th style="width:90%">
-                                                名称
+                                            <th style="width:10%">
+                                                用户名
+                                            </th>
+                                            <th style="width:10%">
+                                                姓名
+                                            </th>
+                                            <th style="width:20%">
+                                                职位
+                                            </th>
+                                            <th style="width:20%">
+                                                手机
+                                            </th>
+                                            <th style="width:20%">
+                                                邮箱
+                                            </th>
+                                            <th style="width:10%">
+                                                状态
                                             </th>
                                             <th style="width:5%" class="operation">
                                                 操作
@@ -431,7 +491,7 @@
                                     <tbody></tbody>
                                     <tfoot>
                                         <tr>
-                                            <td colspan="3">
+                                            <td colspan="8">
                                                 <div class="pull-left">
                                                     <span class="load-tip"></span>
                                                 </div>

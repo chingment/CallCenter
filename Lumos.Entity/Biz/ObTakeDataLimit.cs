@@ -5,8 +5,8 @@ using System.ComponentModel.DataAnnotations.Schema;
 
 namespace Lumos.Entity
 {
-    [Table("CalloutTakeDataLimit")]
-    public class CalloutTakeDataLimit
+    [Table("ObTakeDataLimit")]
+    public class ObTakeDataLimit
     {
         [Key]
         public string Id { get; set; }

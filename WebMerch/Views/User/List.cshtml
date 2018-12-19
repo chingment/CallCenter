@@ -9,6 +9,9 @@
     var listTable;
 
     $(document).ready(function () {
+
+        $('#sel_Organizations').myChosen({ urlParams: { type: "SysOrganization" } });
+
         listTable = $("#list_table").loadDataTable({
             url: "/User/GetList",
             pageIndex: 0,
@@ -92,6 +95,16 @@
                     <input type="text" class="input-control" name="FullName" style="width:120px;" />
                 </span>
             </div>
+            <div class="filter">
+                <span class="filter-label">机构：</span>
+                <span class="filter-input">
+                    <select id="sel_Organizations" name="OrganizationId" data-placeholder="请选择" class="chosen-select" style="width:200px">
+                        <option value=""></option>
+                    </select>
+                </span>
+            </div>
+
+
 
             <div class="filter"><input type="button" class="btn btn-search" id="btn_Search" value="查询" /> </div>
 

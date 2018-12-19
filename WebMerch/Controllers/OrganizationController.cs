@@ -71,7 +71,8 @@ namespace WebMerch.Controllers
                          p.OrganizationId == rup.OrganizationId &&
    (name.Length == 0 || p.FullName.Contains(name))
    && p.MerchantId == this.CurrentMerchantId
-                         select new { p.Id, p.OrganizationId, p.UserName, p.FullName, p.CreateTime });
+   && p.IsCanDelete == true
+                         select new { p.Id, p.OrganizationId, p.UserName, p.FullName, p.PositionId, p.CreateTime, p.Email, p.PhoneNumber, p.IsDelete, p.Status });
 
             int total = query.Count();
 
@@ -89,8 +90,12 @@ namespace WebMerch.Controllers
                     Id = item.Id,
                     OrganizationId = item.OrganizationId,
                     UserName = item.UserName,
+                    Email = item.Email,
                     FullName = item.UserName,
-                    CreateTime = item.CreateTime,
+                    PositionName = item.PositionId.GetCnName(),
+                    PhoneNumber = item.PhoneNumber,
+                    StatusName = item.Status.GetCnName(),
+                    CreateTime = item.CreateTime.ToUnifiedFormatDateTime()
                 });
             }
 

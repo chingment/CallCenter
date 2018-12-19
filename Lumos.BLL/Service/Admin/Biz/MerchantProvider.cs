@@ -76,6 +76,7 @@ namespace Lumos.BLL.Service.Admin
                 sysMerchatUser.RegisterTime = this.DateTime;
                 sysMerchatUser.Status = Enumeration.UserStatus.Normal;
                 sysMerchatUser.BelongSite = Enumeration.BelongSite.Merchant;
+                sysMerchatUser.IsCanDelete = false;
                 sysMerchatUser.CreateTime = this.DateTime;
                 sysMerchatUser.Creator = operater;
                 sysMerchatUser.MerchantId = merchantId;

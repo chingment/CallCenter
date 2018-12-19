@@ -101,18 +101,19 @@ namespace Lumos.BLL.Service.Merch
                 CurrentDb.SysMerchantUser.Add(user);
 
 
-                var calloutDataLimit = new CalloutTakeDataLimit();
-                calloutDataLimit.Id = GuidUtil.New();
-                calloutDataLimit.MerchantId = merchantId;
-                calloutDataLimit.SalesmanId = user.Id;
-                calloutDataLimit.TaskQuantity = 0;
-                calloutDataLimit.UnTakeQuantity = 0;
-                calloutDataLimit.TakedQuantity = 0;
-                calloutDataLimit.UnContactQuantity = 0;
-                calloutDataLimit.TargetQuantity = 0;
-                calloutDataLimit.InValidQuantity = 0;
-                calloutDataLimit.Creator = operater;
-                calloutDataLimit.CreateTime = this.DateTime;
+                var obTakeDataLimit = new ObTakeDataLimit();
+                obTakeDataLimit.Id = GuidUtil.New();
+                obTakeDataLimit.MerchantId = merchantId;
+                obTakeDataLimit.SalesmanId = user.Id;
+                obTakeDataLimit.TaskQuantity = 0;
+                obTakeDataLimit.UnTakeQuantity = 0;
+                obTakeDataLimit.TakedQuantity = 0;
+                obTakeDataLimit.UnContactQuantity = 0;
+                obTakeDataLimit.TargetQuantity = 0;
+                obTakeDataLimit.InValidQuantity = 0;
+                obTakeDataLimit.Creator = operater;
+                obTakeDataLimit.CreateTime = this.DateTime;
+                CurrentDb.ObTakeDataLimit.Add(obTakeDataLimit);
 
                 CurrentDb.SaveChanges();
 

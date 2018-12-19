@@ -166,8 +166,10 @@
     <Compile Include="Controllers\ObBatchController.cs" />
     <Compile Include="Controllers\HomeController.cs" />
     <Compile Include="Controllers\ObBatchAllocateController.cs" />
+    <Compile Include="Controllers\ObBatchDataController.cs" />
     <Compile Include="Controllers\ObCalloutController.cs" />
     <Compile Include="Controllers\ObCustomerController.cs" />
+    <Compile Include="Controllers\ObTakeDataLimitController.cs" />
     <Compile Include="Controllers\OrganizationController.cs" />
     <Compile Include="Controllers\UserController.cs" />
     <Compile Include="Global.asax.cs">
@@ -216,6 +218,8 @@
     <Content Include="Views\CarIns\DealtUnderwritingOrder.cshtml" />
     <Content Include="Views\_ViewStart.cshtml" />
     <Content Include="Views\ObCallout\CarInsUnderwritingOrderDetails.cshtml" />
+    <Content Include="Views\ObTakeDataLimit\ListByAdjust.cshtml" />
+    <Content Include="Views\ObBatchData\ListByReallocate.cshtml" />
     <None Include="Web.config">
       <SubType>Designer</SubType>
     </None>

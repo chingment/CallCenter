@@ -47,8 +47,8 @@ namespace Lumos.BLL.Service.Merch
                 if (obCustomer == null)
                 {
 
-                    var calloutTakeDataLimit = CurrentDb.CalloutTakeDataLimit.Where(m => m.MerchantId == merchantId && m.SalesmanId == salesmanId).FirstOrDefault();
-                    if (calloutTakeDataLimit == null || calloutTakeDataLimit.UnTakeQuantity <= 0)
+                    var obTakeDataLimit = CurrentDb.ObTakeDataLimit.Where(m => m.MerchantId == merchantId && m.SalesmanId == salesmanId).FirstOrDefault();
+                    if (obTakeDataLimit == null || obTakeDataLimit.UnTakeQuantity <= 0)
                     {
 
                         return new CustomJsonResult(ResultType.Failure, ResultCode.Failure, "您当前的外号任务量已经用完");
@@ -89,8 +89,8 @@ namespace Lumos.BLL.Service.Merch
                         obBatchAllocate.MendTime = this.DateTime;
                     }
 
-                    calloutTakeDataLimit.TakedQuantity += 1;
-                    calloutTakeDataLimit.UnTakeQuantity -= 1;
+                    obTakeDataLimit.TakedQuantity += 1;
+                    obTakeDataLimit.UnTakeQuantity -= 1;
 
 
                     CurrentDb.SaveChanges();
@@ -159,18 +159,18 @@ namespace Lumos.BLL.Service.Merch
 
                 var resultCodePrefix = rop.ResultCode.Substring(0, 1);
 
-                var calloutTakeDataLimit = CurrentDb.CalloutTakeDataLimit.Where(m => m.MerchantId == merchantId && m.SalesmanId == salesmanId).FirstOrDefault();
+                var obTakeDataLimit = CurrentDb.ObTakeDataLimit.Where(m => m.MerchantId == merchantId && m.SalesmanId == salesmanId).FirstOrDefault();
 
                 switch (resultCodePrefix)
                 {
                     case "1":
-                        calloutTakeDataLimit.UnContactQuantity += 1;
+                        obTakeDataLimit.UnContactQuantity += 1;
                         break;
                     case "2":
-                        calloutTakeDataLimit.TargetQuantity += 1;
+                        obTakeDataLimit.TargetQuantity += 1;
                         break;
                     case "3":
-                        calloutTakeDataLimit.InValidQuantity += 1;
+                        obTakeDataLimit.InValidQuantity += 1;
                         break;
                     default:
                         return new CustomJsonResult(ResultType.Failure, ResultCode.Failure, "保存成功失败,未知通话结果");

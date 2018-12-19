@@ -42,7 +42,7 @@ namespace Lumos.DAL
         public IDbSet<Order2CarInsKind> Order2CarInsKind { get; set; }
         public IDbSet<CustomerDealtTrack> CustomerDealtTrack { get; set; }
 
-        public IDbSet<CalloutTakeDataLimit> CalloutTakeDataLimit { get; set; }
+        public IDbSet<ObTakeDataLimit> ObTakeDataLimit { get; set; }
         protected override void OnModelCreating(DbModelBuilder modelBuilder)
         {
             base.OnModelCreating(modelBuilder);
