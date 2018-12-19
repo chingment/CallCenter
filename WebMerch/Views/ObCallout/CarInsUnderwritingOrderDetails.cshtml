@@ -1,0 +1,167 @@
+﻿@{
+    ViewBag.Title = "";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+@section scripts{
+    <script type="text/javascript">
+        var orderId = $.lumos.getUrlParamValue("orderId");
+        $(this).ready(function () {
+            getDetails();
+        });
+
+        function getDetails() {
+            $.lumos.getJson({
+                url: "/ObCallout/CarInsGetUnderwritingOrderDetails",
+                urlParams: { orderId: orderId },
+                isUseHandling: true,
+                success: function (d) {
+                    if (d.result == $.lumos.resultType.success) {
+                        var data = d.data;
+                        $('#gbr_page').html($("#page_tmpl").tmpl(data));
+                    }
+                }
+            });
+        }
+
+
+    </script>
+}
+
+<div id="gbr_page" class="gbr-row gbr-dialog">
+
+
+</div>
+
+
+<script id="page_tmpl" type="text/x-jquery-tmpl">
+
+    <table id="list_table" class="list-tb" cellpadding="0" cellspacing="0">
+        <thead>
+            <tr>
+                <th style="width:50%" class="no">
+                    险别
+
+                </th>
+                <th style="width:25%">
+                    保额金额/赔偿限额
+                </th>
+                <th style="width:25%">
+                    不计免赔
+                </th>
+            </tr>
+        </thead>
+
+        <tbody>
+
+            {{each(j,item) carInsKinds}}
+
+            <tr insKindId="${item.id}">
+                <td colspan="4">
+                    <div class="block-title1 clearfix">
+                        <div class="pull-left">
+                            <span>${item.name}</span>
+                        </div>
+                    </div>
+                </td>
+            </tr>
+
+            {{each(i,item2) item.child}}
+
+            <tr insKindId="${item2.id}">
+                <td>
+                    ${item2.name}
+                </td>
+                <td>
+                    ${item2.inputValue}
+                    ${item2.inputUnit}
+                </td>
+                <td>
+
+                    {{if item2.canWaiverDeductible}}
+                    <div class="btn-check" data-state='${item2.isSelectedWaiverDeductible==true?"on":"off"}'>
+                        &nbsp;
+                    </div>
+                    {{/if}}
+                </td>
+            </tr>
+            {{/each}}
+
+
+            {{/each}}
+
+
+        </tbody>
+
+    </table>
+    <div class="gbr-row-title clearfix">
+        <div class="pull-left">
+            <h5>核保金额</h5>
+        </div>
+        <div class="pull-right f-tb1-item-pull-right">
+            <h6></h6>
+        </div>
+    </div>
+
+    <div style="margin:10px 0px;">
+        交强险：<span>${unCompulsoryAmount}</span>
+        车船税：<span>${unTravelTaxAmount}</span>
+        商业险：<span>${unCommercialAmount}</span>
+        合计：<span id="lbl">${unTotalAmount}</span>
+    </div>
+    <div class="gbr-row-title clearfix">
+        <div class="pull-left">
+            <h5>核保信息</h5>
+        </div>
+        <div class="pull-right f-tb1-item-pull-right">
+            <h6></h6>
+        </div>
+    </div>
+    <table class="f-tb1-detail" style="text-align:center; width:200px;">
+        <tr style="vertical-align:top">
+            <td>
+                <div>
+                    <span class="uploadimgbox" upload="false">
+                        <span class="uploadimg" inputname="txt.UnOrderImgUrl">
+                            <img src="${unOrderImgUrl}" />
+                        </span>
+                        <span class="uploadimg-view" style="">预览</span>
+                    </span>
+                </div>
+                <div>
+                    <span>核保单</span>
+                </div>
+            </td>
+            <td>
+                <div>
+                    <span class="uploadimgbox" upload="false">
+                        <span class="uploadimg" inputname="txt.UnPayImgUrl">
+                            <img src="${unPayImgUrl}" />
+                        </span>
+                        <span class="uploadimg-view" style="">预览</span>
+                    </span>
+                </div>
+                <div>
+                    <span>支付二维码</span>
+                </div>
+            </td>
+        </tr>
+    </table>
+
+    <div class="gbr-row-title clearfix">
+        <div class="pull-left">
+            <h5>告知备注</h5>
+        </div>
+        <div class="pull-right f-tb1-item-pull-right">
+            <h6></h6>
+        </div>
+    </div>
+
+    <p>
+        ${unAuditComments}
+    </p>
+   
+</script>
+
+
+

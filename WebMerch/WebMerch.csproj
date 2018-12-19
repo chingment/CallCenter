@@ -214,6 +214,8 @@
     <Content Include="Views\ObCustomer\List.cshtml" />
     <Content Include="Views\CarIns\ListByDealtUnderwritingOrder.cshtml" />
     <Content Include="Views\CarIns\DealtUnderwritingOrder.cshtml" />
+    <Content Include="Views\_ViewStart.cshtml" />
+    <Content Include="Views\ObCallout\CarInsUnderwritingOrderDetails.cshtml" />
     <None Include="Web.config">
       <SubType>Designer</SubType>
     </None>

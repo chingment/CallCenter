@@ -15,6 +15,11 @@ namespace WebMerch.Controllers
             return View();
         }
 
+        public ActionResult CarInsUnderwritingOrderDetails()
+        {
+            return View();
+        }
+
         public CustomJsonResult TakeData()
         {
             return MerchServiceFactory.ObCallout.TakeData(this.CurrentUserId, this.CurrentMerchantId, this.CurrentUserId);
@@ -29,17 +34,17 @@ namespace WebMerch.Controllers
 
         public CustomJsonResult CarInsGetKind()
         {
-            return MerchServiceFactory.CarIns.CarInsGetKind(this.CurrentUserId, this.CurrentMerchantId);
+            return MerchServiceFactory.CarIns.GetKind(this.CurrentUserId, this.CurrentMerchantId);
         }
 
-        public CustomJsonResult CarInsGetUnderwritingOrder()
+        public CustomJsonResult CarInsGetUnderwritingOrderDetails(string orderId)
         {
-            return MerchServiceFactory.CarIns.CarInsGetKind(this.CurrentUserId, this.CurrentMerchantId);
+            return MerchServiceFactory.CarIns.GetUnderwritingOrderDetails(this.CurrentUserId, this.CurrentMerchantId, orderId);
         }
 
         public CustomJsonResult CarInsSubmitUnderwriting(RopObCalloutCarInsSubmitUnderwriting rop)
         {
-            return MerchServiceFactory.CarIns.CarInsSubmitUnderwriting(this.CurrentUserId, this.CurrentMerchantId, this.CurrentUserId, rop);
+            return MerchServiceFactory.CarIns.SubmitUnderwriting(this.CurrentUserId, this.CurrentMerchantId, this.CurrentUserId, rop);
         }
 
         public CustomJsonResult GetDealtTrack(string customerId)

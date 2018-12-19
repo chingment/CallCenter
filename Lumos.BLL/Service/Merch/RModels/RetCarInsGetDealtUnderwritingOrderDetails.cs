@@ -28,5 +28,12 @@ namespace Lumos.BLL.Service.Merch
         public List<CarInsPKindModel> CarInsKinds { get; set; }
 
         public string UnAuditComments { get; set; }
+
+        public string UnCompulsoryAmount { get; set; }
+        public string UnTravelTaxAmount { get; set; }
+        public string UnCommercialAmount { get; set; }
+        public string UnTotalAmount { get; set; }
+        public string UnOrderImgUrl { get; set; }
+        public string UnPayImgUrl { get; set; }
     }
 }

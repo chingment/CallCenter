@@ -161,7 +161,7 @@ namespace Lumos.BLL.Service.Merch
                 string url = "";
                 if (item.OrderFollowStatus == Enumeration.OrderFollowStatus.CarInsAlUnderwrie)
                 {
-                    url = "wwww.baidu.ciom";
+                    url = "/ObCallout/CarInsUnderwritingOrderDetails?orderId=" + item.OrderId;
                 }
 
                 tracks.Add(new CustomerDealtTrackModel { Message = item.Remarks, DealtTime = item.DealtTime.ToUnifiedFormatDateTime(), Url = url });
