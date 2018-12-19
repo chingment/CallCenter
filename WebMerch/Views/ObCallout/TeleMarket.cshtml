@@ -201,9 +201,14 @@
                 });
 
                 var customerId = takeDataResult.obCustomerId;
-                var ofCompulsoryAmount = $('#txt_OfCompulsoryAmount').val();
-                var ofTravelTaxAmount = $('#txt_OfTravelTaxAmount').val();
-                var ofCommercialAmount = $('#txt_OfCommercialAmount').val();
+                var ofCompulsoryAmount = parseFloat($('#txt_OfCompulsoryAmount').val());
+                var ofTravelTaxAmount = parseFloat($('#txt_OfTravelTaxAmount').val());
+                var ofCommercialAmount = parseFloat($('#txt_OfCommercialAmount').val());
+
+                if ((ofCompulsoryAmount + ofTravelTaxAmount + ofCommercialAmount) <= 0) {
+                    $.lumos.tips("报价金额必须大于0");
+                    return;
+                }
 
                 art.dialog.confirm('确定要提交核保？', function () {
 
