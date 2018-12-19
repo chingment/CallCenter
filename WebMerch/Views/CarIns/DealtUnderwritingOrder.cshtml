@@ -8,6 +8,15 @@
         var orderId = $.lumos.getUrlParamValue("orderId");
         $(this).ready(function () {
             getDetails();
+
+            $('#txt_UnCompulsoryAmount,#txt_UnTravelTaxAmount,#txt_UnCommercialAmount').live("keyup", function () {
+
+                var n1 = parseFloat($('#txt_UnCompulsoryAmount').val());
+                var n2 = parseFloat($('#txt_UnTravelTaxAmount').val());
+                var n3 = parseFloat($('#txt_UnCommercialAmount').val());
+                //console.log("n1:" + n1 + ",n2:" + n2 + ",n3:" + n3);
+                $('#lbl_UnTotalAmount').text(n1 + n2 + n3)
+            })
         });
 
         function getDetails() {
@@ -20,6 +29,9 @@
                         var data = d.data;
                         $('#gbr_page').html($("#page_tmpl").tmpl(data));
                         $.lumos.parentDialog.refresh(2);
+                        $('#txt_UnCompulsoryAmount').decimalInput(2);
+                        $('#txt_UnTravelTaxAmount').decimalInput(2);
+                        $('#txt_UnCommercialAmount').decimalInput(2);
                     }
                 }
             });
@@ -40,12 +52,17 @@
 
             art.dialog.confirm(msg, function () {
 
-                var underwriterAuditComments = $("#txt_UnderwriterAuditComments").val();
+                var unAuditComments = $("#txt_UnAuditComments").val();
+                var unOrderImgUrl = $("#txt_UnOrderImgUrl").val();
+                var unPayImgUrl = $("#txt_UnPayImgUrl").val();
+                var unCompulsoryAmount = $("#txt_UnCompulsoryAmount").val();
+                var unTravelTaxAmount = $("#txt_UnTravelTaxAmount").val();
+                var unCommercialAmount = $("#txt_UnCommercialAmount").val();
 
                 $.lumos.postJson({
                     url: "/CarIns/DealtUnderwritingOrder",
                     isUseHandling: true,
-                    data: { operate: operate, orderId: orderId, underwriterAuditComments: underwriterAuditComments },
+                    data: { operate: operate, orderId: orderId, unCompulsoryAmount: unCompulsoryAmount, unTravelTaxAmount: unTravelTaxAmount, unCommercialAmount: unCommercialAmount, unAuditComments: unAuditComments, unOrderImgUrl: unOrderImgUrl, unPayImgUrl: unPayImgUrl },
                     success: function (d) {
                         if (d.result == $.lumos.resultType.success) {
 
@@ -217,13 +234,69 @@
         </div>
         <div class="gbr-row-title clearfix">
             <div class="pull-left">
+                <h5>核保信息</h5>
+            </div>
+            <div class="pull-right f-tb1-item-pull-right">
+                <h6></h6>
+            </div>
+        </div>
+        <table class="f-tb1-detail" style="text-align:center; width:200px;">
+            <tr style="vertical-align:top">
+                <td>
+                    <div>
+                        <span class="uploadimgbox" upload="true">
+                            <span class="uploadimg" inputname="txt.UnOrderImgUrl">
+                                <img src="/Static/default1.jpg" />
+                                <span class="uploadimg-click">上传</span>
+                                <input name="txt.UnOrderImgUrl" class="insureimgurl" id="txt_UnOrderImgUrl" type="hidden" value="">
+                            </span>
+                            <span class="uploadimg-view" style="">预览</span>
+                        </span>
+                    </div>
+                    <div>
+                        <span>核保单</span>
+                    </div>
+                </td>
+                <td>
+                    <div>
+                        <span class="uploadimgbox" upload="true">
+                            <span class="uploadimg" inputname="txt.UnPayImgUrl">
+                                <img src="/Static/default1.jpg" />
+                                <span class="uploadimg-click">上传</span>
+                                <input name="txt.UnPayImgUrl" class="insureimgurl" id="txt_UnPayImgUrl" type="hidden" value="">
+                            </span>
+                            <span class="uploadimg-view" style="">预览</span>
+                        </span>
+                    </div>
+                    <div>
+                        <span>支付二维码</span>
+                    </div>
+                </td>
+            </tr>
+        </table>
+        <div class="gbr-row-title clearfix">
+            <div class="pull-left">
+                <h5>核保金额</h5>
+            </div>
+            <div class="pull-right f-tb1-item-pull-right">
+                <h6></h6>
+            </div>
+        </div>
+        <div style="margin:10px 0px;">
+            交强险：<input type="text" autocomplete="off" id="txt_UnCompulsoryAmount" style="width:80px;" value="${ofCompulsoryAmount}" class="input-control" />
+            车船税：<input type="text" autocomplete="off" id="txt_UnTravelTaxAmount" style="width:80px;" value="${ofTravelTaxAmount}" class="input-control" />
+            商业险：<input type="text" autocomplete="off" id="txt_UnCommercialAmount" style="width:80px;" value="${ofCommercialAmount}" class="input-control" />
+            合计：<span id="lbl_UnTotalAmount">${ofTotalAmount}</span>
+        </div>
+        <div class="gbr-row-title clearfix">
+            <div class="pull-left">
                 <h5>告知备注</h5>
             </div>
             <div class="pull-right f-tb1-item-pull-right">
                 <h6></h6>
             </div>
         </div>
-        <textarea class="input-control" id="txt_UnderwriterAuditComments" style="width:98%;">${underwriterAuditComments}</textarea>
+        <textarea class="input-control" id="txt_UnAuditComments" style="width:98%;">${unAuditComments}</textarea>
     </div>
 
 </script>

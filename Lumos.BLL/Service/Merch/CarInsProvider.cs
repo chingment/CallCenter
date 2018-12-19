@@ -64,7 +64,7 @@ namespace Lumos.BLL.Service.Merch
             ret.OfTravelTaxAmount = order2CarIns.OfTravelTaxAmount.ToF2Price();
             ret.OfTotalAmount = order2CarIns.OfTotalAmount.ToF2Price();
 
-            ret.UnderwriterAuditComments = order2CarIns.UnderwriterAuditComments;
+            ret.UnAuditComments = order2CarIns.UnAuditComments;
 
             var order2CarInsKinds = CurrentDb.Order2CarInsKind.Where(m => m.OrderId == orderId).ToList();
 
@@ -142,9 +142,22 @@ namespace Lumos.BLL.Service.Merch
             switch (rop.Operate)
             {
                 case Enumeration.OperateType.Save:
-
+                    order2CarIns.UnCompulsoryAmount = rop.UnCompulsoryAmount;
+                    order2CarIns.UnTravelTaxAmount = rop.UnTravelTaxAmount;
+                    order2CarIns.UnCommercialAmount = rop.UnCommercialAmount;
+                    order2CarIns.UnTotalAmount = rop.UnCompulsoryAmount + rop.UnTravelTaxAmount + rop.UnCommercialAmount;
+                    order2CarIns.UnOrderImgUrl = rop.UnOrderImgUrl;
+                    order2CarIns.UnPayImgUrl = rop.UnPayImgUrl;
+                    order2CarIns.UnAuditComments = rop.UnAuditComments;
                     break;
                 case Enumeration.OperateType.Submit:
+                    order2CarIns.UnCompulsoryAmount = rop.UnCompulsoryAmount;
+                    order2CarIns.UnTravelTaxAmount = rop.UnTravelTaxAmount;
+                    order2CarIns.UnCommercialAmount = rop.UnCommercialAmount;
+                    order2CarIns.UnTotalAmount = rop.UnCompulsoryAmount + rop.UnTravelTaxAmount + rop.UnCommercialAmount;
+                    order2CarIns.UnOrderImgUrl = rop.UnOrderImgUrl;
+                    order2CarIns.UnPayImgUrl = rop.UnPayImgUrl;
+                    order2CarIns.UnAuditComments = rop.UnAuditComments;
                     order2CarIns.Status = Enumeration.OrderStatus.WaitPay;
                     order2CarIns.FollowStatus = Enumeration.OrderFollowStatus.CarInsAlUnderwrie;
                     MerchServiceFactory.Customer.AddDealtTrack(operater, order2CarIns.UnderwriterName + ",核保完成", order2CarIns.MerchantId, order2CarIns.CustomerId, order2CarIns.Id, order2CarIns.FollowStatus);
@@ -154,7 +167,6 @@ namespace Lumos.BLL.Service.Merch
 
             }
 
-            order2CarIns.UnderwriterAuditComments = rop.UnderwriterAuditComments;
             order2CarIns.Mender = operater;
             order2CarIns.MendTime = this.DateTime;
             CurrentDb.SaveChanges();

@@ -27,6 +27,6 @@ namespace Lumos.BLL.Service.Merch
         public string OfTotalAmount { get; set; }
         public List<CarInsPKindModel> CarInsKinds { get; set; }
 
-        public string UnderwriterAuditComments { get; set; }
+        public string UnAuditComments { get; set; }
     }
 }
