@@ -32,7 +32,9 @@ namespace Lumos.Entity
         public enum UserStatus
         {
             Unknow = 0,
+            [Remark("正常")]
             Normal = 1,
+            [Remark("禁用")]
             Disable = 2
         }
 

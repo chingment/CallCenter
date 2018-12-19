@@ -14,7 +14,7 @@
             $("#sel_Positions").formValidator().inputValidator({ min: 1, max: 500, onError: "请选择职位" });
             $("#txt_Email").formValidator().regexValidator({ min: 0, max: 100, regExp: regexEnum.email, onError: "邮箱格式且不能超过100个字符" });
             $("#txt_PhoneNumber").formValidator().regexValidator({ min: 0, max: 100, regExp: regexEnum.mobile, onError: "手机号码格式" });
-            //$("#sel_DataRightTypes").formValidator().inputValidator({ min: 1, max: 500, onError: "请选择数据访问" });
+            $("#sel_Status").formValidator().inputValidator({ min: 1, max: 500, onError: "请选择状态" });
 
             $("#abtn-editPwd").toggle(function () {
                 $("#lbl_Password").hide();
@@ -50,7 +50,7 @@
                         $("#txt_PhoneNumber").val(data.phoneNumber);
                         $('#sel_Positions').myChosen({ urlParams: { type: "SysPosition" }, selectedValue: data.positionId });
                         $('#sel_Organizations').myChosen({ urlParams: { type: "SysOrganization" }, selectedValue: data.organizationId });
-                        //$('#sel_DataRightTypes').myChosen({ isUseUrl: false, selectedValue: data.dataRightType });
+                        $('#sel_Status').myChosen({ isUseUrl: false, selectedValue: data.status });
                     }
                 }
             });
@@ -80,12 +80,12 @@
                 var phoneNumber = $("#txt_PhoneNumber").val();
                 var positionId = $("#sel_Positions").val();
                 var organizationId = $("#sel_Organizations").val();
-                //var dataRightType = $("#sel_DataRightTypes").val();
+                var status = $("#sel_Status").val();
 
                 $.lumos.postJson({
                     url: "/User/Edit",
                     isUseHandling: true,
-                    data: { id: id, userName: userName, password: password, fullName: fullName, email: email, phoneNumber: phoneNumber, positionId: positionId, organizationId: organizationId, dataRightType: 0 },
+                    data: { id: id, userName: userName, password: password, fullName: fullName, email: email, phoneNumber: phoneNumber, positionId: positionId, organizationId: organizationId, dataRightType: 0, status: status },
                     success: function (d) {
                         if (d.result == $.lumos.resultType.success) {
                             $.lumos.parentDialog.refresh(2);
@@ -177,18 +177,18 @@
                 <input id="txt_PhoneNumber" class="input-control" type="text" value="" style="width: 224px;" autocomplete="off" />
             </td>
         </tr>
-        @*<tr>
+        <tr>
             <td class="f-tb-t">
-                <span class="required-symbol">*</span>数据访问：
+                <span class="required-symbol">*</span>状态：
             </td>
             <td class="f-tb-c">
-                <select id="sel_DataRightTypes" data-placeholder="请选择" class="chosen-select" style="width:200px">
+                <select id="sel_Status" data-placeholder="请选择" class="chosen-select" style="width:200px">
                     <option value="-1"></option>
-                    <option value="1">仅自己</option>
-                    <option value="2">本机构及下属机构</option>
+                    <option value="1">正常</option>
+                    <option value="2">禁用</option>
                 </select>
             </td>
-        </tr>*@
+        </tr>
         <tr style="display:none">
             <td class="f-tb-t"></td>
             <td class="f-tb-c">

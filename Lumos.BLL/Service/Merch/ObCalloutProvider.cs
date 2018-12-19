@@ -35,6 +35,14 @@ namespace Lumos.BLL.Service.Merch
             {
                 var ret = new RetObCalloutTakeData();
 
+
+                var taker = CurrentDb.SysMerchantUser.Where(m => m.Id == takerId).FirstOrDefault();
+
+                if (taker.Status != Enumeration.UserStatus.Normal)
+                {
+                    return new CustomJsonResult(ResultType.Failure, ResultCode.Failure, "该账号已被禁用");
+                }
+
                 var obCustomer = CurrentDb.ObCustomer.Where(m => m.MerchantId == merchantId && m.IsUseCall == false && m.TakerId == takerId).FirstOrDefault();
                 if (obCustomer == null)
                 {

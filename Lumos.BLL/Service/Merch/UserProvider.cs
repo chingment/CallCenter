@@ -60,6 +60,7 @@ namespace Lumos.BLL.Service.Merch
                 ret.PhoneNumber = user.PhoneNumber ?? "";
                 ret.OrganizationId = user.OrganizationId;
                 ret.PositionId = user.PositionId;
+                ret.Status = user.Status;
             }
 
             return new CustomJsonResult(ResultType.Success, ResultCode.Success, "获取成功", ret);
@@ -129,6 +130,7 @@ namespace Lumos.BLL.Service.Merch
                 user.PhoneNumber = rop.PhoneNumber;
                 user.OrganizationId = rop.OrganizationId;
                 user.PositionId = rop.PositionId;
+                user.Status = rop.Status;
                 user.MendTime = DateTime.Now;
                 user.Mender = operater;
                 CurrentDb.SaveChanges();
