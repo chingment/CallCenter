@@ -338,10 +338,16 @@
         function getDealtTrack() {
 
             var ul_dealtTrack = $('#ul_dealtTrack');
+            var customerId = "";
+            if (takeDataResult != null) {
+                if (typeof takeDataResult.obCustomerId != "undefined") {
+                    customerId = takeDataResult.obCustomerId
+                }
+            }
 
             $.lumos.getJson({
                 url: "/ObCallout/GetDealtTrack",
-                urlParams: { customerId: takeDataResult.obCustomerId },
+                urlParams: { customerId: customerId },
                 isShowLoading: true,
                 success: function (d) {
                     if (d.result == $.lumos.resultType.success) {

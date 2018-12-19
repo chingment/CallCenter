@@ -119,39 +119,65 @@ namespace Lumos.BLL.Service.Merch
 
         public CustomJsonResult Edit(string operater, string merchantId, RopOrganizationEdit rop)
         {
-            var organization = CurrentDb.Organization.Where(m => m.MerchantId == merchantId && m.Id == rop.Id).FirstOrDefault();
-            if (organization == null)
+            using (TransactionScope ts = new TransactionScope())
             {
-                return new CustomJsonResult(ResultType.Failure, ResultCode.Failure, "数据为空");
+                var organization = CurrentDb.Organization.Where(m => m.MerchantId == merchantId && m.Id == rop.Id).FirstOrDefault();
+                if (organization == null)
+                {
+                    return new CustomJsonResult(ResultType.Failure, ResultCode.Failure, "数据为空");
+                }
+
+                var fathters = GetFathers(merchantId, organization.PId);
+                int dept = fathters.Count;
+                var isExists = CurrentDb.Organization.Where(m => m.PId == organization.PId && m.Name == rop.Name && m.Dept == dept && m.Id != rop.Id).FirstOrDefault();
+                if (isExists != null)
+                {
+                    return new CustomJsonResult(ResultType.Failure, ResultCode.Failure, string.Format("保存失败，该名称({0})已被同一级别使用", rop.Name));
+                }
+
+                string fullName = "";
+                foreach (var item in fathters)
+                {
+                    fullName += item.Name + "-";
+                }
+
+                fullName += rop.Name;
+
+
+                var sons = GetSons(merchantId, rop.Id);
+
+                foreach (var item in sons)
+                {
+                    var l_fathters = GetFathers(merchantId, item.Id);
+
+                    string l_fullName = "";
+                    foreach (var l_fathter in l_fathters)
+                    {
+                        l_fullName += l_fathter.Name + "-";
+                    }
+
+                    if (!string.IsNullOrEmpty(l_fullName))
+                    {
+                        l_fullName = l_fullName.Substring(0, l_fullName.Length - 1);
+                    }
+
+                    item.FullName = l_fullName;
+
+                }
+
+
+                organization.Name = rop.Name;
+                organization.FullName = fullName;
+                organization.Dept = dept;
+                organization.Status = rop.Status;
+                organization.Description = rop.Description;
+                organization.HeaderId = rop.HeaderId;
+                organization.Mender = operater;
+                organization.MendTime = DateTime.Now;
+                CurrentDb.SaveChanges();
+                ts.Complete();
+                return new CustomJsonResult(ResultType.Success, ResultCode.Success, "保存成功");
             }
-
-            var fathters = GetFathers(merchantId, organization.PId);
-            int dept = fathters.Count;
-            var isExists = CurrentDb.Organization.Where(m => m.PId == organization.PId && m.Name == rop.Name && m.Dept == dept && m.Id != rop.Id).FirstOrDefault();
-            if (isExists != null)
-            {
-                return new CustomJsonResult(ResultType.Failure, ResultCode.Failure, string.Format("保存失败，该名称({0})已被同一级别使用", rop.Name));
-            }
-
-            string fullName = "";
-            foreach (var item in fathters)
-            {
-                fullName += item.Name + "-";
-            }
-
-            fullName += rop.Name;
-
-            organization.Name = rop.Name;
-            organization.FullName = fullName;
-            organization.Dept = dept;
-            organization.Status = rop.Status;
-            organization.Description = rop.Description;
-            organization.HeaderId = rop.HeaderId;
-            organization.Mender = operater;
-            organization.MendTime = DateTime.Now;
-            CurrentDb.SaveChanges();
-
-            return new CustomJsonResult(ResultType.Success, ResultCode.Success, "保存成功");
 
         }
 
