@@ -53,7 +53,10 @@
 
 
             $('#btn_select_user').live('click', function () {
-                art.dialog.open('/User/ListBySelect', {
+
+                var organizationId = $(this).attr("organizationId");
+
+                art.dialog.open('/User/ListBySelect?organizationId=' + organizationId, {
                     id: "openDialog565", title: "选择", width: '600px', height: '530px', lock: true, drag: false, cancelVal: '关闭', cancel: true
                 });
             });

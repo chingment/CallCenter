@@ -17,6 +17,7 @@
                 click: function (index, key) {
 
                     $("input[name=OrganizationId]").val(key);
+                    $("#btn_select_user").attr("organizationId", key);
 
                     switch (index) {
                         case 0:
@@ -420,7 +421,7 @@
                                     <td class="f-tb-c">
                                         <span id="lbl_Header_Name"></span>
                                         <input type="hidden" id="txt_HeaderId" value="" />
-                                        <input type="button" class="btn" id="btn_select_user" value="选择" dialog-title="选择" />
+                                        <input type="button" class="btn" id="btn_select_user" organizationId="" value="选择" dialog-title="选择" />
                                     </td>
                                 </tr>
                                 <tr>

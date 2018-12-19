@@ -4,10 +4,11 @@
 }
 
 <script type="text/javascript">
-
+    var organizationId = $.lumos.getUrlParamValue("organizationId");
     var listTable;
-
     $(document).ready(function () {
+        $("input[name=OrganizationId]").val(organizationId);
+
         listTable = $("#list_table").loadDataTable({
             url: "/User/GetList",
             pageIndex: 0,
@@ -49,6 +50,7 @@
 
 <div class="gbr-row gbr-dialog">
     <form id="form1" name="form1">
+        <input type="hidden" name="OrganizationId" />
         <div class="search-bar">
             <div class="filter">
                 <span class="filter-label">用户名：</span>
