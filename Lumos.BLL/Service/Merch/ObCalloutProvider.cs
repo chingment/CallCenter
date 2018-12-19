@@ -27,7 +27,7 @@ namespace Lumos.BLL.Service.Merch
             return query.ToList().Concat(query.ToList().SelectMany(t => GetFatherObBatchAllocateList(list, t.PId)));
         }
 
-        public CustomJsonResult TakeData(string operater, string merchantId, string takerId)
+        public CustomJsonResult TakeData(string operater, string merchantId, string salesmanId)
         {
             CustomJsonResult result = new CustomJsonResult();
 
@@ -36,24 +36,33 @@ namespace Lumos.BLL.Service.Merch
                 var ret = new RetObCalloutTakeData();
 
 
-                var taker = CurrentDb.SysMerchantUser.Where(m => m.Id == takerId).FirstOrDefault();
+                var taker = CurrentDb.SysMerchantUser.Where(m => m.Id == salesmanId).FirstOrDefault();
 
                 if (taker.Status != Enumeration.UserStatus.Normal)
                 {
                     return new CustomJsonResult(ResultType.Failure, ResultCode.Failure, "该账号已被禁用");
                 }
 
-                var obCustomer = CurrentDb.ObCustomer.Where(m => m.MerchantId == merchantId && m.IsUseCall == false && m.TakerId == takerId).FirstOrDefault();
+                var obCustomer = CurrentDb.ObCustomer.Where(m => m.MerchantId == merchantId && m.IsUseCall == false && m.SalesmanId == salesmanId).FirstOrDefault();
                 if (obCustomer == null)
                 {
-                    obCustomer = CurrentDb.ObCustomer.Where(m => m.MerchantId == merchantId && m.IsTake == false && m.BelongerId == takerId).OrderBy(x => Guid.NewGuid()).FirstOrDefault();
+
+                    var calloutTakeDataLimit = CurrentDb.CalloutTakeDataLimit.Where(m => m.MerchantId == merchantId && m.SalesmanId == salesmanId).FirstOrDefault();
+                    if (calloutTakeDataLimit == null || calloutTakeDataLimit.UnTakeQuantity <= 0)
+                    {
+
+                        return new CustomJsonResult(ResultType.Failure, ResultCode.Failure, "您当前的外号任务量已经用完");
+                    }
+
+
+                    obCustomer = CurrentDb.ObCustomer.Where(m => m.MerchantId == merchantId && m.IsTake == false && m.BelongerId == salesmanId).OrderBy(x => Guid.NewGuid()).FirstOrDefault();
 
                     if (obCustomer == null)
                     {
                         return new CustomJsonResult(ResultType.Failure, ResultCode.Failure, "没有可外呼的数据");
                     }
 
-                    obCustomer.TakerId = takerId;
+                    obCustomer.SalesmanId = salesmanId;
                     obCustomer.IsTake = true;
                     obCustomer.TakeTime = this.DateTime;
                     obCustomer.IsUseCall = false;
@@ -79,6 +88,10 @@ namespace Lumos.BLL.Service.Merch
                         obBatchAllocate.Mender = operater;
                         obBatchAllocate.MendTime = this.DateTime;
                     }
+
+                    calloutTakeDataLimit.TakedQuantity += 1;
+                    calloutTakeDataLimit.UnTakeQuantity -= 1;
+
 
                     CurrentDb.SaveChanges();
                     ts.Complete();
@@ -111,13 +124,13 @@ namespace Lumos.BLL.Service.Merch
 
         }
 
-        public CustomJsonResult SaveCallRecored(string operater, string merchantId, RopObCalloutSaveCallRecored rop)
+        public CustomJsonResult SaveCallRecored(string operater, string merchantId, string salesmanId, RopObCalloutSaveCallRecored rop)
         {
             CustomJsonResult result = new CustomJsonResult();
 
             using (TransactionScope ts = new TransactionScope())
             {
-                var obCustomer = CurrentDb.ObCustomer.Where(m => m.MerchantId == merchantId && m.IsTake == true && m.TakerId == rop.TakerId && m.Id == rop.CustomerId).FirstOrDefault();
+                var obCustomer = CurrentDb.ObCustomer.Where(m => m.MerchantId == merchantId && m.IsTake == true && m.SalesmanId == salesmanId && m.Id == rop.CustomerId).FirstOrDefault();
                 if (obCustomer == null)
                 {
                     return new CustomJsonResult(ResultType.Failure, ResultCode.Failure, "客户资料不存在");
@@ -134,6 +147,7 @@ namespace Lumos.BLL.Service.Merch
                 var callRecord = new CallRecord();
                 callRecord.Id = GuidUtil.New();
                 callRecord.MerchantId = merchantId;
+                callRecord.SalesmanId = salesmanId;
                 callRecord.CustomerId = rop.CustomerId;
                 callRecord.ResultCode = rop.ResultCode;
                 callRecord.NextCallTime = rop.NextCallTime;
@@ -141,6 +155,28 @@ namespace Lumos.BLL.Service.Merch
                 callRecord.Creator = operater;
                 callRecord.CreateTime = this.DateTime;
                 CurrentDb.CallRecord.Add(callRecord);
+
+
+                var resultCodePrefix = rop.ResultCode.Substring(0, 1);
+
+                var calloutTakeDataLimit = CurrentDb.CalloutTakeDataLimit.Where(m => m.MerchantId == merchantId && m.SalesmanId == salesmanId).FirstOrDefault();
+
+                switch (resultCodePrefix)
+                {
+                    case "1":
+                        calloutTakeDataLimit.UnContactQuantity += 1;
+                        break;
+                    case "2":
+                        calloutTakeDataLimit.TargetQuantity += 1;
+                        break;
+                    case "3":
+                        calloutTakeDataLimit.InValidQuantity += 1;
+                        break;
+                    default:
+                        return new CustomJsonResult(ResultType.Failure, ResultCode.Failure, "保存成功失败,未知通话结果");
+                }
+
+
                 CurrentDb.SaveChanges();
                 ts.Complete();
                 result = new CustomJsonResult(ResultType.Success, ResultCode.Success, "保存成功");

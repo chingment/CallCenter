@@ -15,7 +15,5 @@ namespace Lumos.BLL.Service.Merch
         public DateTime? NextCallTime { get; set; }
 
         public string Remark { get; set; }
-
-        public string TakerId { get; set; }
     }
 }

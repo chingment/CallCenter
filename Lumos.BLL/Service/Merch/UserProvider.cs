@@ -98,8 +98,22 @@ namespace Lumos.BLL.Service.Merch
                 user.RegisterTime = DateTime.Now;
                 user.Status = Enumeration.UserStatus.Normal;
                 user.SecurityStamp = Guid.NewGuid().ToString().Replace("-", "");
-
                 CurrentDb.SysMerchantUser.Add(user);
+
+
+                var calloutDataLimit = new CalloutTakeDataLimit();
+                calloutDataLimit.Id = GuidUtil.New();
+                calloutDataLimit.MerchantId = merchantId;
+                calloutDataLimit.SalesmanId = user.Id;
+                calloutDataLimit.TaskQuantity = 0;
+                calloutDataLimit.UnTakeQuantity = 0;
+                calloutDataLimit.TakedQuantity = 0;
+                calloutDataLimit.UnContactQuantity = 0;
+                calloutDataLimit.TargetQuantity = 0;
+                calloutDataLimit.InValidQuantity = 0;
+                calloutDataLimit.Creator = operater;
+                calloutDataLimit.CreateTime = this.DateTime;
+
                 CurrentDb.SaveChanges();
 
 

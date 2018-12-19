@@ -27,9 +27,9 @@ namespace WebMerch.Controllers
 
         public CustomJsonResult SaveCallRecored(RopObCalloutSaveCallRecored rop)
         {
-            rop.TakerId = this.CurrentUserId;
 
-            return MerchServiceFactory.ObCallout.SaveCallRecored(this.CurrentUserId, this.CurrentMerchantId, rop);
+
+            return MerchServiceFactory.ObCallout.SaveCallRecored(this.CurrentUserId, this.CurrentMerchantId, this.CurrentUserId, rop);
         }
 
         public CustomJsonResult CarInsGetKind()
