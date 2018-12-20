@@ -181,5 +181,17 @@ namespace Lumos.Entity
             CarInsAlUnderwrie = 6203
         }
 
+        public enum OrganizationType
+        {
+            [Remark("未知")]
+            Unknow = 0,
+            [Remark("呼叫中心")]
+            Center = 97,
+            [Remark("营业处")]
+            CenterBizAddress = 98,
+            [Remark("营业组")]
+            CenterBizGroup = 99
+        }
+
     }
 }

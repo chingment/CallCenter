@@ -183,8 +183,10 @@ namespace WebMerch.Controllers
             {
                 case "sysposition":
                     #region sysposition
-                    var sysPositions = CurrentDb.SysPosition.Where(m => m.BelongSite == Enumeration.BelongSite.Merchant).ToList();
-
+                    string organizationId = Request.QueryString["organizationId"] ?? "";
+                    var organization = CurrentDb.Organization.Where(m => m.Id == organizationId).FirstOrDefault();
+                    string dept = organization == null ? "-1" : organization.Dept.ToString();
+                    var sysPositions = CurrentDb.SysPosition.Where(m => m.BelongSite == Enumeration.BelongSite.Merchant && m.BelongOrganizationDepts.Contains(dept)).ToList();
                     foreach (var item in sysPositions)
                     {
                         fields.Add(new FieldModel(item.Name, ((int)item.Id).ToString()));

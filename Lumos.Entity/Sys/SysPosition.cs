@@ -32,5 +32,7 @@ namespace Lumos.Entity
 
         public Enumeration.DataRightType DataRightType { get; set; }
 
+        public string BelongOrganizationDepts { get; set; }
+
     }
 }

@@ -59,7 +59,6 @@ namespace Lumos.BLL.Service.Merch
                 ret.Name = organization.Name ?? "";
                 ret.Description = organization.Description ?? "";
                 ret.Status = organization.Status;
-
                 var header = CurrentDb.SysMerchantUser.Where(m => m.Id == organization.HeaderId).FirstOrDefault();
                 if (header != null)
                 {

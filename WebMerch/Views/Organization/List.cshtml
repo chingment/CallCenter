@@ -245,6 +245,7 @@
                         var data = d.data;
                         $("#lbl_PName").text(parentName);
                         $("#txt_Name").val(data.name);
+                        $("#lbl_TypeName").text(data.typeName);
                         $("#txt_Description").val(data.description);
 
                         $("#txt_HeaderId").val(data.headerId);
@@ -376,7 +377,7 @@
 }
 
 <div class="gbr-row gbr-page">
-
+    <div class="remark-tips"><span class="t">提醒：</span><span class="c">最大支持三级节点，依次类型:呼叫中心->营业处->营业组.</span></div>
     <dl class="tree-tab">
         <dd class="tree-tab-left">
             <ul id="maintree" class="ztree"></ul>
@@ -414,6 +415,14 @@
                                         <input type="text" autocomplete="off" value="" id="txt_Name" style="width: 250px;" class="input-control" />
                                     </td>
                                 </tr>
+                                @*<tr>
+                                    <td class="f-tb-t" style="width:50px">
+                                        类型：
+                                    </td>
+                                    <td class="f-tb-c">
+                                        <span id="lbl_TypeName"></span>
+                                    </td>
+                                </tr>*@
                                 <tr>
                                     <td class="f-tb-t">
                                         <span class="required-symbol">*</span> 机构负责人：

@@ -27,6 +27,8 @@ namespace WebMerch.Controllers
 
             var arr = CurrentDb.Organization.Where(m => m.IsDelete == false && m.MerchantId == this.CurrentMerchantId).OrderBy(m => m.Priority).ToArray();
 
+           
+
             object json = ConvertToZTreeJson(arr, "id", "pid", "name", "menu");
             return Json(ResultType.Success, json);
 
@@ -68,6 +70,8 @@ namespace WebMerch.Controllers
             var query = (from p in CurrentDb.SysMerchantUser
 
                          where
+                         (rup.UserName == null || p.UserName.Contains(rup.UserName)) &&
+                         (rup.FullName == null || p.FullName.Contains(rup.FullName)) &&
                          p.OrganizationId == rup.OrganizationId &&
    (name.Length == 0 || p.FullName.Contains(name))
    && p.MerchantId == this.CurrentMerchantId
@@ -91,7 +95,7 @@ namespace WebMerch.Controllers
                     OrganizationId = item.OrganizationId,
                     UserName = item.UserName,
                     Email = item.Email,
-                    FullName = item.UserName,
+                    FullName = item.FullName,
                     PositionName = item.PositionId.GetCnName(),
                     PhoneNumber = item.PhoneNumber,
                     StatusName = item.Status.GetCnName(),

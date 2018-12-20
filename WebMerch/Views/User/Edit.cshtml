@@ -25,8 +25,12 @@
                 $("#txt_Password").hide();
                 $("#txt_Password").val("");
                 $(this).text("修改");
-            }
-            );
+            });
+
+            $('#sel_Organizations').live('change', function () {
+                var val = $(this).find('option:selected').val();
+                $('#sel_Positions').myChosen({ urlParams: { type: "SysPosition", organizationId: val } });
+            });
 
             getDetails();
 
@@ -48,8 +52,10 @@
                         $("#txt_FullName").val(data.fullName);
                         $("#txt_Email").val(data.email);
                         $("#txt_PhoneNumber").val(data.phoneNumber);
-                        $('#sel_Positions').myChosen({ urlParams: { type: "SysPosition" }, selectedValue: data.positionId });
-                        $('#sel_Organizations').myChosen({ urlParams: { type: "SysOrganization" }, selectedValue: data.organizationId });
+
+                        $('#sel_Organizations').myChosen({ urlParams: { type: "SysOrganization", }, selectedValue: data.organizationId });
+                        $('#sel_Positions').myChosen({ urlParams: { type: "SysPosition", organizationId: data.organizationId }, selectedValue: data.positionId });
+
                         $('#sel_Status').myChosen({ isUseUrl: false, selectedValue: data.status });
                     }
                 }
