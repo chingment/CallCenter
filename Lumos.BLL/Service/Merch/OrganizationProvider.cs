@@ -104,7 +104,7 @@ namespace Lumos.BLL.Service.Merch
                 organization.Description = rop.Description;
                 organization.Status = Enumeration.OrganizationStatus.Valid;
                 organization.Dept = dept;
-                organization.HeaderId = rop.HeaderId;
+                //organization.HeaderId = rop.HeaderId;
                 organization.Creator = operater;
                 organization.CreateTime = DateTime.Now;
                 CurrentDb.Organization.Add(organization);
@@ -170,7 +170,7 @@ namespace Lumos.BLL.Service.Merch
                 organization.Dept = dept;
                 organization.Status = rop.Status;
                 organization.Description = rop.Description;
-                organization.HeaderId = rop.HeaderId;
+                //organization.HeaderId = rop.HeaderId;
                 organization.Mender = operater;
                 organization.MendTime = DateTime.Now;
                 CurrentDb.SaveChanges();

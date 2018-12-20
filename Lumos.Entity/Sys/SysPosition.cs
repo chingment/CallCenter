@@ -34,5 +34,7 @@ namespace Lumos.Entity
 
         public string BelongOrganizationDepts { get; set; }
 
+        public bool IsOrganizationHeader { get; set; }
+
     }
 }

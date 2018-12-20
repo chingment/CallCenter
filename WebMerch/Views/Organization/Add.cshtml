@@ -10,7 +10,7 @@
         $(this).ready(function () {
             $.formValidator.initConfig({ formID: "form1", onError: function (msg) { $.lumos.tips(msg); } });
             $("#txt_Name").formValidator().inputValidator({ min: 1, max: 20, onError: "名称须填,且不能超过20个字符" });
-            $("#txt_HeaderId").formValidator().inputValidator({ min: 1, max: 100, onError: "请选择机构负责人" });
+            //$("#txt_HeaderId").formValidator().inputValidator({ min: 1, max: 100, onError: "请选择机构负责人" });
             $("#txt_Description").formValidator().inputValidator({ min: 0, max: 500, onError: "描述不能超过500个字符" });
 
             initData();
@@ -83,7 +83,7 @@
                 <input type="text" autocomplete="off" id="txt_Name" style="width:250px;" class="input-control" />
             </td>
         </tr>
-        <tr>
+        @*<tr>
             <td class="f-tb-t">
                 <span class="required-symbol">*</span>机构负责人：
             </td>
@@ -92,7 +92,7 @@
                 <input type="hidden" id="txt_HeaderId" value="" />
                 <input type="button" class="btn" id="btn_select_user" value="选择" dialog-title="选择" />
             </td>
-        </tr>
+        </tr>*@
         <tr>
             <td class="f-tb-t">
                 备注：

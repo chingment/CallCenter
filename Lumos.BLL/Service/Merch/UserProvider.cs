@@ -118,6 +118,27 @@ namespace Lumos.BLL.Service.Merch
                 CurrentDb.SaveChanges();
 
 
+                var sysPosition = CurrentDb.SysPosition.Where(m => m.Id == rop.PositionId).FirstOrDefault();
+
+                if (sysPosition.IsOrganizationHeader)
+                {
+                    var organization = CurrentDb.Organization.Where(m => m.Id == rop.OrganizationId).FirstOrDefault();
+
+                    if (organization.HeaderId != user.Id)
+                    {
+                        var header = CurrentDb.SysMerchantUser.Where(m => m.Id == organization.HeaderId).FirstOrDefault();
+                        if (header.Status == Enumeration.UserStatus.Normal)
+                        {
+                            return new CustomJsonResult(ResultType.Failure, ResultCode.Failure, string.Format("该机构的负责人（{0}[{1}]）的账号正常使用中，如需替换负责人，请先将账号设置无效", header.FullName, header.UserName));
+                        }
+
+                    }
+
+                    organization.HeaderId = user.Id;
+
+                }
+
+
                 result = new CustomJsonResult(ResultType.Success, ResultCode.Success, "新建成功");
 
                 CurrentDb.SaveChanges();
@@ -150,10 +171,42 @@ namespace Lumos.BLL.Service.Merch
                 user.Mender = operater;
                 CurrentDb.SaveChanges();
 
-                result = new CustomJsonResult(ResultType.Success, ResultCode.Success, "保存成功");
+
+                var sysPosition = CurrentDb.SysPosition.Where(m => m.Id == rop.PositionId).FirstOrDefault();
+                var organization = CurrentDb.Organization.Where(m => m.Id == rop.OrganizationId).FirstOrDefault();
+
+                if (sysPosition.IsOrganizationHeader)
+                {
+                    if (!string.IsNullOrEmpty(organization.HeaderId))
+                    {
+                        if (organization.HeaderId != user.Id)
+                        {
+                            var header = CurrentDb.SysMerchantUser.Where(m => m.Id == organization.HeaderId).FirstOrDefault();
+                            if (header != null)
+                            {
+                                if (header.Status == Enumeration.UserStatus.Normal)
+                                    return new CustomJsonResult(ResultType.Failure, ResultCode.Failure, string.Format("该机构的负责人（{0}[{1}]）的账号正常使用中，如需替换负责人，请先将账号设置无效", header.FullName, header.UserName));
+                            }
+                        }
+                    }
+
+
+                    organization.HeaderId = user.Id;
+
+                }
+                else
+                {
+                    if (organization.HeaderId == user.Id)
+                    {
+                        organization.HeaderId = null;
+                    }
+                }
 
                 CurrentDb.SaveChanges();
                 ts.Complete();
+
+                result = new CustomJsonResult(ResultType.Success, ResultCode.Success, "保存成功");
+
             }
             return result;
 

@@ -35,7 +35,7 @@
 
             $.formValidator.initConfig({ formID: "form1", onError: function (msg) { $.lumos.tips(msg); } });
             $("#txt_Name").formValidator().inputValidator({ min: 1, max: 20, onError: "名称须填,且不能超过20个字符" });
-            $("#txt_HearderId").formValidator().inputValidator({ min: 1, max: 100, onError: "请选择机构负责人" });
+            //$("#txt_HearderId").formValidator().inputValidator({ min: 1, max: 100, onError: "请选择机构负责人" });
             $("#txt_Description").formValidator().inputValidator({ min: 0, max: 500, onError: "描述不能超过500个字符" });
 
             $("#maintree_add_node").click(function () {
@@ -110,12 +110,12 @@
                     $.lumos.postJson({
                         url: "/Organization/Edit",
                         data: { id: id, name: name, description: description, headerId, headerId, status: status },
-                        success: function (d) {
+                                success: function (d) {
                             $.lumos.tips(d.message);
                             if (d.result == $.lumos.resultType.success) {
                                 mainTreeLoadData();
                             }
-                        }
+                                }
                     });
                 });
 
@@ -248,8 +248,14 @@
                         $("#lbl_TypeName").text(data.typeName);
                         $("#txt_Description").val(data.description);
 
-                        $("#txt_HeaderId").val(data.headerId);
-                        $('#lbl_Header_Name').text(data.headerFullName + "(" + data.headerUserName + ")");
+ 
+                        if (!$.lumos.isNullOrEmpty(data.headerId)) {
+                            $("#txt_HeaderId").val(data.headerId);
+                            $('#lbl_Header_Name').text(data.headerFullName + "(" + data.headerUserName + ")");
+                        }
+                        else {
+                            $('#lbl_Header_Name').text("未设置");
+                        }
 
                         $("#sel_Status").find("option[value='" + data.status + "']").attr("selected", true);
                         $("#sel_Status").trigger("chosen:updated");
@@ -416,23 +422,35 @@
                                     </td>
                                 </tr>
                                 @*<tr>
-                                    <td class="f-tb-t" style="width:50px">
-                                        类型：
-                                    </td>
-                                    <td class="f-tb-c">
-                                        <span id="lbl_TypeName"></span>
-                                    </td>
-                                </tr>*@
+                                        <td class="f-tb-t" style="width:50px">
+                                            类型：
+                                        </td>
+                                        <td class="f-tb-c">
+                                            <span id="lbl_TypeName"></span>
+                                        </td>
+                                    </tr>*@
+                                @*<tr>
+                                        <td class="f-tb-t">
+                                            <span class="required-symbol">*</span> 机构负责人：
+                                        </td>
+                                        <td class="f-tb-c">
+                                            <span id="lbl_Header_Name"></span>
+                                            <input type="hidden" id="txt_HeaderId" value="" />
+                                            <input type="button" class="btn" id="btn_select_user" organizationId="" value="选择" dialog-title="选择" />
+                                        </td>
+                                    </tr>*@
+
                                 <tr>
                                     <td class="f-tb-t">
-                                        <span class="required-symbol">*</span> 机构负责人：
+                                        机构负责人：
                                     </td>
                                     <td class="f-tb-c">
                                         <span id="lbl_Header_Name"></span>
-                                        <input type="hidden" id="txt_HeaderId" value="" />
-                                        <input type="button" class="btn" id="btn_select_user" organizationId="" value="选择" dialog-title="选择" />
+                                        @*<input type="hidden" id="txt_HeaderId" value="" />
+                                            <input type="button" class="btn" id="btn_select_user" organizationId="" value="选择" dialog-title="选择" />*@
                                     </td>
                                 </tr>
+
                                 <tr>
                                     <td class="f-tb-t">
                                         备注：
