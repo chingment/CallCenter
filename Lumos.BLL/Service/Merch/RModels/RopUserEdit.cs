@@ -22,5 +22,7 @@ namespace Lumos.BLL.Service.Merch
 
         public Enumeration.UserStatus Status { get; set; }
 
+        public bool IsReplacePosition { get; set; }
+
     }
 }

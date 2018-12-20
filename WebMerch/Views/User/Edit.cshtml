@@ -78,8 +78,7 @@
                 }
             }
 
-            art.dialog.confirm('确定要保存？', function () {
-
+            function sumbit(isReplacePosition) {
                 var password = $(".txt_Password").val();
                 var userName = $("#txt_UserName").val();
                 var fullName = $("#txt_FullName").val();
@@ -92,17 +91,31 @@
                 $.lumos.postJson({
                     url: "/User/Edit",
                     isUseHandling: true,
-                    data: { id: id, userName: userName, password: password, fullName: fullName, email: email, phoneNumber: phoneNumber, positionId: positionId, organizationId: organizationId, dataRightType: 0, status: status },
+                    data: { id: id, userName: userName, password: password, fullName: fullName, email: email, phoneNumber: phoneNumber, positionId: positionId, organizationId: organizationId, dataRightType: 0, status: status, isReplacePosition: isReplacePosition },
                     success: function (d) {
                         if (d.result == $.lumos.resultType.success) {
                             $.lumos.parentDialog.refresh(2);
                             $.lumos.tips(d.message);
                         }
                         else {
-                            $.lumos.tips(d.message);
+                          
+                            if (d.code == 2060) {
+                                art.dialog.confirm(d.message, function () {
+                                    sumbit(true);
+                                });
+                            }
+                            else {
+                                $.lumos.tips(d.message);
+                            }
                         }
                     }
                 });
+            }
+
+            art.dialog.confirm('确定要保存？', function () {
+
+                sumbit(false)
+
             });
 
             return false;

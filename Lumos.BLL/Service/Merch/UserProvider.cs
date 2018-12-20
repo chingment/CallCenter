@@ -129,7 +129,7 @@ namespace Lumos.BLL.Service.Merch
                         var header = CurrentDb.SysMerchantUser.Where(m => m.Id == organization.HeaderId).FirstOrDefault();
                         if (header.Status == Enumeration.UserStatus.Normal)
                         {
-                            return new CustomJsonResult(ResultType.Failure, ResultCode.Failure, string.Format("该机构的负责人（{0}[{1}]）的账号正常使用中，如需替换负责人，请先将账号设置无效", header.FullName, header.UserName));
+                            return new CustomJsonResult(ResultType.Failure, ResultCode.FailureNeedReplaceTips, string.Format("该机构的负责人（{0}[{1}]）的账号正常使用中，如需替换负责人，请先将账号设置无效", header.FullName, header.UserName));
                         }
 
                     }
@@ -177,18 +177,27 @@ namespace Lumos.BLL.Service.Merch
 
                 if (sysPosition.IsOrganizationHeader)
                 {
+
                     if (!string.IsNullOrEmpty(organization.HeaderId))
                     {
                         if (organization.HeaderId != user.Id)
                         {
+
                             var header = CurrentDb.SysMerchantUser.Where(m => m.Id == organization.HeaderId).FirstOrDefault();
                             if (header != null)
                             {
-                                return new CustomJsonResult(ResultType.Failure, ResultCode.Failure, string.Format("该机构已存在的负责人（{0}[{1}]），却替换？", header.FullName, header.UserName));
+                                if (!rop.IsReplacePosition)
+                                {
+                                    return new CustomJsonResult(ResultType.Failure, ResultCode.FailureNeedReplaceTips, string.Format("该机构已存在负责人（{0}[{1}]），是否替换？", header.FullName, header.UserName));
+                                }
+                                else
+                                {
+                                    header.PositionId = Enumeration.SysPositionId.MerchantStaff;
+                                }
                             }
+
                         }
                     }
-
 
                     organization.HeaderId = user.Id;
 
