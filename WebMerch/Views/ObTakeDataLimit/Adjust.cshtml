@@ -25,6 +25,8 @@
                         $('#lbl_TaskQuantity').text(data.taskQuantity);
                         $('#lbl_UnTakeQuantity').text(data.unTakeQuantity);
                         $('#lbl_TakedQuantity').text(data.takedQuantity);
+
+                        $('#txt_AdjustQuantity').val(data.taskQuantity)
                     }
                 }
             });
@@ -32,13 +34,21 @@
 
         function adjust() {
 
+            var adjustQuantity = $("#txt_AdjustQuantity").val();
+
+            var isFlag = adjustQuantity.match(regexEnum.intege1);
+            if (isFlag == null) {
+                $.lumos.tips('必须为正整数格式');
+                return false;
+            }
+
 
             art.dialog.confirm('确定要调整？', function () {
 
                 $.lumos.postJson({
                     url: "/ObTakeDataLimit/Adjust",
                     isUseHandling: true,
-                    data: { id: id, adjustQuantity: 9 },
+                    data: { id: id, adjustQuantity: adjustQuantity },
                     success: function (d) {
                         if (d.result == $.lumos.resultType.success) {
                             $.lumos.parentDialog.refresh(1);
@@ -92,23 +102,15 @@
                 当前任务量：
             </td>
             <td class="f-tb-c">
-                <label id="lbl_TaskQuantity"></label>
+                <label id="lbl_TaskQuantity"></label>           <span style="margin-left:20px;">  未取：<label id="lbl_UnTakeQuantity"></label></span>   <span style="margin-left:20px;"> 已取： <label id="lbl_TakedQuantity"></label></span>
             </td>
         </tr>
         <tr>
             <td class="f-tb-t">
-                未取：
+                调整任务量：
             </td>
             <td class="f-tb-c">
-                <label id="lbl_UnTakeQuantity"></label>
-            </td>
-        </tr>
-        <tr>
-            <td class="f-tb-t">
-                已取：
-            </td>
-            <td class="f-tb-c">
-                <label id="lbl_TakedQuantity"></label>
+                <input id="txt_AdjustQuantity" name="email" class="input-control" type="text" value="" style="width: 80px;" autocomplete="off" />
             </td>
         </tr>
         <tr style="display:none">
