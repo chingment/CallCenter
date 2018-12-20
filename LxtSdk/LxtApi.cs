@@ -49,8 +49,8 @@ namespace LxtSdk
         {
             BaseRequestData postData = new BaseRequestData();
 
-            string customer = "1";
-            string password = "2";
+            string customer = "C112";
+            string password = "CD5B3D64915D7BFDBFA319B32B30CD2E530FAA6D";
             string timestamp = ((long)(DateTime.Now - TimeZone.CurrentTimeZone.ToLocalTime(new System.DateTime(1970, 1, 1))).TotalSeconds).ToString();
 
             ThreadSafeRandom ran = new ThreadSafeRandom();
@@ -61,6 +61,7 @@ namespace LxtSdk
 
             postData.Authentication.Customer = customer;
             postData.Authentication.Timestamp = timestamp;
+            postData.Authentication.Agent = "";
             postData.Authentication.Seq = seq;
             postData.Authentication.Digest = digest;
 

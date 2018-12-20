@@ -21,7 +21,7 @@ namespace LxtSdk
         {
             get
             {
-                return "https://api.weixin.qq.com/cgi-bin/media/uploadnews";
+                return "http://39.108.86.40:2060/openapi/V2.0.4/AgentQueryStatus";
             }
         }
 

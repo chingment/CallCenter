@@ -179,9 +179,9 @@ namespace Test
         {
 
             var p1 = new AgentQueryStatusRequestData();
-            p1.Agent = "a";
+            p1.Agent = "1308000";
             p1.Seq = "112323";
-            p1.UserData = "23233";
+            p1.UserData = "";
 
             var req1 = new AgentQueryStatusRequest(p1);
             var lxt = new LxtApi();
