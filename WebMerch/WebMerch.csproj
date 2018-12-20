@@ -218,8 +218,9 @@
     <Content Include="Views\CarIns\DealtUnderwritingOrder.cshtml" />
     <Content Include="Views\_ViewStart.cshtml" />
     <Content Include="Views\ObCallout\CarInsUnderwritingOrderDetails.cshtml" />
-    <Content Include="Views\ObTakeDataLimit\ListByAdjust.cshtml" />
+    <Content Include="Views\ObTakeDataLimit\List.cshtml" />
     <Content Include="Views\ObBatchData\ListByReallocate.cshtml" />
+    <Content Include="Views\ObTakeDataLimit\Adjust.cshtml" />
     <None Include="Web.config">
       <SubType>Designer</SubType>
     </None>

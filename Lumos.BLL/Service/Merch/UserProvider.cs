@@ -247,7 +247,6 @@ namespace Lumos.BLL.Service.Merch
             return new CustomJsonResult(ResultType.Success, ResultCode.Success, "删除成功");
         }
 
-
         public List<string> GetPermissions(string operater, string merchantId, string id)
         {
             List<string> list = new List<string>();

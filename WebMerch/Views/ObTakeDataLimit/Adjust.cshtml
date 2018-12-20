@@ -1,0 +1,129 @@
+﻿@{
+    ViewBag.Title = "";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+@section scripts{
+    <script type="text/javascript">
+        var id = $.lumos.getUrlParamValue("id");
+        $(this).ready(function () {
+            getDetails();
+        });
+
+        function getDetails() {
+
+            $.lumos.getJson({
+                url: "/ObTakeDataLimit/GetDetails",
+                urlParams: { id: id },
+                isUseHandling: true,
+                success: function (d) {
+                    if (d.result == $.lumos.resultType.success) {
+                        var data = d.data;
+
+                        $('#lbl_UserName').text(data.userName);
+                        $('#lbl_FullName').text(data.fullName);
+                        $('#lbl_TaskQuantity').text(data.taskQuantity);
+                        $('#lbl_UnTakeQuantity').text(data.unTakeQuantity);
+                        $('#lbl_TakedQuantity').text(data.takedQuantity);
+                    }
+                }
+            });
+        }
+
+        function adjust() {
+
+
+            art.dialog.confirm('确定要调整？', function () {
+
+                $.lumos.postJson({
+                    url: "/ObTakeDataLimit/Adjust",
+                    isUseHandling: true,
+                    data: { id: id, adjustQuantity: 9 },
+                    success: function (d) {
+                        if (d.result == $.lumos.resultType.success) {
+                            $.lumos.parentDialog.refresh(1);
+                            $.lumos.tips(d.message, true);
+                        }
+                        else {
+                            $.lumos.tips(d.message);
+                        }
+                    }
+                });
+            });
+
+        }
+
+
+
+
+    </script>
+}
+
+<input type="password" style="position:absolute;top:-999px;display:none;" />
+
+<div class="gbr-row gbr-dialog">
+    <div class="gbr-row-title clearfix">
+        <div class="pull-left">
+            <h5>基本信息</h5>
+        </div>
+        <div class="pull-right f-tb1-item-pull-right">
+            <h6></h6>
+        </div>
+    </div>
+    <table class="f-tb" cellpadding="0" cellspacing="1">
+        <tr>
+            <td class="f-tb-t" style="width:100px;">
+                用户名：
+            </td>
+            <td class="f-tb-c">
+                <label id="lbl_UserName"></label>
+            </td>
+        </tr>
+        <tr>
+            <td class="f-tb-t">
+                姓名：
+            </td>
+            <td class="f-tb-c">
+                <label id="lbl_FullName"></label>
+            </td>
+        </tr>
+        <tr>
+            <td class="f-tb-t">
+                当前任务量：
+            </td>
+            <td class="f-tb-c">
+                <label id="lbl_TaskQuantity"></label>
+            </td>
+        </tr>
+        <tr>
+            <td class="f-tb-t">
+                未取：
+            </td>
+            <td class="f-tb-c">
+                <label id="lbl_UnTakeQuantity"></label>
+            </td>
+        </tr>
+        <tr>
+            <td class="f-tb-t">
+                已取：
+            </td>
+            <td class="f-tb-c">
+                <label id="lbl_TakedQuantity"></label>
+            </td>
+        </tr>
+        <tr style="display:none">
+            <td class="f-tb-t"></td>
+            <td class="f-tb-c">
+                <input type="submit" name="btn_Submit" id="btn_Submit" value="保存" class="btn btn-save" />
+                <input type="button" name="btn_Cancle" id="btn_Cancle" value="关闭" class="btn btn-close dialog-close" />
+            </td>
+        </tr>
+    </table>
+
+</div>
+
+
+
+
+
+

@@ -8,6 +8,14 @@ namespace Lumos.BLL.Service.Merch
 {
     public class MerchServiceFactory : BaseFactory
     {
+        public static ObTakeDataLimitProvider ObTakeDataLimit
+        {
+            get
+            {
+                return new ObTakeDataLimitProvider();
+            }
+        }
+
         public static CustomerProvider Customer
         {
             get
