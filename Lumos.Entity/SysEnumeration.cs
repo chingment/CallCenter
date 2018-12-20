@@ -192,7 +192,9 @@ namespace Lumos.Entity
             [Remark("后勤负责人")]
             MerchantHL = 205,
             [Remark("后勤人员")]
-            MerchantHQR = 206
+            MerchantHQR = 206,
+            [Remark("普通人员")]
+            MerchantStaff = 299
         }
     }
 }

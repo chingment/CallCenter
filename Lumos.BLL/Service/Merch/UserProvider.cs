@@ -184,8 +184,7 @@ namespace Lumos.BLL.Service.Merch
                             var header = CurrentDb.SysMerchantUser.Where(m => m.Id == organization.HeaderId).FirstOrDefault();
                             if (header != null)
                             {
-                                if (header.Status == Enumeration.UserStatus.Normal)
-                                    return new CustomJsonResult(ResultType.Failure, ResultCode.Failure, string.Format("该机构的负责人（{0}[{1}]）的账号正常使用中，如需替换负责人，请先将账号设置无效", header.FullName, header.UserName));
+                                return new CustomJsonResult(ResultType.Failure, ResultCode.Failure, string.Format("该机构已存在的负责人（{0}[{1}]），却替换？", header.FullName, header.UserName));
                             }
                         }
                     }
