@@ -19,12 +19,12 @@
 
             $("#abtn-editPwd").toggle(function () {
                 $("#lbl_Password").hide();
-                $("#txt_Password").show();
+                $(".txt_Password").show();
                 $(this).text("取消");
             }, function () {
                 $("#lbl_Password").show();
-                $("#txt_Password").hide();
-                $("#txt_Password").val("");
+                $(".txt_Password").hide();
+                $(".txt_Password").val("");
                 $(this).text("修改");
             });
 
@@ -85,12 +85,12 @@
             var isValid = $.formValidator.pageIsValid();
             if (!isValid)
                 return false;
-
+         
             if (password != "") {
                 var isFlag = password.match(regexEnum.password);
                 if (isFlag == null) {
                     $.lumos.tips('密码由6到20个数字、英文字母或下划线组成');
-                    return;
+                    return false;
                 }
             }
 
@@ -145,6 +145,8 @@
         }
     </script>
 }
+
+<input type="password" style="position:absolute;top:-999px;display:none;" />
 
 <div class="gbr-row gbr-dialog">
     <div class="gbr-row-title clearfix">
