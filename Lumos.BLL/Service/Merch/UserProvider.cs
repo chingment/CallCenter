@@ -169,6 +169,7 @@ namespace Lumos.BLL.Service.Merch
                 user.Status = rop.Status;
                 user.MendTime = DateTime.Now;
                 user.Mender = operater;
+
                 CurrentDb.SaveChanges();
 
 
@@ -188,7 +189,7 @@ namespace Lumos.BLL.Service.Merch
                             {
                                 if (!rop.IsReplacePosition)
                                 {
-                                    return new CustomJsonResult(ResultType.Failure, ResultCode.FailureNeedReplaceTips, string.Format("该机构已存在负责人（{0}[{1}]），是否替换？", header.FullName, header.UserName));
+                                    return new CustomJsonResult(ResultType.Failure, ResultCode.FailureNeedReplaceTips, string.Format("该机构已存在负责人（{0}[{1}]），若确定，他的职位将改为普通人员？", header.FullName, header.UserName));
                                 }
                                 else
                                 {

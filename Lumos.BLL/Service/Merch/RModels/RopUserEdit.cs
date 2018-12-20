@@ -24,5 +24,9 @@ namespace Lumos.BLL.Service.Merch
 
         public bool IsReplacePosition { get; set; }
 
+        public bool IsTransferData { get; set; }
+
+        public string TransferDataBelongerId { get; set; }
+
     }
 }

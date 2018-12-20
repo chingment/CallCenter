@@ -6,6 +6,7 @@
 @section scripts{
     <script type="text/javascript">
         var id = $.lumos.getUrlParamValue("id");
+        var isTransferData = false;
         $(this).ready(function () {
 
             $.formValidator.initConfig({ formID: "form1", onError: function (msg) { $.lumos.tips(msg); } });
@@ -32,6 +33,19 @@
                 $('#sel_Positions').myChosen({ urlParams: { type: "SysPosition", organizationId: val } });
             });
 
+            $('#sel_Positions').live('change', function () {
+                var val = $(this).find('option:selected').val();
+                var oldPositionId = $(this).attr("oldPositionId");
+                if (oldPositionId != val) {
+                    $('#tr_transfer').show();
+                    isTransferData = true;
+                }
+                else {
+                    $('#tr_transfer').hide();
+                    isTransferData = false;
+                }
+            });
+
             getDetails();
 
         });
@@ -52,8 +66,10 @@
                         $("#txt_FullName").val(data.fullName);
                         $("#txt_Email").val(data.email);
                         $("#txt_PhoneNumber").val(data.phoneNumber);
-
+                        $("#btn_select_user").attr("organizationId", data.organizationId);
                         $('#sel_Organizations').myChosen({ urlParams: { type: "SysOrganization", }, selectedValue: data.organizationId });
+
+                        $('#sel_Positions').attr("oldPositionId", data.positionId);
                         $('#sel_Positions').myChosen({ urlParams: { type: "SysPosition", organizationId: data.organizationId }, selectedValue: data.positionId });
 
                         $('#sel_Status').myChosen({ isUseUrl: false, selectedValue: data.status });
@@ -87,18 +103,19 @@
                 var positionId = $("#sel_Positions").val();
                 var organizationId = $("#sel_Organizations").val();
                 var status = $("#sel_Status").val();
-
+                var transferDataBelongerId = $("#txt_DataBelongerId").val();
+                var isTransferData = isTransferData;
                 $.lumos.postJson({
                     url: "/User/Edit",
                     isUseHandling: true,
-                    data: { id: id, userName: userName, password: password, fullName: fullName, email: email, phoneNumber: phoneNumber, positionId: positionId, organizationId: organizationId, dataRightType: 0, status: status, isReplacePosition: isReplacePosition },
+                    data: { id: id, userName: userName, password: password, fullName: fullName, email: email, phoneNumber: phoneNumber, positionId: positionId, organizationId: organizationId, dataRightType: 0, status: status, isReplacePosition: isReplacePosition, isTransferData: isTransferData, transferDataBelongerId: transferDataBelongerId },
                     success: function (d) {
                         if (d.result == $.lumos.resultType.success) {
                             $.lumos.parentDialog.refresh(2);
                             $.lumos.tips(d.message);
                         }
                         else {
-                          
+
                             if (d.code == 2060) {
                                 art.dialog.confirm(d.message, function () {
                                     sumbit(true);
@@ -120,6 +137,12 @@
 
             return false;
         }
+
+        function getUserDetails(obj) {
+
+            $("#txt_DataBelongerId").val(obj.id);
+            $('#lbl_DataBelongerName').text(obj.fullName + "(" + obj.userName + ")");
+        }
     </script>
 }
 
@@ -134,7 +157,7 @@
     </div>
     <table class="f-tb" cellpadding="0" cellspacing="1">
         <tr>
-            <td class="f-tb-t">
+            <td class="f-tb-t" style="width:100px;">
                 用户名：
             </td>
             <td class="f-tb-c">
@@ -148,7 +171,7 @@
             <td class="f-tb-c">
                 <label id="lbl_Password">******</label>
 
-                <input  class="input-control txt_Password" autocomplete="off" type="password" style="width: 224px;display:none;" />
+                <input class="input-control txt_Password" autocomplete="off" type="password" style="width: 224px;display:none;" />
                 <a class="a-btn" id="abtn-editPwd" href="javascript:void(0)">修改</a>
             </td>
         </tr>
@@ -179,6 +202,17 @@
                 <select id="sel_Positions" data-placeholder="请选择" class="chosen-select" style="width:200px">
                     <option value="-1"></option>
                 </select>
+            </td>
+        </tr>
+        <tr style="display:none" id="tr_transfer">
+            <td class="f-tb-t">
+                <span class="required-symbol">*</span>数据转移对象：
+            </td>
+            <td class="f-tb-c">
+                <span id="lbl_DataBelongerName"></span>
+                <input type="hidden" id="txt_DataBelongerId" value="" />
+                <input type="button" class="btn" id="btn_select_user" organizationId="" value="选择" dialog-title="选择" /><br />
+                <div class="remark-tips"><span class="t">提醒：</span><span class="c">职位变更，数据只能转移给之前的所属机构下的用户.</span></div>
             </td>
         </tr>
         <tr>
