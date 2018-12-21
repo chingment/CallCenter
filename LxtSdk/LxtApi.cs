@@ -9,6 +9,7 @@ using System.Reflection;
 using Lumos;
 using System.Security.Cryptography;
 using Newtonsoft.Json.Serialization;
+using System.Text.RegularExpressions;
 
 namespace LxtSdk
 {
@@ -30,19 +31,26 @@ namespace LxtSdk
             return digest;
         }
 
-        public static string GetMD5(string myString)
+        public static string GetMD5(string material)
         {
+            if (string.IsNullOrEmpty(material))
+                throw new ArgumentOutOfRangeException();
+
+
+
+            byte[] result = Encoding.Default.GetBytes(material);    //tbPass为输入密码的文本框  
             MD5 md5 = new MD5CryptoServiceProvider();
-            byte[] fromData = System.Text.Encoding.Unicode.GetBytes(myString);
-            byte[] targetData = md5.ComputeHash(fromData);
-            string byte2String = null;
+            byte[] output = md5.ComputeHash(result);
+            string s_output = BitConverter.ToString(output).Replace("-", "");
 
-            for (int i = 0; i < targetData.Length; i++)
-            {
-                byte2String += targetData[i].ToString("x");
-            }
+            return s_output;
+        }
 
-            return byte2String;
+        public static string DeUnicode(string str)
+        {
+            //最直接的方法Regex.Unescape(str);
+            Regex reg = new Regex(@"(?i)\\[uU]([0-9a-f]{4})");
+            return reg.Replace(str, delegate (Match m) { return ((char)Convert.ToInt32(m.Groups[1].Value, 16)).ToString(); });
         }
 
         public BaseRequstResult<T> DoPost<T>(IApiPostRequest<T> request)
@@ -50,7 +58,7 @@ namespace LxtSdk
             BaseRequestData postData = new BaseRequestData();
 
             string customer = "C112";
-            string password = "CD5B3D64915D7BFDBFA319B32B30CD2E530FAA6D";
+            string password = "002D5B9BB96F585E7FA85AB1BADE244B30744608";
             string timestamp = ((long)(DateTime.Now - TimeZone.CurrentTimeZone.ToLocalTime(new System.DateTime(1970, 1, 1))).TotalSeconds).ToString();
 
             ThreadSafeRandom ran = new ThreadSafeRandom();
@@ -79,8 +87,13 @@ namespace LxtSdk
 
             string str_PostData = JsonConvert.SerializeObject(postData, jsonSerializerSettings);
 
+
             LogUtil.Info(string.Format("WeiXinSdk-Post->{0}", postData));
             string responseString = webUtils.DoPost(realServerUrl, str_PostData);
+
+            responseString = DeUnicode(responseString);
+
+
             LogUtil.Info(string.Format("WeiXinSdk-Result->{0}", responseString));
             BaseRequstResult<T> rsp = JsonConvert.DeserializeObject<BaseRequstResult<T>>(responseString);
             return rsp;

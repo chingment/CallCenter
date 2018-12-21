@@ -6,10 +6,9 @@ using System.Threading.Tasks;
 
 namespace LxtSdk
 {
-    public class AgentQueryStatusRequest : IApiPostRequest<AgentQueryStatusRequestResult>
+    public class CallNumberRequest : IApiPostRequest<CallNumberRequestResult>
     {
-
-        public AgentQueryStatusRequest(AgentQueryStatusRequestData postdata)
+        public CallNumberRequest(CallNumberRequestData postdata)
         {
             this.PostData = postdata;
         }
@@ -21,9 +20,8 @@ namespace LxtSdk
         {
             get
             {
-                return "http://39.108.86.40:80/openapi/V2.0.6/AgentQueryStatus";
+                return "http://39.108.86.40:80/openapi/V2.0.6/CallNumber";
             }
         }
-
     }
 }

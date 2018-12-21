@@ -5,6 +5,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Reflection;
+using System.Security.Cryptography;
 using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
@@ -175,17 +176,70 @@ namespace Test
 
     class Program
     {
+        public static string GetMD5(string material)
+        {
+            if (string.IsNullOrEmpty(material))
+                throw new ArgumentOutOfRangeException();
+
+
+
+            byte[] result = Encoding.Default.GetBytes(material);    //tbPass为输入密码的文本框  
+            MD5 md5 = new MD5CryptoServiceProvider();
+            byte[] output = md5.ComputeHash(result);
+            string s_output = BitConverter.ToString(output).Replace("-", "");
+
+            return s_output;
+        }
+
+        public static string GetMD52(string myString)
+        {
+            MD5 md5 = new MD5CryptoServiceProvider();
+            byte[] fromData = System.Text.Encoding.Unicode.GetBytes(myString);
+            byte[] targetData = md5.ComputeHash(fromData);
+            string byte2String = null;
+
+            for (int i = 0; i < targetData.Length; i++)
+            {
+                byte2String += targetData[i].ToString("X");
+            }
+
+            return byte2String;
+        }
+
+
         static void Main(string[] args)
         {
 
-            var p1 = new AgentQueryStatusRequestData();
-            p1.Agent = "1308000";
-            p1.Seq = "112323";
-            p1.UserData = "";
 
-            var req1 = new AgentQueryStatusRequest(p1);
-            var lxt = new LxtApi();
-            var lxtResult = lxt.DoPost(req1);
+            //var p1 = new AgentQueryStatusRequestData();
+            //p1.Agent = "1308000";
+            //p1.Seq = "112323";
+            //p1.UserData = "";
+
+            //var req1 = new AgentQueryStatusRequest(p1);
+            //var lxt = new LxtApi();
+            //var lxtResult = lxt.DoPost(req1);
+
+
+            //var p2 = new AgentLoginRequestData();
+            //p2.Agent = "1308000";
+            //p2.Seq = "112323";
+            //p2.UserData = "";
+
+            //var req2 = new AgentLoginRequest(p2);
+
+            //var lxtResult2 = lxt.DoPost(req2);
+
+
+            var p3 = new CallNumberRequestData();
+            p3.Agent = "1308000";
+            p3.Seq = "112323";
+            p3.UserData = "";
+            p3.Callee = "15989287032";
+
+            var req3 = new CallNumberRequest(p3);
+
+            var lxtResult3 = lxt.DoPost(req3);
 
             //int num = 100;
             //Thread[] th = new Thread[num];
@@ -204,7 +258,7 @@ namespace Test
             p1.Agent = "a";
             p1.Seq = "112323";
             p1.UserData = "23233";
-            
+
             var req1 = new AgentQueryStatusRequest(p1);
             var lxt = new LxtApi();
             var lxtResult = lxt.DoPost(req1);

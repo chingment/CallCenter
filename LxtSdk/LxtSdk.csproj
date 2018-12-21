@@ -51,9 +51,15 @@
   <ItemGroup>
     <Compile Include="BaseRequstResult.cs" />
     <Compile Include="IApiPostRequest.cs" />
+    <Compile Include="Post\AgentLoginRequest.cs" />
+    <Compile Include="Post\AgentLoginRequestData.cs" />
+    <Compile Include="Post\AgentLoginRequestResult.cs" />
     <Compile Include="Post\AgentQueryStatusRequest.cs" />
     <Compile Include="Post\AgentQueryStatusRequestData.cs" />
     <Compile Include="Post\AgentQueryStatusRequestResult.cs" />
+    <Compile Include="Post\CallNumberRequest.cs" />
+    <Compile Include="Post\CallNumberRequestData.cs" />
+    <Compile Include="Post\CallNumberRequestResult.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="BaseRequestData.cs" />
     <Compile Include="Utils\Constants.cs" />
