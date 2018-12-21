@@ -167,6 +167,7 @@
     <Compile Include="Controllers\HomeController.cs" />
     <Compile Include="Controllers\ObBatchAllocateController.cs" />
     <Compile Include="Controllers\ObBatchDataController.cs" />
+    <Compile Include="Controllers\ObBatchDataReallocateController.cs" />
     <Compile Include="Controllers\ObCalloutController.cs" />
     <Compile Include="Controllers\ObCustomerController.cs" />
     <Compile Include="Controllers\ObTakeDataLimitController.cs" />
@@ -219,7 +220,7 @@
     <Content Include="Views\_ViewStart.cshtml" />
     <Content Include="Views\ObCallout\CarInsUnderwritingOrderDetails.cshtml" />
     <Content Include="Views\ObTakeDataLimit\List.cshtml" />
-    <Content Include="Views\ObBatchData\ListByReallocate.cshtml" />
+    <Content Include="Views\ObBatchDataReallocate\List.cshtml" />
     <Content Include="Views\ObTakeDataLimit\Adjust.cshtml" />
     <None Include="Web.config">
       <SubType>Designer</SubType>

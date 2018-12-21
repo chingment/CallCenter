@@ -23,6 +23,10 @@ namespace Lumos.Entity
 
         public Enumeration.BusinessType BusinessType { get; set; }
 
+        public Enumeration.ObTakeDataPeriodMode ObTakeDataPeriodMode { get; set; }
+
+        public int ObTakeDataPeriodQuantity { get; set; }
+
         public string Creator { get; set; }
 
         public DateTime CreateTime { get; set; }

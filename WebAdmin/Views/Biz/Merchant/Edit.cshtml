@@ -12,7 +12,7 @@
 
             $.formValidator.initConfig({ formID: "form_merchant", onError: function (msg) { $.lumos.tips(msg); } });
             $(".txt_Password").formValidator().regexValidator({ regExp: regexEnum.password, onError: "密码由6到20个数字、英文字母或下划线组成" });
-            $("#txt_Password").attr("disabled", true).unFormValidator(true);
+            $(".txt_Password").attr("disabled", true).unFormValidator(true);
             $("#txt_ContactName").formValidator().inputValidator({ min: 1, max: 100, onError: "联系人不能为空，且不超过100个字符" });
             $("#txt_ContactPhone").formValidator().inputValidator({ min: 1, max: 100, onError: "联系电话不能为空，且不超过100个字符" });
 
@@ -39,23 +39,13 @@
 
         function edit() {
 
-            var password = $(".txt_Password").val();
-
             var isValid = $.formValidator.pageIsValid();
             if (!isValid)
                 return false;
 
-
-            if (password != "") {
-                var isFlag = password.match(regexEnum.password);
-                if (isFlag == null) {
-                    $.lumos.tips('密码由6到20个数字、英文字母或下划线组成');
-                    return;
-                }
-            }
-
             art.dialog.confirm('确定要保存？', function () {
 
+                var password = $(".txt_Password").val();
                 var contactName = $("#txt_ContactName").val();
                 var contactPhone = $("#txt_ContactPhone").val();
                 var contactAddress = $("#txt_ContactAddress").val();
@@ -90,6 +80,7 @@
                         $("#txt_ContactName").val(data.contactName);
                         $("#txt_ContactPhone").val(data.contactPhone);
                         $("#txt_ContactAddress").val(data.contactAddress);
+                        $('#lbl_ObTakeDataPeriodMode').text(data.obTakeDataPeriodMode)
                     }
                 }
             });
@@ -189,7 +180,25 @@
         </tr>
     </table>
 
+    <div class="gbr-row-title clearfix">
+        <div class="pull-left">
+            <h5>配置信息</h5>
+        </div>
+        <div class="pull-right f-tb1-item-pull-right">
+            <h6></h6>
+        </div>
+    </div>
 
+    <table class="f-tb" cellpadding="0" cellspacing="1" style="width:100%">
+        <tr>
+            <td class="f-tb-t">
+                任务量：
+            </td>
+            <td class="f-tb-c">
+                <span id="lbl_ObTakeDataPeriodMode"></span>
+            </td>
+        </tr>
+    </table>
 </div>
 
 

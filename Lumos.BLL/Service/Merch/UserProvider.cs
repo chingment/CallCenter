@@ -105,8 +105,8 @@ namespace Lumos.BLL.Service.Merch
                 obTakeDataLimit.Id = GuidUtil.New();
                 obTakeDataLimit.MerchantId = merchantId;
                 obTakeDataLimit.SalesmanId = user.Id;
-                obTakeDataLimit.TaskQuantity = 0;
-                obTakeDataLimit.UnTakeQuantity = 0;
+                obTakeDataLimit.TaskQuantity = merchant.ObTakeDataPeriodQuantity;
+                obTakeDataLimit.UnTakeQuantity = merchant.ObTakeDataPeriodQuantity;
                 obTakeDataLimit.TakedQuantity = 0;
                 obTakeDataLimit.UnContactQuantity = 0;
                 obTakeDataLimit.TargetQuantity = 0;

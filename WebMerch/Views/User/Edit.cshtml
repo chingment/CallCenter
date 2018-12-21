@@ -10,6 +10,8 @@
         $(this).ready(function () {
 
             $.formValidator.initConfig({ formID: "form1", onError: function (msg) { $.lumos.tips(msg); } });
+            $(".txt_Password").formValidator().regexValidator({ regExp: regexEnum.password, onError: "密码由6到20个数字、英文字母或下划线组成" });
+            $(".txt_Password").attr("disabled", true).unFormValidator(true);
             $("#txt_FullName").formValidator().inputValidator({ min: 1, max: 50, onError: "姓名不能为空，且不能超过50个字符" });
             $("#sel_Organizations").formValidator().inputValidator({ min: 1, max: 500, onError: "请选择所属机构" });
             $("#sel_Positions").formValidator().inputValidator({ min: 1, max: 500, onError: "请选择职位" });
@@ -20,11 +22,13 @@
             $("#abtn-editPwd").toggle(function () {
                 $("#lbl_Password").hide();
                 $(".txt_Password").show();
+                $(".txt_Password").attr("disabled", false).unFormValidator(false);
                 $(this).text("取消");
             }, function () {
                 $("#lbl_Password").show();
                 $(".txt_Password").hide();
                 $(".txt_Password").val("");
+                $(".txt_Password").attr("disabled", true).unFormValidator(true);
                 $(this).text("修改");
             });
 
@@ -80,23 +84,13 @@
 
         function edit() {
 
-            var password = $(".txt_Password").val();
-
             var isValid = $.formValidator.pageIsValid();
             if (!isValid)
                 return false;
-         
-            if (password != "") {
-                var isFlag = password.match(regexEnum.password);
-                if (isFlag == null) {
-                    $.lumos.tips('密码由6到20个数字、英文字母或下划线组成');
-                    return false;
-                }
-            }
+
 
             function sumbit(isReplacePosition) {
                 var password = $(".txt_Password").val();
-                var userName = $("#txt_UserName").val();
                 var fullName = $("#txt_FullName").val();
                 var email = $("#txt_Email").val();
                 var phoneNumber = $("#txt_PhoneNumber").val();
@@ -108,7 +102,7 @@
                 $.lumos.postJson({
                     url: "/User/Edit",
                     isUseHandling: true,
-                    data: { id: id, userName: userName, password: password, fullName: fullName, email: email, phoneNumber: phoneNumber, positionId: positionId, organizationId: organizationId, dataRightType: 0, status: status, isReplacePosition: isReplacePosition, isTransferData: isTransferData, transferDataBelongerId: transferDataBelongerId },
+                    data: { id: id, password: password, fullName: fullName, email: email, phoneNumber: phoneNumber, positionId: positionId, organizationId: organizationId, dataRightType: 0, status: status, isReplacePosition: isReplacePosition, isTransferData: isTransferData, transferDataBelongerId: transferDataBelongerId },
                     success: function (d) {
                         if (d.result == $.lumos.resultType.success) {
                             $.lumos.parentDialog.refresh(2);

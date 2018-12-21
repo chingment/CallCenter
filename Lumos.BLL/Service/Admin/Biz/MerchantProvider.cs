@@ -35,6 +35,20 @@ namespace Lumos.BLL.Service.Admin
             ret.ContactName = merchant.ContactName ?? "";
             ret.ContactPhone = merchant.ContactPhone ?? "";
             ret.SimpleCode = merchant.SimpleCode;
+
+            switch(merchant.ObTakeDataPeriodMode)
+            {
+                case Enumeration.ObTakeDataPeriodMode.Week:
+                    ret.ObTakeDataPeriodMode = string.Format("按周，默认每周每人取量上限{0}条，如需调整请到数据限额调整页面", merchant.ObTakeDataPeriodQuantity);
+                    break;
+                case Enumeration.ObTakeDataPeriodMode.Day:
+                    ret.ObTakeDataPeriodMode = string.Format("按天，默认每天每人取量上限{0}条，如需调整请到数据限额调整页面", merchant.ObTakeDataPeriodQuantity);
+                    break;
+                default:
+                    ret.ObTakeDataPeriodMode = "未配置";
+                    break;
+            }
+
             return new CustomJsonResult(ResultType.Success, ResultCode.Success, "获取成功", ret);
         }
 

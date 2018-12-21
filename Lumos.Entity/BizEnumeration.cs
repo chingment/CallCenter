@@ -193,5 +193,15 @@ namespace Lumos.Entity
             CenterBizGroup = 99
         }
 
+        public enum ObTakeDataPeriodMode
+        {
+            [Remark("未知")]
+            Unknow = 0,
+            [Remark("按周")]
+            Week = 1,
+            [Remark("按日")]
+            Day = 2,
+        }
+
     }
 }

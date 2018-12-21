@@ -17,5 +17,7 @@ namespace Lumos.BLL.Service.Admin
         public string ContactAddress { get; set; }
 
         public string SimpleCode { get; set; }
+
+        public string ObTakeDataPeriodMode { get; set; }
     }
 }

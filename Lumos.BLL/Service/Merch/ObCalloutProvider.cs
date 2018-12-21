@@ -84,7 +84,7 @@ namespace Lumos.BLL.Service.Merch
                             obBatchAllocate.UsedCount += 1;
                         }
 
-                        obBatchAllocate.UnUsedCount = obBatchAllocate.AllocatedCount - obBatchAllocate.UsedCount;
+                        //obBatchAllocate.UnUsedCount = obBatchAllocate.AllocatedCount - obBatchAllocate.UsedCount;
                         obBatchAllocate.Mender = operater;
                         obBatchAllocate.MendTime = this.DateTime;
                     }

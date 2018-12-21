@@ -40,7 +40,7 @@
                     var url = '/ObBatchAllocate/Add?id=' + obj.id;
                     var title = '分配';
                     art.dialog.open(url, {
-                        id: "openDialog", title: title, width: '70%', height: '70%', lock: true, drag: false, cancelVal: '关闭', cancel: true, okVal: '保存', ok: function () {
+                        id: "openDialog", title: title, width: '70%', height: '70%', lock: true, drag: false, cancelVal: '关闭', cancel: true, okVal: '分配', ok: function () {
                             this.iframe.contentWindow.allocate();
                             return false;
                         }
