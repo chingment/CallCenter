@@ -217,7 +217,7 @@ namespace Test
             //p1.UserData = "";
 
             //var req1 = new AgentQueryStatusRequest(p1);
-            //var lxt = new LxtApi();
+            var lxt = new LxtApi();
             //var lxtResult = lxt.DoPost(req1);
 
 
