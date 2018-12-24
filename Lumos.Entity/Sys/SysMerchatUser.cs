@@ -13,5 +13,11 @@ namespace Lumos.Entity
 
         public Enumeration.SysPositionId PositionId { get; set; }
 
+        public string TelSeatAccount { get; set; }
+
+        public string TelSeatPassword { get; set; }
+
+        public Enumeration.TelSeatStatus TelSeatStatus { get; set; }
+
     }
 }

@@ -4,11 +4,9 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Lumos.BLL
+namespace Lumos.BLL.Service.Merch.RModels
 {
-    public class TelphoneProvder
+    class RopTelphoneControlCallCustomer
     {
-
-        public void Call()
     }
 }

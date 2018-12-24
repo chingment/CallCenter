@@ -91,6 +91,10 @@
     </Compile>
     <Compile Include="BaseProvider.cs" />
     <Compile Include="Biz\Models\FieldModel.cs" />
+    <Compile Include="Sdk\ITelephoneControSdk.cs" />
+    <Compile Include="Sdk\LxtSdkProvider.cs" />
+    <Compile Include="Service\Merch\RModels\RopTelphoneControlCallCustomer.cs" />
+    <Compile Include="Service\Merch\TelephoneControlProvder.cs" />
     <Compile Include="MchPermissionCode.cs" />
     <Compile Include="Biz\BizFactory.cs" />
     <Compile Include="Biz\Redis\RModels\RetLogin.cs" />
@@ -241,8 +245,13 @@
       <Project>{0e039414-2a2e-48b4-8db7-c4346106fa68}</Project>
       <Name>Lumos.DAL</Name>
     </ProjectReference>
+    <ProjectReference Include="..\LxtSdk\LxtSdk.csproj">
+      <Project>{b6437e71-e6d0-432d-bab8-07d4080af91e}</Project>
+      <Name>LxtSdk</Name>
+    </ProjectReference>
   </ItemGroup>
   <ItemGroup>
+    <Folder Include="Biz\TelePhone\" />
     <Folder Include="Service\Admin\Biz\Models\" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />

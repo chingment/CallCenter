@@ -69,6 +69,25 @@
                 return false;
             });
 
+            $('#btn_TelephoneLogin').live("click",function(){
+            
+                $.lumos.postJson({
+                    url: "/TelphoneControl/Login",
+                    success: function (d) {
+                        $.lumos.tips(d.message);
+                        if (d.result == $.lumos.resultType.success) {
+
+                        }
+                    }
+                });
+
+            });
+
+            $('#btn_TelephoneTestCallCustomer').live("click", function () {
+                callCustomer("2869ade9b7764a32ba542284761b1a1a");
+            });
+
+
             setInterval("reinitIframe()", 200);
         });
 
@@ -93,10 +112,10 @@
                         //console.log($(tree_tab_left).height())
                     }
                 }
-                else if (scrolling == "yes")  {
+                else if (scrolling == "yes") {
                     $('body').css("overflow", "hidden");
                     var wHeight = $(window).height();
-                    var wWidth= $(window).width();
+                    var wWidth = $(window).width();
                     wHeight = wHeight - 88;
                     iframe.height = wHeight;
 
@@ -111,6 +130,21 @@
 
             } catch (ex) { }
         }
+
+        function callCustomer(customerId) {
+
+            $.lumos.postJson({
+                url: "/TelphoneControl/CallCustomer",
+                data: { customerId: customerId },
+                success: function (d) {
+                    //$.lumos.tips(d.message);
+                    if (d.result == $.lumos.resultType.success) {
+
+                    }
+                }
+            });
+        }
+
     </script>
 }
 
@@ -123,6 +157,17 @@
                         <span class="title">${title}</span>
                     </li>
                 </ul>
+
+
+                <ul class="content-left">
+                    <li>
+                        <span>状态:</span>
+                        <input type="button" id="btn_TelephoneLogin" value="签入" />
+                        <input type="button" id="btn_TelephoneLogout" value="签出" />
+                        <input type="button" id="btn_TelephoneTestCallCustomer" value="测试呼叫" />
+                    </li>
+                </ul>
+
                 <ul class="content-right btn-dropdownmenu">
 
                     {{if isLogin}}
@@ -133,6 +178,7 @@
                             </span>
                         </a>
                     </li>
+
                     <li class="parent">
                         <a href="javascript:void(0)" class="directory">
                             <span class="title">

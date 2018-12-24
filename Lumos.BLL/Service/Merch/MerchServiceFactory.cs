@@ -74,5 +74,13 @@ namespace Lumos.BLL.Service.Merch
             }
         }
 
+        public static TelephoneControlProvder TelephoneControl
+        {
+            get
+            {
+                return new TelephoneControlProvder();
+            }
+        }
+
     }
 }

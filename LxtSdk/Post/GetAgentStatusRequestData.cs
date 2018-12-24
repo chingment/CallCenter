@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace LxtSdk
 {
-    public class AgentQueryStatusRequestData
+    public class GetAgentStatusRequestData
     {
         public string Agent { get; set; }
         public string Seq { get; set; }

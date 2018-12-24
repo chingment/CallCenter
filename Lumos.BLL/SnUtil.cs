@@ -64,6 +64,9 @@ namespace Lumos.BLL
                 case Entity.Enumeration.BizSnType.Order2CarIns:
                     prefix = "62";
                     break;
+                case Entity.Enumeration.BizSnType.TelphoneControlSeq:
+                    prefix = "71";
+                    break;
             }
 
             ThreadSafeRandom ran = new ThreadSafeRandom();

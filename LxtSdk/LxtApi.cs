@@ -87,14 +87,14 @@ namespace LxtSdk
 
             string str_PostData = JsonConvert.SerializeObject(postData, jsonSerializerSettings);
 
-
-            LogUtil.Info(string.Format("WeiXinSdk-Post->{0}", postData));
+            LogUtil.Info(string.Format("FengNiaoSdk-PostUrl->{0}", realServerUrl));
+            LogUtil.Info(string.Format("FengNiaoSdk-PostData->{0}", str_PostData));
             string responseString = webUtils.DoPost(realServerUrl, str_PostData);
 
             responseString = DeUnicode(responseString);
 
 
-            LogUtil.Info(string.Format("WeiXinSdk-Result->{0}", responseString));
+            LogUtil.Info(string.Format("FengNiaoSdk-PostResult->{0}", responseString));
             BaseRequstResult<T> rsp = JsonConvert.DeserializeObject<BaseRequstResult<T>>(responseString);
             return rsp;
         }

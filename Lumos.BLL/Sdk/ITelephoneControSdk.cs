@@ -6,12 +6,12 @@ using System.Threading.Tasks;
 
 namespace Lumos.BLL
 {
-    public interface ITelePhoneControl
+    public interface ITelephoneControSdk
     {
-        CustomJsonResult CallNumber(string number);
+        CustomJsonResult CallNumber(string account, string callNumber);
         CustomJsonResult Handup();
-        CustomJsonResult Login();
+        CustomJsonResult Login(string acccount);
         CustomJsonResult Logout();
-        CustomJsonResult QueryStatus();
+        CustomJsonResult GetStatus(string account );
     }
 }

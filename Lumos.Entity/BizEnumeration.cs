@@ -15,7 +15,9 @@ namespace Lumos.Entity
             [Remark("订单号")]
             Order = 1,
             [Remark("车险订单")]
-            Order2CarIns = 2
+            Order2CarIns = 2,
+            [Remark("电话控件消息序号")]
+            TelphoneControlSeq = 3
         }
         public enum WxUserInfoFrom
         {

@@ -18,6 +18,14 @@ namespace Lumos.BLL
             }
         }
 
+        public static LxtSdkProvider Lxt
+        {
+            get
+            {
+                return new LxtSdkProvider();
+            }
+        }
+
 
     }
 }
