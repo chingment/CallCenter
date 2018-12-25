@@ -21,5 +21,11 @@ namespace WebMerch.Controllers
         {
             return MerchServiceFactory.TelephoneControl.CallCustomer(this.CurrentUserId, this.CurrentMerchantId, this.CurrentUserId, customerId);
         }
+
+        [HttpPost]
+        public CustomJsonResult HangupCustomer(string customerId)
+        {
+            return MerchServiceFactory.TelephoneControl.HangupCustomer(this.CurrentUserId, this.CurrentMerchantId, this.CurrentUserId, customerId);
+        }
     }
 }

@@ -149,6 +149,25 @@
             });
         }
 
+        function hangupCustomer(customerId) {
+
+            $.lumos.postJson({
+                url: "/TelphoneControl/HangupCustomer",
+                data: { customerId: customerId },
+                success: function (d) {
+
+                    if (d.result == $.lumos.resultType.success) {
+
+                    }
+                    else {
+                        //alert(d.message)
+                        $.lumos.tips(d.message);
+                    }
+                }
+            });
+        }
+
+
     </script>
 }
 

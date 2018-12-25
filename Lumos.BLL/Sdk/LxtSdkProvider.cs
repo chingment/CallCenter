@@ -28,9 +28,19 @@ namespace Lumos.BLL
 
             return result;
         }
-        public CustomJsonResult Handup()
+        public CustomJsonResult Hangup(string account)
         {
             CustomJsonResult result = new CustomJsonResult();
+
+            var requestData = new HangupCallRequestData();
+            requestData.Agent = account;
+            requestData.Seq = SnUtil.Build(Entity.Enumeration.BizSnType.TelphoneControlSeq, "");
+            requestData.UserData = "";
+
+
+            var request = new HangupCallRequest(requestData);
+
+            var requestResult = _api.DoPost(request);
 
 
             return result;

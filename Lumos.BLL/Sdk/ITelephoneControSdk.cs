@@ -26,7 +26,7 @@ namespace Lumos.BLL
     public interface ITelephoneControlSdk
     {
         CustomJsonResult CallNumber(string account, string csrId, string csrPhoneNumber);
-        CustomJsonResult Handup();
+        CustomJsonResult Hangup(string account);
         CustomJsonResult Login(string acccount);
         CustomJsonResult Logout();
         TelephoneStatus GetStatus(string account);

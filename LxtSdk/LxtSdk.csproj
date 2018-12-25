@@ -60,6 +60,9 @@
     <Compile Include="Post\CallNumberRequest.cs" />
     <Compile Include="Post\CallNumberRequestData.cs" />
     <Compile Include="Post\CallNumberRequestResult.cs" />
+    <Compile Include="Post\HangupCallRequest.cs" />
+    <Compile Include="Post\HangupCallRequestData.cs" />
+    <Compile Include="Post\HangupCallRequestResult.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="BaseRequestData.cs" />
     <Compile Include="Utils\Constants.cs" />

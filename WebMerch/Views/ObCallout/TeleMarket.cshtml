@@ -138,6 +138,16 @@
                 window.top.callCustomer(takeDataResult.obCustomerId);
             });
 
+            $('.btn-callhangup').live("click", function () {
+
+                if (takeDataResult == null) {
+                    $.lumos.tips("没有可外呼的数据")
+                    return;
+                }
+
+                window.top.hangupCustomer(takeDataResult.obCustomerId);
+            });
+
             $('#btn_SaveCallRecord').live("click", function () {
 
                 if (takeDataResult == null) {
@@ -434,6 +444,8 @@
                         <span id="lbl_CsrPhoneNumber" style="display: block; float: left;line-height: 27px;margin-right:5px;"></span>
 
                         <img class="btn-callout" title="点击外呼" src="@OwnStaticImagesResource.GetSrc("telphone_calout.png")" style="width:22px;cursor:pointer" />
+
+                        <img class="btn-callhangup" title="点击挂断" src="@OwnStaticImagesResource.GetSrc("telphone_calout.png")" style="width:22px;cursor:pointer" />
 
                     </td>
                 </tr>
