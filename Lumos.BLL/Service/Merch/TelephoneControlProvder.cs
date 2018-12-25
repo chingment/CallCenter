@@ -1,4 +1,5 @@
 ﻿using Lumos.Entity;
+using LxtSdk;
 using Newtonsoft.Json.Linq;
 using System;
 using System.Collections.Generic;
@@ -121,24 +122,61 @@ namespace Lumos.BLL.Service.Merch
             return result;
         }
 
+        private DateTime GetTime(string timeStamp)
+        {
+            DateTime dtStart = TimeZone.CurrentTimeZone.ToLocalTime(new DateTime(1970, 1, 1));
+            long lTime = long.Parse(timeStamp + "0000000");
+            TimeSpan toNow = new TimeSpan(lTime); return dtStart.Add(toNow);
+        }
+
         public void Notify(string operater, string content)
         {
-            var notifyType = GetNotifyType(content);
+            string sn = "";
+            var notifyType = GetNotifyType(content, out sn);
             LogUtil.Info("通知的类型为:" + notifyType);
-            switch (notifyType)
+            var callRecord = CurrentDb.CallRecord.Where(m => m.Sn == sn).FirstOrDefault();
+            if (callRecord != null)
             {
-                case "callend":
-                    break;
-                case "callstart":
-                    break;
-                case "billing":
-                    break;
+                switch (notifyType)
+                {
+                    case "callstart":
+                        var callstart = content.ToJsonObject<NotifyResultByCallStart>();
+                        if (callstart != null)
+                        {
+
+                        }
+                        break;
+                    case "callend":
+                        var callend = content.ToJsonObject<NotifyResultByCallEnd>();
+                        if (callend != null)
+                        {
+
+                        }
+                        break;
+                    case "billing":
+                        var billing = content.ToJsonObject<NotifyResultByBilling>();
+                        if (billing != null)
+                        {
+                            callRecord.StartTime = GetTime(billing.Notify.StartTime);
+                            callRecord.ByeTime = GetTime(billing.Notify.ByeTime);
+                            callRecord.AnswerTime = GetTime(billing.Notify.AnswerTime);
+                            callRecord.RingTime = GetTime(billing.Notify.RingTime);
+                            callRecord.PhoneNumber = billing.Notify.Caller;
+                            callRecord.RecordFile = billing.Notify.RecordFile;
+                            callRecord.Service = billing.Notify.Service;
+                            callRecord.TimeLength = billing.Notify.TimeLength;
+                            CurrentDb.SaveChanges();
+                        }
+                        break;
+                }
+
             }
         }
 
-        public string GetNotifyType(string content)
+        public string GetNotifyType(string content, out string sn)
         {
             string type = "";
+
 
             try
             {
@@ -150,6 +188,7 @@ namespace Lumos.BLL.Service.Merch
                         var s2 = jObject["type"];
                         if (s2 != null)
                         {
+                            sn = jObject["userData"].ToString();
                             return s2.ToString();
                         }
                     }
@@ -159,7 +198,7 @@ namespace Lumos.BLL.Service.Merch
             {
 
             }
-
+            sn = null;
             return type;
         }
     }

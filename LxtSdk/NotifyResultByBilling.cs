@@ -22,10 +22,10 @@ namespace LxtSdk
 
 
             public string Type { get; set; }
-            public long StartTime { get; set; }
-            public long RingTime { get; set; }
-            public long AnswerTime { get; set; }
-            public long ByeTime { get; set; }
+            public string StartTime { get; set; }
+            public string RingTime { get; set; }
+            public string AnswerTime { get; set; }
+            public string ByeTime { get; set; }
             public string StaffNo { get; set; }
             public string Callee { get; set; }
             public string Caller { get; set; }

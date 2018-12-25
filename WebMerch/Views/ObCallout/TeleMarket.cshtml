@@ -172,7 +172,7 @@
 
                         var resultCode = $(sel_ResultCode).find("option:selected").val();
 
-                        if (resultCode == "-1") {
+                        if (resultCode == "") {
                             $.lumos.tips("请选择通话结果");
                             return false;
                         }
@@ -184,7 +184,7 @@
                             var remark = $(txt_Remark).val();
                             $.lumos.postJson({
                                 isUseHandling: true,
-                                url: "/ObCallout/SaveCallRecored",
+                                url: "/ObCallout/SaveCallResultRecord",
                                 data: { customerId: customerId, resultCode: resultCode, nextCallTime: nextCallTime, remark },
                                         success: function (d) {
                                             $.lumos.tips(d.message);
