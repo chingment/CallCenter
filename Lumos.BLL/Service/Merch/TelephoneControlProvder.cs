@@ -185,10 +185,11 @@ namespace Lumos.BLL.Service.Merch
                 {
                     if (jObject["notify"] != null)
                     {
-                        var s2 = jObject["type"];
+                        var s1 = jObject["notify"];
+                        var s2 = s1["type"];
                         if (s2 != null)
                         {
-                            sn = jObject["userData"].ToString();
+                            sn = s1["userData"].ToString();
                             return s2.ToString();
                         }
                     }
