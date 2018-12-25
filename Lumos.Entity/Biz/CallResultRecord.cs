@@ -5,8 +5,8 @@ using System.ComponentModel.DataAnnotations.Schema;
 
 namespace Lumos.Entity
 {
-    [Table("CallRecord")]
-    public class CallRecord
+    [Table("CallResultRecord")]
+    public class CallResultRecord
     {
         [Key]
         public string Id { get; set; }

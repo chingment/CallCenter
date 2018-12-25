@@ -8,6 +8,11 @@ namespace LxtSdk
 {
     public class Response
     {
+        public Response()
+        {
+           
+        }
+
         public string Seq { get; set; }
 
         public string UserData { get; set; }

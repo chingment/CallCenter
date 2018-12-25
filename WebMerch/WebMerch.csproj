@@ -194,8 +194,6 @@
     <None Include="log4net.config">
       <SubType>Designer</SubType>
     </None>
-    <Content Include="ic_input_check_off.png" />
-    <Content Include="ic_input_check_on.png" />
     <Content Include="Static\404.html" />
     <Content Include="Static\default1.jpg" />
     <Content Include="Views\Home\ChangePassword.cshtml" />

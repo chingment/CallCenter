@@ -8,7 +8,7 @@ namespace Lumos.BLL
 {
     public interface ITelephoneControSdk
     {
-        CustomJsonResult CallNumber(string account, string callNumber);
+        CustomJsonResult CallNumber(string account, string csrId, string csrPhoneNumber);
         CustomJsonResult Handup();
         CustomJsonResult Login(string acccount);
         CustomJsonResult Logout();

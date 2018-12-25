@@ -124,7 +124,7 @@ namespace Lumos.BLL.Service.Merch
 
         }
 
-        public CustomJsonResult SaveCallRecored(string operater, string merchantId, string salesmanId, RopObCalloutSaveCallRecored rop)
+        public CustomJsonResult SaveCallResultRecord(string operater, string merchantId, string salesmanId, RopObCalloutSaveCallResultRecord rop)
         {
             CustomJsonResult result = new CustomJsonResult();
 
@@ -144,17 +144,17 @@ namespace Lumos.BLL.Service.Merch
                 obCustomer.IsUseCall = true;
                 obCustomer.UseCallTime = this.DateTime;
 
-                var callRecord = new CallRecord();
-                callRecord.Id = GuidUtil.New();
-                callRecord.MerchantId = merchantId;
-                callRecord.SalesmanId = salesmanId;
-                callRecord.CustomerId = rop.CustomerId;
-                callRecord.ResultCode = rop.ResultCode;
-                callRecord.NextCallTime = rop.NextCallTime;
-                callRecord.Remark = rop.Remark;
-                callRecord.Creator = operater;
-                callRecord.CreateTime = this.DateTime;
-                CurrentDb.CallRecord.Add(callRecord);
+                var callResultRecord = new CallResultRecord();
+                callResultRecord.Id = GuidUtil.New();
+                callResultRecord.MerchantId = merchantId;
+                callResultRecord.SalesmanId = salesmanId;
+                callResultRecord.CustomerId = rop.CustomerId;
+                callResultRecord.ResultCode = rop.ResultCode;
+                callResultRecord.NextCallTime = rop.NextCallTime;
+                callResultRecord.Remark = rop.Remark;
+                callResultRecord.Creator = operater;
+                callResultRecord.CreateTime = this.DateTime;
+                CurrentDb.CallResultRecord.Add(callResultRecord);
 
 
                 var resultCodePrefix = rop.ResultCode.Substring(0, 1);

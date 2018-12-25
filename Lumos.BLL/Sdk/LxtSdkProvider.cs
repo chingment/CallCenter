@@ -11,15 +11,15 @@ namespace Lumos.BLL
     {
         private LxtApi _api = new LxtApi();
 
-        public CustomJsonResult CallNumber(string account,string callNumber)
+        public CustomJsonResult CallNumber(string account,string csrId,string csrPhoneNumber)
         {
             CustomJsonResult result = new CustomJsonResult();
 
             var requestData = new CallNumberRequestData();
             requestData.Agent = account;
             requestData.Seq = SnUtil.Build(Entity.Enumeration.BizSnType.TelphoneControlSeq, "");
-            requestData.UserData = "";
-            requestData.Callee = callNumber;
+            requestData.UserData = csrId;
+            requestData.Callee = csrPhoneNumber;
 
             var request = new CallNumberRequest(requestData);
 

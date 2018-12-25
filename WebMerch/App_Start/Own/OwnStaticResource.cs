@@ -37,4 +37,19 @@ namespace WebMerch
         }
     }
 
+    public static class OwnStaticImagesResource
+    {
+        public static string GetSrc(string path)
+        {
+            string strPath = "/Content/Base/images/" + path;
+            string strUrl = System.Configuration.ConfigurationManager.AppSettings["custom:StaticResourceServerUrl"];
+            if (strUrl != null)
+            {
+                strPath = strUrl + strPath;
+            }
+
+            return strPath;
+        }
+    }
+
 }

@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace Lumos.BLL.Service.Merch
 {
-    public class RopObCalloutSaveCallRecored
+    public class RopObCalloutSaveCallResultRecord
     {
         public string CustomerId { get; set; }
 

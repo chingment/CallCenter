@@ -6,6 +6,7 @@ using System.Collections.Generic;
 using Lumos.BLL.Service.Admin;
 using Lumos.Entity;
 using Lumos.BLL.Service.Merch;
+using Lumos.Common;
 
 namespace WebMerch.Controllers
 {
@@ -14,6 +15,9 @@ namespace WebMerch.Controllers
 
         public ViewResult Index()
         {
+            HttpUtil http = new HttpUtil();
+            string respon_data4 = http.HttpPostJson("http://112.74.179.185:8085/Fn/Notify", "dsdaddd", null);
+
             //BizFactory.ProductSku.InitSearchCache();
 
 
