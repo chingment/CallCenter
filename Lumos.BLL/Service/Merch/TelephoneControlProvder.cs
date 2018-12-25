@@ -122,11 +122,18 @@ namespace Lumos.BLL.Service.Merch
             return result;
         }
 
-        private DateTime GetTime(string timeStamp)
+        private DateTime? GetTime(string timeStamp)
         {
+            if (timeStamp == "")
+                return null;
+            if (timeStamp == "0")
+                return null;
+
             DateTime dtStart = TimeZone.CurrentTimeZone.ToLocalTime(new DateTime(1970, 1, 1));
             long lTime = long.Parse(timeStamp + "0000000");
-            TimeSpan toNow = new TimeSpan(lTime); return dtStart.Add(toNow);
+            TimeSpan toNow = new TimeSpan(lTime);
+
+            return dtStart.Add(toNow);
         }
 
         public void Notify(string operater, string content)
@@ -161,7 +168,7 @@ namespace Lumos.BLL.Service.Merch
                             callRecord.ByeTime = GetTime(billing.Notify.ByeTime);
                             callRecord.AnswerTime = GetTime(billing.Notify.AnswerTime);
                             callRecord.RingTime = GetTime(billing.Notify.RingTime);
-                            callRecord.PhoneNumber = billing.Notify.Caller;
+                            callRecord.PhoneNumber = billing.Notify.Callee;
                             callRecord.RecordFile = billing.Notify.RecordFile;
                             callRecord.Service = billing.Notify.Service;
                             callRecord.TimeLength = billing.Notify.TimeLength;
