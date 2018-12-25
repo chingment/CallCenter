@@ -6,6 +6,16 @@ using System.Threading.Tasks;
 
 namespace LxtSdk
 {
+    public class AuthenticationModel
+    {
+
+        public string Customer { get; set; }
+        public string Agent { get; set; }
+        public string Digest { get; set; }
+        public string Seq { get; set; }
+        public string Timestamp { get; set; }
+    }
+
     public class BaseRequestData
     {
         public BaseRequestData()
@@ -19,15 +29,6 @@ namespace LxtSdk
 
         public Object Request { get; set; }
 
-        public class AuthenticationModel
-        {
-
-            public string Customer { get; set; }
-            public string Agent { get; set; }
-            public string Digest { get; set; }
-            public string Seq { get; set; }
-            public string Timestamp { get; set; }
-        }
 
         public class ParamModel
         {

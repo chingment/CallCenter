@@ -1,6 +1,7 @@
 ﻿using Autofac;
 using Lumos.BLL;
 using LxtSdk;
+using Newtonsoft.Json.Linq;
 using System;
 using System.Collections.Generic;
 using System.IO;
@@ -266,6 +267,12 @@ namespace Test
 
         static void Main(string[] args)
         {
+
+            //var s = Newtonsoft.Json.JsonConvert.DeserializeObject<JObject>("{\"custome\":\"C112\",\"notify\":{\"type\":\"billing\"}}");
+
+
+           // var s1 = s["notify"];
+           // var s2=s1["type"]
 
             string EncryptStr = EncryptDES("{csrId:\"bba32e80f0e3461eb064437b35240c83\",\"a\":\"bba32e80f0e3461eb064437b35240c83\"}", "ssssssss");  //返回加密后的字符串
             string DecryptStr = DecryptDES(EncryptStr, "ssssssss");//解密字符串

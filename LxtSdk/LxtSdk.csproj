@@ -51,6 +51,9 @@
   <ItemGroup>
     <Compile Include="BaseRequstResult.cs" />
     <Compile Include="IApiPostRequest.cs" />
+    <Compile Include="NotifyResultByBilling.cs" />
+    <Compile Include="NotifyResultByCallEnd.cs" />
+    <Compile Include="NotifyResultByCallStart.cs" />
     <Compile Include="Post\AgentLoginRequest.cs" />
     <Compile Include="Post\AgentLoginRequestData.cs" />
     <Compile Include="Post\AgentLoginRequestResult.cs" />

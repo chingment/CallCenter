@@ -1,4 +1,5 @@
 ﻿using Lumos.Entity;
+using Newtonsoft.Json.Linq;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -118,6 +119,48 @@ namespace Lumos.BLL.Service.Merch
             }
 
             return result;
+        }
+
+        public void Notify(string operater, string content)
+        {
+            var notifyType = GetNotifyType(content);
+            LogUtil.Info("通知的类型为:" + notifyType);
+            switch (notifyType)
+            {
+                case "callend":
+                    break;
+                case "callstart":
+                    break;
+                case "billing":
+                    break;
+            }
+        }
+
+        public string GetNotifyType(string content)
+        {
+            string type = "";
+
+            try
+            {
+                var jObject = Newtonsoft.Json.JsonConvert.DeserializeObject<JObject>(content);
+                if (jObject != null)
+                {
+                    if (jObject["notify"] != null)
+                    {
+                        var s2 = jObject["type"];
+                        if (s2 != null)
+                        {
+                            return s2.ToString();
+                        }
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+
+            }
+
+            return type;
         }
     }
 }
