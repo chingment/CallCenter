@@ -69,8 +69,8 @@
                 return false;
             });
 
-            $('#btn_TelephoneLogin').live("click",function(){
-            
+            $('#btn_TelephoneLogin').live("click", function () {
+
                 $.lumos.postJson({
                     url: "/TelphoneControl/Login",
                     success: function (d) {
@@ -137,9 +137,13 @@
                 url: "/TelphoneControl/CallCustomer",
                 data: { customerId: customerId },
                 success: function (d) {
-                    //$.lumos.tips(d.message);
+
                     if (d.result == $.lumos.resultType.success) {
 
+                    }
+                    else {
+                        //alert(d.message)
+                        $.lumos.tips(d.message);
                     }
                 }
             });

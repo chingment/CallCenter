@@ -3,6 +3,7 @@ using Lumos.BLL;
 using LxtSdk;
 using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
 using System.Reflection;
 using System.Security.Cryptography;
@@ -12,6 +13,7 @@ using System.Threading.Tasks;
 
 namespace Test
 {
+
 
     public sealed class Cat
     {
@@ -176,6 +178,61 @@ namespace Test
 
     class Program
     {
+        private static byte[] Keys = { 0x12, 0x34, 0x56, 0x78, 0x90, 0xAB, 0xCD, 0xEF };
+
+        /// <summary>
+        /// DES加密字符串
+        /// </summary>
+        /// <param name="encryptString">待加密的字符串</param>
+        /// <param name="encryptKey">加密密钥,要求为8位</param>
+        /// <returns>加密成功返回加密后的字符串，失败返回源串 </returns>
+        public static string EncryptDES(string encryptString, string encryptKey)
+        {
+            try
+            {
+                byte[] rgbKey = Encoding.UTF8.GetBytes(encryptKey.Substring(0, 8));//转换为字节
+                byte[] rgbIV = Keys;
+                byte[] inputByteArray = Encoding.UTF8.GetBytes(encryptString);
+                DESCryptoServiceProvider dCSP = new DESCryptoServiceProvider();//实例化数据加密标准
+                MemoryStream mStream = new MemoryStream();//实例化内存流
+                //将数据流链接到加密转换的流
+                CryptoStream cStream = new CryptoStream(mStream, dCSP.CreateEncryptor(rgbKey, rgbIV), CryptoStreamMode.Write);
+                cStream.Write(inputByteArray, 0, inputByteArray.Length);
+                cStream.FlushFinalBlock();
+                return Convert.ToBase64String(mStream.ToArray());
+            }
+            catch
+            {
+                return encryptString;
+            }
+        }
+
+        /// <summary>
+        /// DES解密字符串
+        /// </summary>
+        /// <param name="decryptString">待解密的字符串</param>
+        /// <param name="decryptKey">解密密钥,要求为8位,和加密密钥相同</param>
+        /// <returns>解密成功返回解密后的字符串，失败返源串</returns>
+        public static string DecryptDES(string decryptString, string decryptKey)
+        {
+            try
+            {
+                byte[] rgbKey = Encoding.UTF8.GetBytes(decryptKey);
+                byte[] rgbIV = Keys;
+                byte[] inputByteArray = Convert.FromBase64String(decryptString);
+                DESCryptoServiceProvider DCSP = new DESCryptoServiceProvider();
+                MemoryStream mStream = new MemoryStream();
+                CryptoStream cStream = new CryptoStream(mStream, DCSP.CreateDecryptor(rgbKey, rgbIV), CryptoStreamMode.Write);
+                cStream.Write(inputByteArray, 0, inputByteArray.Length);
+                cStream.FlushFinalBlock();
+                return Encoding.UTF8.GetString(mStream.ToArray());
+            }
+            catch
+            {
+                return decryptString;
+            }
+        }
+
         public static string GetMD5(string material)
         {
             if (string.IsNullOrEmpty(material))
@@ -210,36 +267,39 @@ namespace Test
         static void Main(string[] args)
         {
 
-
-            //var p1 = new AgentQueryStatusRequestData();
-            //p1.Agent = "1308000";
-            //p1.Seq = "112323";
-            //p1.UserData = "";
-
-            //var req1 = new AgentQueryStatusRequest(p1);
-            var lxt = new LxtApi();
-            //var lxtResult = lxt.DoPost(req1);
+            string EncryptStr = EncryptDES("{csrId:\"bba32e80f0e3461eb064437b35240c83\",\"a\":\"bba32e80f0e3461eb064437b35240c83\"}", "ssssssss");  //返回加密后的字符串
+            string DecryptStr = DecryptDES(EncryptStr, "ssssssss");//解密字符串
 
 
-            //var p2 = new AgentLoginRequestData();
-            //p2.Agent = "1308000";
-            //p2.Seq = "112323";
-            //p2.UserData = "";
+            ////var p1 = new AgentQueryStatusRequestData();
+            ////p1.Agent = "1308000";
+            ////p1.Seq = "112323";
+            ////p1.UserData = "";
 
-            //var req2 = new AgentLoginRequest(p2);
+            ////var req1 = new AgentQueryStatusRequest(p1);
+            //var lxt = new LxtApi();
+            ////var lxtResult = lxt.DoPost(req1);
 
-            //var lxtResult2 = lxt.DoPost(req2);
+
+            ////var p2 = new AgentLoginRequestData();
+            ////p2.Agent = "1308000";
+            ////p2.Seq = "112323";
+            ////p2.UserData = "";
+
+            ////var req2 = new AgentLoginRequest(p2);
+
+            ////var lxtResult2 = lxt.DoPost(req2);
 
 
-            var p3 = new CallNumberRequestData();
-            p3.Agent = "1308000";
-            p3.Seq = "112323";
-            //p3.UserData = "";
-            p3.Callee = "15989287032";
+            //var p3 = new CallNumberRequestData();
+            //p3.Agent = "1308000";
+            //p3.Seq = "112323";
+            ////p3.UserData = "";
+            //p3.Callee = "15989287032";
 
-            var req3 = new CallNumberRequest(p3);
+            //var req3 = new CallNumberRequest(p3);
 
-            var lxtResult3 = lxt.DoPost(req3);
+            //var lxtResult3 = lxt.DoPost(req3);
 
             //int num = 100;
             //Thread[] th = new Thread[num];

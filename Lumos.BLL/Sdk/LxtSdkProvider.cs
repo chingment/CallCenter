@@ -7,18 +7,18 @@ using System.Threading.Tasks;
 
 namespace Lumos.BLL
 {
-    public class LxtSdkProvider : ITelephoneControSdk
+    public class LxtSdkProvider : ITelephoneControlSdk
     {
         private LxtApi _api = new LxtApi();
 
-        public CustomJsonResult CallNumber(string account,string csrId,string csrPhoneNumber)
+        public CustomJsonResult CallNumber(string account, string seq, string csrPhoneNumber)
         {
             CustomJsonResult result = new CustomJsonResult();
 
             var requestData = new CallNumberRequestData();
             requestData.Agent = account;
-            requestData.Seq = SnUtil.Build(Entity.Enumeration.BizSnType.TelphoneControlSeq, "");
-            requestData.UserData = csrId;
+            requestData.Seq = seq;
+            requestData.UserData = seq;
             requestData.Callee = csrPhoneNumber;
 
             var request = new CallNumberRequest(requestData);
@@ -61,9 +61,9 @@ namespace Lumos.BLL
 
             return result;
         }
-        public CustomJsonResult GetStatus(string account)
+        public TelephoneStatus GetStatus(string account)
         {
-            CustomJsonResult result = new CustomJsonResult();
+            TelephoneStatus telephoneStatus = TelephoneStatus.Unknow;
 
             var requestData = new GetAgentStatusRequestData();
             requestData.Agent = account;
@@ -74,8 +74,46 @@ namespace Lumos.BLL
 
             var requestResult = _api.DoPost(request);
 
+            if (requestResult == null)
+            {
+                return telephoneStatus;
+            }
 
-            return result;
+            if (requestResult.Data == null)
+            {
+                return telephoneStatus;
+            }
+
+            if (requestResult.Data.Response == null)
+            {
+                return telephoneStatus;
+            }
+
+            switch (requestResult.Data.Response.ServerStatus)
+            {
+                case "IDLE":
+                    telephoneStatus = TelephoneStatus.IDLE;
+                    break;
+                case "CALL_OUT":
+                    telephoneStatus = TelephoneStatus.CallOut;
+                    break;
+                case "CALL_IN":
+                    telephoneStatus = TelephoneStatus.CallIn;
+                    break;
+                case "RINGING":
+                    telephoneStatus = TelephoneStatus.Ringing;
+                    break;
+                case "PROCESS":
+                    telephoneStatus = TelephoneStatus.Process;
+                    break;
+                default:
+                    telephoneStatus = TelephoneStatus.Unknow;
+                    break;
+            }
+
+
+
+            return telephoneStatus;
         }
     }
 }

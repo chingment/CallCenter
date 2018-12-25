@@ -58,6 +58,7 @@
     <Compile Include="Biz\BizSn.cs" />
     <Compile Include="Biz\BizProcessesAudit.cs" />
     <Compile Include="Biz\BizProcessesAuditDetails.cs" />
+    <Compile Include="Biz\CallRecord.cs.cs" />
     <Compile Include="Biz\ObTakeDataLimit.cs" />
     <Compile Include="Biz\CallResultRecord.cs" />
     <Compile Include="Biz\CarInsKind.cs" />
