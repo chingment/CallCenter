@@ -57,6 +57,9 @@
     <Compile Include="Post\AgentLoginRequest.cs" />
     <Compile Include="Post\AgentLoginRequestData.cs" />
     <Compile Include="Post\AgentLoginRequestResult.cs" />
+    <Compile Include="Post\AgentLogoutRequest.cs" />
+    <Compile Include="Post\AgentLogoutRequestData.cs" />
+    <Compile Include="Post\AgentLogoutRequestResult.cs" />
     <Compile Include="Post\GetAgentStatusRequest.cs" />
     <Compile Include="Post\GetAgentStatusRequestData.cs" />
     <Compile Include="Post\GetAgentStatusRequestResult.cs" />

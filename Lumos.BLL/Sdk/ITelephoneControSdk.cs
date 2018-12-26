@@ -28,7 +28,7 @@ namespace Lumos.BLL
         CustomJsonResult CallNumber(string account, string csrId, string csrPhoneNumber);
         CustomJsonResult Hangup(string account);
         CustomJsonResult Login(string acccount);
-        CustomJsonResult Logout();
+        CustomJsonResult Logout(string account);
         TelephoneStatus GetStatus(string account);
     }
 }

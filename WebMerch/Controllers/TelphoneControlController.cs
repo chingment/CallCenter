@@ -17,6 +17,12 @@ namespace WebMerch.Controllers
         }
 
         [HttpPost]
+        public CustomJsonResult Logout()
+        {
+            return MerchServiceFactory.TelephoneControl.Logout(this.CurrentUserId, this.CurrentMerchantId, this.CurrentUserId);
+        }
+
+        [HttpPost]
         public CustomJsonResult CallCustomer(string customerId)
         {
             return MerchServiceFactory.TelephoneControl.CallCustomer(this.CurrentUserId, this.CurrentMerchantId, this.CurrentUserId, customerId);

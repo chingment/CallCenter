@@ -12,16 +12,36 @@ namespace Lumos.BLL.Service.Merch
 {
     public class TelephoneControlProvder : BaseProvider
     {
-        public CustomJsonResult Login(string operater, string merchantId, string userId)
+        public CustomJsonResult Login(string operater, string merchantId, string salesmanId)
         {
             CustomJsonResult result = new CustomJsonResult();
 
             using (TransactionScope ts = new TransactionScope())
             {
-                var sysMerchantUser = CurrentDb.SysMerchantUser.Where(m => m.MerchantId == merchantId && m.Id == userId).FirstOrDefault();
+                var sysMerchantUser = CurrentDb.SysMerchantUser.Where(m => m.MerchantId == merchantId && m.Id == salesmanId).FirstOrDefault();
 
 
                 SdkFactory.Lxt.Login(sysMerchantUser.TelSeatAccount);
+
+                result = new CustomJsonResult(ResultType.Success, ResultCode.Success, "新建成功");
+
+                //CurrentDb.SaveChanges();
+                //ts.Complete();
+            }
+
+            return result;
+        }
+
+        public CustomJsonResult Logout(string operater, string merchantId, string salesmanId)
+        {
+            CustomJsonResult result = new CustomJsonResult();
+
+            using (TransactionScope ts = new TransactionScope())
+            {
+                var sysMerchantUser = CurrentDb.SysMerchantUser.Where(m => m.MerchantId == merchantId && m.Id == salesmanId).FirstOrDefault();
+
+
+                SdkFactory.Lxt.Logout (sysMerchantUser.TelSeatAccount);
 
                 result = new CustomJsonResult(ResultType.Success, ResultCode.Success, "新建成功");
 
@@ -71,6 +91,7 @@ namespace Lumos.BLL.Service.Merch
                 callRecord.SalesmanId = salesmanId;
                 callRecord.SalesmanName = salesman.FullName;
                 callRecord.TelSeatAccount = salesman.TelSeatAccount;
+                callRecord.PhoneNumber = salesman.PhoneNumber;
                 callRecord.Remark = "";
                 callRecord.Creator = operater;
                 callRecord.CreateTime = this.DateTime;

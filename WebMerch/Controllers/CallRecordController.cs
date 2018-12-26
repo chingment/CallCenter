@@ -47,6 +47,13 @@ u.MerchantId == this.CurrentMerchantId &&
             foreach (var item in list)
             {
 
+                string recordFile = "";
+
+                if(!string.IsNullOrEmpty(item.RecordFile))
+                {
+                    recordFile = "http://39.108.86.40" + item.RecordFile;
+                }
+
                 olist.Add(new
                 {
                     Id = item.Id,
@@ -54,7 +61,7 @@ u.MerchantId == this.CurrentMerchantId &&
                     CustomerName = item.CustomerName,
                     SalesmanId = item.SalesmanId,
                     SalesmanName = item.SalesmanName,
-                    RecordFile = "http://39.108.86.40" + item.RecordFile,
+                    RecordFile = recordFile,
                     TimeLength = item.TimeLength,
                     PhoneNumber = item.PhoneNumber,
                     RingTime = item.RingTime.ToUnifiedFormatDateTime(),

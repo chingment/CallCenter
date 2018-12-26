@@ -83,6 +83,20 @@
 
             });
 
+            $('#btn_TelephoneLogout').live("click", function () {
+
+                $.lumos.postJson({
+                    url: "/TelphoneControl/Logout",
+                    success: function (d) {
+                        $.lumos.tips(d.message);
+                        if (d.result == $.lumos.resultType.success) {
+
+                        }
+                    }
+                });
+
+            });
+
             $('#btn_TelephoneTestCallCustomer').live("click", function () {
                 callCustomer("f9705ed7e7f54b37a0190cf71d7748e8");
             });
@@ -187,7 +201,7 @@
                         <span>状态:</span>
                         <input type="button" id="btn_TelephoneLogin" value="签入" />
                         <input type="button" id="btn_TelephoneLogout" value="签出" />
-                        <input type="button" id="btn_TelephoneTestCallCustomer" value="测试呼叫" />
+                        <input type="button" id="btn_TelephoneTestCallCustomer" value="测试呼叫" style="display:none;" />
                     </li>
                 </ul>
 

@@ -50,24 +50,36 @@ namespace Lumos.BLL
 
             CustomJsonResult result = new CustomJsonResult();
 
-            GetStatus(account);
+            var telephoneStatus = GetStatus(account);
+            if (telephoneStatus == TelephoneStatus.Unknow)
+            {
+                var requestData = new AgentLoginRequestData();
+                requestData.Agent = account;
+                requestData.Seq = SnUtil.Build(Entity.Enumeration.BizSnType.TelphoneControlSeq, "");
+                requestData.UserData = "";
 
-            //var requestData = new AgentLoginRequestData();
-            //requestData.Agent = account;
-            //requestData.Seq = SnUtil.Build(Entity.Enumeration.BizSnType.TelphoneControlSeq, "");
-            //requestData.UserData = "";
+                var request = new AgentLoginRequest(requestData);
 
-            //var request = new AgentLoginRequest(requestData);
+                var requestResult = _api.DoPost(request);
 
-            //var requestResult = _api.DoPost(request);
-
+            }
 
             return result;
         }
-        public CustomJsonResult Logout()
+        public CustomJsonResult Logout(string account)
         {
 
             CustomJsonResult result = new CustomJsonResult();
+
+
+            var requestData = new AgentLogoutRequestData();
+            requestData.Agent = account;
+            requestData.Seq = SnUtil.Build(Entity.Enumeration.BizSnType.TelphoneControlSeq, "");
+            requestData.UserData = "";
+
+            var request = new AgentLogoutRequest(requestData);
+
+            var requestResult = _api.DoPost(request);
 
             return result;
         }
