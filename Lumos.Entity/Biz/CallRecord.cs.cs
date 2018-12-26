@@ -13,7 +13,10 @@ namespace Lumos.Entity
         public string Sn { get; set; }
         public string MerchantId { get; set; }
         public string CustomerId { get; set; }
+        public string CustomerName { get; set; }
         public string SalesmanId { get; set; }
+        public string SalesmanName { get; set; }
+        public string TelSeatAccount { get; set; }
         public DateTime? StartTime { get; set; }
         public DateTime? RingTime { get; set; }
         public DateTime? AnswerTime { get; set; }

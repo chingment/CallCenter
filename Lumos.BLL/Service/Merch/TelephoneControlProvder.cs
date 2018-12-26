@@ -38,13 +38,13 @@ namespace Lumos.BLL.Service.Merch
 
             using (TransactionScope ts = new TransactionScope())
             {
-                var sysMerchantUser = CurrentDb.SysMerchantUser.Where(m => m.MerchantId == merchantId && m.Id == salesmanId).FirstOrDefault();
-                if (sysMerchantUser == null)
+                var salesman = CurrentDb.SysMerchantUser.Where(m => m.MerchantId == merchantId && m.Id == salesmanId).FirstOrDefault();
+                if (salesman == null)
                 {
                     new CustomJsonResult(ResultType.Failure, ResultCode.Failure, "用户信息无效");
                 }
 
-                if (string.IsNullOrEmpty(sysMerchantUser.TelSeatAccount))
+                if (string.IsNullOrEmpty(salesman.TelSeatAccount))
                 {
                     new CustomJsonResult(ResultType.Failure, ResultCode.Failure, "未配置外呼电话信息，请联系系统管理员");
                 }
@@ -55,9 +55,7 @@ namespace Lumos.BLL.Service.Merch
                     new CustomJsonResult(ResultType.Failure, ResultCode.Failure, "系统找不到该客户信息");
                 }
 
-                string telSeatAccount = sysMerchantUser.TelSeatAccount;
-
-                var telephoneStatus = SdkFactory.Lxt.GetStatus(telSeatAccount);
+                var telephoneStatus = SdkFactory.Lxt.GetStatus(salesman.TelSeatAccount);
 
                 if (telephoneStatus != TelephoneStatus.IDLE)
                 {
@@ -69,13 +67,16 @@ namespace Lumos.BLL.Service.Merch
                 callRecord.Sn = SnUtil.Build(Enumeration.BizSnType.TelphoneControlSeq, salesmanId);
                 callRecord.MerchantId = merchantId;
                 callRecord.CustomerId = obCustomer.Id;
+                callRecord.CustomerName = obCustomer.CsrName;
                 callRecord.SalesmanId = salesmanId;
+                callRecord.SalesmanName = salesman.FullName;
+                callRecord.TelSeatAccount = salesman.TelSeatAccount;
                 callRecord.Remark = "";
                 callRecord.Creator = operater;
                 callRecord.CreateTime = this.DateTime;
                 CurrentDb.CallRecord.Add(callRecord);
 
-                SdkFactory.Lxt.CallNumber(telSeatAccount, callRecord.Sn, obCustomer.CsrPhoneNumber);
+                SdkFactory.Lxt.CallNumber(salesman.TelSeatAccount, callRecord.Sn, obCustomer.CsrPhoneNumber);
 
                 result = new CustomJsonResult(ResultType.Success, ResultCode.Success, "新建成功");
 
