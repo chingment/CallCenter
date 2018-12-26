@@ -54,7 +54,7 @@ u.MerchantId == this.CurrentMerchantId &&
                     CustomerName = item.CustomerName,
                     SalesmanId = item.SalesmanId,
                     SalesmanName = item.SalesmanName,
-                    RecordFile = item.RecordFile,
+                    RecordFile = "http://39.108.86.40" + item.RecordFile,
                     TimeLength = item.TimeLength,
                     PhoneNumber = item.PhoneNumber,
                     RingTime = item.RingTime.ToUnifiedFormatDateTime(),
