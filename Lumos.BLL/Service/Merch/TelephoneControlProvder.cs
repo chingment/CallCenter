@@ -78,10 +78,10 @@ namespace Lumos.BLL.Service.Merch
 
                 var telephoneStatus = SdkFactory.Lxt.GetStatus(salesman.TeleSeatAccount);
 
-                if (telephoneStatus != Enumeration.TelePhoneStatus.IDLE)
-                {
-                    return new CustomJsonResult(ResultType.Failure, ResultCode.Failure, "该话机状态为" + telephoneStatus.GetCnName());
-                }
+                //if (telephoneStatus != Enumeration.TelePhoneStatus.IDLE)
+                //{
+                //    return new CustomJsonResult(ResultType.Failure, ResultCode.Failure, "该话机状态为" + telephoneStatus.GetCnName());
+                //}
 
                 var callRecord = new CallRecord();
                 callRecord.Id = GuidUtil.New();
