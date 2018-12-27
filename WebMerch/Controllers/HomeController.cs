@@ -7,6 +7,7 @@ using Lumos.BLL.Service.Admin;
 using Lumos.Entity;
 using Lumos.BLL.Service.Merch;
 using Lumos.Common;
+using System;
 
 namespace WebMerch.Controllers
 {
@@ -15,7 +16,7 @@ namespace WebMerch.Controllers
 
         public ViewResult Index()
         {
-            //MerchServiceFactory.User.SetTelSeatStatus(this.CurrentUserId, this.CurrentMerchantId, this.CurrentUserId, Enumeration.TelSeatStatus.OnLine);
+            MerchServiceFactory.User.SetLastAccessTime(this.CurrentUserId, this.CurrentMerchantId, this.CurrentUserId, DateTime.Now);
 
             //RedisManager.Db.HashSetAsync(key, d.Id, Newtonsoft.Json.JsonConvert.SerializeObject(d), StackExchange.Redis.When.Always);
 
@@ -147,10 +148,10 @@ namespace WebMerch.Controllers
             return new CustomJsonResult(ResultType.Success, ResultCode.Success, "获取成功", ret);
         }
 
-        public CustomJsonResult GetWorkInfo()
+        public CustomJsonResult HeartbeatPacket()
         {
 
-            //var info = MerchServiceFactory.User.GetTelephoneWorkInfo(this.CurrentUserId, this.CurrentMerchantId, this.CurrentUserId);
+            MerchServiceFactory.User.SetLastAccessTime(this.CurrentUserId, this.CurrentMerchantId, this.CurrentUserId, DateTime.Now);
 
             return new CustomJsonResult(ResultType.Success, ResultCode.Success, "获取成功", null);
         }

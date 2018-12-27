@@ -101,9 +101,9 @@
                 callCustomer("f9705ed7e7f54b37a0190cf71d7748e8");
             });
 
-            //getTelephoneWorkInfo()
+   
 
-            setInterval("getWorkInfo()", 200);
+            setInterval("heartbeatPacket()", 1000);
 
             setInterval("reinitIframe()", 200);
         });
@@ -184,10 +184,10 @@
             });
         }
 
-        function getWorkInfo() {
+        function heartbeatPacket() {
 
-            $.lumos.postJson({
-                url: "/Home/GetWorkInfo",
+            $.lumos.getJson({
+                url: "/Home/HeartbeatPacket",
                 success: function (d) {
 
                     console.log(JSON.stringify(d));

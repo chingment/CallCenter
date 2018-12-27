@@ -93,6 +93,7 @@
     <Compile Include="Biz\Models\FieldModel.cs" />
     <Compile Include="Sdk\ITelephoneControSdk.cs" />
     <Compile Include="Sdk\LxtSdkProvider.cs" />
+    <Compile Include="Service\Merch\Models\UserModel.cs" />
     <Compile Include="Service\Merch\RModels\RopTelphoneControlCallCustomer.cs" />
     <Compile Include="Service\Merch\RModels\RupCallRecordGetList.cs" />
     <Compile Include="Service\Merch\TelephoneControlProvder.cs" />
@@ -193,6 +194,7 @@
     <Compile Include="Service\Merch\RModels\RupObBatchDataGetList.cs" />
     <Compile Include="Service\Merch\RModels\RupObCustomerGetList.cs" />
     <Compile Include="Service\Merch\RModels\RupStaffUserGetList.cs" />
+    <Compile Include="Service\Merch\UserDataCacheUtil.cs" />
     <Compile Include="Service\Merch\UserProvider.cs" />
     <Compile Include="SnUtil.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />

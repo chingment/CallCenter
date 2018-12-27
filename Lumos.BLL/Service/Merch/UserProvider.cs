@@ -15,7 +15,6 @@ namespace Lumos.BLL.Service.Merch
 
     public class UserProvider : BaseProvider
     {
-        private readonly string key_list = "UserInfoModel";
 
         public List<string> GetCanAccessUserIds(string operater, string merchantId, string id)
         {
@@ -143,14 +142,13 @@ namespace Lumos.BLL.Service.Merch
 
                 }
 
-
-                result = new CustomJsonResult(ResultType.Success, ResultCode.Success, "新建成功");
-
-
-                RedisManager.Db.HashSetAsync(key_list, user.Id, Newtonsoft.Json.JsonConvert.SerializeObject(user), StackExchange.Redis.When.Always);
+                UserDataCacheUtil.Add(user.Id);
 
                 CurrentDb.SaveChanges();
                 ts.Complete();
+
+                result = new CustomJsonResult(ResultType.Success, ResultCode.Success, "新建成功");
+
             }
 
             return result;
@@ -160,6 +158,9 @@ namespace Lumos.BLL.Service.Merch
         {
 
             CustomJsonResult result = new CustomJsonResult();
+
+
+            var userModel = new UserModel();
 
             using (TransactionScope ts = new TransactionScope())
             {
@@ -222,13 +223,22 @@ namespace Lumos.BLL.Service.Merch
                 CurrentDb.SaveChanges();
                 ts.Complete();
 
-
-
-                RedisManager.Db.HashSetAsync(key_list, user.Id, Newtonsoft.Json.JsonConvert.SerializeObject(user), StackExchange.Redis.When.Always);
+                userModel.UserId = user.Id;
+                userModel.FullName = user.FullName;
+                userModel.OrganizationId = user.OrganizationId;
+                userModel.PositionId = user.PositionId;
+                userModel.TeleSeatAccount = user.TeleSeatAccount;
+                userModel.TeleSeatPassword = user.TeleSeatPassword;
 
                 result = new CustomJsonResult(ResultType.Success, ResultCode.Success, "保存成功");
 
             }
+
+            if (result.Result == ResultType.Success)
+            {
+                UserDataCacheUtil.Edit(rop.Id, userModel);
+            }
+
             return result;
 
 
@@ -288,30 +298,10 @@ namespace Lumos.BLL.Service.Merch
             return list;
         }
 
-        public void SetTelSeatStatus(string operater, string merchantId, string id, Enumeration.TelePhoneStatus telSeatStatus)
+        public void SetLastAccessTime(string operater, string merchantId, string id, DateTime lastAccessTime)
         {
-            try
-            {
-                var hash = RedisManager.Db.HashGetAll(key_list);
-
-                if (hash != null)
-                {
-                    var hsOne = hash.Where(m => m.Name == id).FirstOrDefault();
-                    if (hsOne != null)
-                    {
-                        var info = Newtonsoft.Json.JsonConvert.DeserializeObject<SysMerchantUser>(hsOne.Value);
-                        info.TelePhoneStatus = telSeatStatus;
-                        RedisManager.Db.HashSetAsync(key_list, id, Newtonsoft.Json.JsonConvert.SerializeObject(info), StackExchange.Redis.When.Always);
-                    }
-                }
-
-            }
-            catch (Exception ex)
-            {
-
-            }
+            UserDataCacheUtil.SetLastAccessTime(id, lastAccessTime);
         }
-
 
 
     }
