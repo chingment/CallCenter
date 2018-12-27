@@ -197,23 +197,17 @@ namespace Lumos.Entity
             MerchantStaff = 299
         }
 
-        public enum TelSeatStatus
+        public enum WorkStatus
         {
             [Remark("未知")]
             Unknow = 0,
             [Remark("工作中")]
             OnLine = 1,
             [Remark("离线")]
-            OffLine = 2,
-            [Remark("空闲")]
-            Free = 3,
-            [Remark("置忙")]
-            Busying = 4,
-            [Remark("离开")]
-            Leave = 5
+            OffLine = 2
         }
 
-        public enum TelSeatPhoneStatus
+        public enum TelePhoneStatus
         {
 
             [Remark("未知")]

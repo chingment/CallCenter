@@ -52,7 +52,7 @@ namespace Lumos.BLL
             CustomJsonResult result = new CustomJsonResult();
 
             var telephoneStatus = GetStatus(account);
-            if (telephoneStatus == Enumeration.TelSeatPhoneStatus.Unknow)
+            if (telephoneStatus == Enumeration.TelePhoneStatus.Unknow)
             {
                 var requestData = new AgentLoginRequestData();
                 requestData.Agent = account;
@@ -84,9 +84,9 @@ namespace Lumos.BLL
 
             return result;
         }
-        public Enumeration.TelSeatPhoneStatus GetStatus(string account)
+        public Enumeration.TelePhoneStatus GetStatus(string account)
         {
-            Enumeration.TelSeatPhoneStatus telephoneStatus = Entity.Enumeration.TelSeatPhoneStatus.Unknow;
+            Enumeration.TelePhoneStatus telephoneStatus = Entity.Enumeration.TelePhoneStatus.Unknow;
 
             var requestData = new GetAgentStatusRequestData();
             requestData.Agent = account;
@@ -115,22 +115,22 @@ namespace Lumos.BLL
             switch (requestResult.Data.Response.ServerStatus)
             {
                 case "IDLE":
-                    telephoneStatus = Enumeration.TelSeatPhoneStatus.IDLE;
+                    telephoneStatus = Enumeration.TelePhoneStatus.IDLE;
                     break;
                 case "CALL_OUT":
-                    telephoneStatus = Enumeration.TelSeatPhoneStatus.CallOut;
+                    telephoneStatus = Enumeration.TelePhoneStatus.CallOut;
                     break;
                 case "CALL_IN":
-                    telephoneStatus = Enumeration.TelSeatPhoneStatus.CallIn;
+                    telephoneStatus = Enumeration.TelePhoneStatus.CallIn;
                     break;
                 case "RINGING":
-                    telephoneStatus = Enumeration.TelSeatPhoneStatus.Ringing;
+                    telephoneStatus = Enumeration.TelePhoneStatus.Ringing;
                     break;
                 case "PROCESS":
-                    telephoneStatus = Enumeration.TelSeatPhoneStatus.Process;
+                    telephoneStatus = Enumeration.TelePhoneStatus.Process;
                     break;
                 default:
-                    telephoneStatus = Enumeration.TelSeatPhoneStatus.Unknow;
+                    telephoneStatus = Enumeration.TelePhoneStatus.Unknow;
                     break;
             }
 

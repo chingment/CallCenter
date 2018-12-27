@@ -46,8 +46,7 @@ namespace Lumos.Entity
         public string Mender { get; set; }
         public DateTime? MendTime { get; set; }
         public Enumeration.BelongSite BelongSite { get; set; }
-
         public bool IsCanDelete { get; set; }
-
+        public Enumeration.WorkStatus WorkStatus { get; set; }
     }
 }

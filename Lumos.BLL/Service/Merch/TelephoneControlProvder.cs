@@ -8,7 +8,6 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Transactions;
-using static Lumos.Entity.Enumeration;
 
 namespace Lumos.BLL.Service.Merch
 {
@@ -23,7 +22,7 @@ namespace Lumos.BLL.Service.Merch
                 var sysMerchantUser = CurrentDb.SysMerchantUser.Where(m => m.MerchantId == merchantId && m.Id == salesmanId).FirstOrDefault();
 
 
-                SdkFactory.Lxt.Login(sysMerchantUser.TelSeatAccount);
+                SdkFactory.Lxt.Login(sysMerchantUser.TeleSeatAccount);
 
                 result = new CustomJsonResult(ResultType.Success, ResultCode.Success, "新建成功");
 
@@ -43,7 +42,7 @@ namespace Lumos.BLL.Service.Merch
                 var sysMerchantUser = CurrentDb.SysMerchantUser.Where(m => m.MerchantId == merchantId && m.Id == salesmanId).FirstOrDefault();
 
 
-                SdkFactory.Lxt.Logout(sysMerchantUser.TelSeatAccount);
+                SdkFactory.Lxt.Logout(sysMerchantUser.TeleSeatAccount);
 
                 result = new CustomJsonResult(ResultType.Success, ResultCode.Success, "新建成功");
 
@@ -66,7 +65,7 @@ namespace Lumos.BLL.Service.Merch
                     new CustomJsonResult(ResultType.Failure, ResultCode.Failure, "用户信息无效");
                 }
 
-                if (string.IsNullOrEmpty(salesman.TelSeatAccount))
+                if (string.IsNullOrEmpty(salesman.TeleSeatAccount))
                 {
                     new CustomJsonResult(ResultType.Failure, ResultCode.Failure, "未配置外呼电话信息，请联系系统管理员");
                 }
@@ -77,9 +76,9 @@ namespace Lumos.BLL.Service.Merch
                     new CustomJsonResult(ResultType.Failure, ResultCode.Failure, "系统找不到该客户信息");
                 }
 
-                var telephoneStatus = SdkFactory.Lxt.GetStatus(salesman.TelSeatAccount);
+                var telephoneStatus = SdkFactory.Lxt.GetStatus(salesman.TeleSeatAccount);
 
-                if (telephoneStatus != TelSeatPhoneStatus.IDLE)
+                if (telephoneStatus != Enumeration.TelePhoneStatus.IDLE)
                 {
                     return new CustomJsonResult(ResultType.Failure, ResultCode.Failure, "该话机状态为" + telephoneStatus.GetCnName());
                 }
@@ -92,14 +91,14 @@ namespace Lumos.BLL.Service.Merch
                 callRecord.CustomerName = obCustomer.CsrName;
                 callRecord.SalesmanId = salesmanId;
                 callRecord.SalesmanName = salesman.FullName;
-                callRecord.TelSeatAccount = salesman.TelSeatAccount;
+                callRecord.TeleSeatAccount = salesman.TeleSeatAccount;
                 callRecord.PhoneNumber = salesman.PhoneNumber;
                 callRecord.Remark = "";
                 callRecord.Creator = operater;
                 callRecord.CreateTime = this.DateTime;
                 CurrentDb.CallRecord.Add(callRecord);
 
-                SdkFactory.Lxt.CallNumber(salesman.TelSeatAccount, callRecord.Sn, obCustomer.CsrPhoneNumber);
+                SdkFactory.Lxt.CallNumber(salesman.TeleSeatAccount, callRecord.Sn, obCustomer.CsrPhoneNumber);
 
                 result = new CustomJsonResult(ResultType.Success, ResultCode.Success, "新建成功");
 
@@ -122,7 +121,7 @@ namespace Lumos.BLL.Service.Merch
                     new CustomJsonResult(ResultType.Failure, ResultCode.Failure, "用户信息无效");
                 }
 
-                if (string.IsNullOrEmpty(sysMerchantUser.TelSeatAccount))
+                if (string.IsNullOrEmpty(sysMerchantUser.TeleSeatAccount))
                 {
                     new CustomJsonResult(ResultType.Failure, ResultCode.Failure, "未配置外呼电话信息，请联系系统管理员");
                 }
@@ -133,7 +132,7 @@ namespace Lumos.BLL.Service.Merch
                     new CustomJsonResult(ResultType.Failure, ResultCode.Failure, "系统找不到该客户信息");
                 }
 
-                string telSeatAccount = sysMerchantUser.TelSeatAccount;
+                string telSeatAccount = sysMerchantUser.TeleSeatAccount;
 
                 SdkFactory.Lxt.Hangup(telSeatAccount);
 

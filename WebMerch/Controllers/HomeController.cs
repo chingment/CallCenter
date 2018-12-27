@@ -15,7 +15,7 @@ namespace WebMerch.Controllers
 
         public ViewResult Index()
         {
-            MerchServiceFactory.User.SetTelSeatStatus(this.CurrentUserId, this.CurrentMerchantId, this.CurrentUserId, Enumeration.TelSeatStatus.OnLine);
+            //MerchServiceFactory.User.SetTelSeatStatus(this.CurrentUserId, this.CurrentMerchantId, this.CurrentUserId, Enumeration.TelSeatStatus.OnLine);
 
             //RedisManager.Db.HashSetAsync(key, d.Id, Newtonsoft.Json.JsonConvert.SerializeObject(d), StackExchange.Redis.When.Always);
 

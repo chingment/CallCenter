@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
-using static Lumos.Entity.Enumeration;
+using Lumos.Entity;
 
 namespace Lumos.BLL
 {
@@ -13,6 +13,6 @@ namespace Lumos.BLL
         CustomJsonResult Hangup(string account);
         CustomJsonResult Login(string acccount);
         CustomJsonResult Logout(string account);
-        TelSeatPhoneStatus GetStatus(string account);
+        Enumeration.TelePhoneStatus GetStatus(string account);
     }
 }

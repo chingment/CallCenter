@@ -288,7 +288,7 @@ namespace Lumos.BLL.Service.Merch
             return list;
         }
 
-        public void SetTelSeatStatus(string operater, string merchantId, string id, Enumeration.TelSeatStatus telSeatStatus)
+        public void SetTelSeatStatus(string operater, string merchantId, string id, Enumeration.TelePhoneStatus telSeatStatus)
         {
             try
             {
@@ -300,7 +300,7 @@ namespace Lumos.BLL.Service.Merch
                     if (hsOne != null)
                     {
                         var info = Newtonsoft.Json.JsonConvert.DeserializeObject<SysMerchantUser>(hsOne.Value);
-                        info.TelSeatStatus = telSeatStatus;
+                        info.TelePhoneStatus = telSeatStatus;
                         RedisManager.Db.HashSetAsync(key_list, id, Newtonsoft.Json.JsonConvert.SerializeObject(info), StackExchange.Redis.When.Always);
                     }
                 }
@@ -311,6 +311,7 @@ namespace Lumos.BLL.Service.Merch
 
             }
         }
+
 
 
     }
