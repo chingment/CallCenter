@@ -101,6 +101,9 @@
                 callCustomer("f9705ed7e7f54b37a0190cf71d7748e8");
             });
 
+            //getTelephoneWorkInfo()
+
+            setInterval("getWorkInfo()", 200);
 
             setInterval("reinitIframe()", 200);
         });
@@ -181,7 +184,20 @@
             });
         }
 
+        function getWorkInfo() {
 
+            $.lumos.postJson({
+                url: "/Home/GetWorkInfo",
+                success: function (d) {
+
+                    console.log(JSON.stringify(d));
+
+                    if (d.result == $.lumos.resultType.success) {
+
+                    }
+                }
+            });
+        }
     </script>
 }
 

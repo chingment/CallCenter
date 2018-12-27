@@ -15,8 +15,12 @@ namespace WebMerch.Controllers
 
         public ViewResult Index()
         {
-            HttpUtil http = new HttpUtil();
-            string respon_data4 = http.HttpPostJson("http://112.74.179.185:8085/Fn/Notify", "dsdaddd", null);
+            MerchServiceFactory.User.SetTelSeatStatus(this.CurrentUserId, this.CurrentMerchantId, this.CurrentUserId, Enumeration.TelSeatStatus.OnLine);
+
+            //RedisManager.Db.HashSetAsync(key, d.Id, Newtonsoft.Json.JsonConvert.SerializeObject(d), StackExchange.Redis.When.Always);
+
+            //HttpUtil http = new HttpUtil();
+            //string respon_data4 = http.HttpPostJson("http://112.74.179.185:8085/Fn/Notify", "dsdaddd", null);
 
             //BizFactory.ProductSku.InitSearchCache();
 
@@ -101,7 +105,6 @@ namespace WebMerch.Controllers
 
         }
 
-
         public CustomJsonResult GetIndexData()
         {
             var ret = new IndexModel();
@@ -144,6 +147,13 @@ namespace WebMerch.Controllers
             return new CustomJsonResult(ResultType.Success, ResultCode.Success, "获取成功", ret);
         }
 
+        public CustomJsonResult GetWorkInfo()
+        {
+
+            //var info = MerchServiceFactory.User.GetTelephoneWorkInfo(this.CurrentUserId, this.CurrentMerchantId, this.CurrentUserId);
+
+            return new CustomJsonResult(ResultType.Success, ResultCode.Success, "获取成功", null);
+        }
 
         public class IndexModel
         {

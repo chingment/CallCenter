@@ -1,4 +1,5 @@
 ﻿using Lumos.Entity;
+using Lumos.Redis;
 using LxtSdk;
 using Newtonsoft.Json.Linq;
 using System;
@@ -7,6 +8,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Transactions;
+using static Lumos.Entity.Enumeration;
 
 namespace Lumos.BLL.Service.Merch
 {
@@ -41,7 +43,7 @@ namespace Lumos.BLL.Service.Merch
                 var sysMerchantUser = CurrentDb.SysMerchantUser.Where(m => m.MerchantId == merchantId && m.Id == salesmanId).FirstOrDefault();
 
 
-                SdkFactory.Lxt.Logout (sysMerchantUser.TelSeatAccount);
+                SdkFactory.Lxt.Logout(sysMerchantUser.TelSeatAccount);
 
                 result = new CustomJsonResult(ResultType.Success, ResultCode.Success, "新建成功");
 
@@ -77,7 +79,7 @@ namespace Lumos.BLL.Service.Merch
 
                 var telephoneStatus = SdkFactory.Lxt.GetStatus(salesman.TelSeatAccount);
 
-                if (telephoneStatus != TelephoneStatus.IDLE)
+                if (telephoneStatus != TelSeatPhoneStatus.IDLE)
                 {
                     return new CustomJsonResult(ResultType.Failure, ResultCode.Failure, "该话机状态为" + telephoneStatus.GetCnName());
                 }
@@ -144,6 +146,7 @@ namespace Lumos.BLL.Service.Merch
             return result;
         }
 
+ 
         private DateTime? GetTime(string timeStamp)
         {
             if (timeStamp == "")
@@ -231,5 +234,6 @@ namespace Lumos.BLL.Service.Merch
             sn = null;
             return type;
         }
+
     }
 }

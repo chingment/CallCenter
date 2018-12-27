@@ -10,7 +10,7 @@
 
     $(document).ready(function () {
 
-        //$('#sel_Organizations').myChosen({ urlParams: { type: "SysOrganization" } });
+        $('#sel_Organizations').myChosen({ urlParams: { type: "SysOrganization" } });
 
         listTable = $("#list_table").loadDataTable({
             url: "/CallRecord/GetList",
@@ -42,9 +42,14 @@
             },
             operate: {
                 "edit": function (obj) {
-                    var audio = $("#audior");
-                    $(audio).attr("src", obj.recordFile)
-                    audio.paused && (audio.play())
+                    var url = '/User/Edit?id=' + obj.id;
+                    var title = '修改';
+                    art.dialog.open(url, {
+                        id: "openDialog", title: title, width: '650px', height: '500px', lock: true, drag: false, cancelVal: '关闭', cancel: true, okVal: '保存', ok: function () {
+                            this.iframe.contentWindow.edit();
+                            return false;
+                        }
+                    });
                 }
             }
         });
@@ -68,26 +73,26 @@
     <form id="form1" name="form1">
         <div class="search-bar">
             <div class="filter">
-                <span class="filter-label">坐席：</span>
+                <span class="filter-label">用户名：</span>
                 <span class="filter-input">
-                    <input type="text" class="input-control" name="SalesmanName" style="width:120px;" />
+                    <input type="text" class="input-control" name="UserName" style="width:120px;" />
                 </span>
             </div>
             <div class="filter">
-                <span class="filter-label">客户姓名：</span>
+                <span class="filter-label">姓名：</span>
                 <span class="filter-input">
-                    <input type="text" class="input-control" name="CustomerName" style="width:120px;" />
+                    <input type="text" class="input-control" name="FullName" style="width:120px;" />
                 </span>
             </div>
             <div class="filter">
-                <span class="filter-label">电话号码：</span>
+                <span class="filter-label">机构：</span>
                 <span class="filter-input">
-                    <input type="text" class="input-control" name="PhoneNumber" style="width:120px;" />
+                    <select id="sel_Organizations" name="OrganizationId" data-placeholder="请选择" class="chosen-select" style="width:200px">
+                        <option value=""></option>
+                    </select>
                 </span>
             </div>
-
             <div class="filter"><input type="button" class="btn btn-search" id="btn_Search" value="查询" /> </div>
-
         </div>
         <div class="list">
             <table id="list_table" class="list-tb" cellpadding="0" cellspacing="0">
@@ -96,19 +101,19 @@
                         <th style="width:25px" class="no">
                             序号
                         </th>
-                        <th style="width:15%">
+                        <th style="width:10%">
                             客户名称
                         </th>
-                        <th style="width:15%">
+                        <th style="width:20%">
                             电话号码
                         </th>
-                        <th style="width:10%">
+                        <th style="width:20%">
                             开始时间
                         </th>
-                        <th style="width:10%">
+                        <th style="width:20%">
                             结束时间
                         </th>
-                        <th style="width:15%">
+                        <th style="width:20%">
                             通话时长
                         </th>
                         <th style="width:10%">
@@ -126,10 +131,6 @@
                             <div class="pull-left">
                                 <span class="load-tip"></span>
                             </div>
-                            <div class="pull-left">
-                                <audio id="audior" src="" controls="controls" autoplay="autoplay" style="width: 300px; margin: 5px auto;height: 18px;"></audio>
-                            </div>
-
                             <div class="pull-right pagination">
                                 <div class="pagination-info">
 
@@ -147,5 +148,5 @@
             </table>
         </div>
     </form>
-</div>
 
+</div>

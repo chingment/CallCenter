@@ -4,6 +4,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using Lumos.Entity;
 
 namespace Lumos.BLL
 {
@@ -51,11 +52,11 @@ namespace Lumos.BLL
             CustomJsonResult result = new CustomJsonResult();
 
             var telephoneStatus = GetStatus(account);
-            if (telephoneStatus == TelephoneStatus.Unknow)
+            if (telephoneStatus == Enumeration.TelSeatPhoneStatus.Unknow)
             {
                 var requestData = new AgentLoginRequestData();
                 requestData.Agent = account;
-                requestData.Seq = SnUtil.Build(Entity.Enumeration.BizSnType.TelphoneControlSeq, "");
+                requestData.Seq = SnUtil.Build(Enumeration.BizSnType.TelphoneControlSeq, "");
                 requestData.UserData = "";
 
                 var request = new AgentLoginRequest(requestData);
@@ -83,9 +84,9 @@ namespace Lumos.BLL
 
             return result;
         }
-        public TelephoneStatus GetStatus(string account)
+        public Enumeration.TelSeatPhoneStatus GetStatus(string account)
         {
-            TelephoneStatus telephoneStatus = TelephoneStatus.Unknow;
+            Enumeration.TelSeatPhoneStatus telephoneStatus = Entity.Enumeration.TelSeatPhoneStatus.Unknow;
 
             var requestData = new GetAgentStatusRequestData();
             requestData.Agent = account;
@@ -114,22 +115,22 @@ namespace Lumos.BLL
             switch (requestResult.Data.Response.ServerStatus)
             {
                 case "IDLE":
-                    telephoneStatus = TelephoneStatus.IDLE;
+                    telephoneStatus = Enumeration.TelSeatPhoneStatus.IDLE;
                     break;
                 case "CALL_OUT":
-                    telephoneStatus = TelephoneStatus.CallOut;
+                    telephoneStatus = Enumeration.TelSeatPhoneStatus.CallOut;
                     break;
                 case "CALL_IN":
-                    telephoneStatus = TelephoneStatus.CallIn;
+                    telephoneStatus = Enumeration.TelSeatPhoneStatus.CallIn;
                     break;
                 case "RINGING":
-                    telephoneStatus = TelephoneStatus.Ringing;
+                    telephoneStatus = Enumeration.TelSeatPhoneStatus.Ringing;
                     break;
                 case "PROCESS":
-                    telephoneStatus = TelephoneStatus.Process;
+                    telephoneStatus = Enumeration.TelSeatPhoneStatus.Process;
                     break;
                 default:
-                    telephoneStatus = TelephoneStatus.Unknow;
+                    telephoneStatus = Enumeration.TelSeatPhoneStatus.Unknow;
                     break;
             }
 

@@ -19,5 +19,7 @@ namespace Lumos.Entity
 
         public Enumeration.TelSeatStatus TelSeatStatus { get; set; }
 
+        public Enumeration.TelSeatPhoneStatus TelephoneStatus { get; set; }
+
     }
 }

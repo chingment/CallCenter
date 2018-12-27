@@ -1,5 +1,6 @@
 ﻿using Lumos.DAL;
 using Lumos.Entity;
+using Lumos.Redis;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -9,8 +10,12 @@ using System.Transactions;
 
 namespace Lumos.BLL.Service.Merch
 {
+
+
+
     public class UserProvider : BaseProvider
     {
+        private readonly string key_list = "UserInfoModel";
 
         public List<string> GetCanAccessUserIds(string operater, string merchantId, string id)
         {
@@ -141,6 +146,9 @@ namespace Lumos.BLL.Service.Merch
 
                 result = new CustomJsonResult(ResultType.Success, ResultCode.Success, "新建成功");
 
+
+                RedisManager.Db.HashSetAsync(key_list, user.Id, Newtonsoft.Json.JsonConvert.SerializeObject(user), StackExchange.Redis.When.Always);
+
                 CurrentDb.SaveChanges();
                 ts.Complete();
             }
@@ -214,6 +222,10 @@ namespace Lumos.BLL.Service.Merch
                 CurrentDb.SaveChanges();
                 ts.Complete();
 
+
+
+                RedisManager.Db.HashSetAsync(key_list, user.Id, Newtonsoft.Json.JsonConvert.SerializeObject(user), StackExchange.Redis.When.Always);
+
                 result = new CustomJsonResult(ResultType.Success, ResultCode.Success, "保存成功");
 
             }
@@ -275,5 +287,31 @@ namespace Lumos.BLL.Service.Merch
 
             return list;
         }
+
+        public void SetTelSeatStatus(string operater, string merchantId, string id, Enumeration.TelSeatStatus telSeatStatus)
+        {
+            try
+            {
+                var hash = RedisManager.Db.HashGetAll(key_list);
+
+                if (hash != null)
+                {
+                    var hsOne = hash.Where(m => m.Name == id).FirstOrDefault();
+                    if (hsOne != null)
+                    {
+                        var info = Newtonsoft.Json.JsonConvert.DeserializeObject<SysMerchantUser>(hsOne.Value);
+                        info.TelSeatStatus = telSeatStatus;
+                        RedisManager.Db.HashSetAsync(key_list, id, Newtonsoft.Json.JsonConvert.SerializeObject(info), StackExchange.Redis.When.Always);
+                    }
+                }
+
+            }
+            catch (Exception ex)
+            {
+
+            }
+        }
+
+
     }
 }

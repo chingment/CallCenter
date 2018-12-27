@@ -175,6 +175,7 @@
     <Compile Include="Controllers\ObTakeDataLimitController.cs" />
     <Compile Include="Controllers\OrganizationController.cs" />
     <Compile Include="Controllers\TelphoneControlController.cs" />
+    <Compile Include="Controllers\TelSeatController.cs" />
     <Compile Include="Controllers\UserController.cs" />
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
@@ -224,6 +225,7 @@
     <Content Include="Views\ObBatchDataReallocate\List.cshtml" />
     <Content Include="Views\ObTakeDataLimit\Adjust.cshtml" />
     <Content Include="Views\CallRecord\List.cshtml" />
+    <Content Include="Views\TelSeat\List.cshtml" />
     <None Include="Web.config">
       <SubType>Designer</SubType>
     </None>
@@ -236,8 +238,6 @@
   </ItemGroup>
   <ItemGroup>
     <Folder Include="Scripts\ckeditor\" />
-    <Folder Include="Views\Fn\" />
-    <Folder Include="Views\Telphone\" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="fonts\glyphicons-halflings-regular.woff" />
