@@ -35,6 +35,9 @@ namespace Lumos.BLL.Service.Merch
             {
                 var ret = new RetObCalloutTakeData();
 
+                //var s = CurrentDb.ObBatchAllocate.Where(m => m.BelongerId == "1a1f58e9595544b3be41da174b34513f").FirstOrDefault();
+
+                //System.Threading.Thread.Sleep(1000000);
 
                 var taker = CurrentDb.SysMerchantUser.Where(m => m.Id == salesmanId).FirstOrDefault();
 
@@ -103,7 +106,6 @@ namespace Lumos.BLL.Service.Merch
                 ret.Customer.PhoneNumber = obCustomer.CsrPhoneNumber;
                 ret.Customer.IdNumber = obCustomer.CsrIdNumber;
                 ret.Customer.Address = obCustomer.CsrAddress;
-
 
                 ret.Car.RegisterDate = obCustomer.CarRegisterDate.ToUnifiedFormatDate();
                 ret.Car.PlateNo = obCustomer.CarPlateNo;

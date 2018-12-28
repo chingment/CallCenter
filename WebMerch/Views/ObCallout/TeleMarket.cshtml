@@ -299,7 +299,7 @@
 
             $.lumos.getJson({
                 url: "/ObCallout/TakeData",
-                isUseHandling: true,
+                isUseHandling: false,
                 success: function (d) {
 
                     $.lumos.tips(d.message);
@@ -443,9 +443,9 @@
                     <td class="c" colspan="3">
                         <span id="lbl_CsrPhoneNumber" style="display: block; float: left;line-height: 27px;margin-right:5px;"></span>
 
-                        <img class="btn-callout" title="点击外呼" src="@OwnStaticImagesResource.GetSrc("telphone_calout.png")" style="width:22px;cursor:pointer" />
+                        <img class="btn-callout" title="点击外呼" src="@OwnStaticImagesResource.GetSrc("telphone_call.png")" style="width:22px;cursor:pointer" />
 
-                        <img class="btn-callhangup" title="点击挂断" src="@OwnStaticImagesResource.GetSrc("telphone_calout.png")" style="width:22px;cursor:pointer" />
+                        <img class="btn-callhangup" title="点击挂断" src="@OwnStaticImagesResource.GetSrc("telphone_hangup.png")" style="width:22px;cursor:pointer" />
 
                     </td>
                 </tr>

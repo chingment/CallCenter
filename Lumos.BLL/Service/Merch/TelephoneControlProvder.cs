@@ -26,8 +26,12 @@ namespace Lumos.BLL.Service.Merch
 
                 result = new CustomJsonResult(ResultType.Success, ResultCode.Success, "签入成功");
 
-                //CurrentDb.SaveChanges();
-                //ts.Complete();
+                var s = CurrentDb.ObBatchAllocate.Where(m => m.BelongerId == "1a1f58e9595544b3be41da174b34513f").FirstOrDefault();
+
+                s.MendTime = DateTime.Now;
+
+                CurrentDb.SaveChanges();
+                ts.Complete();
             }
 
             return result;
