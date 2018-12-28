@@ -95,6 +95,7 @@
     <Compile Include="Sdk\LxtSdkProvider.cs" />
     <Compile Include="Service\Merch\Models\UserModel.cs" />
     <Compile Include="Service\Merch\RModels\RetRunHeartbeatPacket.cs" />
+    <Compile Include="Service\Merch\RModels\RetUserGetPersonalInfo.cs" />
     <Compile Include="Service\Merch\RModels\RopTelphoneControlCallCustomer.cs" />
     <Compile Include="Service\Merch\RModels\RupCallRecordGetList.cs" />
     <Compile Include="Service\Merch\TelephoneControlProvder.cs" />

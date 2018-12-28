@@ -226,6 +226,7 @@
     <Content Include="Views\ObTakeDataLimit\Adjust.cshtml" />
     <Content Include="Views\CallRecord\List.cshtml" />
     <Content Include="Views\TelSeat\List.cshtml" />
+    <Content Include="Views\Home\PersonalInfo.cshtml" />
     <None Include="Web.config">
       <SubType>Designer</SubType>
     </None>

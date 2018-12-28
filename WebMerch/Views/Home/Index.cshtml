@@ -41,7 +41,7 @@
             $('a[gotopage]').live("click", function () {
                 var target = $(this).attr("target");
                 var gotopage = $(this).attr("gotopage");
-                var name = $(this).find(".name").text();
+                var name = $(this).attr("pagename");
 
                 $('a[gotopage]').parent().removeClass('active');
                 $(this).parent().addClass('active');
@@ -210,15 +210,18 @@
                     <li>
                         <span class="title">${title}</span>
                     </li>
-                </ul>
-
-
-                <ul class="content-left" style="color:#fff">
-                    <li>
-                        <span>话机状态:</span> <span id="lbl_TelePhoneStatusName" >准备就绪</span>
+                    <li style="color:#fff">
+                        <span>话机状态:</span> <span id="lbl_TelePhoneStatusName" style="width:80px;display:inline-block">准备就绪</span>
                         <input type="button" id="btn_TelephoneLogin" value="签入" />
                         <input type="button" id="btn_TelephoneLogout" value="签出" />
                         <input type="button" id="btn_TelephoneTestCallCustomer" value="测试呼叫" style="display:none;" />
+                    </li>
+                    <li>
+
+                        <span class="title">
+                            通讯类
+                        </span>
+
                     </li>
                 </ul>
 
@@ -226,7 +229,7 @@
 
                     {{if isLogin}}
                     <li>
-                        <a href="/home/main" target="iframeMain">
+                        <a class="link" gotopage="/home/main"  target="iframeMain" pagename="主界面">
                             <span class="title">
                                 主界面
                             </span>
@@ -241,7 +244,8 @@
                             <span class="more"></span>
                         </a>
                         <ul class="children">
-                            <li><a href="/Home/ChangePassword" target="iframeMain">修改密码</a></li>
+                            <li><a class="link" gotopage="/Home/PersonalInfo" target="iframeMain" pagename="个人信息" >个人信息</a></li>
+                            <li><a class="link" gotopage="/Home/ChangePassword" target="iframeMain" pagename="修改密码">修改密码</a></li>
                             <li>
                                 <a id="btn_LoginOut" href="javascript:void(0)">退出</a>
                             </li>
@@ -269,7 +273,7 @@
                                 <ul class="children">
                                     {{each(i,item2) item1.subMenus}}
                                     <li>
-                                        <a gotopage="${item2.url}" target="iframeMain">
+                                        <a gotopage="${item2.url}" target="iframeMain" pagename="${item2.name}" >
                                             <span class="icon"></span><span class="name">${item2.name}</span>
                                         </a>
                                     </li>

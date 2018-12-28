@@ -70,6 +70,27 @@ namespace Lumos.BLL.Service.Merch
             return new CustomJsonResult(ResultType.Success, ResultCode.Success, "获取成功", ret);
         }
 
+        public CustomJsonResult GetPersonalInfo(string operater, string merchantId, string id)
+        {
+            var ret = new RetUserGetPersonalInfo();
+
+            var user = CurrentDb.SysMerchantUser.Where(m => m.Id == id).FirstOrDefault();
+            if (user != null)
+            {
+                ret.UserName = user.UserName ?? ""; ;
+                ret.FullName = user.FullName ?? ""; ;
+                ret.Email = user.Email ?? ""; ;
+                ret.PhoneNumber = user.PhoneNumber ?? "";
+                var organization = CurrentDb.Organization.Where(m => m.Id == user.OrganizationId).FirstOrDefault();
+                ret.OrganizationName = organization.FullName;
+                ret.PositionName = user.PositionId.GetCnName();
+                ret.TeleSeatAccount = user.TeleSeatAccount ?? "";
+                ret.TeleSeatPassword = user.TeleSeatPassword ?? "";
+            }
+
+            return new CustomJsonResult(ResultType.Success, ResultCode.Success, "获取成功", ret);
+        }
+
         public CustomJsonResult Add(string operater, string merchantId, RopUserAdd rop)
         {
             CustomJsonResult result = new CustomJsonResult();

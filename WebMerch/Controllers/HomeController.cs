@@ -77,11 +77,11 @@ namespace WebMerch.Controllers
         {
             return View();
         }
+        public ViewResult PersonalInfo()
+        {
+            return View();
+        }
 
-        /// <summary>
-        /// 退出方法
-        /// </summary>
-        /// <returns></returns>
         [HttpPost]
         public CustomJsonResult LogOff()
         {
@@ -93,7 +93,7 @@ namespace WebMerch.Controllers
         [HttpPost]
         public CustomJsonResult ChangePassword(RopChangePassword rop)
         {
-            var result = AdminServiceFactory.AuthorizeRelay.ChangePassword(this.CurrentUserId, this.CurrentUserId, rop.OldPassword, rop.NewPassword);
+            var result = AdminServiceFactory.AuthorizeRelay.ChangePassword(this.CurrentUserId, this.CurrentUserId, rop.OldPassword, rop.NewPassword1, rop.NewPassword2);
 
             if (result.Result != ResultType.Success)
             {
@@ -151,6 +151,11 @@ namespace WebMerch.Controllers
         public CustomJsonResult RunHeartbeatPacket()
         {
             return MerchServiceFactory.User.RunHeartbeatPacket(this.CurrentUserId, this.CurrentMerchantId, this.CurrentUserId);
+        }
+
+        public CustomJsonResult GetPersonalInfo()
+        {
+            return MerchServiceFactory.User.GetPersonalInfo(this.CurrentUserId,this.CurrentMerchantId,this.CurrentUserId);
         }
 
         public class IndexModel

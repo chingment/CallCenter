@@ -1,0 +1,132 @@
+﻿
+@{
+    ViewBag.Title = "PersonalInfo";
+}
+
+@section scripts{
+    <script type="text/javascript">
+
+        $(this).ready(function () {
+
+            getPersonalInfo();
+
+        });
+
+        function getPersonalInfo() {
+            $.lumos.getJson({
+                url: "/Home/GetPersonalInfo",
+                isUseHandling: false,
+                success: function (d) {
+                    if (d.result == $.lumos.resultType.success) {
+                        var data = d.data;
+
+                        $('#lbl_UserName').text(data.userName);
+                        $('#lbl_FullName').text(data.fullName);
+                        $('#lbl_OrganizationName').text(data.organizationName);
+                        $('#lbl_PositionName').text(data.positionName);
+                        $('#lbl_TeleSeatAccount').text(data.teleSeatAccount);
+                        $('#lbl_TeleSeatPassword').text(data.teleSeatPassword);
+
+                    }
+                }
+            });
+        }
+    </script>
+}
+
+
+<div class="gbr-row gbr-page">
+
+    <div class="gbr-row-title clearfix">
+        <div class="pull-left">
+            <h5>基本信息</h5>
+        </div>
+        <div class="pull-right f-tb1-item-pull-right">
+            <h6></h6>
+        </div>
+    </div>
+
+    <div class="h-form-container changepassword-box">
+        <div class="h-entries">
+            <dl class="h-entry clearfix">
+                <dt class="h-entry-label">用户名：</dt>
+                <dd class="h-entry-values">
+                    <span id="lbl_UserName" class="h-item  ">
+                        
+                    </span>
+                </dd>
+            </dl>
+            <div class="h-line">
+            </div>
+            <dl class="h-entry clearfix">
+                <dt class="h-entry-label">姓名：</dt>
+                <dd class="h-entry-values">
+                    <span id="lbl_FullName" class="h-item ">
+                      
+                    </span>
+                </dd>
+            </dl>
+            <div class="h-line">
+            </div>
+            <dl class="h-entry clearfix">
+                <dt class="h-entry-label">机构：</dt>
+                <dd class="h-entry-values">
+                    <span id="lbl_OrganizationName" class="h-item ">
+
+                    </span>
+                </dd>
+            </dl>
+            <div class="h-line">
+            </div>
+            <dl class="h-entry clearfix">
+                <dt class="h-entry-label">职位：</dt>
+                <dd class="h-entry-values">
+                    <span id="lbl_PositionName" class="h-item ">
+
+                    </span>
+                </dd>
+            </dl>
+        </div>
+    </div>
+
+    <div class="gbr-row-title clearfix">
+        <div class="pull-left">
+            <h5>话机信息</h5>
+        </div>
+        <div class="pull-right f-tb1-item-pull-right">
+            <h6></h6>
+        </div>
+    </div>
+
+    <div class="h-form-container changepassword-box">
+        <div class="h-entries">
+            <dl class="h-entry clearfix">
+                <dt class="h-entry-label">话机账户：</dt>
+                <dd class="h-entry-values">
+                    <span id="lbl_TeleSeatAccount" class="h-item ">
+
+                    </span>
+                </dd>
+            </dl>
+            <div class="h-line">
+            </div>
+            <dl class="h-entry clearfix">
+                <dt class="h-entry-label">话机密码：</dt>
+                <dd class="h-entry-values">
+                    <span id="lbl_TeleSeatPassword" class="h-item ">
+
+                    </span>
+                </dd>
+            </dl>
+            <div class="h-line">
+            </div>
+            <dl class="h-entry clearfix">
+                <dt class="h-entry-label"></dt>
+                <dd class="h-entry-values">
+
+                </dd>
+            </dl>
+        </div>
+    </div>
+</div>
+

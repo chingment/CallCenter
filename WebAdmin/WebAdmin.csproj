@@ -154,6 +154,7 @@
     <Compile Include="App_Start\Own\OwnStatisticsTrackerAttribute.cs" />
     <Compile Include="App_Start\RouteConfig.cs" />
     <Compile Include="Controllers\Biz\MerchantController.cs" />
+    <Compile Include="Controllers\Biz\TeleSeatController.cs" />
     <Compile Include="Controllers\CommonController.cs" />
     <Compile Include="Controllers\HomeController.cs" />
     <Compile Include="App_Start\Own\NPOIExcelHelper.cs" />
@@ -1095,6 +1096,9 @@
     <Content Include="Views\Sys\Position\Add.cshtml" />
     <Content Include="Views\Sys\Position\Edit.cshtml" />
     <Content Include="Views\Sys\Position\List.cshtml" />
+    <Content Include="Views\_ViewStart.cshtml" />
+    <Content Include="Views\Biz\TeleSeat\List.cshtml" />
+    <Content Include="Views\Biz\TeleSeat\Edit.cshtml" />
     <None Include="Web.config">
       <SubType>Designer</SubType>
     </None>

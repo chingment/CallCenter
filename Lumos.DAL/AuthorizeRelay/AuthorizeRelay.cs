@@ -184,19 +184,23 @@ namespace Lumos.DAL.AuthorizeRelay
             return result;
         }
 
-        public CustomJsonResult ChangePassword(string operater, string userId, string oldpassword, string newpassword)
+        public CustomJsonResult ChangePassword(string operater, string userId, string oldpassword, string newpassword1, string newpassword2)
         {
 
             var sysUser = _db.SysUser.Where(m => m.Id == userId).FirstOrDefault();
             if (sysUser != null)
             {
+                if (newpassword1 != newpassword2)
+                {
+                    return new CustomJsonResult(ResultType.Failure, ResultCode.Failure, "两次密码不一致,请确认");
+                }
 
                 if (!PassWordHelper.VerifyHashedPassword(sysUser.PasswordHash, oldpassword))
                 {
                     return new CustomJsonResult(ResultType.Failure, ResultCode.Failure, "旧密码不正确");
                 }
 
-                sysUser.PasswordHash = PassWordHelper.HashPassword(newpassword);
+                sysUser.PasswordHash = PassWordHelper.HashPassword(newpassword1);
                 sysUser.Mender = operater;
                 sysUser.MendTime = DateTime.Now;
 
