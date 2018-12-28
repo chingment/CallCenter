@@ -22,7 +22,7 @@ namespace WebMerch.Controllers
 
         public CustomJsonResult GetList(RupUserGetList rup)
         {
-            var accessUserIds = MerchServiceFactory.User.GetCanAccessUserIds(this.CurrentUserId, this.CurrentMerchantId, this.CurrentUserId);
+            var accessUserIds = MerchServiceFactory.User.GetCanAccessUserIds(this.CurrentMerchantId, this.CurrentUserId);
             var query = (from t in CurrentDb.ObTakeDataLimit
                          join u in CurrentDb.SysMerchantUser
                          on t.SalesmanId equals u.Id

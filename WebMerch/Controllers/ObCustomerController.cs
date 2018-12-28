@@ -34,7 +34,7 @@ namespace WebMerch.Controllers
 
         public CustomJsonResult GetList(RupObCustomerGetList rup)
         {
-            var accessUserIds = MerchServiceFactory.User.GetCanAccessUserIds(this.CurrentUserId, this.CurrentMerchantId, this.CurrentUserId);
+            var accessUserIds = MerchServiceFactory.User.GetCanAccessUserIds(this.CurrentMerchantId, this.CurrentUserId);
 
             var query = (from u in CurrentDb.ObCustomer
                          where

@@ -404,7 +404,7 @@ namespace Lumos.BLL.Service.Merch
 
         public CustomJsonResult GetUnderwritingOrder(string operater, string merchantId, string userId)
         {
-            var accessUserIds = MerchServiceFactory.User.GetCanAccessUserIds(operater, merchantId, userId);
+            var accessUserIds = MerchServiceFactory.User.GetCanAccessUserIds(merchantId, userId);
 
             var order2CarInss = CurrentDb.Order2CarIns.Where(m => m.MerchantId == merchantId &&
                            accessUserIds.Contains(m.SalesmanId)).ToList();

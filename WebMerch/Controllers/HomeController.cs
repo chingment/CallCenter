@@ -148,12 +148,9 @@ namespace WebMerch.Controllers
             return new CustomJsonResult(ResultType.Success, ResultCode.Success, "获取成功", ret);
         }
 
-        public CustomJsonResult HeartbeatPacket()
+        public CustomJsonResult RunHeartbeatPacket()
         {
-
-            MerchServiceFactory.User.SetLastAccessTime(this.CurrentUserId, this.CurrentMerchantId, this.CurrentUserId, DateTime.Now);
-
-            return new CustomJsonResult(ResultType.Success, ResultCode.Success, "获取成功", null);
+            return MerchServiceFactory.User.RunHeartbeatPacket(this.CurrentUserId, this.CurrentMerchantId, this.CurrentUserId);
         }
 
         public class IndexModel

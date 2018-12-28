@@ -28,6 +28,8 @@ namespace Lumos.BLL.Service.Merch
 
         public Enumeration.TelePhoneStatus TelePhoneStatus { get; set; }
 
+        public string TelePhoneStatusName { get; set; }
+
         public string OrganizationId { get; set; }
 
         public Enumeration.SysPositionId PositionId { get; set; }

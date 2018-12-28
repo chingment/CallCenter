@@ -101,9 +101,9 @@
                 callCustomer("f9705ed7e7f54b37a0190cf71d7748e8");
             });
 
-   
+            //runHeartbeatPacket()
 
-            //setInterval("heartbeatPacket()", 1000);
+            setInterval("runHeartbeatPacket()", 1500);
 
             setInterval("reinitIframe()", 200);
         });
@@ -184,16 +184,17 @@
             });
         }
 
-        function heartbeatPacket() {
+        function runHeartbeatPacket() {
 
             $.lumos.getJson({
-                url: "/Home/HeartbeatPacket",
+                url: "/Home/RunHeartbeatPacket",
                 success: function (d) {
 
                     console.log(JSON.stringify(d));
 
                     if (d.result == $.lumos.resultType.success) {
-
+                        var data = d.data;
+                        $("#lbl_TelePhoneStatusName").text(data.telePhoneStatusName);
                     }
                 }
             });
@@ -212,9 +213,9 @@
                 </ul>
 
 
-                <ul class="content-left">
+                <ul class="content-left" style="color:#fff">
                     <li>
-                        <span>状态:</span>
+                        <span>话机状态:</span> <span id="lbl_TelePhoneStatusName" >准备就绪</span>
                         <input type="button" id="btn_TelephoneLogin" value="签入" />
                         <input type="button" id="btn_TelephoneLogout" value="签出" />
                         <input type="button" id="btn_TelephoneTestCallCustomer" value="测试呼叫" style="display:none;" />

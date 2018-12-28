@@ -76,13 +76,6 @@ namespace Lumos.BLL.Service.Merch
                     new CustomJsonResult(ResultType.Failure, ResultCode.Failure, "系统找不到该客户信息");
                 }
 
-                var telephoneStatus = SdkFactory.Lxt.GetStatus(salesman.TeleSeatAccount);
-
-                //if (telephoneStatus != Enumeration.TelePhoneStatus.IDLE)
-                //{
-                //    return new CustomJsonResult(ResultType.Failure, ResultCode.Failure, "该话机状态为" + telephoneStatus.GetCnName());
-                //}
-
                 var callRecord = new CallRecord();
                 callRecord.Id = GuidUtil.New();
                 callRecord.Sn = SnUtil.Build(Enumeration.BizSnType.TelphoneControlSeq, salesmanId);
@@ -145,7 +138,6 @@ namespace Lumos.BLL.Service.Merch
             return result;
         }
 
- 
         private DateTime? GetTime(string timeStamp)
         {
             if (timeStamp == "")

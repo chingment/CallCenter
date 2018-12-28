@@ -16,7 +16,7 @@ namespace Lumos.BLL.Service.Merch
     public class UserProvider : BaseProvider
     {
 
-        public List<string> GetCanAccessUserIds(string operater, string merchantId, string id)
+        public List<string> GetCanAccessUserIds(string merchantId, string id)
         {
             List<string> userIds = new List<string>();
             var user = CurrentDb.SysMerchantUser.Where(m => m.MerchantId == merchantId && m.Id == id).FirstOrDefault();
@@ -142,7 +142,7 @@ namespace Lumos.BLL.Service.Merch
 
                 }
 
-                UserDataCacheUtil.Add(user.Id);
+                UserDataCacheUtil.Add(user.MerchantId, user.Id);
 
                 CurrentDb.SaveChanges();
                 ts.Complete();
@@ -236,7 +236,7 @@ namespace Lumos.BLL.Service.Merch
 
             if (result.Result == ResultType.Success)
             {
-                UserDataCacheUtil.Edit(rop.Id, userModel);
+                UserDataCacheUtil.Edit(merchantId, rop.Id, userModel);
             }
 
             return result;
@@ -300,9 +300,24 @@ namespace Lumos.BLL.Service.Merch
 
         public void SetLastAccessTime(string operater, string merchantId, string id, DateTime lastAccessTime)
         {
-            UserDataCacheUtil.SetLastAccessTime(id, lastAccessTime);
+            UserDataCacheUtil.SetLastAccessTime(merchantId, id, lastAccessTime);
         }
 
+        public CustomJsonResult RunHeartbeatPacket(string operater, string merchantId, string id)
+        {
+            CustomJsonResult result = new CustomJsonResult();
+
+            var ret = new RetRunHeartbeatPacket();
+
+            UserDataCacheUtil.SetLastAccessTime(merchantId, id, DateTime.Now);
+
+            var userModel = UserDataCacheUtil.Get(merchantId, id);
+
+            ret.WorkStatusName = userModel.WorkStatusName;
+            ret.TelePhoneStatusName = userModel.TelePhoneStatusName;
+
+            return new CustomJsonResult(ResultType.Success, ResultCode.Success, "", ret);
+        }
 
     }
 }

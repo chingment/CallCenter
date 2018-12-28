@@ -94,6 +94,7 @@
     <Compile Include="Sdk\ITelephoneControSdk.cs" />
     <Compile Include="Sdk\LxtSdkProvider.cs" />
     <Compile Include="Service\Merch\Models\UserModel.cs" />
+    <Compile Include="Service\Merch\RModels\RetRunHeartbeatPacket.cs" />
     <Compile Include="Service\Merch\RModels\RopTelphoneControlCallCustomer.cs" />
     <Compile Include="Service\Merch\RModels\RupCallRecordGetList.cs" />
     <Compile Include="Service\Merch\TelephoneControlProvder.cs" />
@@ -109,7 +110,7 @@
     <Compile Include="Biz\SmsProvider.cs" />
     <Compile Include="Biz\WxUserProvider.cs" />
     <Compile Include="Service\Admin\AdminServiceFactory.cs" />
-    <Compile Include="Factory..cs" />
+    <Compile Include="Factory.cs" />
     <Compile Include="Biz\Redis\RModels\RetOperateResult.cs" />
     <Compile Include="Biz\Redis\RModels\RupBaseGetList.cs" />
     <Compile Include="Biz\Redis\RModels\RupOperateGetResult.cs" />
@@ -210,6 +211,7 @@
     <Compile Include="Task\Task4Factory.cs" />
     <Compile Include="Task\Task4Mq2GlobalProvder.cs" />
     <Compile Include="Task\Task4Tim2GlobalProvider.cs" />
+    <Compile Include="Task\Task4Tim2TelePhoneControlProvider.cs" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\..\SelfStoreCloudPlatform\Lumos.Common\Lumos.Common.csproj">

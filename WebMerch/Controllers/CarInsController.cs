@@ -25,7 +25,7 @@ namespace WebMerch.Controllers
         public CustomJsonResult GetListByDealtUnderwritingOrder(RupGetListByHandleUnderwritingOrder rup)
         {
 
-            var accessUserIds = MerchServiceFactory.User.GetCanAccessUserIds(this.CurrentUserId, this.CurrentMerchantId, this.CurrentUserId);
+            var accessUserIds = MerchServiceFactory.User.GetCanAccessUserIds(this.CurrentMerchantId, this.CurrentUserId);
 
             var waitCount = (from h in CurrentDb.Order2CarIns where h.MerchantId == this.CurrentMerchantId && h.FollowStatus == Lumos.Entity.Enumeration.OrderFollowStatus.CarInsWtUnderwrie && accessUserIds.Contains(h.SalesmanId) select h.Id).Count();
             var inCount = (from h in CurrentDb.Order2CarIns where h.MerchantId == this.CurrentMerchantId && h.FollowStatus == Lumos.Entity.Enumeration.OrderFollowStatus.CarInsInUnderwrie && accessUserIds.Contains(h.SalesmanId) select h.Id).Count();

@@ -18,7 +18,7 @@ namespace WebMerch.Controllers
 
         public CustomJsonResult GetList(RupUserGetList rup)
         {
-            var list = UserDataCacheUtil.GetList(this.CurrentUserId,this.CurrentMerchantId,this.CurrentUserId);
+            var list = UserDataCacheUtil.GetList(this.CurrentMerchantId,this.CurrentUserId);
 
             var data = new { telSeats = list };
 
