@@ -24,7 +24,7 @@ namespace Lumos.BLL.Service.Merch
 
                 SdkFactory.Lxt.Login(sysMerchantUser.TeleSeatAccount);
 
-                result = new CustomJsonResult(ResultType.Success, ResultCode.Success, "新建成功");
+                result = new CustomJsonResult(ResultType.Success, ResultCode.Success, "签入成功");
 
                 //CurrentDb.SaveChanges();
                 //ts.Complete();
@@ -44,7 +44,7 @@ namespace Lumos.BLL.Service.Merch
 
                 SdkFactory.Lxt.Logout(sysMerchantUser.TeleSeatAccount);
 
-                result = new CustomJsonResult(ResultType.Success, ResultCode.Success, "新建成功");
+                result = new CustomJsonResult(ResultType.Success, ResultCode.Success, "签出成功");
 
                 //CurrentDb.SaveChanges();
                 //ts.Complete();
@@ -93,7 +93,7 @@ namespace Lumos.BLL.Service.Merch
 
                 SdkFactory.Lxt.CallNumber(salesman.TeleSeatAccount, callRecord.Sn, obCustomer.CsrPhoneNumber);
 
-                result = new CustomJsonResult(ResultType.Success, ResultCode.Success, "新建成功");
+                result = new CustomJsonResult(ResultType.Success, ResultCode.Success, "");
 
                 CurrentDb.SaveChanges();
                 ts.Complete();
@@ -129,7 +129,7 @@ namespace Lumos.BLL.Service.Merch
 
                 SdkFactory.Lxt.Hangup(telSeatAccount);
 
-                result = new CustomJsonResult(ResultType.Success, ResultCode.Success, "新建成功");
+                result = new CustomJsonResult(ResultType.Success, ResultCode.Success, "挂机成功");
 
                 CurrentDb.SaveChanges();
                 ts.Complete();
