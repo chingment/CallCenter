@@ -217,11 +217,11 @@
                         <input type="button" id="btn_TelephoneTestCallCustomer" value="测试呼叫" style="display:none;" />
                     </li>
                     <li>
-
-                        <span class="title">
-                            通讯类
-                        </span>
-
+                        <a class="link">
+                            <span class="title">
+                                通讯类
+                            </span>
+                        </a>
                     </li>
                 </ul>
 
@@ -229,7 +229,7 @@
 
                     {{if isLogin}}
                     <li>
-                        <a class="link" gotopage="/home/main"  target="iframeMain" pagename="主界面">
+                        <a class="link" gotopage="/home/main" target="iframeMain" pagename="主界面">
                             <span class="title">
                                 主界面
                             </span>
@@ -244,7 +244,7 @@
                             <span class="more"></span>
                         </a>
                         <ul class="children">
-                            <li><a class="link" gotopage="/Home/PersonalInfo" target="iframeMain" pagename="个人信息" >个人信息</a></li>
+                            <li><a class="link" gotopage="/Home/PersonalInfo" target="iframeMain" pagename="个人信息">个人信息</a></li>
                             <li><a class="link" gotopage="/Home/ChangePassword" target="iframeMain" pagename="修改密码">修改密码</a></li>
                             <li>
                                 <a id="btn_LoginOut" href="javascript:void(0)">退出</a>
@@ -273,7 +273,7 @@
                                 <ul class="children">
                                     {{each(i,item2) item1.subMenus}}
                                     <li>
-                                        <a gotopage="${item2.url}" target="iframeMain" pagename="${item2.name}" >
+                                        <a gotopage="${item2.url}" target="iframeMain" pagename="${item2.name}">
                                             <span class="icon"></span><span class="name">${item2.name}</span>
                                         </a>
                                     </li>
