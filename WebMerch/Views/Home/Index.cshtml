@@ -16,6 +16,30 @@
                 }
             });
 
+            $("*[popover]").live("click", function () {
+
+                var popoverId = $(this).attr("popover");
+                var popover = $("#" + popoverId);
+                var ctbox = $(popover).find(".ct-box");
+
+                var offset = $(this).offset();
+                var height = $(this).height();
+                var top = offset.top + height;
+                var width = $(this).width();
+                var left = offset.left + (width / 2);
+
+                var width1 = $(ctbox).width();
+                var left1 = left - (width1 / 2);
+
+                $(ctbox).css("position", "absolute").css("left", left1 + "px").css("top", top + "px");
+                $(popover).show();
+
+            });
+
+            $(".popover").find('.bg').live("click", function () {
+                $(this).parent().hide();
+            });
+
             $("ul.btn-dropdownmenu > .parent").live("mouseenter", function (e) {
                 var _this = $(this);
 
@@ -202,6 +226,47 @@
     </script>
 }
 
+@section styles{
+    <style type="text/css">
+        .popover {
+            height: 100%;
+            width: 100%;
+            position: fixed;
+            top: 0px;
+            left: 0px;
+            display: none;
+        }
+
+            .popover > .bg {
+                height: 100%;
+                background: gray;
+                opacity: 0.1;
+            }
+
+            .popover .ct-box {
+                margin-top: -6px;
+            }
+
+            .popover .in-ct {
+                background-color: #fff;
+                background-clip: padding-box;
+                border-radius: 4px;
+                box-shadow: 0 1px 6px rgba(0,0,0,.2);
+                height: 100%;
+            }
+
+
+
+        .ico_up {
+            width: 0;
+            height: 0;
+            border: 4px solid transparent;
+            border-bottom-color: #fff;
+            margin: auto;
+        }
+    </style>
+}
+
 <script id="tmpl_block" type="text/x-jquery-tmpl">
     <div class="gbr gbr-header" id="gbr_header">
         <div class="wrapper">
@@ -212,17 +277,17 @@
                     </li>
                     <li style="color:#fff">
                         <span>话机状态:</span> <span id="lbl_TelePhoneStatusName" style="width:80px;display:inline-block">准备就绪</span>
-                        <input type="button" id="btn_TelephoneLogin" value="签入" />
+                        @*<input type="button" id="btn_TelephoneLogin" value="签入" />
                         <input type="button" id="btn_TelephoneLogout" value="签出" />
-                        <input type="button" id="btn_TelephoneTestCallCustomer" value="测试呼叫" style="display:none;" />
+                        <input type="button" id="btn_TelephoneTestCallCustomer" value="测试呼叫" style="display:none;" />*@
                     </li>
-                    <li>
-                        <a class="link">
+                    @*<li>
+                        <a class="link" popover="popover_contacts" style="display:block;">
                             <span class="title">
                                 通讯类
                             </span>
                         </a>
-                    </li>
+                    </li>*@
                 </ul>
 
                 <ul class="content-right btn-dropdownmenu">
@@ -303,6 +368,17 @@
             <div class="clear"></div>
         </div>
         <div class="clear"></div>
+    </div>
+
+    <div class="popover" id="popover_contacts">
+        <div class="bg"></div>
+        <div class="ct-box" style="width:300px;height:420px;">
+            <div class="ico_up"></div>
+            <div class="in-ct">
+
+                
+            </div>
+        </div>
     </div>
 </script>
 
