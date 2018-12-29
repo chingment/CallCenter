@@ -278,6 +278,8 @@ namespace Test
             string DecryptStr = DecryptDES(EncryptStr, "ssssssss");//解密字符串
 
 
+
+
             ////var p1 = new AgentQueryStatusRequestData();
             ////p1.Agent = "1308000";
             ////p1.Seq = "112323";

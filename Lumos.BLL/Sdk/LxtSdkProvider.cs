@@ -138,5 +138,21 @@ namespace Lumos.BLL
 
             return telephoneStatus;
         }
+
+        public CustomJsonResult GetRecordList(string startKey)
+        {
+            CustomJsonResult result = new CustomJsonResult();
+
+
+            var requestData = new GetRecordListRequestData();
+            requestData.StartKey = startKey;
+            requestData.Seq = SnUtil.Build(Entity.Enumeration.BizSnType.TelphoneControlSeq, "");
+
+            var request = new GetRecordListRequest(requestData);
+
+            var requestResult = _api.DoPost(request);
+
+            return result;
+        }
     }
 }

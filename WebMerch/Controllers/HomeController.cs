@@ -18,6 +18,9 @@ namespace WebMerch.Controllers
         {
             MerchServiceFactory.User.SetLastAccessTime(this.CurrentUserId, this.CurrentMerchantId, this.CurrentUserId, DateTime.Now);
 
+            SdkFactory.Lxt.GetRecordList("0");
+
+
             //RedisManager.Db.HashSetAsync(key, d.Id, Newtonsoft.Json.JsonConvert.SerializeObject(d), StackExchange.Redis.When.Always);
 
             //HttpUtil http = new HttpUtil();

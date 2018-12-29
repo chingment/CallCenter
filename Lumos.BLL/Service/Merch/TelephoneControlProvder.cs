@@ -80,6 +80,19 @@ namespace Lumos.BLL.Service.Merch
                     new CustomJsonResult(ResultType.Failure, ResultCode.Failure, "系统找不到该客户信息");
                 }
 
+                var telePhoneStatus = SdkFactory.Lxt.GetStatus(salesman.TeleSeatAccount);
+                if (telePhoneStatus == Enumeration.TelePhoneStatus.Unknow)
+                {
+                    SdkFactory.Lxt.Login(salesman.TeleSeatAccount);
+
+                    telePhoneStatus = SdkFactory.Lxt.GetStatus(salesman.TeleSeatAccount);
+                }
+
+                if (telePhoneStatus != Enumeration.TelePhoneStatus.IDLE)
+                {
+                    return new CustomJsonResult(ResultType.Failure, ResultCode.Failure, "话机正在忙，请稍后再试");
+                }
+
                 var callRecord = new CallRecord();
                 callRecord.Id = GuidUtil.New();
                 callRecord.Sn = SnUtil.Build(Enumeration.BizSnType.TelphoneControlSeq, salesmanId);

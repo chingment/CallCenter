@@ -25,15 +25,16 @@ namespace WebMerch.Controllers
 
         public CustomJsonResult GetList(RupCallRecordGetList rup)
         {
-            var accessUserIds = MerchServiceFactory.User.GetCanAccessUserIds( this.CurrentMerchantId, this.CurrentUserId);
+            var accessUserIds = MerchServiceFactory.User.GetCanAccessUserIds(this.CurrentMerchantId, this.CurrentUserId);
 
             var query = (from u in CurrentDb.CallRecord
                          where
 u.MerchantId == this.CurrentMerchantId &&
- accessUserIds.Contains(u.SalesmanId)&&
+ accessUserIds.Contains(u.SalesmanId) &&
  (rup.CustomerName == null || u.CustomerName.Contains(rup.CustomerName)) &&
  (rup.PhoneNumber == null || u.PhoneNumber.Contains(rup.PhoneNumber)) &&
- (rup.SalesmanName == null || u.SalesmanName.Contains(rup.SalesmanName)) 
+ (rup.SalesmanName == null || u.SalesmanName.Contains(rup.SalesmanName)) &&
+ u.StartTime != null
                          select new { u.Id, u.CustomerId, u.CustomerName, u.SalesmanId, u.SalesmanName, u.RecordFile, u.TimeLength, u.PhoneNumber, u.CreateTime, u.RingTime, u.AnswerTime, u.ByeTime, u.StartTime });
 
 
@@ -52,7 +53,7 @@ u.MerchantId == this.CurrentMerchantId &&
 
                 string recordFile = "";
 
-                if(!string.IsNullOrEmpty(item.RecordFile))
+                if (!string.IsNullOrEmpty(item.RecordFile))
                 {
                     recordFile = "http://39.108.86.40" + item.RecordFile;
                 }
