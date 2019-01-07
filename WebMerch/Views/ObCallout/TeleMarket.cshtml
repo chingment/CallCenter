@@ -40,10 +40,13 @@
             }
 
                 .infobox .b ul li {
-                    height: 32px;
                     line-height: 32px;
                     display: flex;
                 }
+
+                    .infobox .b ul li p {
+                        line-height: 24px;
+                    }
 
                     .infobox .b ul li .name {
                         width: 80px;
@@ -227,6 +230,7 @@
                 });
 
                 var customerId = takeDataResult.obCustomerId;
+                var companyId = $('#sel_Company').val();
                 var ofCompulsoryAmount = parseFloat($('#txt_OfCompulsoryAmount').val());
                 var ofTravelTaxAmount = parseFloat($('#txt_OfTravelTaxAmount').val());
                 var ofCommercialAmount = parseFloat($('#txt_OfCommercialAmount').val());
@@ -241,7 +245,7 @@
                     $.lumos.postJson({
                         isUseHandling: true,
                         url: "/ObCallout/CarInsSubmitUnderwriting",
-                        data: { customerId: customerId, ofTravelTaxAmount: ofTravelTaxAmount, ofCompulsoryAmount: ofCompulsoryAmount, ofCommercialAmount: ofCommercialAmount, kinds: kinds },
+                        data: { customerId: customerId, companyId: companyId, ofTravelTaxAmount: ofTravelTaxAmount, ofCompulsoryAmount: ofCompulsoryAmount, ofCommercialAmount: ofCommercialAmount, kinds: kinds },
                         success: function (d) {
                             $.lumos.tips(d.message);
                             if (d.result == $.lumos.resultType.success) {
@@ -288,6 +292,8 @@
                 });
             }
 
+            
+
             //setInterval(function () {
             //    getDealtTrack();
             //}, 1200);
@@ -326,12 +332,12 @@
                         $('#lbl_CarInsLastQzNo').text(data.car.insLastQzNo);
 
 
-                        $('#sel_ResultCode').myChosen({ urlParams: { type: "callresultcode" } });
 
                         $('#txt_OfCompulsoryAmount').decimalInput(2);
                         $('#txt_OfTravelTaxAmount').decimalInput(2);
                         $('#txt_OfCommercialAmount').decimalInput(2);
 
+                        getDealtTrack();
                     }
                 }
             });
@@ -340,17 +346,20 @@
         function initConfig() {
 
             $.lumos.getJson({
-                url: "/ObCallout/CarInsGetKind",
+                url: "/ObCallout/GetInitConfig",
                 isShowLoading: true,
                 success: function (d) {
                     if (d.result == $.lumos.resultType.success) {
 
-
+                        var data = d.data;
                         //alert(JSON.stringify(d))
 
 
-                        $('#carInsKindsBox').html($("#tmpl_carInsKinds").tmpl(d.data));
+                        $('#carInsKindsBox').html($("#tmpl_carInsKinds").tmpl(data));
 
+                        $('#carInsKindsBox').find("select").chosen({ search_contains: false, disable_search:true });
+
+                        $('#sel_ResultCode').myChosen({ urlParams: { type: "callresultcode" } });
 
                     }
                 }
@@ -385,9 +394,9 @@
                         if (d.data.length > 0) {
                             $.each(d.data, function (i, item) {
 
-                                var msg = "<li>[" + item.dealtTime + "]" + item.message + "</li>";
+                                var msg = "<li><p>[" + item.dealtTime + "]" + item.message + "</p></li>";
                                 if (item.url != "") {
-                                    msg = "<li><a href=\"javascript:void(0)\" goUrl=\"" + item.url + "\" class=\"a-btn a-btn-edit\" operate=\"dealt\">[" + item.dealtTime + "]" + item.message + "</a></li>";
+                                    msg = "<li><p><a href=\"javascript:void(0)\" goUrl=\"" + item.url + "\" class=\"a-btn a-btn-edit\" operate=\"dealt\">[" + item.dealtTime + "]" + item.message + "</a></p></li>";
                                 }
 
 
@@ -645,7 +654,7 @@
 
                         {{else item2.inputType==3}}
 
-                        <select class="txt-value" style="height:30px;">
+                        <select class="txt-value" style="height:30px;width:80px; ">
                             {{each(i,option) item2.inputOption}}
 
                             <option value="${option}" ${item2.inputValue==option?"selected":""}> ${option}</option>
@@ -688,6 +697,12 @@
 
 
         <div style="margin:10px 0px;">
+            保险公司：<select id="sel_Company">
+                     {{each(i,item) carInsCompanys}}
+                          <option value="${item.value}">${item.name}</option>
+                     {{/each}}
+                     </select>
+
             交强险：<input type="text" autocomplete="off" id="txt_OfCompulsoryAmount" style="width:80px;" value="0" class="input-control" />
             车船税：<input type="text" autocomplete="off" id="txt_OfTravelTaxAmount" style="width:80px;" value="0" class="input-control" />
             商业险：<input type="text" autocomplete="off" id="txt_OfCommercialAmount" style="width:80px;" value="0" class="input-control" />

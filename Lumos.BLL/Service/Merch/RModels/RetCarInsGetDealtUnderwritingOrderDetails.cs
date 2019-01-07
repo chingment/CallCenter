@@ -21,6 +21,7 @@ namespace Lumos.BLL.Service.Merch
         public SalesmanModel Salesman { get; set; }
         public ObCustomerModel Customer { get; set; }
         public CarInfoModel Car { get; set; }
+        public string CompanyName { get; set; }
         public string OfCompulsoryAmount { get; set; }
         public string OfTravelTaxAmount { get; set; }
         public string OfCommercialAmount { get; set; }

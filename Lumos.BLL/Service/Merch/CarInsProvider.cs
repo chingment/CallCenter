@@ -10,6 +10,71 @@ namespace Lumos.BLL.Service.Merch
 {
     public class CarInsProvider : BaseProvider
     {
+        public List<CarInsPKindModel> GetKinds(string operater, string merchantId)
+        {
+
+            List<CarInsPKindModel> carInsPKindModels = new List<CarInsPKindModel>();
+
+            var carKinds = CurrentDb.CarInsKind.OrderBy(m => m.Priority).ToList();
+
+            var carPKinds = carKinds.Where(m => m.PId == "0").ToList();
+
+            foreach (var carPKind in carPKinds)
+            {
+                CarInsPKindModel carPInsKindModel = new CarInsPKindModel();
+                carPInsKindModel.Id = carPKind.Id;
+                carPInsKindModel.Name = carPKind.Name;
+
+                var carCKinds = carKinds.Where(m => m.PId == carPKind.Id).ToList();
+
+                foreach (var carCKind in carCKinds)
+                {
+                    var carInsCKindModel = new CarInsCKindModel();
+                    carInsCKindModel.Id = carCKind.Id;
+                    carInsCKindModel.PId = carCKind.PId;
+                    carInsCKindModel.Name = carCKind.Name;
+                    carInsCKindModel.Type = carCKind.Type;
+                    carInsCKindModel.CanWaiverDeductible = carCKind.CanWaiverDeductible;
+                    carInsCKindModel.IsSelectedWaiverDeductible = carCKind.IsSelectedWaiverDeductible;
+                    carInsCKindModel.InputType = carCKind.InputType;
+                    carInsCKindModel.InputUnit = carCKind.InputUnit;
+                    carInsCKindModel.InputValue = carCKind.InputValue;
+                    if (!string.IsNullOrEmpty(carCKind.InputOption))
+                    {
+                        carInsCKindModel.InputOption = Newtonsoft.Json.JsonConvert.DeserializeObject<List<string>>(carCKind.InputOption);
+                    }
+
+                    carInsCKindModel.IsHasDetails = carCKind.IsHasDetails;
+                    carInsCKindModel.IsSelected = carCKind.IsSelected;
+
+                    carPInsKindModel.Child.Add(carInsCKindModel);
+                }
+
+                carInsPKindModels.Add(carPInsKindModel);
+
+            }
+
+            return carInsPKindModels;
+        }
+
+        public List<CarInsCompanyModel> GetCompanys(string operater, string merchantId)
+        {
+            List<CarInsCompanyModel> carInsCompanyModels = new List<CarInsCompanyModel>();
+
+            var carInsCompanys = CurrentDb.CarInsCompany.OrderBy(m => m.Priority).ToList();
+
+            foreach (var carInsCompany in carInsCompanys)
+            {
+                var carInsCompanyModel = new CarInsCompanyModel();
+                carInsCompanyModel.Value = carInsCompany.Id;
+                carInsCompanyModel.Name = carInsCompany.Name;
+
+                carInsCompanyModels.Add(carInsCompanyModel);
+
+            }
+            return carInsCompanyModels;
+        }
+
         public CustomJsonResult GetDealtUnderwritingOrderDetails(string operater, string merchantId, string underwriterId, string orderId)
         {
             var ret = new RetCarInsGetDealtUnderwritingOrderDetails();
@@ -28,7 +93,7 @@ namespace Lumos.BLL.Service.Merch
                     order2CarIns.MendTime = this.DateTime;
                     CurrentDb.SaveChanges();
 
-                    MerchServiceFactory.Customer.AddDealtTrack(operater, underwriter.FullName + "，已取单核保中", order2CarIns.MerchantId, order2CarIns.CustomerId, order2CarIns.Id, order2CarIns.FollowStatus);
+                    MerchServiceFactory.Customer.AddDealtTrack(operater, underwriter.FullName + "已取单在核保中", order2CarIns.MerchantId, order2CarIns.CustomerId, order2CarIns.Id, order2CarIns.FollowStatus);
                 }
             }
             else
@@ -59,6 +124,7 @@ namespace Lumos.BLL.Service.Merch
             ret.Car.EngineNo = order2CarIns.CarEngineNo;
             ret.Car.Vin = order2CarIns.CarVin;
 
+            ret.CompanyName = order2CarIns.CompanyName;
             ret.OfCommercialAmount = order2CarIns.OfCommercialAmount.ToF2Price();
             ret.OfCompulsoryAmount = order2CarIns.OfCompulsoryAmount.ToF2Price();
             ret.OfTravelTaxAmount = order2CarIns.OfTravelTaxAmount.ToF2Price();
@@ -132,7 +198,6 @@ namespace Lumos.BLL.Service.Merch
             return new CustomJsonResult(ResultType.Success, ResultCode.Success, "获取成功", ret);
         }
 
-
         public CustomJsonResult GetUnderwritingOrderDetails(string operater, string merchantId, string orderId)
         {
             var ret = new RetCarInsGetDealtUnderwritingOrderDetails();
@@ -154,6 +219,7 @@ namespace Lumos.BLL.Service.Merch
             ret.Car.EngineNo = order2CarIns.CarEngineNo;
             ret.Car.Vin = order2CarIns.CarVin;
 
+            ret.CompanyName = order2CarIns.CompanyName;
             ret.OfCommercialAmount = order2CarIns.OfCommercialAmount.ToF2Price();
             ret.OfCompulsoryAmount = order2CarIns.OfCompulsoryAmount.ToF2Price();
             ret.OfTravelTaxAmount = order2CarIns.OfTravelTaxAmount.ToF2Price();
@@ -261,7 +327,7 @@ namespace Lumos.BLL.Service.Merch
                     order2CarIns.UnAuditComments = rop.UnAuditComments;
                     order2CarIns.Status = Enumeration.OrderStatus.WaitPay;
                     order2CarIns.FollowStatus = Enumeration.OrderFollowStatus.CarInsAlUnderwrie;
-                    MerchServiceFactory.Customer.AddDealtTrack(operater, order2CarIns.UnderwriterName + ",核保完成", order2CarIns.MerchantId, order2CarIns.CustomerId, order2CarIns.Id, order2CarIns.FollowStatus);
+                    MerchServiceFactory.Customer.AddDealtTrack(operater, order2CarIns.UnderwriterName + "已核保完成", order2CarIns.MerchantId, order2CarIns.CustomerId, order2CarIns.Id, order2CarIns.FollowStatus);
                     break;
                 default:
                     return new CustomJsonResult(ResultType.Failure, ResultCode.Failure, "未知道操作");
@@ -274,54 +340,6 @@ namespace Lumos.BLL.Service.Merch
 
             return new CustomJsonResult(ResultType.Success, ResultCode.Success, "提交成功", ret);
         }
-
-        public CustomJsonResult GetKind(string operater, string merchantId)
-        {
-            CustomJsonResult result = new CustomJsonResult();
-            List<CarInsPKindModel> carInsPKindModels = new List<CarInsPKindModel>();
-
-            var carKinds = CurrentDb.CarInsKind.OrderBy(m => m.Priority).ToList();
-
-            var carPKinds = carKinds.Where(m => m.PId == "0").ToList();
-
-            foreach (var carPKind in carPKinds)
-            {
-                CarInsPKindModel carPInsKindModel = new CarInsPKindModel();
-                carPInsKindModel.Id = carPKind.Id;
-                carPInsKindModel.Name = carPKind.Name;
-
-                var carCKinds = carKinds.Where(m => m.PId == carPKind.Id).ToList();
-
-                foreach (var carCKind in carCKinds)
-                {
-                    var carInsCKindModel = new CarInsCKindModel();
-                    carInsCKindModel.Id = carCKind.Id;
-                    carInsCKindModel.PId = carCKind.PId;
-                    carInsCKindModel.Name = carCKind.Name;
-                    carInsCKindModel.Type = carCKind.Type;
-                    carInsCKindModel.CanWaiverDeductible = carCKind.CanWaiverDeductible;
-                    carInsCKindModel.IsSelectedWaiverDeductible = carCKind.IsSelectedWaiverDeductible;
-                    carInsCKindModel.InputType = carCKind.InputType;
-                    carInsCKindModel.InputUnit = carCKind.InputUnit;
-                    carInsCKindModel.InputValue = carCKind.InputValue;
-                    if (!string.IsNullOrEmpty(carCKind.InputOption))
-                    {
-                        carInsCKindModel.InputOption = Newtonsoft.Json.JsonConvert.DeserializeObject<List<string>>(carCKind.InputOption);
-                    }
-
-                    carInsCKindModel.IsHasDetails = carCKind.IsHasDetails;
-                    carInsCKindModel.IsSelected = carCKind.IsSelected;
-
-                    carPInsKindModel.Child.Add(carInsCKindModel);
-                }
-
-                carInsPKindModels.Add(carPInsKindModel);
-
-            }
-
-            return new CustomJsonResult(ResultType.Success, ResultCode.Success, "保存成功", new { carInsKinds = carInsPKindModels });
-        }
-
 
         public CustomJsonResult SubmitUnderwriting(string operater, string merchantId, string salesmanId, RopObCalloutCarInsSubmitUnderwriting rop)
         {
@@ -346,6 +364,8 @@ namespace Lumos.BLL.Service.Merch
                     return new CustomJsonResult(ResultType.Failure, ResultCode.Failure, "该客户已在核保中，不能重复提交，请耐心等候");
                 }
 
+                var company = CurrentDb.CarInsCompany.Where(m => m.Id == rop.CompanyId).FirstOrDefault();
+
                 order2CarIns = new Order2CarIns();
 
                 order2CarIns.Id = GuidUtil.New();
@@ -353,8 +373,8 @@ namespace Lumos.BLL.Service.Merch
                 order2CarIns.Type = Enumeration.OrderType.CarIns;
                 order2CarIns.MerchantId = merchantId;
                 order2CarIns.CustomerId = rop.CustomerId;
-                order2CarIns.CompanyId = "";
-                order2CarIns.CompanyName = "";
+                order2CarIns.CompanyId = company.Id;
+                order2CarIns.CompanyName = company.Name;
                 order2CarIns.OfCompulsoryAmount = rop.OfCompulsoryAmount;
                 order2CarIns.OfTravelTaxAmount = rop.OfTravelTaxAmount;
                 order2CarIns.OfCommercialAmount = rop.OfCommercialAmount;
@@ -391,7 +411,7 @@ namespace Lumos.BLL.Service.Merch
                     CurrentDb.Order2CarInsKind.Add(order2CarInsKind);
                 }
 
-                MerchServiceFactory.Customer.AddDealtTrack(operater, "提交报价单，等待取单核保", order2CarIns.MerchantId, order2CarIns.CustomerId, order2CarIns.Id, order2CarIns.FollowStatus);
+                MerchServiceFactory.Customer.AddDealtTrack(operater, string.Format("{0}提交报价单，等待取单核保", salesman.FullName), order2CarIns.MerchantId, order2CarIns.CustomerId, order2CarIns.Id, order2CarIns.FollowStatus);
 
                 CurrentDb.SaveChanges();
                 ts.Complete();
@@ -400,7 +420,6 @@ namespace Lumos.BLL.Service.Merch
 
             return result;
         }
-
 
         public CustomJsonResult GetUnderwritingOrder(string operater, string merchantId, string userId)
         {
@@ -439,7 +458,6 @@ namespace Lumos.BLL.Service.Merch
 
             return new CustomJsonResult(ResultType.Success, ResultCode.Success, "获取成功", ret);
         }
-
 
     }
 }

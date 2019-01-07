@@ -10,6 +10,8 @@ namespace Lumos.BLL.Service.Merch
     {
         public string CustomerId { get; set; }
 
+        public string CompanyId { get; set; }
+
         public decimal OfTravelTaxAmount { get; set; }
 
         public decimal OfCompulsoryAmount { get; set; }

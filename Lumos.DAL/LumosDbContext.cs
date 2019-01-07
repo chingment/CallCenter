@@ -37,7 +37,7 @@ namespace Lumos.DAL
         public IDbSet<CallResultCode> CallResultCode { get; set; }
         public IDbSet<CallResultRecord> CallResultRecord { get; set; }
         public IDbSet<CarInsKind> CarInsKind { get; set; }
-
+        public IDbSet<CarInsCompany> CarInsCompany { get; set; }
         public IDbSet<Order> Order { get; set; }
         public IDbSet<Order2CarIns> Order2CarIns { get; set; }
         public IDbSet<Order2CarInsKind> Order2CarInsKind { get; set; }
