@@ -39,11 +39,12 @@ namespace Lumos.BLL
 
         public string PValue { get; set; }
 
-
         public int Type { get; set; }
 
         public bool Disabled { get; set; }
 
         public int Dept { get; set; }
+
+        public object Ext { get; set; }
     }
 }

@@ -219,6 +219,7 @@ namespace WebMerch.Controllers
                         var field = new FieldModel();
                         field.Value = item.Code;
                         field.Name = item.Name;
+                        field.Ext = new { isAllowNextCall = item.IsAllowNextCall, isInValidData = item.IsInValidData };
                         fields.Add(field);
                     }
                     #endregion 
