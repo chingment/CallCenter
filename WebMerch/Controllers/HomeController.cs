@@ -16,10 +16,10 @@ namespace WebMerch.Controllers
 
         public ViewResult Index()
         {
-            MerchServiceFactory.User.SetLastAccessTime(this.CurrentUserId, this.CurrentMerchantId, this.CurrentUserId, DateTime.Now);
+            //MerchServiceFactory.User.SetLastAccessTime(this.CurrentUserId, this.CurrentMerchantId, this.CurrentUserId, DateTime.Now);
 
-            SdkFactory.Lxt.GetRecordList("0");
-
+            //SdkFactory.Lxt.GetRecordList("0");
+            //SdkFactory.Lxt.Logout("1308000");
 
             //RedisManager.Db.HashSetAsync(key, d.Id, Newtonsoft.Json.JsonConvert.SerializeObject(d), StackExchange.Redis.When.Always);
 
@@ -158,7 +158,7 @@ namespace WebMerch.Controllers
 
         public CustomJsonResult GetPersonalInfo()
         {
-            return MerchServiceFactory.User.GetPersonalInfo(this.CurrentUserId,this.CurrentMerchantId,this.CurrentUserId);
+            return MerchServiceFactory.User.GetPersonalInfo(this.CurrentUserId, this.CurrentMerchantId, this.CurrentUserId);
         }
 
         public class IndexModel
