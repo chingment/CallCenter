@@ -153,13 +153,24 @@ namespace Lumos.BLL.Service.Merch
                 obCustomer.IsUseCall = true;
                 obCustomer.UseCallTime = this.DateTime;
 
+
+                var salesman = CurrentDb.SysMerchantUser.Where(m => m.Id == salesmanId).FirstOrDefault();
+
+                var callResultCode = CurrentDb.CallResultCode.Where(m => m.Code == rop.ResultCode).FirstOrDefault();
+
                 var callResultRecord = new CallResultRecord();
                 callResultRecord.Id = GuidUtil.New();
                 callResultRecord.MerchantId = merchantId;
                 callResultRecord.SalesmanId = salesmanId;
                 callResultRecord.CustomerId = rop.CustomerId;
                 callResultRecord.ResultCode = rop.ResultCode;
+                callResultRecord.ResultName = callResultCode.Name;
                 callResultRecord.NextCallTime = rop.NextCallTime;
+                callResultRecord.CustomerId = obCustomer.Id;
+                callResultRecord.CustomerName = obCustomer.CsrName;
+                callResultRecord.PhoneNumber = obCustomer.CsrPhoneNumber;
+                callResultRecord.SalesmanId = salesman.Id;
+                callResultRecord.SalesmanName = salesman.FullName;
                 callResultRecord.Remark = rop.Remark;
                 callResultRecord.Creator = operater;
                 callResultRecord.CreateTime = this.DateTime;

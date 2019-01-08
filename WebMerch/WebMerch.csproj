@@ -161,7 +161,7 @@
     <Compile Include="App_Start\FilterConfig.cs" />
     <Compile Include="App_Start\Own\OwnRequest.cs" />
     <Compile Include="App_Start\RouteConfig.cs" />
-    <Compile Include="Controllers\CallRecordController.cs" />
+    <Compile Include="Controllers\CallResultRecordController.cs" />
     <Compile Include="Controllers\CarInsController.cs" />
     <Compile Include="Controllers\CommonController.cs" />
     <Compile Include="Controllers\FnController.cs" />
@@ -225,7 +225,7 @@
     <Content Include="Views\ObTakeDataLimit\List.cshtml" />
     <Content Include="Views\ObBatchDataReallocate\List.cshtml" />
     <Content Include="Views\ObTakeDataLimit\Adjust.cshtml" />
-    <Content Include="Views\CallRecord\List.cshtml" />
+    <Content Include="Views\CallResultRecord\List.cshtml" />
     <Content Include="Views\TelSeat\List.cshtml" />
     <Content Include="Views\Home\PersonalInfo.cshtml" />
     <None Include="Web.config">

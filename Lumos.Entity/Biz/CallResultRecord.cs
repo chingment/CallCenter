@@ -14,9 +14,13 @@ namespace Lumos.Entity
         public string CustomerId { get; set; }
         public string SalesmanId { get; set; }
         public string ResultCode { get; set; }
+        public string ResultName { get; set; }
         public DateTime? NextCallTime { get; set; }
         public string Remark { get; set; }
         public string Creator { get; set; }
         public DateTime CreateTime { get; set; }
+        public string CustomerName { get; set; }
+        public string PhoneNumber { get; set; }
+        public string SalesmanName { get; set; }
     }
 }
