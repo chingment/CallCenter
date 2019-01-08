@@ -75,7 +75,7 @@
     <Compile Include="Biz\Order2CarInsKind.cs" />
     <Compile Include="Biz\CustomerDealtTrack.cs" />
     <Compile Include="Biz\Organization.cs" />
-    <Compile Include="Biz\OrganizationUser.cs" />
+    <Compile Include="Biz\TeleSeat.cs" />
     <Compile Include="Sys\SysClientUser.cs" />
     <Compile Include="Sys\SysMerchatUser.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />

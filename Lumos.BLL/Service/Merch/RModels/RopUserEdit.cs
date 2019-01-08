@@ -28,5 +28,7 @@ namespace Lumos.BLL.Service.Merch
 
         public string TransferDataBelongerId { get; set; }
 
+        public string TeleSeatAccount { get; set; }
+
     }
 }

@@ -24,6 +24,9 @@
                 var val = $(this).find('option:selected').val();
                 $('#sel_Positions').myChosen({ urlParams: { type: "SysPosition", organizationId: val } });
             });
+
+            $('#sel_TeleSeatAccounts').myChosen({ urlParams: { type: "TeleSeatAccounts" } });
+
             //$('#sel_DataRightTypes').myChosen({ isUseUrl: false });
 
 
@@ -62,11 +65,13 @@
                 var phoneNumber = $("#txt_PhoneNumber").val();
                 var positionId = $("#sel_Positions").val();
                 var organizationId = $("#sel_Organizations").val();
+                var teleSeatAccount = $("#sel_TeleSeatAccounts").val();
+
                 //var dataRightType = $("#sel_DataRightTypes").val();
 
                 $.lumos.postJson({
                     url: "/User/Add",
-                    data: { userName: userName, password: password, fullName: fullName, email: email, phoneNumber: phoneNumber, positionId: positionId, organizationId: organizationId, dataRightType: 0 },
+                    data: { userName: userName, password: password, fullName: fullName, email: email, phoneNumber: phoneNumber, positionId: positionId, organizationId: organizationId, dataRightType: 0, teleSeatAccount: teleSeatAccount },
                     isUseHandling: true,
                     success: function (d) {
                         if (d.result == $.lumos.resultType.success) {
@@ -161,18 +166,16 @@
                 <input id="txt_PhoneNumber" class="input-control" type="text" style="width: 224px;" autocomplete="off" />
             </td>
         </tr>
-        @*<tr>
-                <td class="f-tb-t">
-                    <span class="required-symbol">*</span>数据访问：
-                </td>
-                <td class="f-tb-c">
-                    <select id="sel_DataRightTypes" data-placeholder="请选择" class="chosen-select" style="width:200px">
-                        <option value="-1"></option>
-                        <option value="1">仅自己</option>
-                        <option value="2">本机构及下属机构</option>
-                    </select>
-                </td>
-            </tr>*@
+        <tr>
+            <td class="f-tb-t">
+                坐席账号：
+            </td>
+            <td class="f-tb-c">
+                <select id="sel_TeleSeatAccounts" data-placeholder="空" class="chosen-select" style="width:200px">
+                    <option value="-1"></option>
+                </select>
+            </td>
+        </tr>
         <tr style="display:none">
             <td class="f-tb-t"></td>
             <td class="f-tb-c">

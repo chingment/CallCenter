@@ -212,6 +212,19 @@ namespace WebAdmin.Controllers
                     }
                     #endregion 
                     break;
+                case "merchant":
+                    #region merchant
+                    var merchants = CurrentDb.Merchant.ToList();
+
+                    foreach (var item in merchants)
+                    {
+                        var field = new FieldModel();
+                        field.Value = item.Id;
+                        field.Name = item.Name;
+                        fields.Add(field);
+                    }
+                    #endregion 
+                    break;
             }
 
 

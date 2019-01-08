@@ -44,6 +44,8 @@ namespace Lumos.DAL
         public IDbSet<CustomerDealtTrack> CustomerDealtTrack { get; set; }
 
         public IDbSet<ObTakeDataLimit> ObTakeDataLimit { get; set; }
+
+        public IDbSet<TeleSeatAccount> TeleSeatAccount { get; set; }
         protected override void OnModelCreating(DbModelBuilder modelBuilder)
         {
             base.OnModelCreating(modelBuilder);

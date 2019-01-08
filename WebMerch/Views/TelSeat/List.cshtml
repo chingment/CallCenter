@@ -36,20 +36,19 @@
 
     $(document).ready(function () {
 
-        $.lumos.getJson({
-            url: "/TelSeat/GetList",
-            success: function (d) {
 
-                //console.log(JSON.stringify(d));
+        setInterval(function () {
+            $.lumos.getJson({
+                url: "/TelSeat/GetList",
 
-                if (d.result == $.lumos.resultType.success) {
+                success: function (d) {
 
-                    $('#gbr_page').html($("#tmpl_page").tmpl(d.data));
-
-                    //alert(JSON.stringify(d))
+                    if (d.result == $.lumos.resultType.success) {
+                        $('#gbr_page').html($("#tmpl_page").tmpl(d.data));
+                    }
                 }
-            }
-        });
+            });
+        }, 1000);
 
     });
 

@@ -21,5 +21,7 @@ namespace Lumos.BLL.Service.Merch
         public string SimpleCode { get; set; }
 
         public Enumeration.UserStatus Status { get; set; }
+
+        public string TeleSeatAccount { get; set; }
     }
 }

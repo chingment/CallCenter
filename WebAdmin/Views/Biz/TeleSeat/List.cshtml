@@ -10,10 +10,10 @@
 
     $(document).ready(function () {
 
-        $('#sel_Organizations').myChosen({ urlParams: { type: "SysOrganization" } });
+        $('#sel_Merchants').myChosen({ urlParams: { type: "Merchant" } });
 
         listTable = $("#list_table").loadDataTable({
-            url: "/User/GetList",
+            url: "/TeleSeat/GetList",
             pageIndex: 0,
             searchParams: $("#form1").serializeArray(),
             searchButtonId: "btn_Search",
@@ -24,14 +24,9 @@
                 var l_StrRows = "";
                 l_StrRows += "<tr>";
                 l_StrRows += "<td class=\"no\" >" + (p_index + 1) + "</td>";
-                l_StrRows += "<td class=\"overflow tipitem\" title=\"" + p_row.userName + "\"   >" + p_row.userName + "</td>";
-                l_StrRows += "<td class=\"overflow\" title=\"" + p_row.fullName + "\">" + p_row.fullName + "</td>";
-                l_StrRows += "<td class=\"overflow\" title=\"" + p_row.organizationName + "\">" + p_row.organizationName + "</td>";
-                l_StrRows += "<td class=\"overflow\" title=\"" + p_row.positionName + "\">" + p_row.positionName + "</td>";
-                l_StrRows += "<td class=\"overflow\" title=\"" + p_row.phoneNumber + "\">" + p_row.phoneNumber + "</td>";
-                l_StrRows += "<td class=\"overflow\" title=\"" + p_row.email + "\">" + p_row.email + "</td>";
-                l_StrRows += "<td class=\"overflow\" title=\"" + p_row.statusName + "\">" + p_row.statusName + "</td>";
-                l_StrRows += "<td class=\"overflow\" title=\"" + p_row.createTime + "\">" + p_row.createTime + "</td>";
+                l_StrRows += "<td class=\"overflow tipitem\" title=\"" + p_row.merchantName + "\"   >" + p_row.merchantName + "</td>";
+                l_StrRows += "<td class=\"overflow\" title=\"" + p_row.account + "\">" + p_row.account + "</td>";
+                l_StrRows += "<td class=\"overflow\" title=\"" + p_row.password + "\">" + p_row.password + "</td>";
                 l_StrRows += "<td class=\"operation\">";
                 l_StrRows += l_Strlimt;
                 l_StrRows += "</td>";
@@ -84,27 +79,19 @@
     <form id="form1" name="form1">
         <div class="search-bar">
             <div class="filter">
-                <span class="filter-label">用户名：</span>
+                <span class="filter-label">商户：</span>
                 <span class="filter-input">
-                    <input type="text" class="input-control" name="UserName" style="width:120px;" />
-                </span>
-            </div>
-            <div class="filter">
-                <span class="filter-label">姓名：</span>
-                <span class="filter-input">
-                    <input type="text" class="input-control" name="FullName" style="width:120px;" />
-                </span>
-            </div>
-            <div class="filter">
-                <span class="filter-label">机构：</span>
-                <span class="filter-input">
-                    <select id="sel_Organizations" name="OrganizationId" data-placeholder="请选择" class="chosen-select" style="width:200px">
+                    <select id="sel_Merchants" name="MerchantId" data-placeholder="请选择" class="chosen-select" style="width:200px">
                         <option value=""></option>
                     </select>
                 </span>
             </div>
-
-
+            <div class="filter">
+                <span class="filter-label">帐号：</span>
+                <span class="filter-input">
+                    <input type="text" class="input-control" name="Account" style="width:120px;" />
+                </span>
+            </div>
 
             <div class="filter"><input type="button" class="btn btn-search" id="btn_Search" value="查询" /> </div>
 
@@ -119,29 +106,14 @@
                         <th style="width:25px" class="no">
                             序号
                         </th>
-                        <th style="width:15%">
-                            用户名
+                        <th style="width:40%">
+                            商户
                         </th>
-                        <th style="width:15%">
-                            姓名
+                        <th style="width:30%">
+                            帐号
                         </th>
-                        <th style="width:15%">
-                            所属机构
-                        </th>
-                        <th style="width:10%">
-                            职位
-                        </th>
-                        <th style="width:10%">
-                            手机
-                        </th>
-                        <th style="width:10%">
-                            邮箱
-                        </th>
-                        <th style="width:10%">
-                            状态
-                        </th>
-                        <th style="width:15%">
-                            创建时间
+                        <th style="width:30%">
+                            密码
                         </th>
                         <th style="width:25px" class="operation">
                             操作
@@ -151,7 +123,7 @@
                 <tbody></tbody>
                 <tfoot>
                     <tr>
-                        <td colspan="10">
+                        <td colspan="5">
                             <div class="pull-left">
                                 <span class="load-tip"></span>
                             </div>

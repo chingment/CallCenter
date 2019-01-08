@@ -21,5 +21,7 @@ namespace Lumos.BLL.Service.Merch
         public string OrganizationId { get; set; }
 
         public Enumeration.SysPositionId PositionId { get; set; }
+
+        public string TeleSeatAccount { get; set; }
     }
 }

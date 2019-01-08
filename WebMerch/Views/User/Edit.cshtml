@@ -77,6 +77,8 @@
                         $('#sel_Positions').myChosen({ urlParams: { type: "SysPosition", organizationId: data.organizationId }, selectedValue: data.positionId });
 
                         $('#sel_Status').myChosen({ isUseUrl: false, selectedValue: data.status });
+
+                        $('#sel_TeleSeatAccounts').myChosen({ urlParams: { type: "TeleSeatAccounts" }, selectedValue: data.teleSeatAccount });
                     }
                 }
             });
@@ -98,11 +100,12 @@
                 var organizationId = $("#sel_Organizations").val();
                 var status = $("#sel_Status").val();
                 var transferDataBelongerId = $("#txt_DataBelongerId").val();
+                var teleSeatAccount = $("#sel_TeleSeatAccounts").val();
                 var isTransferData = isTransferData;
                 $.lumos.postJson({
                     url: "/User/Edit",
                     isUseHandling: true,
-                    data: { id: id, password: password, fullName: fullName, email: email, phoneNumber: phoneNumber, positionId: positionId, organizationId: organizationId, dataRightType: 0, status: status, isReplacePosition: isReplacePosition, isTransferData: isTransferData, transferDataBelongerId: transferDataBelongerId },
+                    data: { id: id, password: password, fullName: fullName, email: email, phoneNumber: phoneNumber, positionId: positionId, organizationId: organizationId, dataRightType: 0, status: status, isReplacePosition: isReplacePosition, isTransferData: isTransferData, transferDataBelongerId: transferDataBelongerId, teleSeatAccount: teleSeatAccount },
                     success: function (d) {
                         if (d.result == $.lumos.resultType.success) {
                             $.lumos.parentDialog.refresh(2);
@@ -236,6 +239,16 @@
                     <option value="-1"></option>
                     <option value="1">正常</option>
                     <option value="2">禁用</option>
+                </select>
+            </td>
+        </tr>
+        <tr>
+            <td class="f-tb-t">
+                坐席账号：
+            </td>
+            <td class="f-tb-c">
+                <select id="sel_TeleSeatAccounts" data-placeholder="空" class="chosen-select" style="width:200px">
+                    <option value="-1"></option>
                 </select>
             </td>
         </tr>
