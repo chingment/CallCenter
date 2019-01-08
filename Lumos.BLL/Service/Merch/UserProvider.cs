@@ -133,9 +133,6 @@ namespace Lumos.BLL.Service.Merch
                 obTakeDataLimit.TaskQuantity = merchant.ObTakeDataPeriodQuantity;
                 obTakeDataLimit.UnTakeQuantity = merchant.ObTakeDataPeriodQuantity;
                 obTakeDataLimit.TakedQuantity = 0;
-                obTakeDataLimit.UnContactQuantity = 0;
-                obTakeDataLimit.TargetQuantity = 0;
-                obTakeDataLimit.InValidQuantity = 0;
                 obTakeDataLimit.Creator = operater;
                 obTakeDataLimit.CreateTime = this.DateTime;
                 CurrentDb.ObTakeDataLimit.Add(obTakeDataLimit);

@@ -184,13 +184,13 @@ namespace Lumos.BLL.Service.Merch
                 switch (resultCodePrefix)
                 {
                     case "1":
-                        obTakeDataLimit.UnContactQuantity += 1;
+                        //obTakeDataLimit.UnContactQuantity += 1;
                         break;
                     case "2":
-                        obTakeDataLimit.TargetQuantity += 1;
+                        //obTakeDataLimit.TargetQuantity += 1;
                         break;
                     case "3":
-                        obTakeDataLimit.InValidQuantity += 1;
+                        //obTakeDataLimit.InValidQuantity += 1;
                         break;
                     default:
                         return new CustomJsonResult(ResultType.Failure, ResultCode.Failure, "保存成功失败,未知通话结果");

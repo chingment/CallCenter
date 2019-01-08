@@ -54,5 +54,12 @@ namespace WebMerch.Controllers
         {
             return MerchServiceFactory.ObCallout.GetDealtTrack(this.CurrentUserId, this.CurrentMerchantId, customerId);
         }
+
+        public CustomJsonResult GetTaskDataStatus()
+        {
+            var obTakeDataLimit = CurrentDb.ObTakeDataLimit.Where(m => m.MerchantId == this.CurrentMerchantId && m.SalesmanId == this.CurrentUserId).FirstOrDefault();
+
+            return new CustomJsonResult(ResultType.Success, ResultCode.Success, "获取成功", new { TaskQuantity = obTakeDataLimit.TaskQuantity, UnTakeQuantity = obTakeDataLimit.UnTakeQuantity, TakedQuantity = obTakeDataLimit.TakedQuantity });
+        }
     }
 }

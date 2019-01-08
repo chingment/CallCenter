@@ -126,6 +126,8 @@
 
             initConfig();
 
+            getTaskDataStatus();
+
             takeData();
 
             $('.btn-switch').myBtnSwitch();
@@ -421,9 +423,19 @@
             });
         }
 
-
-        function callout() {
-
+        function getTaskDataStatus() {
+            $.lumos.getJson({
+                url: "/ObCallout/GetTaskDataStatus",
+                isShowLoading: false,
+                success: function (d) {
+                    if (d.result == $.lumos.resultType.success) {
+                        var data = d.data;
+                        $('#lbl_TaskQuantity').text(data.taskQuantity);
+                        $('#lbl_UnTakeQuantity').text(data.unTakeQuantity);
+                        $('#lbl_TakedQuantity').text(data.takedQuantity);
+                    }
+                }
+            });
         }
 
     </script>
@@ -530,9 +542,9 @@
                 </div>
                 <div class="b">
                     <ul>
-                        <li><div class="name">任务数量</div><div class="value">0</div></li>
-                        <li><div class="name">未拨数量</div><div class="value">0</div></li>
-                        <li><div class="name">已拨数量</div><div class="value">0</div></li>
+                        <li><div class="name">任务数量</div><div id="lbl_TaskQuantity" class="value">0</div></li>
+                        <li><div class="name">未拨数量</div><div id="lbl_UnTakeQuantity" class="value">0</div></li>
+                        <li><div class="name">已拨数量</div><div id="lbl_TakedQuantity" class="value">0</div></li>
                     </ul>
                 </div>
             </div>
