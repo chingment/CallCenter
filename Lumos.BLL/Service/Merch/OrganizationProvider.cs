@@ -87,6 +87,11 @@ namespace Lumos.BLL.Service.Merch
                     return new CustomJsonResult(ResultType.Failure, "该名称在同一级别已经存在");
                 }
 
+                if (dept > 2)
+                {
+                    return new CustomJsonResult(ResultType.Failure, "目前机构级别，仅支持三级");
+                }
+
                 string fullName = "";
                 foreach (var item in fathters)
                 {
