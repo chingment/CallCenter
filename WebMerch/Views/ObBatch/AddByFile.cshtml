@@ -67,7 +67,7 @@
 
         function getUserDetails(obj) {
             $("#txt_BelongerId").val(obj.id);
-            $('#lbl_BelongerName').text(obj.fullName + "(" + obj.userName + ")");
+            $('#lbl_BelongerName').text(obj.fullName + "(" + obj.userName + "),"+"所属机构:" + obj.organizationName);
         }
 
     </script>
