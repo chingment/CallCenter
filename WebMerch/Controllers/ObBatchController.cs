@@ -105,7 +105,7 @@ namespace WebMerch.Controllers
 
             var belongUser = CurrentDb.SysMerchantUser.Where(m => m.MerchantId == this.CurrentMerchantId && m.Id == rop.BelongerId).FirstOrDefault();
 
-            if (!string.IsNullOrEmpty(belongUser.OrganizationId))
+            if (string.IsNullOrEmpty(belongUser.OrganizationId))
             {
                 return new CustomJsonResult(ResultType.Failure, ResultCode.Failure, string.Format("数据分配人[{0}]，未设置所属机构", belongUser.FullName));
             }

@@ -67,7 +67,7 @@ namespace Lumos.BLL.Service.Merch
             l_user.WorkStatusName = p_user.WorkStatusName;
 
 
-            LogUtil.Info("前："+l_user.ToJsonString());
+            LogUtil.Info("前：" + l_user.ToJsonString());
 
             var isFlag = RedisManager.Db.HashSet(key_list, userId, l_user.ToJsonString(), StackExchange.Redis.When.Always);
 
