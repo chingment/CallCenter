@@ -127,6 +127,7 @@
             initConfig();
 
             takeData();
+
             $('.btn-switch').myBtnSwitch();
 
             $('.btn-check').myBtnCheck();
@@ -277,6 +278,17 @@
                 });
             });
 
+            $('#sel_ResultCode').on("change", function () {
+                var obj = JSON.parse($(this).find("option:selected").attr("ext"));
+                if (obj.isAllowNextCall) {
+                    $('#txt_NextCallTime', window.top.document).removeAttr("disabled");
+                }
+                else {
+                    $('#txt_NextCallTime', window.top.document).attr("disabled", true);
+                    $('#txt_NextCallTime', window.top.document).val("");
+                }
+            });
+
             var fdiv = $("#top_bar");
             var itop = fdiv.offset().top;
 
@@ -291,8 +303,6 @@
                     }
                 });
             }
-
-            
 
             //setInterval(function () {
             //    getDealtTrack();
@@ -357,7 +367,7 @@
 
                         $('#carInsKindsBox').html($("#tmpl_carInsKinds").tmpl(data));
 
-                        $('#carInsKindsBox').find("select").chosen({ search_contains: false, disable_search:true });
+                        $('#carInsKindsBox').find("select").chosen({ search_contains: false, disable_search: true });
 
                         $('#sel_ResultCode').myChosen({ urlParams: { type: "callresultcode" } });
 
@@ -573,7 +583,7 @@
                 </td>
                 <td class="f-tb-c">
 
-                    <input id="txt_NextCallTime" type="text" class="Wdate input-control" style="width:80px;" onfocus="WdatePicker({ dateFmt: 'yyyy-MM-dd', minDate: '@DateTime.Now.ToUnifiedFormatDate()' })" value="" />
+                    <input id="txt_NextCallTime" type="text" class="Wdate input-control"  style="width:80px;" onfocus="WdatePicker({ dateFmt: 'yyyy-MM-dd', minDate: '@DateTime.Now.ToUnifiedFormatDate()' })" value="" disabled="disabled" />
 
                 </td>
             </tr>
@@ -698,10 +708,10 @@
 
         <div style="margin:10px 0px;">
             保险公司：<select id="sel_Company">
-                     {{each(i,item) carInsCompanys}}
-                          <option value="${item.value}">${item.name}</option>
-                     {{/each}}
-                     </select>
+                {{each(i,item) carInsCompanys}}
+                <option value="${item.value}">${item.name}</option>
+                {{/each}}
+            </select>
 
             交强险：<input type="text" autocomplete="off" id="txt_OfCompulsoryAmount" style="width:80px;" value="0" class="input-control" />
             车船税：<input type="text" autocomplete="off" id="txt_OfTravelTaxAmount" style="width:80px;" value="0" class="input-control" />
