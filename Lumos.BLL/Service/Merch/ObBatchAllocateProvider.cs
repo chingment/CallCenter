@@ -57,20 +57,6 @@ namespace Lumos.BLL.Service.Merch
 
         private string GetFilters(RupObCustomerGetList filters)
         {
-            //public string CsrName { get; set; }
-            //public string CsrPhoneNumber { get; set; }
-            //public string CsrAddress { get; set; }
-            //public string CsrIdNumber { get; set; }
-            //public string CarInsLastCompany { get; set; }
-            //public string CarPlateNo { get; set; }
-            //public string CarModel { get; set; }
-            //public string CarEngineNo { get; set; }
-            //public DateTime? CarRegisterDateStart { get; set; }
-            //public DateTime? CarRegisterDateEnd { get; set; }
-            //public DateTime? CarInsLastStartTime { get; set; }
-            //public DateTime? CarInsLastEndTime { get; set; }
-
-
             StringBuilder sb = new StringBuilder();
 
             if (filters != null)
@@ -83,10 +69,16 @@ namespace Lumos.BLL.Service.Merch
                 {
                     sb.Append("电话号码:" + filters.CsrPhoneNumber + ",");
                 }
+                if (!string.IsNullOrEmpty(filters.CsrIdNumber))
+                {
+                    sb.Append("身份证号:" + filters.CsrIdNumber + ",");
+                }
+
                 if (!string.IsNullOrEmpty(filters.CsrAddress))
                 {
                     sb.Append("地址:" + filters.CsrAddress + ",");
                 }
+
                 if (!string.IsNullOrEmpty(filters.CarInsLastCompany))
                 {
                     sb.Append("保险公司:" + filters.CarInsLastCompany + ",");
@@ -99,6 +91,12 @@ namespace Lumos.BLL.Service.Merch
                 {
                     sb.Append("发动号:" + filters.CarEngineNo + ",");
                 }
+
+                if (!string.IsNullOrEmpty(filters.CarModel))
+                {
+                    sb.Append("厂牌:" + filters.CarModel + ",");
+                }
+
                 if (filters.CarRegisterDateStart != null)
                 {
                     sb.Append("初登日期开始:" + filters.CarRegisterDateStart + ",");

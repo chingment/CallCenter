@@ -161,6 +161,7 @@
                 var carEngineNo = $('#txt_CarEngineNo').val();
                 var csrAddress = $('#txt_CsrAddress').val();
                 var csrPhoneNumber = $('#txt_CsrPhoneNumber').val();
+                var csrIdNumber = $('#txt_CsrIdNumber').val();
                 var csrName = $('#txt_CsrName').val();
                 var description = $('#txt_Description').val();
 
@@ -173,7 +174,7 @@
                 $.lumos.postJson({
                     url: "/ObBatchAllocate/Add",
                     isUseHandling: true,
-                    data: { id: id, mode: mode, belongUsers: belongUsers, description: description, filters: { carPlateNo: carPlateNo, carModel: carModel, carEngineNo: carEngineNo, csrAddress: csrAddress, csrPhoneNumber: csrPhoneNumber, csrName: csrName, carRegisterDateStart: carRegisterDateStart, carRegisterDateEnd: carRegisterDateEnd, carInsLastStartTime: carInsLastStartTime, carInsLastEndTime: carInsLastEndTime } },
+                    data: { id: id, mode: mode, belongUsers: belongUsers, description: description, filters: { csrIdNumber: csrIdNumber, carPlateNo: carPlateNo, carModel: carModel, carEngineNo: carEngineNo, csrAddress: csrAddress, csrPhoneNumber: csrPhoneNumber, csrName: csrName, carRegisterDateStart: carRegisterDateStart, carRegisterDateEnd: carRegisterDateEnd, carInsLastStartTime: carInsLastStartTime, carInsLastEndTime: carInsLastEndTime } },
                     success: function (d) {
                         if (d.result == $.lumos.resultType.success) {
                             $.lumos.parentDialog.refresh(2);
