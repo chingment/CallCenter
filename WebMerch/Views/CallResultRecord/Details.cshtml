@@ -10,6 +10,14 @@
 
         $(this).ready(function () {
             getDetails();
+
+            $('[operate=play]').live('click', function () {
+                var recordFile=$(this).attr("file");
+                var audio = $("#audior");
+                $(audio).attr("src", recordFile)
+                audio.paused && (audio.play())
+                alert(recordFile)
+            });
         });
 
         function getDetails() {
@@ -29,7 +37,30 @@
                         $("#lbl_Remark").text(data.remark);
                         $("#lbl_SalesmanName").text(data.salesmanName);
 
+                        alert(JSON.stringify(data.callRecords))
+                        $.each(data.callRecords, function (p_index, p_row) {
 
+                            var l_StrRows = "";
+                            l_StrRows += "<tr>";
+                            l_StrRows += "<td class=\"no\" >" + (p_index + 1) + "</td>";
+                            l_StrRows += "<td class=\"overflow tipitem\" title=\"" + p_row.customerName + "\"   >" + p_row.customerName + "</td>";
+                            l_StrRows += "<td class=\"overflow\" title=\"" + p_row.phoneNumber + "\">" + p_row.phoneNumber + "</td>";
+                            l_StrRows += "<td class=\"overflow\" title=\"" + p_row.startTime + "\">" + p_row.startTime + "</td>";
+                            l_StrRows += "<td class=\"overflow\" title=\"" + p_row.byeTime + "\">" + p_row.byeTime + "</td>";
+                            l_StrRows += "<td class=\"overflow\" title=\"" + p_row.timeLength + "\">" + p_row.timeLength + "</td>";
+                            l_StrRows += "<td class=\"overflow\" title=\"" + p_row.salesmanName + "\">" + p_row.salesmanName + "</td>";
+                            l_StrRows += "<td class=\"operation\">";
+
+                            if (!$.lumos.isNullOrEmpty(p_row.recordFile)) {
+                                l_StrRows += "<a href=\"javascript:void(0)\" operate=\"play\"  file=\"" + p_row.recordFile + "\"  class=\"a-btn a-btn-edit\"  >播放</a>";
+                            }
+                          
+                            l_StrRows += "</td>";
+                            l_StrRows += "</tr>";
+
+                            $("#list_table_callRecord tbody").append(l_StrRows);
+
+                        });
 
                     }
                 }
