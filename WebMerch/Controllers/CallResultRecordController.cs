@@ -42,9 +42,9 @@ namespace WebMerch.Controllers
 u.MerchantId == this.CurrentMerchantId &&
  accessUserIds.Contains(u.SalesmanId) &&
  (rup.CustomerName == null || u.CustomerName.Contains(rup.CustomerName)) &&
- (rup.PhoneNumber == null || u.PhoneNumber.Contains(rup.PhoneNumber)) &&
+ (rup.PhoneNumber == null || u.CustomerPhoneNumber.Contains(rup.PhoneNumber)) &&
  (rup.SalesmanName == null || u.SalesmanName.Contains(rup.SalesmanName))
-                         select new { u.Id, u.CustomerId, u.CustomerName, u.SalesmanId, u.SalesmanName, u.ResultName, u.ResultCode, u.PhoneNumber, u.CreateTime, u.NextCallTime,u.Remark });
+                         select new { u.Id, u.CustomerId, u.CustomerName, u.SalesmanId, u.SalesmanName, u.ResultName, u.ResultCode, u.CustomerPhoneNumber, u.CreateTime, u.NextCallTime,u.Remark });
 
 
             int total = query.Count();
@@ -68,7 +68,7 @@ u.MerchantId == this.CurrentMerchantId &&
                     SalesmanName = item.SalesmanName,
                     ResultName = item.ResultName,
                     ResultCode = item.ResultCode,
-                    PhoneNumber = item.PhoneNumber,
+                    CustomerPhoneNumber = item.CustomerPhoneNumber,
                     NextCallTime = item.NextCallTime.ToUnifiedFormatDateTime(),
                     Remark = item.Remark
                 });

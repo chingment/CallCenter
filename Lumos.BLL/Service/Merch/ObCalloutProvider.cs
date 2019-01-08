@@ -168,7 +168,7 @@ namespace Lumos.BLL.Service.Merch
                 callResultRecord.NextCallTime = rop.NextCallTime;
                 callResultRecord.CustomerId = obCustomer.Id;
                 callResultRecord.CustomerName = obCustomer.CsrName;
-                callResultRecord.PhoneNumber = obCustomer.CsrPhoneNumber;
+                callResultRecord.CustomerPhoneNumber = obCustomer.CsrPhoneNumber;
                 callResultRecord.SalesmanId = salesman.Id;
                 callResultRecord.SalesmanName = salesman.FullName;
                 callResultRecord.Remark = rop.Remark;

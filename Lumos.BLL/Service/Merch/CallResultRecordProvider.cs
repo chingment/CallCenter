@@ -17,14 +17,14 @@ namespace Lumos.BLL.Service.Merch
             if (callResultRecord != null)
             {
                 ret.CustomerName = callResultRecord.CustomerName;
-                ret.PhoneNumber = callResultRecord.PhoneNumber;
+                ret.CustomerPhoneNumber = callResultRecord.CustomerPhoneNumber;
                 ret.SalesmanName = callResultRecord.SalesmanName;
                 ret.ResultName = callResultRecord.ResultName;
                 ret.NextCallTime = callResultRecord.NextCallTime.ToUnifiedFormatDateTime();
                 ret.Remark = callResultRecord.Remark;
 
 
-                var callRecords = (from u in CurrentDb.CallRecord.Where(m => m.CustomerId == callResultRecord.CustomerId).OrderByDescending(m => m.CreateTime) select new { u.Id, u.CustomerId, u.CustomerName, u.SalesmanId, u.SalesmanName, u.RecordFile, u.TimeLength, u.PhoneNumber, u.CreateTime, u.RingTime, u.AnswerTime, u.ByeTime, u.StartTime }).ToList();
+                var callRecords = (from u in CurrentDb.CallRecord.Where(m => m.CustomerId == callResultRecord.CustomerId).OrderByDescending(m => m.CreateTime) select new { u.Id, u.CustomerId, u.CustomerName, u.SalesmanId, u.SalesmanName, u.RecordFile, u.TimeLength, u.CustomerPhoneNumber, u.CreateTime, u.RingTime, u.AnswerTime, u.ByeTime, u.StartTime }).ToList();
                 foreach (var item in callRecords)
                 {
                     string recordFile = "";
@@ -43,7 +43,7 @@ namespace Lumos.BLL.Service.Merch
                         SalesmanName = item.SalesmanName,
                         RecordFile = recordFile,
                         TimeLength = item.TimeLength,
-                        PhoneNumber = item.PhoneNumber,
+                        CustomerPhoneNumber = item.CustomerPhoneNumber,
                         RingTime = item.RingTime.ToUnifiedFormatDateTime(),
                         AnswerTime = item.AnswerTime.ToUnifiedFormatDateTime(),
                         ByeTime = item.ByeTime.ToUnifiedFormatDateTime(),

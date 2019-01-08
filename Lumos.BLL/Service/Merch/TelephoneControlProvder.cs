@@ -102,7 +102,7 @@ namespace Lumos.BLL.Service.Merch
                 callRecord.SalesmanId = salesmanId;
                 callRecord.SalesmanName = salesman.FullName;
                 callRecord.TeleSeatAccount = salesman.TeleSeatAccount;
-                callRecord.PhoneNumber = salesman.PhoneNumber;
+                callRecord.CustomerPhoneNumber = salesman.PhoneNumber;
                 callRecord.Remark = "";
                 callRecord.Creator = operater;
                 callRecord.CreateTime = this.DateTime;
@@ -201,7 +201,7 @@ namespace Lumos.BLL.Service.Merch
                             callRecord.ByeTime = GetTime(billing.Notify.ByeTime);
                             callRecord.AnswerTime = GetTime(billing.Notify.AnswerTime);
                             callRecord.RingTime = GetTime(billing.Notify.RingTime);
-                            callRecord.PhoneNumber = billing.Notify.Callee;
+                            callRecord.CustomerPhoneNumber = billing.Notify.Callee;
                             callRecord.RecordFile = billing.Notify.RecordFile;
                             callRecord.Service = billing.Notify.Service;
                             callRecord.TimeLength = billing.Notify.TimeLength;

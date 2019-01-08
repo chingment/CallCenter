@@ -14,6 +14,7 @@ namespace Lumos.Entity
         public string MerchantId { get; set; }
         public string CustomerId { get; set; }
         public string CustomerName { get; set; }
+        public string CustomerPhoneNumber { get; set; }
         public string SalesmanId { get; set; }
         public string SalesmanName { get; set; }
         public string TeleSeatAccount { get; set; }
@@ -21,7 +22,6 @@ namespace Lumos.Entity
         public DateTime? RingTime { get; set; }
         public DateTime? AnswerTime { get; set; }
         public DateTime? ByeTime { get; set; }
-        public string PhoneNumber { get; set; }
         public string RecordFile { get; set; }
         public int Service { get; set; }
         public int TimeLength { get; set; }

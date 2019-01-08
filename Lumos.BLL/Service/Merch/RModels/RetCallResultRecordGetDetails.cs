@@ -14,7 +14,7 @@ namespace Lumos.BLL.Service.Merch
         }
 
         public string CustomerName { get; set; }
-        public string PhoneNumber { get; set; }
+        public string CustomerPhoneNumber { get; set; }
         public string SalesmanName { get; set; }
 
         public string ResultName { get; set; }
