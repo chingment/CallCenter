@@ -56,6 +56,12 @@ namespace WebMerch.Controllers
                 query = query.Where(m => m.OrganizationId == rup.OrganizationId);
             }
 
+            if (rup.IsDataAllocater)
+            {
+                Enumeration.SysPositionId[] positionIds = new Enumeration.SysPositionId[] { Enumeration.SysPositionId.MerchantGM, Enumeration.SysPositionId.MerchantUM, Enumeration.SysPositionId.MerchantTL };
+                query = query.Where(m => positionIds.Contains(m.PositionId) && m.Status == Enumeration.UserStatus.Normal);
+            }
+
             int total = query.Count();
 
             int pageIndex = rup.PageIndex;

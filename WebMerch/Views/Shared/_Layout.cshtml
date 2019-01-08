@@ -55,8 +55,8 @@
             $('#btn_select_user').live('click', function () {
 
                 var organizationId = $(this).attr("organizationId");
-
-                art.dialog.open('/User/ListBySelect?organizationId=' + organizationId, {
+                var isDataAllocater = $(this).attr("isDataAllocater");
+                art.dialog.open('/User/ListBySelect?organizationId=' + organizationId + '&isDataAllocater=' + isDataAllocater, {
                     id: "openDialog565", title: "选择", width: '600px', height: '530px', lock: true, drag: false, cancelVal: '关闭', cancel: true
                 });
             });

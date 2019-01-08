@@ -13,6 +13,7 @@ using System.Web.Mvc;
 
 namespace WebMerch.Controllers
 {
+    
     public class ObBatchController : OwnBaseController
     {
         public ActionResult List()
@@ -94,19 +95,19 @@ namespace WebMerch.Controllers
                 return new CustomJsonResult(ResultType.Failure, ResultCode.Failure, "文件格式类型不符合，必须为.xls文件");
             }
 
-            var belongOrganization = CurrentDb.Organization.Where(m => m.Dept == 0 && m.MerchantId == this.CurrentMerchantId).FirstOrDefault();
+            //var belongOrganization = CurrentDb.Organization.Where(m => m.Dept == 0 && m.MerchantId == this.CurrentMerchantId).FirstOrDefault();
 
-            if (belongOrganization == null)
+            //if (belongOrganization == null)
+            //{
+            //    return new CustomJsonResult(ResultType.Failure, ResultCode.Failure, "请先设置机构");
+            //}
+
+
+            var belongUser = CurrentDb.SysMerchantUser.Where(m => m.MerchantId == this.CurrentMerchantId && m.Id == rop.BelongerId).FirstOrDefault();
+
+            if (!string.IsNullOrEmpty(belongUser.OrganizationId))
             {
-                return new CustomJsonResult(ResultType.Failure, ResultCode.Failure, "请先设置机构");
-            }
-
-
-            var belongUser = CurrentDb.SysMerchantUser.Where(m => m.MerchantId == this.CurrentMerchantId && m.Id == belongOrganization.HeaderId).FirstOrDefault();
-
-            if (belongUser == null)
-            {
-                return new CustomJsonResult(ResultType.Failure, ResultCode.Failure, string.Format("请机构[{0}]设置负责人，该负责人是用于分配数据", belongOrganization.Name));
+                return new CustomJsonResult(ResultType.Failure, ResultCode.Failure, string.Format("数据分配人[{0}]，未设置所属机构", belongUser.FullName));
             }
 
             var result = new CustomJsonResult();
@@ -168,9 +169,9 @@ namespace WebMerch.Controllers
 
             rop.FileName = file.FileName;
             rop.FilePath = filePath;
-            rop.BelongerId = belongOrganization.HeaderId;
-            rop.BelongerName = string.Format("{0}机构负责人：{1}({2})", belongOrganization.FullName, belongUser.FullName, belongUser.UserName);
-            rop.BelongerOrganizationId = belongOrganization.Id;
+            rop.BelongerId = belongUser.Id;
+            rop.BelongerName = string.Format("{0}机构负责人：{1}({2})", belongUser.FullName, belongUser.FullName, belongUser.UserName);
+            rop.BelongerOrganizationId = belongUser.OrganizationId;
             result = MerchServiceFactory.ObBatch.AddByFile(this.CurrentUserId, this.CurrentMerchantId, rop);
 
             return result;

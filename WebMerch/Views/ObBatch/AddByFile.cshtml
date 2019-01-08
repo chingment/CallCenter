@@ -11,6 +11,7 @@
             $("#txt_ExpiryDays").formValidator().regexValidator({ regExp: regexEnum.intege1, onError: "有效期天数格式为大于1的正整数" });
             $("#txt_FollowDelayDays").formValidator().regexValidator({ regExp: regexEnum.intege1, onError: "跟进延迟天数格式为大于1的正整数" });
             $("#txt_RecoveryDays").formValidator().regexValidator({ regExp: regexEnum.intege1, onError: "回收期天数格式为大于1的正整数" });
+            $("#txt_BelongerId").formValidator().inputValidator({ min: 1, max: 100, onError: "请选择数据分配人" });
             $("#markupload_file").formValidator().inputValidator({ min: 1, max: 2000, onError: "请选择上次文件" });
         });
 
@@ -64,6 +65,10 @@
             return false;
         }
 
+        function getUserDetails(obj) {
+            $("#txt_BelongerId").val(obj.id);
+            $('#lbl_BelongerName').text(obj.fullName + "(" + obj.userName + ")");
+        }
 
     </script>
 }
@@ -121,15 +126,16 @@
                     </div>
                 </td>
             </tr>
-            @*<tr>
-                    <td class="f-tb-t">
-                        <span class="required-symbol">*</span>有效期：
-                    </td>
-                    <td class="f-tb-c">
-                        <input id="txt_StartTime" type="text" name="startTime" class="input-control" style="width:80px;" onfocus="WdatePicker({ dateFmt: 'yyyy-MM-dd', maxDate: '#F{$dp.$D(\'txt_EndTime\')}', minDate: '@DateTime.Now.ToUnifiedFormatDate()' })" value="@DateTime.Now.ToUnifiedFormatDate()" />
-                        至<input id="txt_EndTime" type="text" name="endTime" class="input-control" style="width:80px;" onfocus="WdatePicker({ dateFmt: 'yyyy-MM-dd', minDate: '#F{$dp.$D(\'txt_StartTime\')}', maxDate: '@DateTime.Now.AddDays(180).ToUnifiedFormatDate()' })" value="@DateTime.Now.AddDays(90).ToUnifiedFormatDate()" />
-                    </td>
-                </tr>*@
+            <tr>
+                <td class="f-tb-t">
+                    <span class="required-symbol">*</span>数据分配人：
+                </td>
+                <td class="f-tb-c">
+                    <span id="lbl_BelongerName"></span>
+                    <input type="hidden" id="txt_BelongerId" value="" />
+                    <input type="button" class="btn" id="btn_select_user" organizationId="" isDataAllocater="True" value="选择" dialog-title="选择" />
+                </td>
+            </tr>
             <tr style="display:none">
                 <td class="f-tb-t"></td>
                 <td class="f-tb-c">
@@ -138,6 +144,7 @@
                 </td>
             </tr>
         </table>
+        <div class="remark-tips"><span class="t">提醒：</span><span class="c">该数据分配人在数据分配时只能分配给下属机构用户.</span></div>
         <div class="gbr-row-title clearfix">
             <div class="pull-left">
                 <h5>选择文件</h5>

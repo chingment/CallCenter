@@ -12,5 +12,7 @@ namespace Lumos.BLL.Service.Merch
         public string FullName { get; set; }
 
         public string OrganizationId { get; set; }
+
+        public bool IsDataAllocater { get; set; }
     }
 }
