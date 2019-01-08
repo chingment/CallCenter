@@ -1,0 +1,174 @@
+﻿@{
+    ViewBag.Title = "";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+@section scripts{
+    <script type="text/javascript">
+
+        var id = $.lumos.getUrlParamValue("id");
+
+        $(this).ready(function () {
+            getDetails();
+        });
+
+        function getDetails() {
+
+            $.lumos.getJson({
+                url: "/CallResultRecord/GetDetails",
+                urlParams: { id: id },
+                isUseHandling: true,
+                success: function (d) {
+                    if (d.result == $.lumos.resultType.success) {
+                        var data = d.data;
+
+                        $('#lbl_CustomerName').text(data.customerName);
+                        $('#lbl_PhoneNumber').text(data.phoneNumber);
+                        $('#lbl_ResultName').text(data.resultName);
+                        $("#lbl_NextCallTime").text(data.nextCallTime);
+                        $("#lbl_Remark").text(data.remark);
+                        $("#lbl_SalesmanName").text(data.salesmanName);
+
+
+
+                    }
+                }
+            });
+        }
+
+    </script>
+}
+
+
+<div class="gbr-row gbr-dialog">
+    <div class="tab" id="tab1">
+        <div class="tab-item">
+            <ul>
+                <li class="item first selected"><a class="a-btn-info" href="javascript:void(0)">通话结果</a></li>
+                <li class="item"><a class="a-btn-info" href="javascript:void(0)">客户通话清单</a></li>
+            </ul>
+        </div>
+        <div class="tab-content">
+            <div class="subcontent">
+                <table class="f-tb" cellpadding="0" cellspacing="1">
+                    <tr>
+                        <td class="f-tb-t" style="width:120px;">
+                            客户名称：
+                        </td>
+                        <td class="f-tb-c">
+                            <span id="lbl_CustomerName"></span>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td class="f-tb-t">
+                            电话号码：
+                        </td>
+                        <td class="f-tb-c">
+                            <span id="lbl_PhoneNumber"></span>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td class="f-tb-t">
+                            通话结果：
+                        </td>
+                        <td class="f-tb-c">
+                            <span id="lbl_ResultName"></span>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td class="f-tb-t">
+                            下次预约通话时间：
+                        </td>
+                        <td class="f-tb-c">
+                            <span id="lbl_NextCallTime"></span>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td class="f-tb-t">
+                            备注：
+                        </td>
+                        <td class="f-tb-c">
+                            <span id="lbl_Remark"></span>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td class="f-tb-t">
+                            坐席：
+                        </td>
+                        <td class="f-tb-c">
+                            <span id="lbl_SalesmanName"></span>
+                        </td>
+                    </tr>
+                </table>
+            </div>
+            <div class="subcontent">
+
+                <form id="form_callRecord" name="form_callRecord">
+                    <input id="CustomerId" name="CustomerId" type="hidden" value="" />
+                    <div class="list">
+                        <table id="list_table_callRecord" class="list-tb" cellpadding="0" cellspacing="0">
+                            <thead>
+                                <tr>
+                                    <th style="width:25px" class="no">
+                                        序号
+                                    </th>
+                                    <th style="width:15%">
+                                        客户名称
+                                    </th>
+                                    <th style="width:15%">
+                                        电话号码
+                                    </th>
+                                    <th style="width:10%">
+                                        开始时间
+                                    </th>
+                                    <th style="width:10%">
+                                        结束时间
+                                    </th>
+                                    <th style="width:15%">
+                                        通话时长
+                                    </th>
+                                    <th style="width:10%">
+                                        坐席
+                                    </th>
+                                    <th style="width:25px" class="operation">
+                                        操作
+                                    </th>
+                                </tr>
+                            </thead>
+                            <tbody></tbody>
+                            <tfoot>
+                                <tr>
+                                    <td colspan="8">
+                                        <div class="pull-left">
+                                            <span class="load-tip"></span>
+                                        </div>
+                                        <div class="pull-left">
+                                            <audio id="audior" src="" controls="controls" autoplay="autoplay" style="width: 300px; margin: 5px auto;height: 18px;"></audio>
+                                        </div>
+
+                                        <div class="pull-right pagination">
+                                            <div class="pagination-info">
+
+                                            </div>
+                                            <div class="pagination-index">
+
+                                            </div>
+                                            <div class="pagination-goto">
+
+                                            </div>
+                                        </div>
+                                    </td>
+                                </tr>
+                            </tfoot>
+                        </table>
+                    </div>
+                </form>
+
+            </div>
+        </div>
+    </div>
+</div>
+
+
+
+

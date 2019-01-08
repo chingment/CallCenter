@@ -23,6 +23,16 @@ namespace WebMerch.Controllers
             return View();
         }
 
+        public ActionResult Details()
+        {
+            return View();
+        }
+
+        public CustomJsonResult GetDetails(string id)
+        {
+            return MerchServiceFactory.CallResultRecord.GetDetails(this.CurrentUserId, this.CurrentMerchantId, id);
+        }
+
         public CustomJsonResult GetList(RupCallResultRecordGetList rup)
         {
             var accessUserIds = MerchServiceFactory.User.GetCanAccessUserIds(this.CurrentMerchantId, this.CurrentUserId);

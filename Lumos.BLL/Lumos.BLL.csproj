@@ -93,8 +93,10 @@
     <Compile Include="Biz\Models\FieldModel.cs" />
     <Compile Include="Sdk\ITelephoneControSdk.cs" />
     <Compile Include="Sdk\LxtSdkProvider.cs" />
+    <Compile Include="Service\Merch\CallResultRecordProvider.cs" />
     <Compile Include="Service\Merch\Models\CarInsCompanyModel.cs" />
     <Compile Include="Service\Merch\Models\UserModel.cs" />
+    <Compile Include="Service\Merch\RModels\RetCallResultRecordGetDetails.cs" />
     <Compile Include="Service\Merch\RModels\RetRunHeartbeatPacket.cs" />
     <Compile Include="Service\Merch\RModels\RetUserGetPersonalInfo.cs" />
     <Compile Include="Service\Merch\RModels\RopTelphoneControlCallCustomer.cs" />

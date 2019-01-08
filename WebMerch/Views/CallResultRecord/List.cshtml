@@ -39,7 +39,11 @@
             operate: {
                 "details": function (obj) {
                
-
+                    var url = '/CallResultRecord/Details?id=' + obj.id;
+                    var title = '查看';
+                    art.dialog.open(url, {
+                        id: "openDialog", title: title, width: '650px', height: '500px', lock: true, drag: false, cancelVal: '关闭', cancel: true
+                    });
                 }
             }
         });
@@ -117,14 +121,10 @@
                 <tbody></tbody>
                 <tfoot>
                     <tr>
-                        <td colspan="7">
+                        <td colspan="8">
                             <div class="pull-left">
                                 <span class="load-tip"></span>
                             </div>
-                            <div class="pull-left">
-                                <audio id="audior" src="" controls="controls" autoplay="autoplay" style="width: 300px; margin: 5px auto;height: 18px;"></audio>
-                            </div>
-
                             <div class="pull-right pagination">
                                 <div class="pagination-info">
 

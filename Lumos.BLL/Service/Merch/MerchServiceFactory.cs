@@ -82,5 +82,13 @@ namespace Lumos.BLL.Service.Merch
             }
         }
 
+        public static CallResultRecordProvider CallResultRecord
+        {
+            get
+            {
+                return new CallResultRecordProvider();
+            }
+        }
+
     }
 }
