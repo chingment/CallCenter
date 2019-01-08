@@ -55,9 +55,72 @@ namespace Lumos.BLL.Service.Merch
             return new CustomJsonResult(ResultType.Success, ResultCode.Success, "获取成功", ret);
         }
 
-        private string GetFilters(RupObCustomerGetList Filters)
+        private string GetFilters(RupObCustomerGetList filters)
         {
-            return "";
+            //public string CsrName { get; set; }
+            //public string CsrPhoneNumber { get; set; }
+            //public string CsrAddress { get; set; }
+            //public string CsrIdNumber { get; set; }
+            //public string CarInsLastCompany { get; set; }
+            //public string CarPlateNo { get; set; }
+            //public string CarModel { get; set; }
+            //public string CarEngineNo { get; set; }
+            //public DateTime? CarRegisterDateStart { get; set; }
+            //public DateTime? CarRegisterDateEnd { get; set; }
+            //public DateTime? CarInsLastStartTime { get; set; }
+            //public DateTime? CarInsLastEndTime { get; set; }
+
+
+            StringBuilder sb = new StringBuilder();
+
+            if (filters != null)
+            {
+                if (!string.IsNullOrEmpty(filters.CsrName))
+                {
+                    sb.Append("客户名称:" + filters.CsrName + ",");
+                }
+                if (!string.IsNullOrEmpty(filters.CsrPhoneNumber))
+                {
+                    sb.Append("电话号码:" + filters.CsrPhoneNumber + ",");
+                }
+                if (!string.IsNullOrEmpty(filters.CsrAddress))
+                {
+                    sb.Append("地址:" + filters.CsrAddress + ",");
+                }
+                if (!string.IsNullOrEmpty(filters.CarInsLastCompany))
+                {
+                    sb.Append("保险公司:" + filters.CarInsLastCompany + ",");
+                }
+                if (!string.IsNullOrEmpty(filters.CarPlateNo))
+                {
+                    sb.Append("车牌号码:" + filters.CarPlateNo + ",");
+                }
+                if (!string.IsNullOrEmpty(filters.CarEngineNo))
+                {
+                    sb.Append("发动号:" + filters.CarEngineNo + ",");
+                }
+                if (filters.CarRegisterDateStart != null)
+                {
+                    sb.Append("初登日期开始:" + filters.CarRegisterDateStart + ",");
+                }
+                if (filters.CarRegisterDateEnd != null)
+                {
+                    sb.Append("初登日期结束:" + filters.CarRegisterDateEnd + ",");
+                }
+
+                if (filters.CarInsLastStartTime != null)
+                {
+                    sb.Append("起保开始:" + filters.CarInsLastStartTime + ",");
+                }
+
+                if (filters.CarInsLastEndTime != null)
+                {
+                    sb.Append("起保结束:" + filters.CarInsLastEndTime + ",");
+                }
+            }
+
+
+            return sb.ToString();
         }
 
         public CustomJsonResult Add(string operater, string merchantId, RopObBatchAllocateAdd rop)
