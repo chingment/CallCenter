@@ -19,7 +19,7 @@ namespace WebAdmin.Controllers.Biz
         public CustomJsonResult GetList(RupTeleSeatGetList rup)
         {
             string account = rup.Account.ToSearchString();
-            var query = (from m in CurrentDb.TeleSeatAccount
+            var query = (from m in CurrentDb.TeleSeat
                          join u in CurrentDb.Merchant on m.MerchantId equals u.Id
                          where
                                  (account.Length == 0 || m.Account.Contains(account))

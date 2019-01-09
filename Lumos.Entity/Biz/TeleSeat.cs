@@ -4,8 +4,8 @@ using System.ComponentModel.DataAnnotations.Schema;
 
 namespace Lumos.Entity
 {
-    [Table("TeleSeatAccount")]
-    public class TeleSeatAccount
+    [Table("TeleSeat")]
+    public class TeleSeat
     {
         [Key]
         public string Id { get; set; }
@@ -14,7 +14,5 @@ namespace Lumos.Entity
         public string Password { get; set; }
         public string Creator { get; set; }
         public DateTime CreateTime { get; set; }
-
-        public string UserId { get; set; }
     }
 }

@@ -72,13 +72,10 @@
                         $("#txt_PhoneNumber").val(data.phoneNumber);
                         $("#btn_select_user").attr("organizationId", data.organizationId);
                         $('#sel_Organizations').myChosen({ urlParams: { type: "SysOrganization", }, selectedValue: data.organizationId });
-
                         $('#sel_Positions').attr("oldPositionId", data.positionId);
                         $('#sel_Positions').myChosen({ urlParams: { type: "SysPosition", organizationId: data.organizationId }, selectedValue: data.positionId });
-
                         $('#sel_Status').myChosen({ isUseUrl: false, selectedValue: data.status });
-
-                        $('#sel_TeleSeatAccounts').myChosen({ urlParams: { type: "TeleSeatAccounts" }, selectedValue: data.teleSeatAccount });
+                        $('#sel_TeleSeats').myChosen({ urlParams: { type: "TeleSeat", userId: id }, selectedValue: data.teleSeatId });
                     }
                 }
             });
@@ -100,12 +97,12 @@
                 var organizationId = $("#sel_Organizations").val();
                 var status = $("#sel_Status").val();
                 var transferDataBelongerId = $("#txt_DataBelongerId").val();
-                var teleSeatAccount = $("#sel_TeleSeatAccounts").val();
+                var teleSeatId = $("#sel_TeleSeats").val();
                 var isTransferData = isTransferData;
                 $.lumos.postJson({
                     url: "/User/Edit",
                     isUseHandling: true,
-                    data: { id: id, password: password, fullName: fullName, email: email, phoneNumber: phoneNumber, positionId: positionId, organizationId: organizationId, dataRightType: 0, status: status, isReplacePosition: isReplacePosition, isTransferData: isTransferData, transferDataBelongerId: transferDataBelongerId, teleSeatAccount: teleSeatAccount },
+                    data: { id: id, password: password, fullName: fullName, email: email, phoneNumber: phoneNumber, positionId: positionId, organizationId: organizationId, dataRightType: 0, status: status, isReplacePosition: isReplacePosition, isTransferData: isTransferData, transferDataBelongerId: transferDataBelongerId, teleSeatId: teleSeatId },
                     success: function (d) {
                         if (d.result == $.lumos.resultType.success) {
                             $.lumos.parentDialog.refresh(2);
@@ -203,6 +200,16 @@
                 </select>
             </td>
         </tr>
+        <tr>
+            <td class="f-tb-t">
+                话机号：
+            </td>
+            <td class="f-tb-c">
+                <select id="sel_TeleSeats" data-placeholder="空" class="chosen-select" style="width:200px">
+                    <option value="">空</option>
+                </select>
+            </td>
+        </tr>
         <tr style="display:none" id="tr_transfer">
             <td class="f-tb-t">
                 数据转移对象：
@@ -239,16 +246,6 @@
                     <option value="-1"></option>
                     <option value="1">正常</option>
                     <option value="2">禁用</option>
-                </select>
-            </td>
-        </tr>
-        <tr>
-            <td class="f-tb-t">
-                坐席账号：
-            </td>
-            <td class="f-tb-c">
-                <select id="sel_TeleSeatAccounts" data-placeholder="空" class="chosen-select" style="width:200px">
-                    <option value="-1"></option>
                 </select>
             </td>
         </tr>

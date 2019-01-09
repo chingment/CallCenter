@@ -36,8 +36,8 @@ namespace Lumos.BLL.Service.Merch
             p_user.MerchantId = sysMerchantUser.MerchantId;
             p_user.OrganizationId = sysMerchantUser.OrganizationId;
             p_user.PositionId = sysMerchantUser.PositionId;
-            p_user.TeleSeatAccount = sysMerchantUser.TeleSeatAccount;
-            p_user.TeleSeatPassword = sysMerchantUser.TeleSeatPassword;
+            //p_user.TeleSeatAccount = sysMerchantUser.TeleSeatAccount;
+            //p_user.TeleSeatPassword = sysMerchantUser.TeleSeatPassword;
             p_user.TelePhoneStatus = Enumeration.TelePhoneStatus.Unknow;
             p_user.WorkStatus = Enumeration.WorkStatus.Unknow;
 

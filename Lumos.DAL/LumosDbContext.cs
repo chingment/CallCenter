@@ -45,7 +45,7 @@ namespace Lumos.DAL
 
         public IDbSet<ObTakeDataLimit> ObTakeDataLimit { get; set; }
 
-        public IDbSet<TeleSeatAccount> TeleSeatAccount { get; set; }
+        public IDbSet<TeleSeat> TeleSeat { get; set; }
         protected override void OnModelCreating(DbModelBuilder modelBuilder)
         {
             base.OnModelCreating(modelBuilder);

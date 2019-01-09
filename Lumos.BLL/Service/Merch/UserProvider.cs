@@ -65,7 +65,7 @@ namespace Lumos.BLL.Service.Merch
                 ret.OrganizationId = user.OrganizationId;
                 ret.PositionId = user.PositionId;
                 ret.Status = user.Status;
-                ret.TeleSeatAccount = user.TeleSeatAccount;
+                ret.TeleSeatId = user.TeleSeatId;
             }
 
             return new CustomJsonResult(ResultType.Success, ResultCode.Success, "获取成功", ret);
@@ -82,11 +82,21 @@ namespace Lumos.BLL.Service.Merch
                 ret.FullName = user.FullName ?? ""; ;
                 ret.Email = user.Email ?? ""; ;
                 ret.PhoneNumber = user.PhoneNumber ?? "";
-                var organization = CurrentDb.Organization.Where(m => m.Id == user.OrganizationId).FirstOrDefault();
-                ret.OrganizationName = organization.FullName;
                 ret.PositionName = user.PositionId.GetCnName();
-                ret.TeleSeatAccount = user.TeleSeatAccount ?? "";
-                ret.TeleSeatPassword = user.TeleSeatPassword ?? "";
+
+                var organization = CurrentDb.Organization.Where(m => m.Id == user.OrganizationId).FirstOrDefault();
+                if (organization != null)
+                {
+                    ret.OrganizationName = organization.FullName;
+                }
+
+                var teleSeat = CurrentDb.TeleSeat.Where(m => m.Id == user.TeleSeatId).FirstOrDefault();
+
+                if (teleSeat != null)
+                {
+                    ret.TeleSeatAccount = teleSeat.Account;
+                    ret.TeleSeatPassword = teleSeat.Password;
+                }
             }
 
             return new CustomJsonResult(ResultType.Success, ResultCode.Success, "获取成功", ret);
@@ -106,6 +116,7 @@ namespace Lumos.BLL.Service.Merch
                 var merchant = CurrentDb.Merchant.Where(m => m.Id == merchantId).FirstOrDefault();
 
                 var user = new SysMerchantUser();
+
                 user.Id = GuidUtil.New();
                 user.UserName = string.Format("{0}{1}", merchant.SimpleCode, rop.UserName);
                 user.FullName = rop.FullName;
@@ -119,24 +130,14 @@ namespace Lumos.BLL.Service.Merch
                 user.MerchantId = merchantId;
                 user.OrganizationId = rop.OrganizationId;
                 user.PositionId = rop.PositionId;
+                user.TeleSeatId = rop.TeleSeatId;
                 user.Creator = operater;
                 user.CreateTime = DateTime.Now;
                 user.RegisterTime = DateTime.Now;
                 user.Status = Enumeration.UserStatus.Normal;
                 user.SecurityStamp = Guid.NewGuid().ToString().Replace("-", "");
 
-                var teleSeatAccount = CurrentDb.TeleSeatAccount.Where(m => m.MerchantId == merchantId && m.Account == rop.TeleSeatAccount).FirstOrDefault();
-                if (teleSeatAccount != null)
-                {
-                    user.TeleSeatAccount = teleSeatAccount.Account;
-                    user.TeleSeatPassword = teleSeatAccount.Password;
-
-                    teleSeatAccount.UserId = user.Id;
-
-                }
-
                 CurrentDb.SysMerchantUser.Add(user);
-
 
                 var obTakeDataLimit = new ObTakeDataLimit();
                 obTakeDataLimit.Id = GuidUtil.New();
@@ -172,10 +173,11 @@ namespace Lumos.BLL.Service.Merch
 
                 }
 
-                UserDataCacheUtil.Add(user.MerchantId, user.Id);
-
                 CurrentDb.SaveChanges();
                 ts.Complete();
+
+
+                //UserDataCacheUtil.Add(user.MerchantId, user.Id);
 
                 result = new CustomJsonResult(ResultType.Success, ResultCode.Success, "新建成功");
 
@@ -189,46 +191,29 @@ namespace Lumos.BLL.Service.Merch
 
             CustomJsonResult result = new CustomJsonResult();
 
-
             var userModel = new UserModel();
 
             using (TransactionScope ts = new TransactionScope())
             {
                 var user = CurrentDb.SysMerchantUser.Where(m => m.Id == rop.Id).FirstOrDefault();
+
                 if (!string.IsNullOrEmpty(rop.Password))
                 {
                     user.PasswordHash = PassWordHelper.HashPassword(rop.Password);
                 }
-
-
 
                 user.FullName = rop.FullName;
                 user.Email = rop.Email;
                 user.PhoneNumber = rop.PhoneNumber;
                 user.OrganizationId = rop.OrganizationId;
                 user.PositionId = rop.PositionId;
+                user.TeleSeatId = rop.TeleSeatId;
                 user.Status = rop.Status;
                 user.MendTime = DateTime.Now;
                 user.Mender = operater;
 
-                var teleSeatAccount = CurrentDb.TeleSeatAccount.Where(m => m.MerchantId == merchantId && m.Account == rop.TeleSeatAccount).FirstOrDefault();
-                if (teleSeatAccount == null)
-                {
-                    user.TeleSeatAccount = null;
-                    user.TeleSeatPassword = null;
-                }
-                else
-                {
-                    user.TeleSeatAccount = teleSeatAccount.Account;
-                    user.TeleSeatPassword = teleSeatAccount.Password;
-
-                    teleSeatAccount.UserId = user.Id;
-                }
-
-                CurrentDb.SaveChanges();
-
-
                 var sysPosition = CurrentDb.SysPosition.Where(m => m.Id == rop.PositionId).FirstOrDefault();
+
                 var organization = CurrentDb.Organization.Where(m => m.Id == rop.OrganizationId).FirstOrDefault();
 
                 if (sysPosition.IsOrganizationHeader)
@@ -269,21 +254,21 @@ namespace Lumos.BLL.Service.Merch
                 CurrentDb.SaveChanges();
                 ts.Complete();
 
-                userModel.UserId = user.Id;
-                userModel.FullName = user.FullName;
-                userModel.OrganizationId = user.OrganizationId;
-                userModel.PositionId = user.PositionId;
-                userModel.TeleSeatAccount = user.TeleSeatAccount;
-                userModel.TeleSeatPassword = user.TeleSeatPassword;
+                //userModel.UserId = user.Id;
+                //userModel.FullName = user.FullName;
+                //userModel.OrganizationId = user.OrganizationId;
+                //userModel.PositionId = user.PositionId;
+                //userModel.TeleSeatAccount = user.TeleSeatAccount;
+                //userModel.TeleSeatPassword = user.TeleSeatPassword;
 
                 result = new CustomJsonResult(ResultType.Success, ResultCode.Success, "保存成功");
 
             }
 
-            if (result.Result == ResultType.Success)
-            {
-                UserDataCacheUtil.Edit(merchantId, rop.Id, userModel);
-            }
+            //if (result.Result == ResultType.Success)
+            //{
+            //    UserDataCacheUtil.Edit(merchantId, rop.Id, userModel);
+            //}
 
             return result;
 

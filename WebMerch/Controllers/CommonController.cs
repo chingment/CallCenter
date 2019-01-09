@@ -224,16 +224,17 @@ namespace WebMerch.Controllers
                     }
                     #endregion 
                     break;
-                case "teleseataccounts":
+                case "teleseat":
                     #region TeleSeatAccounts
 
+                    var userId = Request.QueryString["userId"];
 
-                    var teleSeatAccounts = CurrentDb.TeleSeatAccount.Where(m => m.MerchantId == this.CurrentMerchantId && (m.UserId == null || m.UserId == this.CurrentUserId)).ToList();
+                    var teleSeats = CurrentDb.TeleSeat.Where(m => m.MerchantId == this.CurrentMerchantId).ToList();
 
-                    foreach (var item in teleSeatAccounts)
+                    foreach (var item in teleSeats)
                     {
                         var field = new FieldModel();
-                        field.Value = item.Account;
+                        field.Value = item.Id;
                         field.Name = item.Account;
                         fields.Add(field);
                     }

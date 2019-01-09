@@ -25,7 +25,7 @@
                 $('#sel_Positions').myChosen({ urlParams: { type: "SysPosition", organizationId: val } });
             });
 
-            $('#sel_TeleSeatAccounts').myChosen({ urlParams: { type: "TeleSeatAccounts" } });
+            $('#sel_TeleSeats').myChosen({ urlParams: { type: "TeleSeat" } });
 
             //$('#sel_DataRightTypes').myChosen({ isUseUrl: false });
 
@@ -65,13 +65,13 @@
                 var phoneNumber = $("#txt_PhoneNumber").val();
                 var positionId = $("#sel_Positions").val();
                 var organizationId = $("#sel_Organizations").val();
-                var teleSeatAccount = $("#sel_TeleSeatAccounts").val();
+                var teleSeatId = $("#sel_TeleSeats").val();
 
                 //var dataRightType = $("#sel_DataRightTypes").val();
-
+               
                 $.lumos.postJson({
                     url: "/User/Add",
-                    data: { userName: userName, password: password, fullName: fullName, email: email, phoneNumber: phoneNumber, positionId: positionId, organizationId: organizationId, dataRightType: 0, teleSeatAccount: teleSeatAccount },
+                    data: { userName: userName, password: password, fullName: fullName, email: email, phoneNumber: phoneNumber, positionId: positionId, organizationId: organizationId, dataRightType: 0, teleSeatId: teleSeatId },
                     isUseHandling: true,
                     success: function (d) {
                         if (d.result == $.lumos.resultType.success) {
@@ -152,6 +152,16 @@
         </tr>
         <tr>
             <td class="f-tb-t">
+                话机号：
+            </td>
+            <td class="f-tb-c">
+                <select id="sel_TeleSeats" data-placeholder="空" class="chosen-select" style="width:200px">
+                    <option value="-1"></option>
+                </select>
+            </td>
+        </tr>
+        <tr>
+            <td class="f-tb-t">
                 E-mail：
             </td>
             <td class="f-tb-c">
@@ -164,16 +174,6 @@
             </td>
             <td class="f-tb-c">
                 <input id="txt_PhoneNumber" class="input-control" type="text" style="width: 224px;" autocomplete="off" />
-            </td>
-        </tr>
-        <tr>
-            <td class="f-tb-t">
-                坐席账号：
-            </td>
-            <td class="f-tb-c">
-                <select id="sel_TeleSeatAccounts" data-placeholder="空" class="chosen-select" style="width:200px">
-                    <option value="-1"></option>
-                </select>
             </td>
         </tr>
         <tr style="display:none">

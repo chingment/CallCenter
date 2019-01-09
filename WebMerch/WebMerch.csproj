@@ -226,7 +226,7 @@
     <Content Include="Views\ObBatchDataReallocate\List.cshtml" />
     <Content Include="Views\ObTakeDataLimit\Adjust.cshtml" />
     <Content Include="Views\CallResultRecord\List.cshtml" />
-    <Content Include="Views\TelSeat\List.cshtml" />
+    <Content Include="Views\TelSeat\Monitor.cshtml" />
     <Content Include="Views\Home\PersonalInfo.cshtml" />
     <Content Include="Views\CallResultRecord\Details.cshtml" />
     <None Include="Web.config">
