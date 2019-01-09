@@ -51,10 +51,6 @@ namespace Lumos.BLL.Service.Merch
         {
             var ret = new RetUserGetDetails();
 
-            var merchant = CurrentDb.Merchant.Where(m => m.Id == merchantId).FirstOrDefault();
-
-            ret.SimpleCode = merchant.SimpleCode;
-
             var user = CurrentDb.SysMerchantUser.Where(m => m.Id == id).FirstOrDefault();
             if (user != null)
             {
@@ -87,15 +83,15 @@ namespace Lumos.BLL.Service.Merch
                 var organization = CurrentDb.Organization.Where(m => m.Id == user.OrganizationId).FirstOrDefault();
                 if (organization != null)
                 {
-                    ret.OrganizationName = organization.FullName;
+                    ret.OrganizationName = organization.FullName ?? "";
                 }
 
                 var teleSeat = CurrentDb.TeleSeat.Where(m => m.Id == user.TeleSeatId).FirstOrDefault();
 
                 if (teleSeat != null)
                 {
-                    ret.TeleSeatAccount = teleSeat.Account;
-                    ret.TeleSeatPassword = teleSeat.Password;
+                    ret.TeleSeatAccount = teleSeat.Account ?? "";
+                    ret.TeleSeatPassword = teleSeat.Password ?? "";
                 }
             }
 
@@ -195,11 +191,20 @@ namespace Lumos.BLL.Service.Merch
 
             using (TransactionScope ts = new TransactionScope())
             {
-                var user = CurrentDb.SysMerchantUser.Where(m => m.Id == rop.Id).FirstOrDefault();
+                var user = CurrentDb.SysMerchantUser.Where(m => m.MerchantId == merchantId && m.Id == rop.Id).FirstOrDefault();
 
                 if (!string.IsNullOrEmpty(rop.Password))
                 {
                     user.PasswordHash = PassWordHelper.HashPassword(rop.Password);
+                }
+
+                if (!string.IsNullOrEmpty(rop.TeleSeatId))
+                {
+                    var teleSeatIsUse = CurrentDb.SysMerchantUser.Where(m => m.MerchantId == merchantId && m.TeleSeatId == rop.TeleSeatId && m.Id != rop.Id).FirstOrDefault();
+                    if (teleSeatIsUse != null)
+                    {
+                        return new CustomJsonResult(ResultType.Failure, ResultCode.Failure, "该话机号已经被使用");
+                    }
                 }
 
                 user.FullName = rop.FullName;

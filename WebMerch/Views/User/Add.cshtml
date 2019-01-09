@@ -27,23 +27,19 @@
 
             $('#sel_TeleSeats').myChosen({ urlParams: { type: "TeleSeat" } });
 
-            //$('#sel_DataRightTypes').myChosen({ isUseUrl: false });
+            $('#sel_DataRightTypes').myChosen({ isUseUrl: false });
 
-
-            getDetails();
+            initData();
         });
 
-
-        function getDetails() {
+        function initData() {
 
             $.lumos.getJson({
-                url: "/User/GetDetails",
-                urlParams: { id: 0 },
+                url: "/User/InitDataToAdd",
                 isUseHandling: true,
                 success: function (d) {
                     if (d.result == $.lumos.resultType.success) {
                         var data = d.data;
-
                         $('#lbl_SimpleCode').text(data.simpleCode);
                     }
                 }
@@ -68,7 +64,7 @@
                 var teleSeatId = $("#sel_TeleSeats").val();
 
                 //var dataRightType = $("#sel_DataRightTypes").val();
-               
+
                 $.lumos.postJson({
                     url: "/User/Add",
                     data: { userName: userName, password: password, fullName: fullName, email: email, phoneNumber: phoneNumber, positionId: positionId, organizationId: organizationId, dataRightType: 0, teleSeatId: teleSeatId },
@@ -88,11 +84,8 @@
             return false;
         }
 
-
     </script>
 }
-
-
 
 <div class="gbr-row gbr-dialog">
     <input type="password" style="position:absolute;top:-999px;" />
@@ -132,11 +125,11 @@
         </tr>
         <tr>
             <td class="f-tb-t">
-                <span class="required-symbol">*</span>所属机构：
+                <span class="required-symbol">*</span>机构：
             </td>
             <td class="f-tb-c">
                 <select id="sel_Organizations" data-placeholder="请选择" class="chosen-select" style="width:200px">
-                    <option value="-1"></option>
+                    
                 </select>
             </td>
         </tr>
@@ -146,7 +139,7 @@
             </td>
             <td class="f-tb-c">
                 <select id="sel_Positions" data-placeholder="请选择" class="chosen-select" style="width:200px">
-                    <option value="-1"></option>
+                 
                 </select>
             </td>
         </tr>
@@ -155,8 +148,8 @@
                 话机号：
             </td>
             <td class="f-tb-c">
-                <select id="sel_TeleSeats" data-placeholder="空" class="chosen-select" style="width:200px">
-                    <option value="-1"></option>
+                <select id="sel_TeleSeats" data-placeholder="请选择" class="chosen-select" style="width:200px">
+                    
                 </select>
             </td>
         </tr>

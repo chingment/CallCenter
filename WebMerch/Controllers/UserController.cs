@@ -100,6 +100,14 @@ namespace WebMerch.Controllers
             return MerchServiceFactory.User.GetDetails(this.CurrentUserId, this.CurrentMerchantId, id);
         }
 
+
+        public CustomJsonResult InitDataToAdd()
+        {
+            var merchant = CurrentDb.Merchant.Where(m => m.Id == this.CurrentMerchantId).FirstOrDefault();
+            var data = new { simpleCode = merchant.SimpleCode };
+            return new CustomJsonResult(ResultType.Success, ResultCode.Success, "", data);
+        }
+
         [HttpPost]
         public CustomJsonResult Add(RopUserAdd rop)
         {

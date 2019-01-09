@@ -102,6 +102,7 @@
     <Compile Include="Service\Merch\RModels\RopTelphoneControlCallCustomer.cs" />
     <Compile Include="Service\Merch\RModels\RupCallResultRecordGetList.cs" />
     <Compile Include="Service\Admin\Biz\RModels\RupTeleSeatGetList.cs" />
+    <Compile Include="Service\Merch\RModels\RupTeleSeatGetList.cs" />
     <Compile Include="Service\Merch\TelephoneControlProvder.cs" />
     <Compile Include="MchPermissionCode.cs" />
     <Compile Include="Biz\BizFactory.cs" />

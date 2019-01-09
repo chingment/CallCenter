@@ -229,6 +229,7 @@
     <Content Include="Views\TelSeat\Monitor.cshtml" />
     <Content Include="Views\Home\PersonalInfo.cshtml" />
     <Content Include="Views\CallResultRecord\Details.cshtml" />
+    <Content Include="Views\TelSeat\List.cshtml" />
     <None Include="Web.config">
       <SubType>Designer</SubType>
     </None>

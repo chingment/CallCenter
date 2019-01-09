@@ -10,56 +10,25 @@
 
     $(document).ready(function () {
 
-        $('#sel_Merchants').myChosen({ urlParams: { type: "Merchant" } });
-
         listTable = $("#list_table").loadDataTable({
-            url: "/TeleSeat/GetList",
+            url: "/TelSeat/GetList",
             pageIndex: 0,
             searchParams: $("#form1").serializeArray(),
             searchButtonId: "btn_Search",
             containerId: "form1",
             rowDataCombie: function (p_index, p_row) {
-                var l_Strlimt = "";
-                l_Strlimt += "@Html.IsInPermission("<a href=\\\"javascript:void(0)\\\" operate=\\\"edit\\\"   class=\\\"a-btn a-btn-edit\\\"  >修改</a>")";
+              
                 var l_StrRows = "";
                 l_StrRows += "<tr>";
                 l_StrRows += "<td class=\"no\" >" + (p_index + 1) + "</td>";
-                l_StrRows += "<td class=\"overflow tipitem\" title=\"" + p_row.merchantName + "\"   >" + p_row.merchantName + "</td>";
-                l_StrRows += "<td class=\"overflow\" title=\"" + p_row.account + "\">" + p_row.account + "</td>";
+                l_StrRows += "<td class=\"overflow tipitem\" title=\"" + p_row.account + "\"   >" + p_row.account + "</td>";
                 l_StrRows += "<td class=\"overflow\" title=\"" + p_row.password + "\">" + p_row.password + "</td>";
                 l_StrRows += "<td class=\"overflow\" title=\"" + p_row.statusName + "\">" + p_row.statusName + "</td>";
                 l_StrRows += "<td class=\"overflow\" title=\"" + p_row.userName + "\">" + p_row.userName + "</td>";
-                l_StrRows += "<td class=\"operation\">";
-                //l_StrRows += l_Strlimt;
-                l_StrRows += "</td>";
                 l_StrRows += "</tr>";
                 return l_StrRows;
-            },
-            operate: {
-                "edit": function (obj) {
-                    var url = '/User/Edit?id=' + obj.id;
-                    var title = '修改';
-                    art.dialog.open(url, {
-                        id: "openDialog", title: title, width: '650px', height: '500px', lock: true, drag: false, cancelVal: '关闭', cancel: true, okVal: '保存', ok: function () {
-                            this.iframe.contentWindow.edit();
-                            return false;
-                        }
-                    });
-                }
             }
         });
-
-        $("#btn_Add").click(function () {
-            var url = '/User/Add';
-            var title = '新建';
-            art.dialog.open(url, {
-                id: "openDialog", title: title, width: '650px', height: '500px', lock: true, drag: false, cancelVal: '关闭', cancel: true, okVal: '确定', ok: function () {
-                    this.iframe.contentWindow.add();
-                    return false;
-                }
-            });
-        });
-
     });
 
     function refresh(type) {
@@ -81,14 +50,6 @@
     <form id="form1" name="form1">
         <div class="search-bar">
             <div class="filter">
-                <span class="filter-label">商户：</span>
-                <span class="filter-input">
-                    <select id="sel_Merchants" name="MerchantId" data-placeholder="请选择" class="chosen-select" style="width:200px">
-                        <option value=""></option>
-                    </select>
-                </span>
-            </div>
-            <div class="filter">
                 <span class="filter-label">话机账号：</span>
                 <span class="filter-input">
                     <input type="text" class="input-control" name="Account" style="width:120px;" />
@@ -101,7 +62,6 @@
                 </span>
             </div>
             <div class="filter"><input type="button" class="btn btn-search" id="btn_Search" value="查询" /> </div>
-
         </div>
         <div class="list">
             <table id="list_table" class="list-tb" cellpadding="0" cellspacing="0">
@@ -110,30 +70,24 @@
                         <th style="width:25px" class="no">
                             序号
                         </th>
-                        <th style="width:20%">
-                            商户
-                        </th>
-                        <th style="width:20%">
+                        <th style="width:25%">
                             话机账号
                         </th>
-                        <th style="width:20%">
+                        <th style="width:25%">
                             话机密码
                         </th>
-                        <th style="width:20%">
+                        <th style="width:25%">
                             状态
                         </th>
-                        <th style="width:20%">
+                        <th style="width:25%">
                             使用账号
-                        </th>
-                        <th style="width:25px" class="operation">
-                            操作
                         </th>
                     </tr>
                 </thead>
                 <tbody></tbody>
                 <tfoot>
                     <tr>
-                        <td colspan="7">
+                        <td colspan="5">
                             <div class="pull-left">
                                 <span class="load-tip"></span>
                             </div>

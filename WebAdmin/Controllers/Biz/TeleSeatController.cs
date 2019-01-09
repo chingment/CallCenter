@@ -18,14 +18,16 @@ namespace WebAdmin.Controllers.Biz
 
         public CustomJsonResult GetList(RupTeleSeatGetList rup)
         {
-            string account = rup.Account.ToSearchString();
+
             var query = (from m in CurrentDb.TeleSeat
                          join u in CurrentDb.Merchant on m.MerchantId equals u.Id
+                         join s in CurrentDb.SysMerchantUser on m.Id equals s.TeleSeatId into temp
+                         from tt in temp.DefaultIfEmpty()
                          where
-                                 (account.Length == 0 || m.Account.Contains(account))
-                                 &&
+                          (rup.Account == null || m.Account.Contains(rup.Account)) &&
+                         (rup.UserName == null || tt.UserName.Contains(rup.UserName)) &&
                                    (rup.MerchantId == null || m.MerchantId.Contains(rup.MerchantId))
-                         select new { m.Id, MerchantName = u.Name, m.Account, m.Password, m.CreateTime });
+                         select new { m.Id, MerchantName = u.Name, m.Account, m.Password, m.CreateTime, tt.UserName, tt.FullName, UserId = tt.Id });
 
             int total = query.Count();
 
@@ -48,6 +50,8 @@ namespace WebAdmin.Controllers.Biz
                     Account = item.Account,
                     Password = item.Password,
                     CreateTime = item.CreateTime,
+                    StatusName = item.UserId == null ? "未使用" : "已使用",
+                    UserName = item.UserId == null ? "" : string.Format("{0}({1})", item.UserName, item.FullName)
                 });
 
 

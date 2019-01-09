@@ -228,8 +228,10 @@ namespace WebMerch.Controllers
                     #region TeleSeatAccounts
 
                     var userId = Request.QueryString["userId"];
+                    List<TeleSeat> teleSeats = new List<TeleSeat>();
+                    var teleSeatIds = CurrentDb.SysMerchantUser.Where(m => m.MerchantId == this.CurrentMerchantId && m.TeleSeatId != null && m.Id != userId).Select(m => m.TeleSeatId).ToArray();
 
-                    var teleSeats = CurrentDb.TeleSeat.Where(m => m.MerchantId == this.CurrentMerchantId).ToList();
+                    teleSeats = CurrentDb.TeleSeat.Where(m => m.MerchantId == this.CurrentMerchantId && !teleSeatIds.Contains(m.Id)).ToList();
 
                     foreach (var item in teleSeats)
                     {

@@ -14,7 +14,6 @@ namespace WebMerch
     {
         public const string SESSION_NAME = "WebMerch_SessionName";
 
-
         public static string GetCurrentUserId()
         {
             var userInfo = GetUserInfo();
@@ -40,7 +39,6 @@ namespace WebMerch
 
             return userInfo;
         }
-
 
         public static string GetAccessToken()
         {
@@ -99,7 +97,6 @@ namespace WebMerch
             return true;
         }
 
-
         public static bool IsInPermission(string[] permissions)
         {
             var userInfo = GetUserInfo();
@@ -131,7 +128,6 @@ namespace WebMerch
 
             return isHas;
         }
-
 
         public static void Postpone()
         {

@@ -4,14 +4,12 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Lumos.BLL.Service.Admin
+namespace Lumos.BLL.Service.Merch
 {
     public class RupTeleSeatGetList : RupBaseGetList
     {
-        public string Account { get; set; }
-
-        public string MerchantId { get; set; }
-
         public string UserName { get; set; }
+
+        public string Account { get; set; }
     }
 }

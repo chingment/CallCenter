@@ -13,15 +13,9 @@ namespace Lumos.BLL.Service.Merch
         public string FullName { get; set; }
         public string Email { get; set; }
         public string PhoneNumber { get; set; }
-
         public string OrganizationId { get; set; }
-
         public Enumeration.SysPositionId PositionId { get; set; }
-
-        public string SimpleCode { get; set; }
-
         public Enumeration.UserStatus Status { get; set; }
-
         public string TeleSeatId { get; set; }
     }
 }
