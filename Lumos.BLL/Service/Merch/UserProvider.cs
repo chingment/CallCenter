@@ -101,7 +101,12 @@ namespace Lumos.BLL.Service.Merch
         public CustomJsonResult Add(string operater, string merchantId, RopUserAdd rop)
         {
             CustomJsonResult result = new CustomJsonResult();
-            var isExistUserName = CurrentDb.SysUser.Where(m => m.UserName == rop.UserName).FirstOrDefault();
+
+            var merchant = CurrentDb.Merchant.Where(m => m.Id == merchantId).FirstOrDefault();
+
+            string userName = string.Format("{0}{1}", merchant.SimpleCode, rop.UserName);
+
+            var isExistUserName = CurrentDb.SysUser.Where(m => m.UserName == userName).FirstOrDefault();
             if (isExistUserName != null)
             {
                 return new CustomJsonResult(ResultType.Failure, ResultCode.Failure, string.Format("该用户名（{0}）已被使用", rop.UserName));
@@ -109,12 +114,9 @@ namespace Lumos.BLL.Service.Merch
 
             using (TransactionScope ts = new TransactionScope())
             {
-                var merchant = CurrentDb.Merchant.Where(m => m.Id == merchantId).FirstOrDefault();
-
                 var user = new SysMerchantUser();
-
                 user.Id = GuidUtil.New();
-                user.UserName = string.Format("{0}{1}", merchant.SimpleCode, rop.UserName);
+                user.UserName = userName;
                 user.FullName = rop.FullName;
                 user.PasswordHash = PassWordHelper.HashPassword(rop.Password);
                 user.Email = rop.Email;
@@ -132,7 +134,6 @@ namespace Lumos.BLL.Service.Merch
                 user.RegisterTime = DateTime.Now;
                 user.Status = Enumeration.UserStatus.Normal;
                 user.SecurityStamp = Guid.NewGuid().ToString().Replace("-", "");
-
                 CurrentDb.SysMerchantUser.Add(user);
 
                 var obTakeDataLimit = new ObTakeDataLimit();
@@ -146,23 +147,17 @@ namespace Lumos.BLL.Service.Merch
                 obTakeDataLimit.CreateTime = this.DateTime;
                 CurrentDb.ObTakeDataLimit.Add(obTakeDataLimit);
 
-                CurrentDb.SaveChanges();
+                var position = CurrentDb.SysPosition.Where(m => m.Id == rop.PositionId).FirstOrDefault();
 
-
-                var sysPosition = CurrentDb.SysPosition.Where(m => m.Id == rop.PositionId).FirstOrDefault();
-
-                if (sysPosition.IsOrganizationHeader)
+                if (position.IsOrganizationHeader)
                 {
                     var organization = CurrentDb.Organization.Where(m => m.Id == rop.OrganizationId).FirstOrDefault();
 
-                    if (organization.HeaderId != user.Id)
+                    if (!string.IsNullOrEmpty(organization.HeaderId))
                     {
                         var header = CurrentDb.SysMerchantUser.Where(m => m.Id == organization.HeaderId).FirstOrDefault();
-                        if (header.Status == Enumeration.UserStatus.Normal)
-                        {
-                            return new CustomJsonResult(ResultType.Failure, ResultCode.FailureNeedReplaceTips, string.Format("该机构的负责人（{0}[{1}]）的账号正常使用中，如需替换负责人，请先将账号设置无效", header.FullName, header.UserName));
-                        }
 
+                        return new CustomJsonResult(ResultType.Failure, ResultCode.FailureNeedReplaceTips, string.Format("该机构已存在负责人（{0}[{1}]），如需替换，请先更改其职位", header.FullName, header.UserName));
                     }
 
                     organization.HeaderId = user.Id;
@@ -217,31 +212,19 @@ namespace Lumos.BLL.Service.Merch
                 user.MendTime = DateTime.Now;
                 user.Mender = operater;
 
-                var sysPosition = CurrentDb.SysPosition.Where(m => m.Id == rop.PositionId).FirstOrDefault();
+                var position = CurrentDb.SysPosition.Where(m => m.Id == rop.PositionId).FirstOrDefault();
 
                 var organization = CurrentDb.Organization.Where(m => m.Id == rop.OrganizationId).FirstOrDefault();
 
-                if (sysPosition.IsOrganizationHeader)
+                if (position.IsOrganizationHeader)
                 {
-
                     if (!string.IsNullOrEmpty(organization.HeaderId))
                     {
                         if (organization.HeaderId != user.Id)
                         {
-
                             var header = CurrentDb.SysMerchantUser.Where(m => m.Id == organization.HeaderId).FirstOrDefault();
-                            if (header != null)
-                            {
-                                if (!rop.IsReplacePosition)
-                                {
-                                    return new CustomJsonResult(ResultType.Failure, ResultCode.FailureNeedReplaceTips, string.Format("该机构已存在负责人（{0}[{1}]），若确定，他的职位将改为普通人员？", header.FullName, header.UserName));
-                                }
-                                else
-                                {
-                                    header.PositionId = Enumeration.SysPositionId.MerchantStaff;
-                                }
-                            }
 
+                            return new CustomJsonResult(ResultType.Failure, ResultCode.FailureNeedReplaceTips, string.Format("该机构已存在负责人（{0}[{1}]），如需替换，请先更改其职位", header.FullName, header.UserName));
                         }
                     }
 
