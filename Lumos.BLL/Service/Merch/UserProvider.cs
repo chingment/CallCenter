@@ -109,7 +109,7 @@ namespace Lumos.BLL.Service.Merch
             var isExistUserName = CurrentDb.SysUser.Where(m => m.UserName == userName).FirstOrDefault();
             if (isExistUserName != null)
             {
-                return new CustomJsonResult(ResultType.Failure, ResultCode.Failure, string.Format("该用户名（{0}）已被使用", rop.UserName));
+                return new CustomJsonResult(ResultType.Failure, ResultCode.Failure, string.Format("该用户名（{0}）已被使用", userName));
             }
 
             string userId = "";

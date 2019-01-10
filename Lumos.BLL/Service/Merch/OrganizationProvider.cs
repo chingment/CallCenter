@@ -81,7 +81,7 @@ namespace Lumos.BLL.Service.Merch
             {
                 var fathters = GetFathers(merchantId, rop.PId);
                 int dept = fathters.Count;
-                var isExists = CurrentDb.Organization.Where(m => m.MerchantId == merchantId && m.PId == rop.PId && m.Name == rop.Name && m.Dept == dept).FirstOrDefault();
+                var isExists = CurrentDb.Organization.Where(m => m.MerchantId == merchantId && m.PId == rop.PId && m.Name == rop.Name && m.Dept == dept && m.IsDelete == false).FirstOrDefault();
                 if (isExists != null)
                 {
                     return new CustomJsonResult(ResultType.Failure, "该名称在同一级别已经存在");
@@ -126,6 +126,7 @@ namespace Lumos.BLL.Service.Merch
             using (TransactionScope ts = new TransactionScope())
             {
                 var organization = CurrentDb.Organization.Where(m => m.MerchantId == merchantId && m.Id == rop.Id).FirstOrDefault();
+
                 if (organization == null)
                 {
                     return new CustomJsonResult(ResultType.Failure, ResultCode.Failure, "数据为空");
@@ -133,7 +134,7 @@ namespace Lumos.BLL.Service.Merch
 
                 var fathters = GetFathers(merchantId, organization.PId);
                 int dept = fathters.Count;
-                var isExists = CurrentDb.Organization.Where(m => m.PId == organization.PId && m.Name == rop.Name && m.Dept == dept && m.Id != rop.Id).FirstOrDefault();
+                var isExists = CurrentDb.Organization.Where(m => m.PId == organization.PId && m.Name == rop.Name && m.Dept == dept && m.Id != rop.Id && m.IsDelete == false).FirstOrDefault();
                 if (isExists != null)
                 {
                     return new CustomJsonResult(ResultType.Failure, ResultCode.Failure, string.Format("保存失败，该名称({0})已被同一级别使用", rop.Name));
@@ -191,27 +192,31 @@ namespace Lumos.BLL.Service.Merch
 
             using (TransactionScope ts = new TransactionScope())
             {
-                var organizations = GetSons(merchantId, id).ToList();
+                var organization = CurrentDb.Organization.Where(m => m.Id == id).FirstOrDefault();
 
-                if (organizations.Count == 0)
+                if (organization == null)
                 {
-                    return new CustomJsonResult(ResultType.Failure, ResultCode.Failure, "请选择要删除的数据");
+                    return new CustomJsonResult(ResultType.Failure, ResultCode.Failure, "数据为空");
                 }
 
-
-
-                foreach (var organization in organizations)
+                if (organization.Dept == 0)
                 {
-
-                    if (organization.Dept == 0)
-                    {
-                        return new CustomJsonResult(ResultType.Failure, ResultCode.Failure, string.Format("所选机构（{0}）不允许删除", organization.Name));
-                    }
-
-                    organization.IsDelete = true;
-
+                    return new CustomJsonResult(ResultType.Failure, ResultCode.Failure, string.Format("所选机构（{0}）不允许删除", organization.Name));
                 }
 
+                var organizationUserCount = CurrentDb.SysMerchantUser.Where(m => m.OrganizationId == id).Count();
+
+                if (organizationUserCount > 0)
+                {
+                    return new CustomJsonResult(ResultType.Failure, ResultCode.Failure, "该机构存在关联用户，若删除，请先将所用户关联移除");
+                }
+
+                var sons = GetSons(merchantId, id).ToList();
+
+                foreach (var item in sons)
+                {
+                    item.IsDelete = true;
+                }
 
                 CurrentDb.SaveChanges();
                 ts.Complete();
