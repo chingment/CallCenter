@@ -36,17 +36,22 @@ namespace Lumos.BLL.Service.Merch
             p_user.MerchantId = sysMerchantUser.MerchantId;
             p_user.OrganizationId = sysMerchantUser.OrganizationId;
             p_user.PositionId = sysMerchantUser.PositionId;
-            //p_user.TeleSeatAccount = sysMerchantUser.TeleSeatAccount;
-            //p_user.TeleSeatPassword = sysMerchantUser.TeleSeatPassword;
-            p_user.TelePhoneStatus = Enumeration.TelePhoneStatus.Unknow;
             p_user.WorkStatus = Enumeration.WorkStatus.Unknow;
+            p_user.TeleSeatId = sysMerchantUser.TeleSeatId;
+            var teleSeat = db.TeleSeat.Where(m => m.Id == sysMerchantUser.TeleSeatId).FirstOrDefault();
+            if (teleSeat != null)
+            {
+                p_user.TeleSeatAccount = teleSeat.Account;
+                p_user.TeleSeatPassword = teleSeat.Password;
+                p_user.TelePhoneStatus = Enumeration.TelePhoneStatus.Unknow;
+            }
 
             isFlag = RedisManager.Db.HashSet(key_list, userId, p_user.ToJsonString(), StackExchange.Redis.When.Always);
 
             return isFlag;
         }
 
-        public static bool Edit(string merchantId, string userId, UserModel p_user)
+        public static bool Edit(string merchantId, string userId,string fullName,string organizationId, Enumeration.SysPositionId positionId,string teleSeatId)
         {
             if (!IsExists(merchantId, userId))
             {
@@ -56,26 +61,12 @@ namespace Lumos.BLL.Service.Merch
             }
 
             var l_user = RedisManager.Db.HashGet(key_list, userId).ToString().ToJsonObject<UserModel>();
-            l_user.FullName = p_user.FullName;
-            l_user.OrganizationId = p_user.OrganizationId;
-            l_user.PositionId = p_user.PositionId;
-            l_user.TeleSeatAccount = p_user.TeleSeatAccount;
-            l_user.TeleSeatPassword = p_user.TeleSeatPassword;
-            l_user.TelePhoneStatus = p_user.TelePhoneStatus;
-            l_user.TelePhoneStatusName = p_user.TelePhoneStatusName;
-            l_user.WorkStatus = p_user.WorkStatus;
-            l_user.WorkStatusName = p_user.WorkStatusName;
-
-
-            LogUtil.Info("前：" + l_user.ToJsonString());
+            l_user.FullName = fullName;
+            l_user.OrganizationId = organizationId;
+            l_user.PositionId = positionId;
+            l_user.TeleSeatId = teleSeatId;
 
             var isFlag = RedisManager.Db.HashSet(key_list, userId, l_user.ToJsonString(), StackExchange.Redis.When.Always);
-
-
-            var before = Get(merchantId, userId);
-
-            LogUtil.Info("后：" + before.ToJsonString());
-
             return isFlag;
 
         }
@@ -91,13 +82,13 @@ namespace Lumos.BLL.Service.Merch
 
             var l_user = RedisManager.Db.HashGet(key_list, userId).ToString().ToJsonObject<UserModel>();
             l_user.LastAccessTime = lastAccessTime;
-
+            l_user.TimeOutTime = lastAccessTime.AddSeconds(30);
             var isFlag = RedisManager.Db.HashSet(key_list, userId, l_user.ToJsonString(), StackExchange.Redis.When.Always);
 
             return isFlag;
         }
 
-        public static bool SetTelePhoneStatus(string merchantId, string userId, Enumeration.WorkStatus workStatus, Enumeration.TelePhoneStatus telePhoneStatus)
+        public static bool SetStatus(string merchantId, string userId, Enumeration.WorkStatus workStatus, Enumeration.TelePhoneStatus telePhoneStatus)
         {
             if (!IsExists(merchantId, userId))
             {
@@ -143,6 +134,39 @@ namespace Lumos.BLL.Service.Merch
             foreach (var hs_user in hs_users)
             {
                 var user = hs_user.Value.ToString().ToJsonObject<UserModel>();
+                if (user.LastAccessTime.AddMinutes(1) > DateTime.Now)
+                {
+                    user.WorkStatus = Enumeration.WorkStatus.OnLine;
+                    user.WorkStatusName = "在线";
+                }
+                else
+                {
+                    user.WorkStatus = Enumeration.WorkStatus.OffLine;
+                    user.WorkStatusName = "离线";
+                }
+
+                switch (user.TelePhoneStatus)
+                {
+                    case Enumeration.TelePhoneStatus.IDLE:
+                        user.TelePhoneStatusName = "空闲";
+                        break;
+                    case Enumeration.TelePhoneStatus.CallOut:
+                        user.TelePhoneStatusName = "正在外呼通话中";
+                        break;
+                    case Enumeration.TelePhoneStatus.CallIn:
+                        user.TelePhoneStatusName = "正在呼入通话中";
+                        break;
+                    case Enumeration.TelePhoneStatus.Ringing:
+                        user.TelePhoneStatusName = "正在响铃中";
+                        break;
+                    case Enumeration.TelePhoneStatus.Process:
+                        user.TelePhoneStatusName = "正在整理中";
+                        break;
+                    default:
+                        user.TelePhoneStatusName = "未就绪";
+                        break;
+                }
+
                 list_users.Add(user);
             }
 

@@ -112,10 +112,12 @@ namespace Lumos.BLL.Service.Merch
                 return new CustomJsonResult(ResultType.Failure, ResultCode.Failure, string.Format("该用户名（{0}）已被使用", rop.UserName));
             }
 
+            string userId = "";
             using (TransactionScope ts = new TransactionScope())
             {
                 var user = new SysMerchantUser();
                 user.Id = GuidUtil.New();
+                userId = user.Id;
                 user.UserName = userName;
                 user.FullName = rop.FullName;
                 user.PasswordHash = PassWordHelper.HashPassword(rop.Password);
@@ -167,11 +169,13 @@ namespace Lumos.BLL.Service.Merch
                 CurrentDb.SaveChanges();
                 ts.Complete();
 
-
-                //UserDataCacheUtil.Add(user.MerchantId, user.Id);
-
                 result = new CustomJsonResult(ResultType.Success, ResultCode.Success, "新建成功");
 
+            }
+
+            if (result.Result == ResultType.Success)
+            {
+                UserDataCacheUtil.Add(merchantId, userId);
             }
 
             return result;
@@ -253,10 +257,10 @@ namespace Lumos.BLL.Service.Merch
 
             }
 
-            //if (result.Result == ResultType.Success)
-            //{
-            //    UserDataCacheUtil.Edit(merchantId, rop.Id, userModel);
-            //}
+            if (result.Result == ResultType.Success)
+            {
+                //UserDataCacheUtil.Edit(merchantId, rop.Id);
+            }
 
             return result;
 
@@ -315,11 +319,6 @@ namespace Lumos.BLL.Service.Merch
             }
 
             return list;
-        }
-
-        public void SetLastAccessTime(string operater, string merchantId, string id, DateTime lastAccessTime)
-        {
-            UserDataCacheUtil.SetLastAccessTime(merchantId, id, lastAccessTime);
         }
 
         public CustomJsonResult RunHeartbeatPacket(string operater, string merchantId, string id)
