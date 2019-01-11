@@ -268,7 +268,7 @@
                 var n2 = parseFloat($('#txt_OfTravelTaxAmount').val());
                 var n3 = parseFloat($('#txt_OfCommercialAmount').val());
                 //console.log("n1:" + n1 + ",n2:" + n2 + ",n3:" + n3);
-                $('#lbl_OfTotalAmount').text(n1 + n2 + n3)
+                $('#lbl_OfTotalAmount').text((n1 + n2 + n3).toFixed(2))
             })
 
             $('#ul_dealtTrack a').live("click", function () {

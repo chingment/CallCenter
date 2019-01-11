@@ -94,6 +94,22 @@
         </tbody>
 
     </table>
+
+    <div class="gbr-row-title clearfix">
+        <div class="pull-left">
+            <h5>报价金额</h5>
+        </div>
+        <div class="pull-right f-tb1-item-pull-right">
+            <h6></h6>
+        </div>
+    </div>
+    <div style="margin:10px 0px;">
+        保险公司：<span>${companyName}</span>
+        交强险：<span>${ofCompulsoryAmount}</span>
+        车船税：<span>${ofTravelTaxAmount}</span>
+        商业险：<span>${ofCommercialAmount}</span>
+        合计：<span id="lbl">${ofTotalAmount}</span>
+    </div>
     <div class="gbr-row-title clearfix">
         <div class="pull-left">
             <h5>核保金额</h5>
@@ -102,7 +118,6 @@
             <h6></h6>
         </div>
     </div>
-
     <div style="margin:10px 0px;">
         保险公司：<span>${companyName}</span>
         交强险：<span>${unCompulsoryAmount}</span>
