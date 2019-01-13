@@ -204,17 +204,19 @@ namespace Lumos.BLL.Service.Merch
                     return new CustomJsonResult(ResultType.Failure, ResultCode.Failure, string.Format("所选机构（{0}）不允许删除", organization.Name));
                 }
 
-                var organizationUserCount = CurrentDb.SysMerchantUser.Where(m => m.OrganizationId == id).Count();
-
-                if (organizationUserCount > 0)
-                {
-                    return new CustomJsonResult(ResultType.Failure, ResultCode.Failure, "该机构存在关联用户，若删除，请先将所用户关联移除");
-                }
 
                 var sons = GetSons(merchantId, id).ToList();
 
                 foreach (var item in sons)
                 {
+
+                    var organizationUserCount = CurrentDb.SysMerchantUser.Where(m => m.OrganizationId == item.Id).Count();
+
+                    if (organizationUserCount > 0)
+                    {
+                        return new CustomJsonResult(ResultType.Failure, ResultCode.Failure, "该机构及子机构存在关联用户，若删除，请先将所用户关联移除");
+                    }
+
                     item.IsDelete = true;
                 }
 

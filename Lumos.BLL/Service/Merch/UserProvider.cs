@@ -206,6 +206,19 @@ namespace Lumos.BLL.Service.Merch
                     }
                 }
 
+             
+                if (user.PositionId != rop.PositionId)
+                {
+                    if (user.PositionId == Enumeration.SysPositionId.MerchantTSR)
+                    {
+                        var unTakeCount = CurrentDb.ObCustomer.Where(m => m.BelongerId == user.Id && m.IsTake == false).Count();
+                        if (unTakeCount > 0)
+                        {
+                            return new CustomJsonResult(ResultType.Failure, ResultCode.Failure, "更换职位需要把未取的数据（" + unTakeCount + "）条转移到同组的其他成员");
+                        }
+                    }
+                }
+
                 user.FullName = rop.FullName;
                 user.Email = rop.Email;
                 user.PhoneNumber = rop.PhoneNumber;
