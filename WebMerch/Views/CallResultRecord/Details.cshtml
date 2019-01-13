@@ -23,12 +23,9 @@
                     var l_StrRows = "";
                     l_StrRows += "<tr>";
                     l_StrRows += "<td class=\"no\" >" + (p_index + 1) + "</td>";
-                    l_StrRows += "<td class=\"overflow tipitem\" title=\"" + p_row.customerName + "\"   >" + p_row.customerName + "</td>";
-                    l_StrRows += "<td class=\"overflow\" title=\"" + p_row.customerPhoneNumber + "\">" + p_row.customerPhoneNumber + "</td>";
                     l_StrRows += "<td class=\"overflow\" title=\"" + p_row.startTime + "\">" + p_row.startTime + "</td>";
                     l_StrRows += "<td class=\"overflow\" title=\"" + p_row.byeTime + "\">" + p_row.byeTime + "</td>";
                     l_StrRows += "<td class=\"overflow\" title=\"" + p_row.timeLength + "\">" + p_row.timeLength + "</td>";
-                    l_StrRows += "<td class=\"overflow\" title=\"" + p_row.salesmanName + "\">" + p_row.salesmanName + "</td>";
                     l_StrRows += "<td class=\"operation\">";
 
                     if (!$.lumos.isNullOrEmpty(p_row.recordFile)) {
@@ -151,23 +148,14 @@
                                     <th style="width:25px" class="no">
                                         序号
                                     </th>
-                                    <th style="width:15%">
-                                        客户名称
-                                    </th>
-                                    <th style="width:15%">
-                                        电话号码
-                                    </th>
-                                    <th style="width:10%">
+                                    <th style="width:40%">
                                         开始时间
                                     </th>
-                                    <th style="width:10%">
+                                    <th style="width:40%">
                                         结束时间
                                     </th>
-                                    <th style="width:15%">
+                                    <th style="width:30%">
                                         通话时长
-                                    </th>
-                                    <th style="width:10%">
-                                        坐席
                                     </th>
                                     <th style="width:25px" class="operation">
                                         操作
@@ -177,7 +165,7 @@
                             <tbody></tbody>
                             <tfoot>
                                 <tr>
-                                    <td colspan="8">
+                                    <td colspan="5">
                                         <div class="pull-left">
                                             <span class="load-tip"></span>
                                         </div>
