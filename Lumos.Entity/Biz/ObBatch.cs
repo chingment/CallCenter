@@ -21,7 +21,11 @@ namespace Lumos.Entity
         public int ValidCount { get; set; }
         public int InValidCount { get; set; }
         public Enumeration.DataBatchStatus Status { get; set; }
+
+        public int ExpiryDays { get; set; }
         public DateTime ExpiryTime { get; set; }
+
+        public int RecoveryDays { get; set; }
         public DateTime RecoveryTime { get; set; }
         public int FollowDelayDays { get; set; }
         public string Description { get; set; }

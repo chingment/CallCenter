@@ -13,7 +13,28 @@
             $("#txt_RecoveryDays").formValidator().regexValidator({ regExp: regexEnum.intege1, onError: "回收期天数格式为大于1的正整数" });
             $("#txt_BelongerId").formValidator().inputValidator({ min: 1, max: 100, onError: "请选择数据分配人" });
             $("#markupload_file").formValidator().inputValidator({ min: 1, max: 2000, onError: "请选择上次文件" });
+
+            initData();
+
         });
+
+        function initData() {
+
+            $.lumos.getJson({
+                url: "/ObBatch/InitDataToAddByFile",
+                isUseHandling: true,
+                success: function (d) {
+                    if (d.result == $.lumos.resultType.success) {
+                        var data = d.data;
+                        $('#txt_ExpiryDays').val(data.expiryDays);
+                        $('#txt_FollowDelayDays').val(data.followDelayDays);
+                        $('#txt_RecoveryDays').val(data.recoveryDays);
+                        $('#txt_BelongerId').val(data.belongerId);
+                        $('#lbl_BelongerName').text(data.belongerName)
+                    }
+                }
+            });
+        }
 
         function add() {
 
@@ -65,7 +86,7 @@
 
         function getUserDetails(obj) {
             $("#txt_BelongerId").val(obj.id);
-            $('#lbl_BelongerName').text(obj.fullName + "(" + obj.userName + "),"+"所属机构:" + obj.organizationName);
+            $('#lbl_BelongerName').text(obj.fullName + "(" + obj.userName + ")," + "所属机构:" + obj.organizationName);
         }
 
     </script>

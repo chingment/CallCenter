@@ -32,6 +32,33 @@ namespace WebMerch.Controllers
         }
 
 
+        public CustomJsonResult InitDataToAddByFile()
+        {
+
+            int expiryDays = 30;
+            int followDelayDays = 14;
+            int recoveryDays = 30;
+            string belongerId = "";
+            string belongerName = "";
+
+            var obBatch = CurrentDb.ObBatch.Where(m => m.MerchantId == this.CurrentMerchantId).OrderByDescending(m => m.CreateTime).FirstOrDefault();
+
+            if (obBatch != null)
+            {
+                expiryDays = obBatch.ExpiryDays;
+                followDelayDays = obBatch.FollowDelayDays;
+                recoveryDays = obBatch.RecoveryDays;
+                belongerId = obBatch.BelongerId;
+                belongerName = obBatch.BelongerName;
+            }
+
+            var data = new { expiryDays = expiryDays, followDelayDays = followDelayDays, recoveryDays = recoveryDays, belongerId = belongerId, belongerName = belongerName };
+
+
+            return new CustomJsonResult(ResultType.Success, ResultCode.Success, "", data);
+
+        }
+
         public CustomJsonResult GetDetails(string id)
         {
             return MerchServiceFactory.ObBatch.GetDetails(this.CurrentUserId, this.CurrentMerchantId, id);
@@ -177,7 +204,7 @@ namespace WebMerch.Controllers
             rop.FileName = file.FileName;
             rop.FilePath = filePath;
             rop.BelongerId = belongUser.Id;
-            rop.BelongerName = string.Format("{0}机构负责人：{1}({2})", belongUser.FullName, belongUser.FullName, belongUser.UserName);
+            rop.BelongerName = string.Format("{0}({1})", belongUser.FullName,belongUser.UserName);
             rop.BelongerOrganizationId = belongUser.OrganizationId;
             result = MerchServiceFactory.ObBatch.AddByFile(this.CurrentUserId, this.CurrentMerchantId, rop);
 
