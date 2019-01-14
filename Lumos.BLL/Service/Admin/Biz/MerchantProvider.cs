@@ -102,19 +102,20 @@ namespace Lumos.BLL.Service.Admin
                 var merchant = new Merchant();
                 merchant.Id = merchantId;
                 merchant.UserId = sysMerchatUser.Id;
-                merchant.Name = rop.Name;
+                merchant.Name = rop.MerchantName;
                 merchant.ContactName = rop.ContactName;
                 merchant.ContactPhone = rop.ContactPhone;
                 merchant.ContactAddress = rop.ContactAddress;
                 merchant.SimpleCode = rop.SimpleCode;
                 merchant.CreateTime = this.DateTime;
                 merchant.Creator = operater;
+                merchant.BusinessType = Enumeration.BusinessType.Common;
                 CurrentDb.Merchant.Add(merchant);
 
 
 
                 var organization = new Organization();
-                organization.Id = organization.Id;
+                organization.Id = organizationId;
                 organization.PId = GuidUtil.Empty();
                 organization.Name = "总公司";
                 organization.Dept = 0;

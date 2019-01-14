@@ -52,10 +52,10 @@ namespace Lumos.Entity
         {
             [Remark("未知")]
             Unknow = 0,
-            [Remark("车险")]
+            [Remark("通用")]
             Common = 1,
             [Remark("车险")]
-            CarIns = 1
+            CarIns = 2
         }
 
         public enum OrganizationStatus

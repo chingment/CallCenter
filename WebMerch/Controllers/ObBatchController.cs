@@ -13,7 +13,7 @@ using System.Web.Mvc;
 
 namespace WebMerch.Controllers
 {
-    
+
     public class ObBatchController : OwnBaseController
     {
         public ActionResult List()
@@ -95,13 +95,6 @@ namespace WebMerch.Controllers
                 return new CustomJsonResult(ResultType.Failure, ResultCode.Failure, "文件格式类型不符合，必须为.xls文件");
             }
 
-            //var belongOrganization = CurrentDb.Organization.Where(m => m.Dept == 0 && m.MerchantId == this.CurrentMerchantId).FirstOrDefault();
-
-            //if (belongOrganization == null)
-            //{
-            //    return new CustomJsonResult(ResultType.Failure, ResultCode.Failure, "请先设置机构");
-            //}
-
 
             var belongUser = CurrentDb.SysMerchantUser.Where(m => m.MerchantId == this.CurrentMerchantId && m.Id == rop.BelongerId).FirstOrDefault();
 
@@ -109,6 +102,9 @@ namespace WebMerch.Controllers
             {
                 return new CustomJsonResult(ResultType.Failure, ResultCode.Failure, string.Format("数据分配人[{0}]，未设置所属机构", belongUser.FullName));
             }
+
+
+            var merchant = CurrentDb.Merchant.Where(m => m.Id == this.CurrentMerchantId).FirstOrDefault();
 
             var result = new CustomJsonResult();
 
@@ -128,8 +124,19 @@ namespace WebMerch.Controllers
 
             ExcelFormatCheckUtil excelFormatCheckUtil = new ExcelFormatCheckUtil(sheet);
 
+
+            rop.BusinessType = merchant.BusinessType;
+
             switch (rop.BusinessType)
             {
+                case Enumeration.BusinessType.Common:
+                    #region 通用模板
+                    excelFormatCheckUtil.AddCheckCellIsString(0, "联系人", 0, 200);
+                    excelFormatCheckUtil.AddCheckCellIsString(1, "联系电话 ", 0, 200);
+                    excelFormatCheckUtil.AddCheckCellIsString(2, "联系地址", 0, 200);
+                    excelFormatCheckUtil.AddCheckCellIsString(3, "公司", 0, 200);
+                    #endregion
+                    break;
                 case Enumeration.BusinessType.CarIns:
                     #region 车险模板
                     excelFormatCheckUtil.AddCheckCellIsString(0, "初登日期", 0, 200);

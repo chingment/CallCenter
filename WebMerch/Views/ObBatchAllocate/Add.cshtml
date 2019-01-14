@@ -233,145 +233,152 @@
 
                 <form id="form_ObCustomer" name="form_ObCustomer">
                     <input id="ObBatchAllocateId" name="ObBatchAllocateId" type="hidden" value="" />
-                    <div class="search-bar">
-                        <div class="filter">
-                            <span class="filter-label">初登日期：</span>
-                            <span class="filter-input">
-                                <input id="txt_CarRegisterDateStart" type="text" name="CarRegisterDateStart" class="input-control" style="width:80px;" onfocus="WdatePicker({ dateFmt: 'yyyy-MM-dd', maxDate: '#F{$dp.$D(\'txt_CarRegisterDateEnd\')}' })" value="" />
-                                至<input id="txt_CarRegisterDateEnd" type="text" name="CarRegisterDateEnd" class="input-control" style="width:80px;" onfocus="WdatePicker({ dateFmt: 'yyyy-MM-dd', minDate: '#F{$dp.$D(\'txt_CarRegisterDateStart\')}' })" value="" />
-                            </span>
-                        </div>
-                        <div class="filter">
-                            <span class="filter-label">起保日：</span>
-                            <span class="filter-input">
-                                <input id="txt_CarInsLastStartTime" type="text" name="CarInsLastStartTime" class="input-control" style="width:80px;" onfocus="WdatePicker({ dateFmt: 'yyyy-MM-dd', maxDate: '#F{$dp.$D(\'txt_CarInsLastEndTime\')}' })" value="" />
-                                至<input id="txt_CarInsLastEndTime" type="text" name="CarInsLastEndTime" class="input-control" style="width:80px;" onfocus="WdatePicker({ dateFmt: 'yyyy-MM-dd', minDate: '#F{$dp.$D(\'txt_CarInsLastStartTime\')}' })" value="" />
-                            </span>
-                        </div>
-                        <div class="filter">
-                            <span class="filter-label">保险公司：</span>
-                            <span class="filter-input">
-                                <input type="text" class="input-control" name="CarInsLastCompany" style="width:250px;" />
-                            </span>
-                        </div>
-                    </div>
-                    <div class="search-bar">
-                        <div class="filter">
-                            <span class="filter-label">车牌号码：</span>
-                            <span class="filter-input">
-                                <input type="text" class="input-control" id="txt_CarPlateNo" name="CarPlateNo" style="width:120px;" />
-                            </span>
-                        </div>
-                        <div class="filter">
-                            <span class="filter-label">厂牌：</span>
-                            <span class="filter-input">
-                                <input type="text" class="input-control" id="txt_CarModel" name="CarModel" style="width:120px;" />
-                            </span>
-                        </div>
-                        <div class="filter">
-                            <span class="filter-label">发动号：</span>
-                            <span class="filter-input">
-                                <input type="text" class="input-control" id="txt_CarEngineNo" name="CarEngineNo" style="width:120px;" />
-                            </span>
-                        </div>
-                        <div class="filter">
-                            <span class="filter-label">地址：</span>
-                            <span class="filter-input">
-                                <input type="text" class="input-control" id="txt_CsrAddress" name="CsrAddress" style="width:430px;" />
-                            </span>
-                        </div>
-                    </div>
-                    <div class="search-bar">
-                        <div class="filter">
-                            <span class="filter-label">电话号码：</span>
-                            <span class="filter-input">
-                                <input type="text" class="input-control" id="txt_CsrPhoneNumber" name="CsrPhoneNumber" style="width:120px;" />
-                            </span>
-                        </div>
-                        <div class="filter">
-                            <span class="filter-label">姓名：</span>
-                            <span class="filter-input">
-                                <input type="text" class="input-control" id="txt_CsrName" name="CsrName" style="width:120px;" />
-                            </span>
-                        </div>
-                        <div class="filter">
-                            <span class="filter-label">身份证：</span>
-                            <span class="filter-input">
-                                <input type="text" class="input-control" id="txt_CsrIdNumber" name="CsrIdNumber" style="width:120px;" />
-                            </span>
-                        </div>
-                        <div class="filter"><input type="button" class="btn btn-search" id="btn_Search" value="查询" /> </div>
-                    </div>
-                    <div class="list">
-                        <table id="list_ObCustomer" class="list-tb" cellpadding="0" cellspacing="0">
-                            <thead>
-                                <tr>
-                                    <th style="width:25px" class="no">
-                                        序号
-                                    </th>
-                                    <th style="width:5%">
-                                        姓名
-                                    </th>
-                                    <th style="width:8%">
-                                        电话
-                                    </th>
-                                    <th style="width:12%">
-                                        身份证
-                                    </th>
-                                    <th style="width:10%">
-                                        地址
-                                    </th>
-                                    <th style="width:8%">
-                                        初登日期
-                                    </th>
-                                    <th style="width:8%">
-                                        车牌
-                                    </th>
-                                    <th style="width:8%">
-                                        厂牌型号
-                                    </th>
-                                    <th style="width:5%">
-                                        车架号
-                                    </th>
-                                    <th style="width:5%">
-                                        发动机号
-                                    </th>
-                                    <th style="width:5%">
-                                        保单号
-                                    </th>
-                                    <th style="width:10%">
-                                        保险公司
-                                    </th>
-                                    <th style="width:8%">
-                                        起保日期
-                                    </th>
-                                    <th style="width:8%">
-                                        终保日期
-                                    </th>
-                                </tr>
-                            </thead>
-                            <tbody></tbody>
-                            <tfoot>
-                                <tr>
-                                    <td colspan="14">
-                                        <div class="pull-left">
-                                            <span class="load-tip"></span>
-                                        </div>
-                                        <div class="pull-right pagination">
-                                            <div class="pagination-info">
 
-                                            </div>
-                                            <div class="pagination-index">
+                    <div id="BusinessType1">
 
-                                            </div>
-                                            <div class="pagination-goto">
+                    </div>
 
+                    <div id="BusinessType2">
+                        <div class="search-bar">
+                            <div class="filter">
+                                <span class="filter-label">初登日期：</span>
+                                <span class="filter-input">
+                                    <input id="txt_CarRegisterDateStart" type="text" name="CarRegisterDateStart" class="input-control" style="width:80px;" onfocus="WdatePicker({ dateFmt: 'yyyy-MM-dd', maxDate: '#F{$dp.$D(\'txt_CarRegisterDateEnd\')}' })" value="" />
+                                    至<input id="txt_CarRegisterDateEnd" type="text" name="CarRegisterDateEnd" class="input-control" style="width:80px;" onfocus="WdatePicker({ dateFmt: 'yyyy-MM-dd', minDate: '#F{$dp.$D(\'txt_CarRegisterDateStart\')}' })" value="" />
+                                </span>
+                            </div>
+                            <div class="filter">
+                                <span class="filter-label">起保日：</span>
+                                <span class="filter-input">
+                                    <input id="txt_CarInsLastStartTime" type="text" name="CarInsLastStartTime" class="input-control" style="width:80px;" onfocus="WdatePicker({ dateFmt: 'yyyy-MM-dd', maxDate: '#F{$dp.$D(\'txt_CarInsLastEndTime\')}' })" value="" />
+                                    至<input id="txt_CarInsLastEndTime" type="text" name="CarInsLastEndTime" class="input-control" style="width:80px;" onfocus="WdatePicker({ dateFmt: 'yyyy-MM-dd', minDate: '#F{$dp.$D(\'txt_CarInsLastStartTime\')}' })" value="" />
+                                </span>
+                            </div>
+                            <div class="filter">
+                                <span class="filter-label">保险公司：</span>
+                                <span class="filter-input">
+                                    <input type="text" class="input-control" name="CarInsLastCompany" style="width:250px;" />
+                                </span>
+                            </div>
+                        </div>
+                        <div class="search-bar">
+                            <div class="filter">
+                                <span class="filter-label">车牌号码：</span>
+                                <span class="filter-input">
+                                    <input type="text" class="input-control" id="txt_CarPlateNo" name="CarPlateNo" style="width:120px;" />
+                                </span>
+                            </div>
+                            <div class="filter">
+                                <span class="filter-label">厂牌：</span>
+                                <span class="filter-input">
+                                    <input type="text" class="input-control" id="txt_CarModel" name="CarModel" style="width:120px;" />
+                                </span>
+                            </div>
+                            <div class="filter">
+                                <span class="filter-label">发动号：</span>
+                                <span class="filter-input">
+                                    <input type="text" class="input-control" id="txt_CarEngineNo" name="CarEngineNo" style="width:120px;" />
+                                </span>
+                            </div>
+                            <div class="filter">
+                                <span class="filter-label">地址：</span>
+                                <span class="filter-input">
+                                    <input type="text" class="input-control" id="txt_CsrAddress" name="CsrAddress" style="width:430px;" />
+                                </span>
+                            </div>
+                        </div>
+                        <div class="search-bar">
+                            <div class="filter">
+                                <span class="filter-label">电话号码：</span>
+                                <span class="filter-input">
+                                    <input type="text" class="input-control" id="txt_CsrPhoneNumber" name="CsrPhoneNumber" style="width:120px;" />
+                                </span>
+                            </div>
+                            <div class="filter">
+                                <span class="filter-label">姓名：</span>
+                                <span class="filter-input">
+                                    <input type="text" class="input-control" id="txt_CsrName" name="CsrName" style="width:120px;" />
+                                </span>
+                            </div>
+                            <div class="filter">
+                                <span class="filter-label">身份证：</span>
+                                <span class="filter-input">
+                                    <input type="text" class="input-control" id="txt_CsrIdNumber" name="CsrIdNumber" style="width:120px;" />
+                                </span>
+                            </div>
+                            <div class="filter"><input type="button" class="btn btn-search" id="btn_Search" value="查询" /> </div>
+                        </div>
+                        <div class="list">
+                            <table id="list_ObCustomer" class="list-tb" cellpadding="0" cellspacing="0">
+                                <thead>
+                                    <tr>
+                                        <th style="width:25px" class="no">
+                                            序号
+                                        </th>
+                                        <th style="width:5%">
+                                            姓名
+                                        </th>
+                                        <th style="width:8%">
+                                            电话
+                                        </th>
+                                        <th style="width:12%">
+                                            身份证
+                                        </th>
+                                        <th style="width:10%">
+                                            地址
+                                        </th>
+                                        <th style="width:8%">
+                                            初登日期
+                                        </th>
+                                        <th style="width:8%">
+                                            车牌
+                                        </th>
+                                        <th style="width:8%">
+                                            厂牌型号
+                                        </th>
+                                        <th style="width:5%">
+                                            车架号
+                                        </th>
+                                        <th style="width:5%">
+                                            发动机号
+                                        </th>
+                                        <th style="width:5%">
+                                            保单号
+                                        </th>
+                                        <th style="width:10%">
+                                            保险公司
+                                        </th>
+                                        <th style="width:8%">
+                                            起保日期
+                                        </th>
+                                        <th style="width:8%">
+                                            终保日期
+                                        </th>
+                                    </tr>
+                                </thead>
+                                <tbody></tbody>
+                                <tfoot>
+                                    <tr>
+                                        <td colspan="14">
+                                            <div class="pull-left">
+                                                <span class="load-tip"></span>
                                             </div>
-                                        </div>
-                                    </td>
-                                </tr>
-                            </tfoot>
-                        </table>
+                                            <div class="pull-right pagination">
+                                                <div class="pagination-info">
+
+                                                </div>
+                                                <div class="pagination-index">
+
+                                                </div>
+                                                <div class="pagination-goto">
+
+                                                </div>
+                                            </div>
+                                        </td>
+                                    </tr>
+                                </tfoot>
+                            </table>
+                        </div>
                     </div>
                 </form>
 
