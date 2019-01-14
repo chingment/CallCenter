@@ -12,7 +12,7 @@ namespace Lumos.Entity
         public string Code { get; set; }
         public string FCode { get; set; }
         public string Name { get; set; }
-        public Enumeration.DataBizType DataBizType { get; set; }
+        public Enumeration.BusinessType BusinessType { get; set; }
         public int Priority { get; set; }
         public bool IsAllowNextCall { get; set; }
         public bool IsInValidData { get; set; }

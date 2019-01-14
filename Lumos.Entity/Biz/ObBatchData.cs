@@ -31,6 +31,6 @@ namespace Lumos.Entity
         public DateTime CreateTime { get; set; }
         public string Mender { get; set; }
         public DateTime? MendTime { get; set; }
-        public Enumeration.DataBizType DataBizType { get; set; }
+        public Enumeration.BusinessType BusinessType { get; set; }
     }
 }

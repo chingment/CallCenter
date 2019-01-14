@@ -212,7 +212,7 @@ namespace WebMerch.Controllers
                     #region callresultcode
 
 
-                    var callResultCodes = CurrentDb.CallResultCode.Where(m => m.DataBizType == Enumeration.DataBizType.CarIns && m.Code.Length == 4).OrderBy(m => m.Priority).ToList();
+                    var callResultCodes = CurrentDb.CallResultCode.Where(m => m.BusinessType == Enumeration.BusinessType.CarIns && m.Code.Length == 4).OrderBy(m => m.Priority).ToList();
 
                     foreach (var item in callResultCodes)
                     {

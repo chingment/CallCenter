@@ -50,6 +50,6 @@ namespace Lumos.Entity
 
         public DateTime? UseCallTime { get; set; }
 
-        public Enumeration.DataBizType DataBizType { get; set; }
+        public Enumeration.BusinessType BusinessType { get; set; }
     }
 }

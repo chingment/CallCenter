@@ -53,6 +53,8 @@ namespace Lumos.Entity
             [Remark("未知")]
             Unknow = 0,
             [Remark("车险")]
+            Common = 1,
+            [Remark("车险")]
             CarIns = 1
         }
 
@@ -65,14 +67,6 @@ namespace Lumos.Entity
             Valid = 1,
             [Remark("停用")]
             Invalid = 2
-        }
-
-        public enum DataBizType
-        {
-            [Remark("未知")]
-            Unknow = 0,
-            [Remark("车险")]
-            CarIns = 1
         }
 
         public enum DataBatchSoureType
