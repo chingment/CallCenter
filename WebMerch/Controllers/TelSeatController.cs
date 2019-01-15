@@ -36,8 +36,8 @@ namespace WebMerch.Controllers
                          join m in CurrentDb.SysMerchantUser on u.Id equals m.TeleSeatId into temp
                          from tt in temp.DefaultIfEmpty()
                          where (rup.Account == null || u.Account.Contains(rup.Account)) &&
-                         (rup.UserName == null || tt.UserName.Contains(rup.UserName))
-
+                         (rup.UserName == null || tt.UserName.Contains(rup.UserName)) &&
+                         u.MerchantId == this.CurrentMerchantId
                          select new { u.Id, u.Account, u.Password, tt.UserName, tt.FullName, u.CreateTime, UserId = tt.Id });
 
             int total = query.Count();

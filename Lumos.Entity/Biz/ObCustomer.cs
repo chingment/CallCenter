@@ -16,6 +16,7 @@ namespace Lumos.Entity
         public string CsrPhoneNumber { get; set; }
         public string CsrAddress { get; set; }
         public string CsrIdNumber { get; set; }
+        public string CsrCompany { get; set; }
         public DateTime? CarRegisterDate { get; set; }
         public string CarPlateNo { get; set; }
         public string CarModel { get; set; }

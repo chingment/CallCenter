@@ -151,12 +151,9 @@ namespace WebMerch.Controllers
 
             ExcelFormatCheckUtil excelFormatCheckUtil = new ExcelFormatCheckUtil(sheet);
 
-
-            rop.BusinessType = merchant.BusinessType;
-
-            switch (rop.BusinessType)
+            switch (merchant.ImportFileTmpl)
             {
-                case Enumeration.BusinessType.Common:
+                case Enumeration.ImportFileTmpl.Common:
                     #region 通用模板
                     excelFormatCheckUtil.AddCheckCellIsString(0, "联系人", 0, 200);
                     excelFormatCheckUtil.AddCheckCellIsString(1, "联系电话 ", 0, 200);
@@ -164,7 +161,7 @@ namespace WebMerch.Controllers
                     excelFormatCheckUtil.AddCheckCellIsString(3, "公司", 0, 200);
                     #endregion
                     break;
-                case Enumeration.BusinessType.CarIns:
+                case Enumeration.ImportFileTmpl.CarIns:
                     #region 车险模板
                     excelFormatCheckUtil.AddCheckCellIsString(0, "初登日期", 0, 200);
                     excelFormatCheckUtil.AddCheckCellIsString(1, "车牌", 0, 200);

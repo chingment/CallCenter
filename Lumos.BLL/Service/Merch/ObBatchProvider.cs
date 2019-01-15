@@ -40,11 +40,13 @@ namespace Lumos.BLL.Service.Merch
         {
             CustomJsonResult result = new CustomJsonResult();
 
-            var isExistCode = CurrentDb.ObBatch.Where(m => m.Code == rop.Code).FirstOrDefault();
+            var isExistCode = CurrentDb.ObBatch.Where(m => m.MerchantId == merchantId && m.Code == rop.Code).FirstOrDefault();
             if (isExistCode != null)
             {
                 return new CustomJsonResult(ResultType.Failure, ResultCode.Failure, string.Format("该批次号（{0}）已被使用", rop.Code));
             }
+
+            var merchant = CurrentDb.Merchant.Where(m => m.Id == merchantId).FirstOrDefault();
 
 
             var obBatch = new ObBatch();
@@ -52,10 +54,13 @@ namespace Lumos.BLL.Service.Merch
             obBatch.MerchantId = merchantId;
             obBatch.Code = rop.Code;
             obBatch.Name = rop.Name;
-            obBatch.BusinessType = rop.BusinessType;
+            obBatch.BusinessType = merchant.BusinessType;
+            obBatch.ImportFileTmpl = merchant.ImportFileTmpl;
             obBatch.SoureType = Enumeration.DataBatchSoureType.File;
+            obBatch.ExpiryDays = rop.ExpiryDays;
             obBatch.ExpiryTime = this.DateTime.AddDays(rop.ExpiryDays);
             obBatch.FollowDelayDays = rop.FollowDelayDays;
+            obBatch.RecoveryDays = rop.ExpiryDays;
             obBatch.RecoveryTime = obBatch.ExpiryTime.AddDays(rop.ExpiryDays);
             obBatch.SoureName = rop.FileName;
             obBatch.FilePath = rop.FilePath;

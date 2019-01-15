@@ -27,6 +27,8 @@ namespace Lumos.Entity
 
         public int ObTakeDataPeriodQuantity { get; set; }
 
+        public Enumeration.ImportFileTmpl ImportFileTmpl { get; set; }
+
         public string Creator { get; set; }
 
         public DateTime CreateTime { get; set; }

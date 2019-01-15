@@ -58,6 +58,17 @@ namespace Lumos.Entity
             CarIns = 2
         }
 
+        public enum ImportFileTmpl
+        {
+            [Remark("未知")]
+            Unknow = 0,
+            [Remark("通用")]
+            Common = 1,
+            [Remark("车险")]
+            CarIns = 2
+        }
+
+
         public enum OrganizationStatus
         {
 

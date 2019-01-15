@@ -109,7 +109,8 @@ namespace Lumos.BLL.Service.Admin
                 merchant.SimpleCode = rop.SimpleCode;
                 merchant.CreateTime = this.DateTime;
                 merchant.Creator = operater;
-                merchant.BusinessType = Enumeration.BusinessType.Common;
+                merchant.BusinessType = Enumeration.BusinessType.Unknow;
+                merchant.ImportFileTmpl = Enumeration.ImportFileTmpl.Unknow;
                 CurrentDb.Merchant.Add(merchant);
 
 
