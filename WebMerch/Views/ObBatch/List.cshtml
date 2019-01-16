@@ -36,7 +36,18 @@
             },
             operate: {
                 "details": function (obj) {
-                    var url = '/ObBatch/Details?id=' + obj.id;
+                    var url="";
+                    
+                    switch(obj.businessType)
+                    {
+                        case 1:
+                            url = '/ObBatch/DetailsByCommon?id=' + obj.id;
+                            break;
+                        case 2:
+                            url = '/ObBatch/DetailsByCarIns?id=' + obj.id;
+                            break;
+                    }
+
                     var title = '查看';
                     art.dialog.open(url, {
                         id: "openDialog", title: title, width: '70%', height: '70%', lock: true, drag: false, cancelVal: '关闭', cancel: true

@@ -37,53 +37,17 @@
                         $("#lbl_BelongerName").text(data.belongerName);
                         $("#lbl_HandleReport").text(data.handleReport);
 
-                        $('form[businessType=' + data.businessType + ']').show();
-                        switch(data.businessType)  {
-                            case 1:
-                                getBatchDataByCommon();
-                                break;
-                            case 2:
-                                getBatchDataByCarIns();
-                                break;
-                        }
+    
+                         getBatchData();
+                   
                     }
                 }
             });
         }
 
-        function getBatchDataByCarIns() {
 
-            $("#list_DataBatch_CarIns").loadDataTable({
-                url: "/ObBatch/GetDataListByCarIns",
-                pageIndex: 0,
-                searchParams: $("#form_DataBatch_CarIns").serializeArray(),
-                searchButtonId: "btn_Search",
-                containerId: "form_DataBatch_CarIns",
-                rowDataCombie: function (p_index, p_row) {
-                    var l_StrRows = "";
-                    l_StrRows += "<tr>";
-                    l_StrRows += "<td class=\"no\" >" + (p_index + 1) + "</td>";
-                    l_StrRows += "<td class=\"overflow\" title=\"" + p_row.csrName + "\"   >" + p_row.csrName + "</td>";
-                    l_StrRows += "<td class=\"overflow\" title=\"" + p_row.csrPhoneNumber + "\">" + p_row.csrPhoneNumber + "</td>";
-                    l_StrRows += "<td class=\"overflow\" title=\"" + p_row.csrIdNumber + "\">" + p_row.csrIdNumber + "</td>";
-                    l_StrRows += "<td class=\"overflow\" title=\"" + p_row.csrAddress + "\">" + p_row.csrAddress + "</td>";
-                    l_StrRows += "<td class=\"overflow\" title=\"" + p_row.carRegisterDate + "\">" + p_row.carRegisterDate + "</td>";
-                    l_StrRows += "<td class=\"overflow\" title=\"" + p_row.carPlateNo + "\">" + p_row.carPlateNo + "</td>";
-                    l_StrRows += "<td class=\"overflow\" title=\"" + p_row.carModel + "\">" + p_row.carModel + "</td>";
-                    l_StrRows += "<td class=\"overflow\" title=\"" + p_row.carVin + "\">" + p_row.carVin + "</td>";
-                    l_StrRows += "<td class=\"overflow\" title=\"" + p_row.carEngineNo + "\">" + p_row.carEngineNo + "</td>";
-                    l_StrRows += "<td class=\"overflow\" title=\"" + p_row.carInsLastQzNo + "\">" + p_row.carInsLastQzNo + "</td>";
-                    l_StrRows += "<td class=\"overflow\" title=\"" + p_row.carInsLastCompany + "\">" + p_row.carInsLastCompany + "</td>";
-                    l_StrRows += "<td class=\"overflow\" title=\"" + p_row.carInsLastStartTime + "\">" + p_row.carInsLastStartTime + "</td>";
-                    l_StrRows += "<td class=\"overflow\" title=\"" + p_row.carInsLastEndTime + "\">" + p_row.carInsLastEndTime + "</td>";
-                    l_StrRows += "<td class=\"overflow\" title=\"" + p_row.handleReport + "\">" + p_row.handleReport + "</td>";
-                    l_StrRows += "</tr>";
-                    return l_StrRows;
-                }
-            });
-        }
 
-        function getBatchDataByCommon() {
+        function getBatchData() {
 
             $("#list_DataBatch_Common").loadDataTable({
                 url: "/ObBatch/GetDataListByCommon",
@@ -192,7 +156,7 @@
             </div>
             <div class="subcontent">
 
-                <form id="form_DataBatch_Common" businessType="1" name="form_DataBatch_Common" style="display:none">
+                <form id="form_DataBatch_Common" businessType="1" name="form_DataBatch_Common" >
                     <input id="ObBatchId" name="ObBatchId" type="hidden" value="" />
                     <div class="list">
                         <table id="list_DataBatch_Common" class="list-tb" cellpadding="0" cellspacing="0">
@@ -222,84 +186,6 @@
                             <tfoot>
                                 <tr>
                                     <td colspan="6">
-                                        <div class="pull-left">
-                                            <span class="load-tip"></span>
-                                        </div>
-                                        <div class="pull-right pagination">
-                                            <div class="pagination-info">
-
-                                            </div>
-                                            <div class="pagination-index">
-
-                                            </div>
-                                            <div class="pagination-goto">
-
-                                            </div>
-                                        </div>
-                                    </td>
-                                </tr>
-                            </tfoot>
-                        </table>
-                    </div>
-                </form>
-
-                <form id="form_DataBatch_CarIns" businessType="2" name="form_DataBatch_CarIns" style="display:none">
-                    <input id="ObBatchId" name="ObBatchId" type="hidden" value="" />
-                    <div class="list">
-                        <table id="list_DataBatch_CarIns" class="list-tb" cellpadding="0" cellspacing="0">
-                            <thead>
-                                <tr>
-                                    <th style="width:5%" class="no">
-                                        序号
-                                    </th>
-                                    <th style="width:5%">
-                                        姓名
-                                    </th>
-                                    <th style="width:5%">
-                                        电话
-                                    </th>
-                                    <th style="width:5%">
-                                        身份证
-                                    </th>
-                                    <th style="width:10%">
-                                        地址
-                                    </th>
-                                    <th style="width:5%">
-                                        初登日期
-                                    </th>
-                                    <th style="width:5%">
-                                        车牌
-                                    </th>
-                                    <th style="width:5%">
-                                        厂牌型号
-                                    </th>
-                                    <th style="width:10%">
-                                        车架号
-                                    </th>
-                                    <th style="width:10%">
-                                        发动机号
-                                    </th>
-                                    <th style="width:10%">
-                                        保单号
-                                    </th>
-                                    <th style="width:10%">
-                                        保险公司
-                                    </th>
-                                    <th style="width:10%">
-                                        起保日期
-                                    </th>
-                                    <th style="width:10%">
-                                        终保日期
-                                    </th>
-                                    <th style="width:10%">
-                                        处理结果
-                                    </th>
-                                </tr>
-                            </thead>
-                            <tbody></tbody>
-                            <tfoot>
-                                <tr>
-                                    <td colspan="15">
                                         <div class="pull-left">
                                             <span class="load-tip"></span>
                                         </div>

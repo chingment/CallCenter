@@ -212,7 +212,7 @@
     <Content Include="Views\User\List.cshtml" />
     <Content Include="Views\ObBatch\List.cshtml" />
     <Content Include="Views\ObBatch\AddByFile.cshtml" />
-    <Content Include="Views\ObBatch\Details.cshtml" />
+    <Content Include="Views\ObBatch\DetailsByCarIns.cshtml" />
     <Content Include="Views\User\ListBySelect.cshtml" />
     <Content Include="Views\ObBatchAllocate\List.cshtml" />
     <Content Include="Views\ObBatchAllocate\Add.cshtml" />
@@ -231,6 +231,7 @@
     <Content Include="Views\CallResultRecord\Details.cshtml" />
     <Content Include="Views\TelSeat\List.cshtml" />
     <Content Include="Views\ObCustomer\ListByCommon.cshtml" />
+    <Content Include="Views\ObBatch\DetailsByCommon.cshtml" />
     <None Include="Web.config">
       <SubType>Designer</SubType>
     </None>

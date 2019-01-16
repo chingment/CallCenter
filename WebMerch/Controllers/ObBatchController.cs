@@ -26,7 +26,13 @@ namespace WebMerch.Controllers
             return View();
         }
 
-        public ActionResult Details()
+        public ActionResult DetailsByCarIns()
+        {
+
+            return View();
+        }
+
+        public ActionResult DetailsByCommon()
         {
 
             return View();
@@ -70,7 +76,7 @@ namespace WebMerch.Controllers
                          where (rup.Code == null || u.Code.Contains(rup.Code))
                          &&
                          u.MerchantId == this.CurrentMerchantId
-                         select new { u.Id, u.Code, u.Name, u.SoureType, u.SoureName, u.Description, u.DataCount, u.ValidCount, u.InValidCount, u.Status, u.CreateTime });
+                         select new { u.Id, u.Code, u.Name, u.SoureType, u.SoureName, u.Description, u.DataCount, u.ValidCount, u.InValidCount, u.Status, u.CreateTime, u.BusinessType });
 
             int total = query.Count();
 
@@ -97,6 +103,7 @@ namespace WebMerch.Controllers
                     InValidCount = item.Status != Enumeration.DataBatchStatus.Complete ? "-" : item.InValidCount.ToString(),
                     StatusName = item.Status.GetCnName(),
                     Description = item.Description,
+                    BusinessType = item.BusinessType,
                     CreateTime = item.CreateTime.ToUnifiedFormatDateTime()
                 });
             }
