@@ -96,6 +96,8 @@
 
                             $('#list_belongUsers').append(l_StrRows);
                         });
+
+
                     }
                 }
             });
@@ -153,8 +155,6 @@
             art.dialog.confirm('确定分配？', function () {
 
                 var mode = $("#sel_Modes").val();
-
-
 
                 var carPlateNo = $('#txt_CarPlateNo').val();
                 var carModel = $('#txt_CarModel').val();
@@ -231,14 +231,100 @@
             </td>
             <td class="f-tb-c">
 
-                <form id="form_ObCustomer" name="form_ObCustomer">
-                    <input id="ObBatchAllocateId" name="ObBatchAllocateId" type="hidden" value="" />
+                    <form id="form_DataBatch_Common">
+                        <input  name="ObBatchAllocateId" type="hidden" value="" />
+                        <div class="search-bar">
+                            <div class="filter">
+                                <span class="filter-label">电话号码：</span>
+                                <span class="filter-input">
+                                    <input type="text" class="input-control" id="txt_CsrPhoneNumber" name="CsrPhoneNumber" style="width:120px;" />
+                                </span>
+                            </div>
+                            <div class="filter">
+                                <span class="filter-label">姓名：</span>
+                                <span class="filter-input">
+                                    <input type="text" class="input-control" id="txt_CsrName" name="CsrName" style="width:120px;" />
+                                </span>
+                            </div>
+                            <div class="filter"><input type="button" class="btn btn-search" id="btn_Search" value="查询" /> </div>
+                        </div>
+                        <div class="list">
+                            <table id="list_ObCustomer" class="list-tb" cellpadding="0" cellspacing="0">
+                                <thead>
+                                    <tr>
+                                        <th style="width:25px" class="no">
+                                            序号
+                                        </th>
+                                        <th style="width:5%">
+                                            姓名
+                                        </th>
+                                        <th style="width:8%">
+                                            电话
+                                        </th>
+                                        <th style="width:12%">
+                                            身份证
+                                        </th>
+                                        <th style="width:10%">
+                                            地址
+                                        </th>
+                                        <th style="width:8%">
+                                            初登日期
+                                        </th>
+                                        <th style="width:8%">
+                                            车牌
+                                        </th>
+                                        <th style="width:8%">
+                                            厂牌型号
+                                        </th>
+                                        <th style="width:5%">
+                                            车架号
+                                        </th>
+                                        <th style="width:5%">
+                                            发动机号
+                                        </th>
+                                        <th style="width:5%">
+                                            保单号
+                                        </th>
+                                        <th style="width:10%">
+                                            保险公司
+                                        </th>
+                                        <th style="width:8%">
+                                            起保日期
+                                        </th>
+                                        <th style="width:8%">
+                                            终保日期
+                                        </th>
+                                    </tr>
+                                </thead>
+                                <tbody></tbody>
+                                <tfoot>
+                                    <tr>
+                                        <td colspan="14">
+                                            <div class="pull-left">
+                                                <span class="load-tip"></span>
+                                            </div>
+                                            <div class="pull-right pagination">
+                                                <div class="pagination-info">
 
-                    <div id="BusinessType1">
+                                                </div>
+                                                <div class="pagination-index">
 
-                    </div>
+                                                </div>
+                                                <div class="pagination-goto">
 
-                    <div id="BusinessType2">
+                                                </div>
+                                            </div>
+                                        </td>
+                                    </tr>
+                                </tfoot>
+                            </table>
+                        </div>
+
+                    </form>
+
+                    <form id="form_DataBatch_CarIns">
+                        <input  name="ObBatchAllocateId" type="hidden" value="" />
+
                         <div class="search-bar">
                             <div class="filter">
                                 <span class="filter-label">初登日期：</span>
@@ -379,9 +465,8 @@
                                 </tfoot>
                             </table>
                         </div>
-                    </div>
-                </form>
-
+                    </form>
+ 
             </td>
         </tr>
         <tr>

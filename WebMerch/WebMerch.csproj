@@ -217,7 +217,7 @@
     <Content Include="Views\ObBatchAllocate\List.cshtml" />
     <Content Include="Views\ObBatchAllocate\Add.cshtml" />
     <Content Include="Views\ObCallout\TeleMarket.cshtml" />
-    <Content Include="Views\ObCustomer\List.cshtml" />
+    <Content Include="Views\ObCustomer\ListByCarIns.cshtml" />
     <Content Include="Views\CarIns\ListByDealtUnderwritingOrder.cshtml" />
     <Content Include="Views\CarIns\DealtUnderwritingOrder.cshtml" />
     <Content Include="Views\_ViewStart.cshtml" />
@@ -230,6 +230,7 @@
     <Content Include="Views\Home\PersonalInfo.cshtml" />
     <Content Include="Views\CallResultRecord\Details.cshtml" />
     <Content Include="Views\TelSeat\List.cshtml" />
+    <Content Include="Views\ObCustomer\ListByCommon.cshtml" />
     <None Include="Web.config">
       <SubType>Designer</SubType>
     </None>

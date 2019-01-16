@@ -16,7 +16,12 @@ namespace WebMerch.Controllers
 {
     public class ObCustomerController : OwnBaseController
     {
-        public ActionResult List()
+        public ActionResult ListByCommon()
+        {
+            return View();
+        }
+
+        public ActionResult ListByCarIns()
         {
             return View();
         }
@@ -32,7 +37,7 @@ namespace WebMerch.Controllers
             return predicate;
         }
 
-        public CustomJsonResult GetList(RupObCustomerGetList rup)
+        public CustomJsonResult GetListByCarIns(RupObCustomerGetList rup)
         {
             var accessUserIds = MerchServiceFactory.User.GetCanAccessUserIds(this.CurrentMerchantId, this.CurrentUserId);
 
@@ -89,6 +94,57 @@ namespace WebMerch.Controllers
                     CarInsLastCompany = item.CarInsLastCompany,
                     CarInsLastStartTime = item.CarInsLastStartTime.ToUnifiedFormatDate(),
                     CarInsLastEndTime = item.CarInsLastEndTime.ToUnifiedFormatDate(),
+                    CreateTime = item.CreateTime.ToUnifiedFormatDateTime()
+                });
+            }
+
+
+            PageEntity pageEntity = new PageEntity { PageSize = pageSize, TotalRecord = total, Rows = olist };
+
+            return Json(ResultType.Success, pageEntity, "");
+        }
+
+        public CustomJsonResult GetListByCommon(RupObCustomerGetList rup)
+        {
+            var accessUserIds = MerchServiceFactory.User.GetCanAccessUserIds(this.CurrentMerchantId, this.CurrentUserId);
+
+            var query = (from u in CurrentDb.ObCustomer
+                         where
+
+                         u.MerchantId == this.CurrentMerchantId &&
+                           accessUserIds.Contains(u.BelongerId) &&
+
+                         (rup.CsrPhoneNumber == null || u.CsrPhoneNumber.Contains(rup.CsrPhoneNumber)) &&
+                         (rup.CsrName == null || u.CsrName.Contains(rup.CsrName)) &&
+                         (rup.CsrCompany == null || u.CsrCompany.Contains(rup.CsrCompany))
+
+
+                         select new { u.Id, u.CsrName, u.CsrPhoneNumber, u.CsrAddress, u.CsrCompany, u.CreateTime });
+
+            // var s = predicate();
+            // query = query.Where();
+
+            int total = query.Count();
+
+            int pageIndex = rup.PageIndex;
+            int pageSize = rup.PageSize;
+            query = query.OrderByDescending(r => r.Id).Skip(pageSize * (pageIndex)).Take(pageSize);
+
+
+            var list = query.ToList();
+
+            List<object> olist = new List<object>();
+
+            foreach (var item in list)
+            {
+
+                olist.Add(new
+                {
+                    Id = item.Id,
+                    CsrName = item.CsrName,
+                    CsrPhoneNumber = item.CsrPhoneNumber,
+                    CsrAddress = item.CsrAddress,
+                    CsrCompany = item.CsrCompany,
                     CreateTime = item.CreateTime.ToUnifiedFormatDateTime()
                 });
             }

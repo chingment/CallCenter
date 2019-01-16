@@ -32,5 +32,7 @@ namespace Lumos.BLL.Service.Merch
 
         public int DataCount { get; set; }
 
+        public Entity.Enumeration.BusinessType BusinessType { get; set; }
+
     }
 }

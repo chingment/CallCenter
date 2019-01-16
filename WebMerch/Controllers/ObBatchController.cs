@@ -28,9 +28,9 @@ namespace WebMerch.Controllers
 
         public ActionResult Details()
         {
+
             return View();
         }
-
 
         public CustomJsonResult InitDataToAddByFile()
         {
@@ -201,14 +201,14 @@ namespace WebMerch.Controllers
             rop.FileName = file.FileName;
             rop.FilePath = filePath;
             rop.BelongerId = belongUser.Id;
-            rop.BelongerName = string.Format("{0}({1})", belongUser.FullName,belongUser.UserName);
+            rop.BelongerName = string.Format("{0}({1})", belongUser.FullName, belongUser.UserName);
             rop.BelongerOrganizationId = belongUser.OrganizationId;
             result = MerchServiceFactory.ObBatch.AddByFile(this.CurrentUserId, this.CurrentMerchantId, rop);
 
             return result;
         }
 
-        public CustomJsonResult GetDataList(RupObBatchDataGetList rup)
+        public CustomJsonResult GetDataListByCarIns(RupObBatchDataGetList rup)
         {
             var query = (from u in CurrentDb.ObBatchData
                          where
@@ -252,6 +252,51 @@ namespace WebMerch.Controllers
                     CreateTime = item.CreateTime.ToUnifiedFormatDateTime()
                 });
             }
+
+
+            PageEntity pageEntity = new PageEntity { PageSize = pageSize, TotalRecord = total, Rows = olist };
+
+            return Json(ResultType.Success, pageEntity, "");
+        }
+
+
+        public CustomJsonResult GetDataListByCommon(RupObBatchDataGetList rup)
+        {
+            var query = (from u in CurrentDb.ObBatchData
+                         where
+                         u.ObBatchId == rup.ObBatchId
+                         &&
+                         u.MerchantId == this.CurrentMerchantId
+                         select new { u.Id, u.CsrName, u.CsrPhoneNumber, u.CsrAddress, u.CsrIdNumber, u.CsrCompany, u.CreateTime, u.IsValid, u.HandleReport });
+
+            int total = query.Count();
+
+            int pageIndex = rup.PageIndex;
+            int pageSize = 10;
+            query = query.OrderByDescending(r => r.Id).Skip(pageSize * (pageIndex)).Take(pageSize);
+
+
+            var list = query.ToList();
+
+            List<object> olist = new List<object>();
+
+            foreach (var item in list)
+            {
+
+                olist.Add(new
+                {
+                    Id = item.Id,
+                    CsrName = item.CsrName,
+                    CsrPhoneNumber = item.CsrPhoneNumber,
+                    CsrAddress = item.CsrAddress,
+                    CsrIdNumber = item.CsrIdNumber,
+                    CsrCompany = item.CsrCompany,
+                    HandleReport = item.HandleReport,
+                    CreateTime = item.CreateTime.ToUnifiedFormatDateTime()
+                });
+            }
+
+            List<string> headTitle = new List<string>();
 
 
             PageEntity pageEntity = new PageEntity { PageSize = pageSize, TotalRecord = total, Rows = olist };

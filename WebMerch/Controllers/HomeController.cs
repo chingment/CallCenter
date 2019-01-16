@@ -120,10 +120,23 @@ namespace WebMerch.Controllers
             {
                 ret.UserName = OwnRequest.GetUserNameWithSymbol();
 
-                var sysMerchantUser = CurrentDb.SysMerchantUser.Where(m => m.Id == this.CurrentUserId).FirstOrDefault();
-                if (sysMerchantUser != null)
+                var merchant = CurrentDb.Merchant.Where(m => m.Id == this.CurrentMerchantId).FirstOrDefault();
+
+                string businessType = "";
+                switch (merchant.BusinessType)
                 {
-                    var menus = (from menu in CurrentDb.SysMenu where (from rolemenu in CurrentDb.SysRoleMenu where (from sysPositionRole in CurrentDb.SysPositionRole where sysPositionRole.PositionId == sysMerchantUser.PositionId select sysPositionRole.RoleId).Contains(rolemenu.RoleId) select rolemenu.MenuId).Contains(menu.Id) && menu.BelongSite == Enumeration.BelongSite.Merchant select menu).OrderBy(m => m.Priority).ToList();
+                    case Enumeration.BusinessType.CarIns:
+                        businessType = "CarIns";
+                        break;
+                    case Enumeration.BusinessType.Common:
+                        businessType = "Common";
+                        break;
+                }
+
+                var merchantUser = CurrentDb.SysMerchantUser.Where(m => m.Id == this.CurrentUserId).FirstOrDefault();
+                if (merchantUser != null)
+                {
+                    var menus = (from menu in CurrentDb.SysMenu where (from rolemenu in CurrentDb.SysRoleMenu where (from sysPositionRole in CurrentDb.SysPositionRole where sysPositionRole.PositionId == merchantUser.PositionId select sysPositionRole.RoleId).Contains(rolemenu.RoleId) select rolemenu.MenuId).Contains(menu.Id) && menu.BelongSite == Enumeration.BelongSite.Merchant select menu).OrderBy(m => m.Priority).ToList();
 
                     var menuLevel1 = from c in menus where c.Dept == 1 select c;
 
@@ -138,8 +151,9 @@ namespace WebMerch.Controllers
 
                         foreach (var menuLevel2Child in menuLevel2)
                         {
+                            string url = menuLevel2Child.Url == null ? "" : menuLevel2Child.Url.Replace("{businessType}", businessType);
 
-                            menuModel1.SubMenus.Add(new IndexModel.SubMenuModel { Name = menuLevel2Child.Name, Url = menuLevel2Child.Url });
+                            menuModel1.SubMenus.Add(new IndexModel.SubMenuModel { Name = menuLevel2Child.Name, Url = url });
                         }
 
                         ret.MenuNavByLeft.Add(menuModel1);

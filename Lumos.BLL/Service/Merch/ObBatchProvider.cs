@@ -31,6 +31,7 @@ namespace Lumos.BLL.Service.Merch
                 ret.HandleReport = obBatch.HandleReport ?? "";
                 ret.FollowDelayDays = obBatch.FollowDelayDays;
                 ret.BelongerName = obBatch.BelongerName;
+                ret.BusinessType = obBatch.BusinessType;
             }
 
             return new CustomJsonResult(ResultType.Success, ResultCode.Success, "获取成功", ret);
