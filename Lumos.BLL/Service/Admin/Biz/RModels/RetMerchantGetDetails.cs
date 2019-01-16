@@ -19,5 +19,9 @@ namespace Lumos.BLL.Service.Admin
         public string SimpleCode { get; set; }
 
         public string ObTakeDataPeriodMode { get; set; }
+
+        public string BusinessTypeName { get; set; }
+
+        public string ImportFileTmplNames { get; set; }
     }
 }

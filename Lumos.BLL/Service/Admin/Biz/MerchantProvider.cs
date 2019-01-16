@@ -27,6 +27,8 @@ namespace Lumos.BLL.Service.Admin
                 return new CustomJsonResult(ResultType.Failure, ResultCode.Failure, "数据为空");
             }
 
+            string[] importFileTmplsId = merchant.ImportFileTmpls.Split(',');
+            string[] importFileTmplsNames = CurrentDb.ImportFileTmpl.Where(m => importFileTmplsId.Contains(m.Id)).Select(m => m.Name).ToArray();
 
             ret.Id = merchant.Id ?? ""; ;
             ret.UserName = sysMerchantUser.UserName ?? "";
@@ -35,6 +37,8 @@ namespace Lumos.BLL.Service.Admin
             ret.ContactName = merchant.ContactName ?? "";
             ret.ContactPhone = merchant.ContactPhone ?? "";
             ret.SimpleCode = merchant.SimpleCode;
+            ret.BusinessTypeName = merchant.BusinessType.GetCnName();
+            ret.ImportFileTmplNames = string.Join(",", importFileTmplsNames);
 
             switch (merchant.ObTakeDataPeriodMode)
             {
@@ -77,6 +81,21 @@ namespace Lumos.BLL.Service.Admin
                 if (sysPosition == null)
                 {
                     return new CustomJsonResult(ResultType.Failure, ResultCode.Failure, "初始角色未指定");
+                }
+
+                if (rop.BusinessType == Enumeration.BusinessType.Unknow)
+                {
+                    return new CustomJsonResult(ResultType.Failure, ResultCode.Failure, "未指定业务类型");
+                }
+
+                if (rop.ObTakeDataPeriodMode == Enumeration.ObTakeDataPeriodMode.Unknow)
+                {
+                    return new CustomJsonResult(ResultType.Failure, ResultCode.Failure, "未指定业务量类型");
+                }
+
+                if (rop.ImportFileTmpls == null || rop.ImportFileTmpls.Length == 0)
+                {
+                    return new CustomJsonResult(ResultType.Failure, ResultCode.Failure, "未指定导入模板");
                 }
 
                 string organizationId = GuidUtil.New();

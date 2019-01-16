@@ -80,6 +80,8 @@
                         $("#txt_ContactName").val(data.contactName);
                         $("#txt_ContactPhone").val(data.contactPhone);
                         $("#txt_ContactAddress").val(data.contactAddress);
+                        $("#lbl_BusinessTypeName").text(data.businessTypeName);
+                        $("#lbl_ImportFileTmplNames").text(data.importFileTmplNames);
                         $('#lbl_ObTakeDataPeriodMode').text(data.obTakeDataPeriodMode)
                     }
                 }
@@ -137,14 +139,9 @@
                 商户代码：
             </td>
             <td class="f-tb-c">
-                <span id="lbl_SimpleCode"></span>
-            </td>
-        </tr>
-        <tr>
-            <td class="f-tb-t">
+                <span id="lbl_SimpleCode" style="width:182px;display:inline-block;"></span>
+
                 商户名称：
-            </td>
-            <td class="f-tb-c">
                 <span id="lbl_Name"></span>
             </td>
         </tr>
@@ -154,22 +151,16 @@
             </td>
             <td class="f-tb-c">
                 <input class="input-control" type="text" id="txt_ContactName" style="width: 150px;" value="" autocomplete="off" />
-            </td>
-        </tr>
-        <tr>
-            <td class="f-tb-t">
                 <span class="required-symbol">*</span>联系电话：
-            </td>
-            <td class="f-tb-c">
                 <input class="input-control" type="text" id="txt_ContactPhone" style="width: 150px;" value="" autocomplete="off" />
-            </td>
+             </td>
         </tr>
         <tr>
             <td class="f-tb-t">
                 联系地址：
             </td>
             <td class="f-tb-c">
-                <input class="input-control" type="text" id="txt_ContactAddress" style="width: 300px;" value="" autocomplete="off" />
+                <input class="input-control" type="text" id="txt_ContactAddress" style="width: 400px;" value="" autocomplete="off" />
             </td>
         </tr>
         <tr style="display:none">
@@ -190,6 +181,23 @@
     </div>
 
     <table class="f-tb" cellpadding="0" cellspacing="1" style="width:100%">
+        <tr>
+            <td class="f-tb-t">
+                业务类型：
+            </td>
+            <td class="f-tb-c">
+                <span id="lbl_BusinessTypeName"></span>
+            </td>
+        </tr>
+        <tr>
+            <td class="f-tb-t">
+                导入模板：
+            </td>
+            <td class="f-tb-c">
+                <span id="lbl_ImportFileTmplNames"></span>
+
+            </td>
+        </tr>
         <tr>
             <td class="f-tb-t">
                 任务量：
