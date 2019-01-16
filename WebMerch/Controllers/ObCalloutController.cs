@@ -10,7 +10,12 @@ namespace WebMerch.Controllers
 {
     public class ObCalloutController : OwnBaseController
     {
-        public ActionResult TeleMarket()
+        public ActionResult TeleMarketByCommon()
+        {
+            return View();
+        }
+
+        public ActionResult TeleMarketByCarIns()
         {
             return View();
         }

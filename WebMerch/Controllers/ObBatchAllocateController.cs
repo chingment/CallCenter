@@ -21,7 +21,12 @@ namespace WebMerch.Controllers
             return View();
         }
 
-        public ActionResult Add()
+        public ActionResult AddByCarIns()
+        {
+            return View();
+        }
+
+        public ActionResult AddByCommon()
         {
             return View();
         }
@@ -41,7 +46,7 @@ namespace WebMerch.Controllers
                          &&
                          u.MerchantId == this.CurrentMerchantId &&
                            (rup.Code == null || b.Code.Contains(rup.Code))
-                         select new { u.Id, ObBatchName = b.Name, u.SoureName, ObBatchCode = b.Code, u.DataCount, u.AllocatedCount, u.UnAllocatedCount, u.UsedCount, u.CreateTime });
+                         select new { u.Id, ObBatchName = b.Name, u.SoureName, ObBatchCode = b.Code, u.DataCount, u.AllocatedCount, u.UnAllocatedCount, u.UsedCount, u.CreateTime, b.BusinessType });
 
             int total = query.Count();
 
@@ -68,6 +73,7 @@ namespace WebMerch.Controllers
                     UnAllocatedCount = item.UnAllocatedCount,
                     UnUsedCount = item.AllocatedCount - item.UsedCount,
                     UsedCount = item.UsedCount,
+                    BusinessType = item.BusinessType,
                     CreateTime = item.CreateTime.ToUnifiedFormatDateTime()
                 });
             }
@@ -137,7 +143,7 @@ namespace WebMerch.Controllers
         }
 
 
-        public CustomJsonResult GetObCustomerList(RupObCustomerGetList rup)
+        public CustomJsonResult GetObCustomerListByCarIns(RupObCustomerGetList rup)
         {
 
 
@@ -192,6 +198,51 @@ namespace WebMerch.Controllers
                     CarInsLastCompany = item.CarInsLastCompany,
                     CarInsLastStartTime = item.CarInsLastStartTime.ToUnifiedFormatDate(),
                     CarInsLastEndTime = item.CarInsLastEndTime.ToUnifiedFormatDate(),
+                    CreateTime = item.CreateTime.ToUnifiedFormatDateTime()
+                });
+            }
+
+
+            PageEntity pageEntity = new PageEntity { PageSize = pageSize, TotalRecord = total, Rows = olist };
+
+            return Json(ResultType.Success, pageEntity, "");
+        }
+
+        public CustomJsonResult GetObCustomerListByCommon(RupObCustomerGetList rup)
+        {
+
+
+            var query = (from u in CurrentDb.ObCustomer
+                         where
+                         u.ObBatchAllocateId == rup.ObBatchAllocateId
+                         &&
+                         u.MerchantId == this.CurrentMerchantId &&
+                         (rup.CsrPhoneNumber == null || u.CsrPhoneNumber.Contains(rup.CsrPhoneNumber)) &&
+                         (rup.CsrName == null || u.CsrName.Contains(rup.CsrName)) 
+
+                         select new { u.Id, u.CsrName, u.CsrPhoneNumber, u.CsrAddress, u.CsrCompany, u.CreateTime });
+
+            int total = query.Count();
+
+            int pageIndex = rup.PageIndex;
+            int pageSize = rup.PageSize;
+            query = query.OrderByDescending(r => r.Id).Skip(pageSize * (pageIndex)).Take(pageSize);
+
+
+            var list = query.ToList();
+
+            List<object> olist = new List<object>();
+
+            foreach (var item in list)
+            {
+
+                olist.Add(new
+                {
+                    Id = item.Id,
+                    CsrName = item.CsrName,
+                    CsrPhoneNumber = item.CsrPhoneNumber,
+                    CsrAddress = item.CsrAddress,
+                    CsrCompany = item.CsrCompany,
                     CreateTime = item.CreateTime.ToUnifiedFormatDateTime()
                 });
             }

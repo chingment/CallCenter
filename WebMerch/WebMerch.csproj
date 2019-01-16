@@ -215,8 +215,8 @@
     <Content Include="Views\ObBatch\DetailsByCarIns.cshtml" />
     <Content Include="Views\User\ListBySelect.cshtml" />
     <Content Include="Views\ObBatchAllocate\List.cshtml" />
-    <Content Include="Views\ObBatchAllocate\Add.cshtml" />
-    <Content Include="Views\ObCallout\TeleMarket.cshtml" />
+    <Content Include="Views\ObBatchAllocate\AddByCarIns.cshtml" />
+    <Content Include="Views\ObCallout\TeleMarketByCarIns.cshtml" />
     <Content Include="Views\ObCustomer\ListByCarIns.cshtml" />
     <Content Include="Views\CarIns\ListByDealtUnderwritingOrder.cshtml" />
     <Content Include="Views\CarIns\DealtUnderwritingOrder.cshtml" />
@@ -232,6 +232,8 @@
     <Content Include="Views\TelSeat\List.cshtml" />
     <Content Include="Views\ObCustomer\ListByCommon.cshtml" />
     <Content Include="Views\ObBatch\DetailsByCommon.cshtml" />
+    <Content Include="Views\ObBatchAllocate\AddByCommon.cshtml" />
+    <Content Include="Views\ObCallout\TeleMarketByCommon.cshtml" />
     <None Include="Web.config">
       <SubType>Designer</SubType>
     </None>

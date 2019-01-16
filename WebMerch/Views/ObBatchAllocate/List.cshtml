@@ -37,11 +37,22 @@
             },
             operate: {
                 "allocate": function (obj) {
-                    var url = '/ObBatchAllocate/Add?id=' + obj.id;
+
+                    var url = "";
+
+                    switch (obj.businessType) {
+                        case 1:
+                            url = '/ObBatchAllocate/AddByCommon?id=' + obj.id;
+                            break;
+                        case 2:
+                            url = '/ObBatchAllocate/AddByCarIns?id=' + obj.id;
+                            break;
+                    }
+
                     var title = '分配';
                     art.dialog.open(url, {
                         id: "openDialog", title: title, width: '70%', height: '70%', lock: true, drag: false, cancelVal: '关闭', cancel: true, okVal: '分配', ok: function () {
-                            this.iframe.contentWindow.allocate();
+                            this.iframe.contentWindow.add();
                             return false;
                         }
                     });

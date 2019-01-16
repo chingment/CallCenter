@@ -1,0 +1,499 @@
+﻿@{
+    ViewBag.Title = "";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+@section styles{
+    <style type="text/css">
+        .teleMarket {
+            display: flex;
+        }
+
+        .customerInfo {
+            flex: 1;
+        }
+
+        .teleInfo {
+            width: 300px;
+            margin-left: 5px;
+            margin-right: 5px;
+        }
+
+
+        .infobox {
+            width: 100%;
+            border: 1px solid #d3d3d3;
+            border-radius: 3px;
+        }
+
+            .infobox .t {
+                background: #fc9f06;
+                color: #fff;
+                height: 27px;
+                line-height: 27px;
+                padding: 5px;
+                font-size: 14px;
+            }
+
+            .infobox .b {
+                padding: 5px;
+            }
+
+                .infobox .b ul li {
+                    line-height: 32px;
+                    display: flex;
+                }
+
+                    .infobox .b ul li p {
+                        line-height: 24px;
+                    }
+
+                    .infobox .b ul li .name {
+                        width: 80px;
+                    }
+
+                    .infobox .b ul li .value {
+                        flex: 1;
+                    }
+
+
+        .btn-switch {
+            width: 60px;
+            height: 26px;
+            overflow: hidden;
+        }
+
+            .btn-switch .btn_fath {
+                position: relative;
+                border-radius: 20px;
+                height: 100%;
+            }
+
+            .btn-switch .switch-status-on {
+                float: left;
+            }
+
+            .btn-switch .switch-status-off {
+                float: right;
+            }
+
+            .btn-switch .switch-status {
+                height: 100%;
+                width: 100%;
+                border: none;
+                font-size: 16px;
+                text-align: center;
+                z-index: 1;
+            }
+
+            .btn-switch .move {
+                z-index: 100;
+                width: 40%;
+                height: 92%;
+                border-radius: 20px;
+                position: absolute;
+                cursor: pointer;
+                border: 1px solid #828282;
+                background-color: #f1eff0;
+                /*box-shadow: 1px 2px 2px 1px #fff inset,0 0 5px 1px #999;*/
+            }
+
+            .btn-switch[data-state="on"] .btn_fath .move {
+                right: 0px;
+            }
+
+            .btn-switch[data-state="on"] .btn_fath {
+                background-color: #44b549;
+            }
+
+            .btn-switch[data-state="off"] .btn_fath {
+                background-color: #828282;
+            }
+
+        .SerFix {
+            position: fixed;
+            top: 0;
+            z-index: 100;
+        }
+    </style>
+}
+
+@section scripts{
+    <script type="text/javascript">
+
+
+        $(this).ready(function () {
+
+            initConfig();
+
+            getTaskDataStatus();
+
+            takeData();
+
+            $('.btn-switch').myBtnSwitch();
+
+            $('.btn-check').myBtnCheck();
+
+            $('.btn-callout').live("click", function () {
+
+                if (takeDataResult == null) {
+                    $.lumos.tips("没有可外呼的数据")
+                    return;
+                }
+
+                window.top.callCustomer(takeDataResult.obCustomerId);
+            });
+
+            $('.btn-callhangup').live("click", function () {
+
+                if (takeDataResult == null) {
+                    $.lumos.tips("没有可外呼的数据")
+                    return;
+                }
+
+                window.top.hangupCustomer(takeDataResult.obCustomerId);
+            });
+
+            $('#btn_SaveCallRecord').live("click", function () {
+
+                if (takeDataResult == null) {
+                    $.lumos.tips("客户信息为空")
+                    return;
+                }
+
+                var form_CallRecord = document.getElementById('form_CallRecord');
+
+                var sel_ResultCode = $(form_CallRecord).find('#sel_ResultCode');
+                var txt_NextCallTime = $(form_CallRecord).find('#txt_NextCallTime');
+                var txt_Remark = $(form_CallRecord).find('#txt_Remark');
+
+                $(sel_ResultCode).find("option[value='-1']").attr("selected", true);
+                $(sel_ResultCode).trigger("chosen:updated");
+                $(txt_NextCallTime).val("");
+                $(txt_Remark).val("");
+
+                var dialog = window.top.art.dialog({
+                    title: '通话记录', content: form_CallRecord, width: '500px', id: 'EF893L', lock: true, drag: false, cancelVal: '关闭', cancel: true, okVal: '保存',
+                    ok: function () {
+
+                        var resultCode = $(sel_ResultCode).find("option:selected").val();
+
+                        if (resultCode == "") {
+                            $.lumos.tips("请选择通话结果");
+                            return false;
+                        }
+
+                        art.dialog.confirm('确定要保存？', function () {
+
+                            var customerId = takeDataResult.obCustomerId;
+                            var nextCallTime = $(txt_NextCallTime).val();
+                            var remark = $(txt_Remark).val();
+                            $.lumos.postJson({
+                                isUseHandling: true,
+                                url: "/ObCallout/SaveCallResultRecord",
+                                data: { customerId: customerId, resultCode: resultCode, nextCallTime: nextCallTime, remark },
+                                        success: function (d) {
+                                            $.lumos.tips(d.message);
+                                            if (d.result == $.lumos.resultType.success) {
+                                                dialog.close();
+                                                takeData();
+                                            }
+                                        }
+                            });
+                        });
+
+                        return false;
+                    }
+                });
+
+            });
+
+
+            $('#ul_dealtTrack a').live("click", function () {
+
+                var url = $(this).attr("goUrl");
+                var title = '查看';
+                art.dialog.open(url, {
+                    id: "openDialog", title: title, width: '70%', height: '70%', lock: true, drag: false, cancelVal: '关闭', cancel: true
+                });
+            });
+
+            $('#sel_ResultCode').on("change", function () {
+                var obj = JSON.parse($(this).find("option:selected").attr("ext"));
+                if (obj.isAllowNextCall) {
+                    $('#txt_NextCallTime', window.top.document).removeAttr("disabled");
+                }
+                else {
+                    $('#txt_NextCallTime', window.top.document).attr("disabled", true);
+                    $('#txt_NextCallTime', window.top.document).val("");
+                }
+            });
+
+            var fdiv = $("#top_bar");
+            var itop = fdiv.offset().top;
+
+            window.onload = function () {
+                $(window).scroll(function () {
+                    var top = $(window).scrollTop();
+                    //console.log("top:" + top + ",itop:" + itop)
+                    if (top > itop) {
+                        fdiv.addClass("SerFix");
+                    } else {
+                        fdiv.removeClass("SerFix");
+                    }
+                });
+            }
+
+            //setInterval(function () {
+            //    getDealtTrack();
+            //}, 1200);
+        });
+
+        var takeDataResult = null;
+
+        function takeData() {
+
+            $.lumos.getJson({
+                url: "/ObCallout/TakeData",
+                isUseHandling: false,
+                success: function (d) {
+
+                    $.lumos.tips(d.message);
+
+                    if (d.result == $.lumos.resultType.success) {
+                        var data = d.data;
+
+                        takeDataResult = data;
+                        //alert(JSON.stringify(data))
+                        $('#lbl_CsrName').text(data.customer.name);
+                        $('#lbl_CsrPhoneNumber').text(data.customer.phoneNumber);
+                        $('#lbl_CsrAddress').text(data.customer.address);
+                        $('#lbl_CsrIdNumber').text(data.customer.idNumber);
+
+                        $('#lbl_CarRegisterDate').text(data.car.registerDate);
+                        $('#lbl_CarPlateNo').text(data.car.plateNo);
+                        $('#lbl_CarModel').text(data.car.model);
+                        $('#lbl_CarEngineNo').text(data.car.engineNo);
+                        $('#lbl_CarVin').text(data.car.vin);
+
+
+                        $('#lbl_CarInsLastCompany').text(data.car.insLastCompany);
+                        $('#lbl_CarInsTime').text(data.car.insTime);
+                        $('#lbl_CarInsLastQzNo').text(data.car.insLastQzNo);
+
+
+
+                        $('#txt_OfCompulsoryAmount').decimalInput(2);
+                        $('#txt_OfTravelTaxAmount').decimalInput(2);
+                        $('#txt_OfCommercialAmount').decimalInput(2);
+
+                        getDealtTrack();
+                        getTaskDataStatus();
+                    }
+                }
+            });
+        }
+
+        function initConfig() {
+
+            $.lumos.getJson({
+                url: "/ObCallout/GetInitConfig",
+                isShowLoading: true,
+                success: function (d) {
+                    if (d.result == $.lumos.resultType.success) {
+
+                        var data = d.data;
+     
+                        $('#sel_ResultCode').myChosen({ urlParams: { type: "callresultcode" } });
+
+                    }
+                }
+            });
+        }
+
+        function refresh() {
+
+        }
+
+        function getDealtTrack() {
+
+            var ul_dealtTrack = $('#ul_dealtTrack');
+            var customerId = "";
+            if (takeDataResult != null) {
+                if (typeof takeDataResult.obCustomerId != "undefined") {
+                    customerId = takeDataResult.obCustomerId
+                }
+            }
+
+            if (customerId == "")
+                return;
+
+            $.lumos.getJson({
+                url: "/ObCallout/GetDealtTrack",
+                urlParams: { customerId: customerId },
+                isShowLoading: true,
+                success: function (d) {
+                    if (d.result == $.lumos.resultType.success) {
+                        $(ul_dealtTrack).html('')
+
+                        if (d.data.length > 0) {
+                            $.each(d.data, function (i, item) {
+
+                                var msg = "<li><p>[" + item.dealtTime + "]" + item.message + "</p></li>";
+                                if (item.url != "") {
+                                    msg = "<li><p><a href=\"javascript:void(0)\" goUrl=\"" + item.url + "\" class=\"a-btn a-btn-edit\" operate=\"dealt\">[" + item.dealtTime + "]" + item.message + "</a></p></li>";
+                                }
+
+
+                                $(ul_dealtTrack).append(msg);
+                            })
+                        }
+                        else {
+                            $(ul_dealtTrack).append("<li>暂无信息</li>");
+                        }
+                    }
+                }
+            });
+        }
+
+        function getTaskDataStatus() {
+            $.lumos.getJson({
+                url: "/ObCallout/GetTaskDataStatus",
+                isShowLoading: false,
+                success: function (d) {
+                    if (d.result == $.lumos.resultType.success) {
+                        var data = d.data;
+                        $('#lbl_TaskQuantity').text(data.taskQuantity);
+                        $('#lbl_UnTakeQuantity').text(data.unTakeQuantity);
+                        $('#lbl_TakedQuantity').text(data.takedQuantity);
+                    }
+                }
+            });
+        }
+
+    </script>
+}
+
+<div class="gbr-row gbr-page">
+
+    <div class="teleMarket">
+
+
+        <div class="customerInfo">
+            <div id="top_bar" class="search-bar" style="background-color:#fff;">
+                <div class="filter" id="btn_SaveCallRecord">
+                    <span class="status-bar-btn selected">保存通话记录</span>
+                </div>
+                @*<div class="filter">
+                        <span class="status-bar-btn">编辑客户资料</span>
+                    </div>*@
+            </div>
+
+            <div class="gbr-row-title clearfix">
+                <div class="pull-left">
+                    <h5>基本信息</h5>
+                </div>
+                <div class="f-tb1-item-pull-right">
+
+                    <div class="remark-tips"><span class="t">提醒：</span><span class="c">客户数据<span class="red-t">系统自动</span>取出，如需取下一条数据，请<span class="red-t">保存通话记录</span>后，系统会自动取出.</span></div>
+
+                </div>
+            </div>
+            <table class="f-tb1-detail" style="width:100%;">
+                <tr>
+                    <td class="t">客户姓名：</td>
+                    <td class="c"><span id="lbl_CsrName"></span> </td>
+                    <td class="t">客户电话：</td>
+                    <td class="c" colspan="3">
+                        <span id="lbl_CsrPhoneNumber" style="display: block; float: left;line-height: 27px;margin-right:5px;"></span>
+
+                        <img class="btn-callout" title="点击外呼" src="@OwnStaticImagesResource.GetSrc("telphone_call.png")" style="width:22px;cursor:pointer" />
+
+                        <img class="btn-callhangup" title="点击挂断" src="@OwnStaticImagesResource.GetSrc("telphone_hangup.png")" style="width:22px;cursor:pointer" />
+
+                    </td>
+                </tr>
+                <tr>
+                    <td class="t">客户公司：</td>
+                    <td class="c"><span id="lbl_CsrCompany"></span></td>
+                    <td class="t">客户地址：</td>
+                    <td class="c" colspan="3"><span id="lbl_CsrAddress"></span></td>
+                </tr>
+            </table>
+
+        </div>
+
+        <div class="teleInfo">
+            <div id="taskInfo" class="infobox" style="margin-top:5px;">
+                <div class="t">
+                    <span class="title">我的状态</span>
+                </div>
+                <div class="b">
+                    <ul>
+                        <li><div class="name">任务数量</div><div id="lbl_TaskQuantity" class="value">0</div></li>
+                        <li><div class="name">未拨数量</div><div id="lbl_UnTakeQuantity" class="value">0</div></li>
+                        <li><div class="name">已拨数量</div><div id="lbl_TakedQuantity" class="value">0</div></li>
+                    </ul>
+                </div>
+            </div>
+
+
+            <div id="dealtTrackInfo" class="infobox" style="margin-top:5px;">
+                <div class="t">
+                    <span class="title">流程跟踪</span>
+                </div>
+                <div class="b">
+                    <ul id="ul_dealtTrack">
+                        <li></li>
+                    </ul>
+                </div>
+            </div>
+
+        </div>
+
+
+
+    </div>
+
+
+
+    <form id="form_CallRecord" name="form_CallRecord" method="post" style="width:500px;display:none">
+
+        <div class="remark-tips"><span class="t">提醒：</span><span class="c">通话记录须有进行<span class="red-t">通话后</span>才能保存成功</span></div>
+
+        <table class="f-tb" cellpadding="0" cellspacing="1" style="width:500px;">
+            <tr>
+                <td class="f-tb-t" style="width:90px">
+                    通话结果：
+                </td>
+                <td class="f-tb-c">
+
+                    <select id="sel_ResultCode" data-placeholder="请选择" class="chosen-select" style="width:200px">
+                        <option value="-1"></option>
+                    </select>
+
+                </td>
+            </tr>
+            <tr>
+                <td class="f-tb-t">
+                    下次回拨时间：
+                </td>
+                <td class="f-tb-c">
+
+                    <input id="txt_NextCallTime" type="text" class="Wdate input-control"  style="width:80px;" onfocus="WdatePicker({ dateFmt: 'yyyy-MM-dd', minDate: '@DateTime.Now.ToUnifiedFormatDate()' })" value="" disabled="disabled" />
+
+                </td>
+            </tr>
+            <tr>
+                <td class="f-tb-t">
+                    备注：
+                </td>
+                <td class="f-tb-c">
+                    <textarea rows="5" style="width:92%;" id="txt_Remark" class="input-control"></textarea>
+                </td>
+            </tr>
+        </table>
+    </form>
+</div>
+
+
