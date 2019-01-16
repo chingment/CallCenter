@@ -269,23 +269,8 @@
                         $('#lbl_CsrPhoneNumber').text(data.customer.phoneNumber);
                         $('#lbl_CsrAddress').text(data.customer.address);
                         $('#lbl_CsrIdNumber').text(data.customer.idNumber);
+                        $('#lbl_CsrCompany').text(data.customer.company);
 
-                        $('#lbl_CarRegisterDate').text(data.car.registerDate);
-                        $('#lbl_CarPlateNo').text(data.car.plateNo);
-                        $('#lbl_CarModel').text(data.car.model);
-                        $('#lbl_CarEngineNo').text(data.car.engineNo);
-                        $('#lbl_CarVin').text(data.car.vin);
-
-
-                        $('#lbl_CarInsLastCompany').text(data.car.insLastCompany);
-                        $('#lbl_CarInsTime').text(data.car.insTime);
-                        $('#lbl_CarInsLastQzNo').text(data.car.insLastQzNo);
-
-
-
-                        $('#txt_OfCompulsoryAmount').decimalInput(2);
-                        $('#txt_OfTravelTaxAmount').decimalInput(2);
-                        $('#txt_OfCommercialAmount').decimalInput(2);
 
                         getDealtTrack();
                         getTaskDataStatus();

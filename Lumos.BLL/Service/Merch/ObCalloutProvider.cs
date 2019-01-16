@@ -106,6 +106,7 @@ namespace Lumos.BLL.Service.Merch
                 ret.Customer.PhoneNumber = obCustomer.CsrPhoneNumber;
                 ret.Customer.IdNumber = obCustomer.CsrIdNumber;
                 ret.Customer.Address = obCustomer.CsrAddress;
+                ret.Customer.Company = obCustomer.CsrCompany;
 
                 ret.Car.RegisterDate = obCustomer.CarRegisterDate.ToUnifiedFormatDate();
                 ret.Car.PlateNo = obCustomer.CarPlateNo;
