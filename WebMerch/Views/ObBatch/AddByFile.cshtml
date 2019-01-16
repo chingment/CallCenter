@@ -32,6 +32,11 @@
                         $('#txt_BelongerId').val(data.belongerId);
                         $('#lbl_BelongerName').text(data.belongerName);
 
+                        if (data.importFileTmpls.length > 1) {
+                            $('#div_ImportFileTmpl').show();
+                        }
+
+
                         $('#sel_ImportFileTmpl').myChosen({ isUseUrl: false, data: data.importFileTmpls });
 
                         //alert(JSON.stringify(data))
@@ -175,7 +180,7 @@
             </div>
         </div>
         <div style="margin:20px 0px;height:30px;">
-            <div style="width:80px;float:left;margin-right:10px;margin-top:3px;">
+            <div style="width:80px;float:left;margin-right:10px;margin-top:3px;display:none;" id="div_ImportFileTmpl">
                 <select id="sel_ImportFileTmpl" name="importFileTmpl" class="chosen-select" style="width:80px"></select>
             </div>
             <div class="markupload" style="position:relative;width:300px; height:33px; float:left;margin-right:20px ">
