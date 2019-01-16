@@ -124,7 +124,7 @@
 
         $(this).ready(function () {
 
-            initConfig();
+            initData();
 
             getTaskDataStatus();
 
@@ -279,17 +279,17 @@
             });
         }
 
-        function initConfig() {
+        function initData() {
 
             $.lumos.getJson({
-                url: "/ObCallout/GetInitConfig",
+                url: "/ObCallout/initDataByTeleMarketByCommon",
                 isShowLoading: true,
                 success: function (d) {
                     if (d.result == $.lumos.resultType.success) {
 
                         var data = d.data;
-     
-                        $('#sel_ResultCode').myChosen({ urlParams: { type: "callresultcode" } });
+
+                        $('#sel_ResultCode').myChosen({ urlParams: { type: "callresultcode", businessType: 1 } });
 
                     }
                 }
@@ -465,7 +465,7 @@
                 </td>
                 <td class="f-tb-c">
 
-                    <input id="txt_NextCallTime" type="text" class="Wdate input-control"  style="width:80px;" onfocus="WdatePicker({ dateFmt: 'yyyy-MM-dd', minDate: '@DateTime.Now.ToUnifiedFormatDate()' })" value="" disabled="disabled" />
+                    <input id="txt_NextCallTime" type="text" class="Wdate input-control" style="width:80px;" onfocus="WdatePicker({ dateFmt: 'yyyy-MM-dd', minDate: '@DateTime.Now.ToUnifiedFormatDate()' })" value="" disabled="disabled" />
 
                 </td>
             </tr>

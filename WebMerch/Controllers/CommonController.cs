@@ -210,9 +210,9 @@ namespace WebMerch.Controllers
                     break;
                 case "callresultcode":
                     #region callresultcode
+                    Enumeration.BusinessType businessType = (Enumeration.BusinessType)int.Parse( Request.QueryString["businessType"]);
 
-
-                    var callResultCodes = CurrentDb.CallResultCode.Where(m => m.BusinessType == Enumeration.BusinessType.CarIns && m.Code.Length == 4).OrderBy(m => m.Priority).ToList();
+                    var callResultCodes = CurrentDb.CallResultCode.Where(m => m.BusinessType == businessType && m.Code.Length == 4).OrderBy(m => m.Priority).ToList();
 
                     foreach (var item in callResultCodes)
                     {

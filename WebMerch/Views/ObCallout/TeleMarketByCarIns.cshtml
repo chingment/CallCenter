@@ -124,7 +124,7 @@
 
         $(this).ready(function () {
 
-            initConfig();
+            initData();
 
             getTaskDataStatus();
 
@@ -356,10 +356,10 @@
             });
         }
 
-        function initConfig() {
+        function initData() {
 
             $.lumos.getJson({
-                url: "/ObCallout/GetInitConfig",
+                url: "/ObCallout/InitDataByTeleMarketByCarIns",
                 isShowLoading: true,
                 success: function (d) {
                     if (d.result == $.lumos.resultType.success) {
@@ -372,7 +372,7 @@
 
                         $('#carInsKindsBox').find("select").chosen({ search_contains: false, disable_search: true });
 
-                        $('#sel_ResultCode').myChosen({ urlParams: { type: "callresultcode" } });
+                        $('#sel_ResultCode').myChosen({ urlParams: { type: "callresultcode", businessType: 2 } });
 
                     }
                 }

@@ -35,7 +35,17 @@ namespace WebMerch.Controllers
             return MerchServiceFactory.ObCallout.SaveCallResultRecord(this.CurrentUserId, this.CurrentMerchantId, this.CurrentUserId, rop);
         }
 
-        public CustomJsonResult GetInitConfig()
+        public CustomJsonResult InitDataByTeleMarketByCarIns()
+        {
+
+            var carInsKinds = MerchServiceFactory.CarIns.GetKinds(this.CurrentUserId, this.CurrentMerchantId);
+            var carInsCompanys = MerchServiceFactory.CarIns.GetCompanys(this.CurrentUserId, this.CurrentMerchantId);
+            var ret = new { carInsKinds = carInsKinds, carInsCompanys = carInsCompanys };
+
+            return new CustomJsonResult(ResultType.Success, ResultCode.Success, "获取成功", ret);
+        }
+
+        public CustomJsonResult InitDataByTeleMarketByCommon()
         {
 
             var carInsKinds = MerchServiceFactory.CarIns.GetKinds(this.CurrentUserId, this.CurrentMerchantId);
