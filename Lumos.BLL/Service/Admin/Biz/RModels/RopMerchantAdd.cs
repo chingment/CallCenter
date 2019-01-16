@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using Lumos.Entity;
 
 namespace Lumos.BLL.Service.Admin
 {
@@ -17,6 +18,13 @@ namespace Lumos.BLL.Service.Admin
 
         public string SimpleCode { get; set; }
 
-        
+        public Enumeration.BusinessType BusinessType { get; set; }
+
+        public Enumeration.ObTakeDataPeriodMode ObTakeDataPeriodMode { get; set; }
+
+        public int ObTakeDataPeriodQuantity { get; set; }
+
+        public string[] ImportFileTmpls { get; set; }
+
     }
 }

@@ -58,7 +58,22 @@ namespace WebMerch.Controllers
                 belongerName = obBatch.BelongerName;
             }
 
-            var data = new { expiryDays = expiryDays, followDelayDays = followDelayDays, recoveryDays = recoveryDays, belongerId = belongerId, belongerName = belongerName };
+            var merchant = CurrentDb.Merchant.Where(m => m.Id == this.CurrentMerchantId).FirstOrDefault();
+
+            string[] str_importFileTmpls = merchant.ImportFileTmpls.Split(',');
+
+
+            var importFileTmpls = CurrentDb.ImportFileTmpl.Where(m => str_importFileTmpls.Contains(m.Id)).ToList();
+
+            var obj_importFileTmpls = new List<object>();
+
+            foreach (var item in importFileTmpls)
+            {
+                obj_importFileTmpls.Add(new { value = item.Id, Name = item.Name });
+            }
+
+
+            var data = new { expiryDays = expiryDays, followDelayDays = followDelayDays, recoveryDays = recoveryDays, belongerId = belongerId, belongerName = belongerName,importFileTmpls= obj_importFileTmpls };
 
 
             return new CustomJsonResult(ResultType.Success, ResultCode.Success, "", data);
@@ -158,9 +173,9 @@ namespace WebMerch.Controllers
 
             ExcelFormatCheckUtil excelFormatCheckUtil = new ExcelFormatCheckUtil(sheet);
 
-            switch (merchant.ImportFileTmpl)
+            switch (rop.ImportFileTmpl)
             {
-                case Enumeration.ImportFileTmpl.Common:
+                case "1":
                     #region 通用模板
                     excelFormatCheckUtil.AddCheckCellIsString(0, "联系人", 0, 200);
                     excelFormatCheckUtil.AddCheckCellIsString(1, "联系电话 ", 0, 200);
@@ -168,7 +183,7 @@ namespace WebMerch.Controllers
                     excelFormatCheckUtil.AddCheckCellIsString(3, "公司", 0, 200);
                     #endregion
                     break;
-                case Enumeration.ImportFileTmpl.CarIns:
+                case "2":
                     #region 车险模板
                     excelFormatCheckUtil.AddCheckCellIsString(0, "初登日期", 0, 200);
                     excelFormatCheckUtil.AddCheckCellIsString(1, "车牌", 0, 200);

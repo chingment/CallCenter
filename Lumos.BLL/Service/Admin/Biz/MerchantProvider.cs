@@ -36,7 +36,7 @@ namespace Lumos.BLL.Service.Admin
             ret.ContactPhone = merchant.ContactPhone ?? "";
             ret.SimpleCode = merchant.SimpleCode;
 
-            switch(merchant.ObTakeDataPeriodMode)
+            switch (merchant.ObTakeDataPeriodMode)
             {
                 case Enumeration.ObTakeDataPeriodMode.Week:
                     ret.ObTakeDataPeriodMode = string.Format("按周，默认每周每人取量上限{0}条，如需调整请到数据限额调整页面", merchant.ObTakeDataPeriodQuantity);
@@ -109,8 +109,10 @@ namespace Lumos.BLL.Service.Admin
                 merchant.SimpleCode = rop.SimpleCode;
                 merchant.CreateTime = this.DateTime;
                 merchant.Creator = operater;
-                merchant.BusinessType = Enumeration.BusinessType.Unknow;
-                merchant.ImportFileTmpl = Enumeration.ImportFileTmpl.Unknow;
+                merchant.BusinessType = rop.BusinessType;
+                merchant.ObTakeDataPeriodMode = rop.ObTakeDataPeriodMode;
+                merchant.ObTakeDataPeriodQuantity = rop.ObTakeDataPeriodQuantity;
+                merchant.ImportFileTmpls = string.Join(",", rop.ImportFileTmpls);
                 CurrentDb.Merchant.Add(merchant);
 
 

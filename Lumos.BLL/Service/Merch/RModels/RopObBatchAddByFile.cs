@@ -28,6 +28,8 @@ namespace Lumos.BLL.Service.Merch
         public string BelongerName { get; set; }
 
         public string BelongerOrganizationId { get; set; }
+
+        public string ImportFileTmpl { get; set; }
     }
 
 }

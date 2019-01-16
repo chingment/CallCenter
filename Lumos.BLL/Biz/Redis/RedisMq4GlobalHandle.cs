@@ -111,14 +111,14 @@ namespace Lumos.BLL.Biz
                                     DateTime? carInsLastEndTime = null;
 
 
-                                    if (obBatch.ImportFileTmpl == Enumeration.ImportFileTmpl.Common)
+                                    if (obBatch.ImportFileTmpl == "1")
                                     {
                                         csrPhoneNumber = NPOIHelperUtil.GetCellValue(row.GetCell(1));
                                         csrName = NPOIHelperUtil.GetCellValue(row.GetCell(0));
                                         csrAddress = NPOIHelperUtil.GetCellValue(row.GetCell(2));
                                         csrCompany = NPOIHelperUtil.GetCellValue(row.GetCell(3));
                                     }
-                                    else if (obBatch.ImportFileTmpl == Enumeration.ImportFileTmpl.CarIns)
+                                    else if (obBatch.ImportFileTmpl == "2")
                                     {
                                         csrPhoneNumber = NPOIHelperUtil.GetCellValue(row.GetCell(8));
                                         csrName = NPOIHelperUtil.GetCellValue(row.GetCell(6));

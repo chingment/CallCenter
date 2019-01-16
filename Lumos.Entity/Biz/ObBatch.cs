@@ -16,7 +16,7 @@ namespace Lumos.Entity
         public Enumeration.DataBatchSoureType SoureType { get; set; }
         public string SoureName { get; set; }
         public string FilePath { get; set; }
-        public Enumeration.ImportFileTmpl ImportFileTmpl { get; set; }
+        public string ImportFileTmpl { get; set; }
         public Enumeration.BusinessType BusinessType { get; set; }
         public int DataCount { get; set; }
         public int ValidCount { get; set; }

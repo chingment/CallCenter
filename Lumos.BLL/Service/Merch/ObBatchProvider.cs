@@ -56,7 +56,7 @@ namespace Lumos.BLL.Service.Merch
             obBatch.Code = rop.Code;
             obBatch.Name = rop.Name;
             obBatch.BusinessType = merchant.BusinessType;
-            obBatch.ImportFileTmpl = merchant.ImportFileTmpl;
+            obBatch.ImportFileTmpl = rop.ImportFileTmpl;
             obBatch.SoureType = Enumeration.DataBatchSoureType.File;
             obBatch.ExpiryDays = rop.ExpiryDays;
             obBatch.ExpiryTime = this.DateTime.AddDays(rop.ExpiryDays);
