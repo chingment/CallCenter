@@ -2,6 +2,7 @@
 using Lumos;
 using Lumos.BLL.Task;
 using System;
+using System.Threading;
 using Topshelf;
 
 namespace Task4Mq2Global
@@ -9,7 +10,7 @@ namespace Task4Mq2Global
     public sealed class ServiceRunner : ServiceControl, ServiceSuspend
     {
         private readonly ILog _logger = LogManager.GetLogger(typeof(ServiceRunner));
-     
+
 
         private string ServiceName
         {
@@ -21,10 +22,17 @@ namespace Task4Mq2Global
 
         public ServiceRunner()
         {
-            
+
         }
 
         public bool Start(HostControl hostControl)
+        {
+            new Thread(Go).Start();
+            _logger.Info(string.Format("{0} Start", ServiceName));
+            return true;
+        }
+
+        void Go()
         {
             try
             {
@@ -35,11 +43,6 @@ namespace Task4Mq2Global
             {
                 LogUtil.Error("异常错误", ex);
             }
-
-            LogUtil.Info("程序结束运行");
-
-            _logger.Info(string.Format("{0} Start", ServiceName));
-            return true;
         }
 
         public bool Stop(HostControl hostControl)
@@ -50,7 +53,7 @@ namespace Task4Mq2Global
 
         public bool Continue(HostControl hostControl)
         {
-           
+
             _logger.Info(string.Format("{0} Continue", ServiceName));
             return true;
         }

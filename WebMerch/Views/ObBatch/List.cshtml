@@ -15,6 +15,7 @@
             searchParams: $("#form1").serializeArray(),
             searchButtonId: "btn_Search",
             containerId: "form1",
+            refreshInterval: 1000,
             rowDataCombie: function (p_index, p_row) {
                 var l_Strlimt = "";
                 l_Strlimt += "@Html.IsInPermission("<a href=\\\"javascript:void(0)\\\" operate=\\\"details\\\"   class=\\\"a-btn a-btn-edit\\\"  >查看</a>")";
@@ -36,10 +37,9 @@
             },
             operate: {
                 "details": function (obj) {
-                    var url="";
-                    
-                    switch(obj.businessType)
-                    {
+                    var url = "";
+
+                    switch (obj.businessType) {
                         case 1:
                             url = '/ObBatch/DetailsByCommon?id=' + obj.id;
                             break;

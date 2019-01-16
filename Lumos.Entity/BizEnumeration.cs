@@ -98,6 +98,8 @@ namespace Lumos.Entity
             Handling = 2,
             [Remark("完成")]
             Complete = 3,
+            [Remark("异常失败")]
+            Failure = 4,
         }
 
         public enum ObBatchAllocateMode
