@@ -136,7 +136,7 @@ namespace WebMerch.Controllers
                 var merchantUser = CurrentDb.SysMerchantUser.Where(m => m.Id == this.CurrentUserId).FirstOrDefault();
                 if (merchantUser != null)
                 {
-                    var menus = (from menu in CurrentDb.SysMenu where (from rolemenu in CurrentDb.SysRoleMenu where (from sysPositionRole in CurrentDb.SysPositionRole where sysPositionRole.PositionId == merchantUser.PositionId select sysPositionRole.RoleId).Contains(rolemenu.RoleId) select rolemenu.MenuId).Contains(menu.Id) && menu.BelongSite == Enumeration.BelongSite.Merchant select menu).OrderBy(m => m.Priority).ToList();
+                    var menus = (from menu in CurrentDb.SysMenu where (from rolemenu in CurrentDb.SysRoleMenu where (from sysPositionRole in CurrentDb.SysPositionRole where sysPositionRole.PositionId == merchantUser.PositionId select sysPositionRole.RoleId).Contains(rolemenu.RoleId) select rolemenu.MenuId).Contains(menu.Id) && menu.BelongSite == Enumeration.BelongSite.Merchant && (menu.BusinessType == Enumeration.BusinessType.Unknow || menu.BusinessType == merchant.BusinessType) select menu).OrderBy(m => m.Priority).ToList();
 
                     var menuLevel1 = from c in menus where c.Dept == 1 select c;
 

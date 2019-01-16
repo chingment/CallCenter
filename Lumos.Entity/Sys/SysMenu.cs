@@ -35,5 +35,7 @@ namespace Lumos.Entity
         public Enumeration.BelongSite BelongSite { get; set; }
 
         public int Dept { get; set; }
+
+        public Enumeration.BusinessType BusinessType { get; set; }
     }
 }
