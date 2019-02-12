@@ -45,6 +45,7 @@ namespace Lumos.DAL
 
         public IDbSet<ObTakeDataLimit> ObTakeDataLimit { get; set; }
 
+        public IDbSet<ObTakeDataDayLog>  ObTakeDataDayLog { get; set; }
         public IDbSet<TeleSeat> TeleSeat { get; set; }
 
         public IDbSet<ImportFileTmpl> ImportFileTmpl { get; set; }
