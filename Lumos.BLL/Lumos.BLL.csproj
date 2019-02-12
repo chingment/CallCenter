@@ -218,6 +218,7 @@
     <Compile Include="Task\Task4Factory.cs" />
     <Compile Include="Task\Task4Mq2GlobalProvder.cs" />
     <Compile Include="Task\Task4Tim2GlobalProvider.cs" />
+    <Compile Include="Task\Task4Tim2ObTakeDataLimitProvider.cs" />
     <Compile Include="Task\Task4Tim2TelePhoneControlProvider.cs" />
   </ItemGroup>
   <ItemGroup>

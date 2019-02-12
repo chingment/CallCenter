@@ -84,42 +84,6 @@ namespace Lumos.BLL.Task
                     LogUtil.Info(string.Format("结束执行订单查询,时间:{0}", this.DateTime));
                 }
 
-
-                var merchants = CurrentDb.Merchant.ToList();
-                foreach (var merchant in merchants)
-                {
-                    switch (merchant.ObTakeDataPeriodMode)
-                    {
-                        case Enumeration.ObTakeDataPeriodMode.Day:
-                            break;
-                        case Enumeration.ObTakeDataPeriodMode.Week:
-                            break;
-                    }
-
-                    var obTakeDataLimits = CurrentDb.ObTakeDataLimit.Where(m => m.MerchantId == merchant.Id).ToList();
-
-                    foreach (var obTakeDataLimit in obTakeDataLimits)
-                    {
-                        string date = DateTime.Now.ToUnifiedFormatDate();
-                        var isExist = CurrentDb.ObTakeDataDayLog.Where(m => m.MerchantId == obTakeDataLimit.MerchantId && m.SalesmanId == obTakeDataLimit.SalesmanId && m.Date == date).FirstOrDefault();
-                        if (isExist == null)
-                        {
-                            var obTakeDataDayLog = new ObTakeDataDayLog();
-                            obTakeDataDayLog.Id = GuidUtil.New();
-                            obTakeDataDayLog.Date = date;
-                            obTakeDataDayLog.MerchantId = obTakeDataLimit.MerchantId;
-                            obTakeDataDayLog.SalesmanId = obTakeDataLimit.SalesmanId;
-                            obTakeDataDayLog.TaskQuantity = obTakeDataLimit.TakedQuantity;
-                            obTakeDataDayLog.UnTakeQuantity = obTakeDataLimit.UnTakeQuantity;
-                            obTakeDataDayLog.TakedQuantity = obTakeDataLimit.TakedQuantity;
-                            obTakeDataDayLog.CreateTime = DateTime.Now;
-                            obTakeDataDayLog.Creator = GuidUtil.Empty();
-                            CurrentDb.ObTakeDataDayLog.Add(obTakeDataDayLog);
-                            CurrentDb.SaveChanges();
-                        }
-                    }
-                }
-                //if(DateTime.Now>)
             }
             catch (Exception ex)
             {

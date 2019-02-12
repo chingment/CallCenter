@@ -5,6 +5,7 @@ using System.ComponentModel.DataAnnotations.Schema;
 
 namespace Lumos.Entity
 {
+    [Table("ObTakeDataDayLog")]
     public class ObTakeDataDayLog
     {
         [Key]
