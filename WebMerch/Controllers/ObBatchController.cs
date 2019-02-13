@@ -318,9 +318,7 @@ namespace WebMerch.Controllers
                 });
             }
 
-            List<string> headTitle = new List<string>();
-
-
+   
             PageEntity pageEntity = new PageEntity { PageSize = pageSize, TotalRecord = total, Rows = olist };
 
             return Json(ResultType.Success, pageEntity, "");
