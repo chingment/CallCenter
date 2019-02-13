@@ -271,9 +271,15 @@
                         $('#lbl_CsrIdNumber').text(data.customer.idNumber);
                         $('#lbl_CsrCompany').text(data.customer.company);
 
-
                         getDealtTrack();
                         getTaskDataStatus();
+                    }
+                    else {
+                        $('#lbl_CsrName').text("");
+                        $('#lbl_CsrPhoneNumber').text("");
+                        $('#lbl_CsrAddress').text("");
+                        $('#lbl_CsrIdNumber').text("");
+                        $('#lbl_CsrCompany').text("");
                     }
                 }
             });

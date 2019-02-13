@@ -70,23 +70,14 @@ namespace WebMerch
             string userName = userInfo.UserName;
 
             char[] c = userName.ToCharArray();
-            if (userName.Length > 2 & userName.Length <= 5)
+            string s1 = "";
+            string s2 = "";
+            if (userName.Length > 4)
             {
-                c[1] = '*';
+                s1 = userName.Substring(0, 2);
+                s2 = userName.Substring(userName.Length - 2, 2);
+                userName = s1 + "***" + s2;
             }
-            else if (userName.Length > 5 && userName.Length <= 9)
-            {
-                c[3] = '*';
-                c[4] = '*';
-            }
-            else if (userName.Length > 9)
-            {
-                c[3] = '*';
-                c[4] = '*';
-                c[5] = '*';
-            }
-
-            userName = new string(c);
 
             return userName;
         }

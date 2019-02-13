@@ -39,6 +39,14 @@ namespace Lumos.BLL.Service.Merch
 
                 //System.Threading.Thread.Sleep(1000000);
 
+                DateTime dateEnd1 = DateTime.Parse(DateTime.Now.ToUnifiedFormatDate() + " 23:40:00");
+                DateTime dateEnd2 = DateTime.Parse(DateTime.Now.ToUnifiedFormatDate() + " 23:59:59");
+
+                if (DateTime.Now >= dateEnd1 && DateTime.Now <= dateEnd2)
+                {
+                    return new CustomJsonResult(ResultType.Failure, ResultCode.Failure, "系统在该时段维护中");
+                }
+
                 var taker = CurrentDb.SysMerchantUser.Where(m => m.Id == salesmanId).FirstOrDefault();
 
                 if (taker.Status != Enumeration.UserStatus.Normal)
