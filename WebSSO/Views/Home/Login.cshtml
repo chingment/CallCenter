@@ -1,6 +1,6 @@
 ﻿@{
     ViewBag.Title = "登录";
-    Layout = "~/Views/Shared/_LayoutHome.cshtml";
+    Layout = "~/Views/Shared/_Layout.cshtml";
 }
 @section styles{
     <style type="text/css">
@@ -15,8 +15,6 @@
 }
 
 @section scripts{
-
-
     <script type="text/javascript">
 
         $(document).ready(function () {
@@ -32,53 +30,8 @@
             });
 
         });
-
-
     </script>
 }
-
-<div id="bg_page_login" class="bg-page-login">
-    <img id="bg_page_login_img" src="~/images/bg_login1.jpg" style="position: absolute; left: 0px;opacity:1; overflow: hidden; transition: opacity .8s ease" />
-</div>
-<div class="gbr-row gbr-row-login">
-    <form id="form1" onsubmit="return login()">
- 
-        <div class="h-form-container login-box">
-            <div class="h-message">
-                <span id="lbl_Message"></span>
-            </div>
-            <dl class="h-entry clearfix">
-                <dt class="h-entry-label">用户名： </dt>
-                <dd class="h-entry-values">
-                    <span class="h-item "><input type="text" id="txt_UserName" autocomplete="off" name="UserName" value="" style="width:180px;" placeholder="请输入登录帐号" /></span>
-                    <div class="clear"></div>
-                </dd>
-            </dl>
-            <div class="h-line"></div>
-            <dl class="h-entry">
-                <dt class="h-entry-label">密码：</dt>
-                <dd class="h-entry-values">
-                    <span class="h-item"><input type="password" class="txt_Password"  autocomplete="off"  value="" style="width: 180px;" placeholder="请输入密码" /></span>
-                    <div class="clear"></div>
-                </dd>
-            </dl>
-            <div class="h-line"></div>
-            <dl class="h-entry clearfix">
-                <dt class="h-entry-label">验证码：</dt>
-                <dd class="h-entry-values">
-                    <span class="h-item"><input type="text" id="txt_VerifyCode" name="txt_VerifyCode" value="" style="width: 100px;" placeholder="请输入密码" /><img id="img_VerifyCode" style="border:0px;" class="img-verify" alt="验证码" /></span>
-                    <div class="clear"></div>
-                </dd>
-            </dl>
-            <div class="h-line"></div>
-            <div class="h-button">
-                <input type="submit" id="btn_Login" name="btn_Login" value="登录" style="width: 100%;" />
-                <div class="clear"></div>
-            </div>
-        </div>
-    </form>
-</div>
-
 @section scriptsbyend{
     <script type="text/javascript">
 
@@ -160,6 +113,71 @@
     </script>
 }
 
+<div class="gb">
+    <div class="gbr gbr-header gbr-header-small" id="gbr_header">
+        <div class="wrapper">
+            <div class="content clearfix">
+                <ul class="content-left">
+                    <li>
+                        <span class="title">云呼中心-登录</span>
+                    </li>
+                </ul>
+                <ul class="content-right btn-dropdownmenu"></ul>
+                <div class="clear"></div>
+            </div>
+            <div class="clear"></div>
+        </div>
+        <div class="clear"></div>
+    </div>
 
-
-
+    <div class="gbr gbr-main" id="gbr_main">
+        <div class="wrapper">
+            <div class="content clearfix" id="gbr_main_content">
+                <div id="bg_page_login" class="bg-page-login">
+                    <img id="bg_page_login_img" src="~/images/bg_login1.jpg" style="position: absolute; left: 0px;opacity:1; overflow: hidden; transition: opacity .8s ease" />
+                </div>
+                <div class="gbr-row gbr-row-login">
+                    <div id="hq-jquery-client" data-debug-switch="on"></div>
+                    <form id="form1" onsubmit="return login()">
+                        <div class="h-form-container login-box">
+                            <div class="h-message">
+                                <span id="lbl_Message"></span>
+                            </div>
+                            <dl class="h-entry clearfix">
+                                <dt class="h-entry-label">用户名： </dt>
+                                <dd class="h-entry-values">
+                                    <span class="h-item "><input type="text" id="txt_UserName" autocomplete="off" name="UserName" value="" style="width:180px;" placeholder="请输入登录帐号" /></span>
+                                    <div class="clear"></div>
+                                </dd>
+                            </dl>
+                            <div class="h-line"></div>
+                            <dl class="h-entry">
+                                <dt class="h-entry-label">密码：</dt>
+                                <dd class="h-entry-values">
+                                    <span class="h-item"><input type="password" class="txt_Password" autocomplete="off" value="" style="width: 180px;" placeholder="请输入密码" /></span>
+                                    <div class="clear"></div>
+                                </dd>
+                            </dl>
+                            <div class="h-line"></div>
+                            <dl class="h-entry clearfix">
+                                <dt class="h-entry-label">验证码：</dt>
+                                <dd class="h-entry-values">
+                                    <span class="h-item"><input type="text" id="txt_VerifyCode" name="txt_VerifyCode" value="" style="width: 100px;" placeholder="请输入密码" /><img id="img_VerifyCode" style="border:0px;" class="img-verify" alt="验证码" /></span>
+                                    <div class="clear"></div>
+                                </dd>
+                            </dl>
+                            <div class="h-line"></div>
+                            <div class="h-button">
+                                <input type="submit" id="btn_Login" name="btn_Login" value="登录" style="width: 100%;" />
+                                <div class="clear"></div>
+                            </div>
+                        </div>
+                    </form>
+                </div>
+                <div class="clear"></div>
+            </div>
+            <div class="clear"></div>
+        </div>
+        <div class="clear"></div>
+    </div>
+</div>

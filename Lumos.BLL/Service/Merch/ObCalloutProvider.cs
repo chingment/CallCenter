@@ -35,16 +35,12 @@ namespace Lumos.BLL.Service.Merch
             {
                 var ret = new RetObCalloutTakeData();
 
-                //var s = CurrentDb.ObBatchAllocate.Where(m => m.BelongerId == "1a1f58e9595544b3be41da174b34513f").FirstOrDefault();
-
-                //System.Threading.Thread.Sleep(1000000);
-
                 DateTime dateEnd1 = DateTime.Parse(DateTime.Now.ToUnifiedFormatDate() + " 23:40:00");
                 DateTime dateEnd2 = DateTime.Parse(DateTime.Now.ToUnifiedFormatDate() + " 23:59:59");
 
                 if (DateTime.Now >= dateEnd1 && DateTime.Now <= dateEnd2)
                 {
-                    return new CustomJsonResult(ResultType.Failure, ResultCode.Failure, "系统在该时段维护中");
+                    return new CustomJsonResult(ResultType.Failure, ResultCode.Failure, "系统在该时段（23:40-0:00）维护中");
                 }
 
                 var taker = CurrentDb.SysMerchantUser.Where(m => m.Id == salesmanId).FirstOrDefault();

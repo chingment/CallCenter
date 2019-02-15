@@ -171,6 +171,7 @@
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
+    <Content Include="debug.js" />
     <Content Include="favicon.ico" />
     <Content Include="fonts\glyphicons-halflings-regular.svg" />
     <Content Include="Global.asax" />
@@ -233,7 +234,6 @@
   <ItemGroup>
     <None Include="Properties\PublishProfiles\mipb.pubxml" />
     <Content Include="Views\Shared\_Layout.cshtml" />
-    <Content Include="Views\Shared\_LayoutHome.cshtml" />
     <Content Include="Views\Shared\MessageBox.cshtml" />
     <Content Include="Views\web.config" />
     <None Include="Properties\PublishProfiles\WE.pubxml" />

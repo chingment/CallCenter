@@ -71,7 +71,7 @@ namespace WebSSO.Controllers
             string host = "";
             string returnUrl = "";
 
-
+            var _this = this;
             switch (result.User.BelongSite)
             {
                 case Enumeration.BelongSite.Admin:
