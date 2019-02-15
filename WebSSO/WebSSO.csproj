@@ -179,6 +179,8 @@
     </None>
     <Content Include="Images\bg_login1.jpg" />
     <Content Include="Views\Home\Login.cshtml" />
+    <Content Include="Views\_ViewStart.cshtml" />
+    <Content Include="Views\Home\Set.cshtml" />
     <None Include="Web.config">
       <SubType>Designer</SubType>
     </None>

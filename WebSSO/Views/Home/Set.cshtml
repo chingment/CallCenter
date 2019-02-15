@@ -1,0 +1,94 @@
+﻿
+@{
+    ViewBag.Title = "设置";
+}
+
+@section scripts{
+    <script type="text/javascript">
+
+        $(document).ready(function () {
+
+            var account = $.cookie("teleSeatAccount");
+            var password = $.cookie("teleSeatPassword");
+
+            $('#txt_Account').val(account);
+            $('#txt_Password').val(password);
+
+            $('#btn_Sure').live('click', function () {
+                update();
+            });
+
+        });
+
+
+        function update() {
+
+  
+
+            var account = $("#txt_Account").val();
+            var password = $("#txt_Password").val();
+
+            $.lumos.postJson({
+                url: "/Home/Set",
+                isUseHandling: true,
+                data: { account: account, password: password },
+                success: function (d) {
+                    $.lumos.tips(d.message);
+                    if (d.result == $.lumos.resultType.success) {
+                       
+                    }
+                }
+            });
+
+            return false;
+        }
+
+    </script>
+}
+
+<div class="gbr-row gbr-page">
+
+
+    <div class="gbr-row-title clearfix">
+        <div class="pull-left">
+            <h5>基本设置</h5>
+        </div>
+        <div class="pull-right f-tb1-item-pull-right">
+            <h6></h6>
+        </div>
+    </div>
+
+    <div class="h-form-container changepassword-box">
+        <div class="h-entries">
+
+            <dl class="h-entry clearfix">
+                <dt class="h-entry-label">话机号码：</dt>
+                <dd class="h-entry-values">
+                    <span class="h-item ">
+                        <input type="text" id="txt_Account"  class="input-control" value="" style="width:200px;" />
+                    </span>
+                </dd>
+            </dl>
+
+            <div class="h-line">
+            </div>
+            <dl class="h-entry clearfix">
+                <dt class="h-entry-label">话机密码：</dt>
+                <dd class="h-entry-values">
+                    <span class="h-item ">
+                        <input type="text" id="txt_Password" class="input-control" value="" style="width:200px;" />
+                    </span>
+                </dd>
+            </dl>
+            <div class="h-line">
+            </div>
+            <dl class="h-entry clearfix">
+                <dt class="h-entry-label"></dt>
+                <dd class="h-entry-values">
+                    <span class="h-item "><input id="btn_Sure" type="button" class="btn btn-sure" value="更新" style="width: 225px;" /></span>
+                </dd>
+            </dl>
+        </div>
+    </div>
+</div>
+

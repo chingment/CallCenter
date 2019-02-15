@@ -12,6 +12,7 @@ using Lumos.Redis;
 using Lumos.Web;
 using Lumos.BLL.Biz;
 using Lumos.BLL.Service.Admin;
+using System.Web;
 
 namespace WebSSO.Controllers
 {
@@ -23,6 +24,11 @@ namespace WebSSO.Controllers
         public ActionResult Login()
         {
             Session[sesionKeyLoginVerifyCode] = null;
+            return View();
+        }
+
+        public ActionResult Set()
+        {
             return View();
         }
 
@@ -112,6 +118,17 @@ namespace WebSSO.Controllers
             Session[name] = code;   //Session 取出验证码
             Response.End();
             return null;
+        }
+
+        [HttpPost]
+        [AllowAnonymous]
+        public CustomJsonResult Set(string account,string password)
+        {
+
+            this.Response.Cookies.Add(new HttpCookie("teleSeatAccount", account));
+            this.Response.Cookies.Add(new HttpCookie("teleSeatPassword", password));
+
+            return Json(ResultType.Success, "更新成功");
         }
 
     }
