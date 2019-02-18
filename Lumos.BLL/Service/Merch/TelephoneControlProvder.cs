@@ -13,75 +13,54 @@ namespace Lumos.BLL.Service.Merch
 {
     public class TelephoneControlProvder : BaseProvider
     {
-        public CustomJsonResult Login(string operater, string merchantId, string salesmanId)
+        public CustomJsonResult Login(string operater, string merchantId, string salesmanId, string account)
         {
             CustomJsonResult result = new CustomJsonResult();
 
-            using (TransactionScope ts = new TransactionScope())
+            if (string.IsNullOrEmpty(account))
             {
-                var salesman = CurrentDb.SysMerchantUser.Where(m => m.MerchantId == merchantId && m.Id == salesmanId).FirstOrDefault();
-
-                if (string.IsNullOrEmpty(salesman.TeleSeatId))
-                {
-                    return new CustomJsonResult(ResultType.Failure, ResultCode.Failure, "未配置外呼话机号码，请联系系统管理员");
-                }
-
-                var teleSeat = CurrentDb.TeleSeat.Where(m => m.Id == salesman.TeleSeatId).FirstOrDefault();
-
-                SdkFactory.Lxt.Login(teleSeat.Account);
-
-                //CurrentDb.SaveChanges();
-                //ts.Complete();
-
-
-                result = new CustomJsonResult(ResultType.Success, ResultCode.Success, "签入成功");
+                return new CustomJsonResult(ResultType.Failure, ResultCode.Failure, "未配置外呼话机号码，请联系系统管理员");
             }
+
+
+            SdkFactory.Lxt.Login(account);
+
+            result = new CustomJsonResult(ResultType.Success, ResultCode.Success, "签入成功");
 
             return result;
         }
 
-        public CustomJsonResult Logout(string operater, string merchantId, string salesmanId)
+        public CustomJsonResult Logout(string operater, string merchantId, string salesmanId, string account)
         {
             CustomJsonResult result = new CustomJsonResult();
 
-            using (TransactionScope ts = new TransactionScope())
+            if (string.IsNullOrEmpty(account))
             {
-                var salesman = CurrentDb.SysMerchantUser.Where(m => m.MerchantId == merchantId && m.Id == salesmanId).FirstOrDefault();
-
-                if (string.IsNullOrEmpty(salesman.TeleSeatId))
-                {
-                    return new CustomJsonResult(ResultType.Failure, ResultCode.Failure, "未配置外呼话机号码，请联系系统管理员");
-                }
-
-                var teleSeat = CurrentDb.TeleSeat.Where(m => m.Id == salesman.TeleSeatId).FirstOrDefault();
-
-                SdkFactory.Lxt.Logout(teleSeat.Account);
-
-                result = new CustomJsonResult(ResultType.Success, ResultCode.Success, "签出成功");
-
-                //CurrentDb.SaveChanges();
-                //ts.Complete();
+                return new CustomJsonResult(ResultType.Failure, ResultCode.Failure, "未配置外呼话机号码，请联系系统管理员");
             }
+
+            SdkFactory.Lxt.Logout(account);
+
+            result = new CustomJsonResult(ResultType.Success, ResultCode.Success, "签出成功");
 
             return result;
         }
 
-        public CustomJsonResult CallCustomer(string operater, string merchantId, string salesmanId, string customerId)
+        public CustomJsonResult CallCustomer(string operater, string merchantId, string salesmanId, string customerId, string account)
         {
             CustomJsonResult result = new CustomJsonResult();
+
+            if (string.IsNullOrEmpty(account))
+            {
+                return new CustomJsonResult(ResultType.Failure, ResultCode.Failure, "未配置外呼话机号码，请联系系统管理员");
+            }
 
             using (TransactionScope ts = new TransactionScope())
             {
                 var salesman = CurrentDb.SysMerchantUser.Where(m => m.MerchantId == merchantId && m.Id == salesmanId).FirstOrDefault();
                 if (salesman == null)
                 {
-                   return new CustomJsonResult(ResultType.Failure, ResultCode.Failure, "用户信息无效");
-                }
-
-
-                if (string.IsNullOrEmpty(salesman.TeleSeatId))
-                {
-                    return new CustomJsonResult(ResultType.Failure, ResultCode.Failure, "未配置外呼话机号码，请联系系统管理员");
+                    return new CustomJsonResult(ResultType.Failure, ResultCode.Failure, "用户信息无效");
                 }
 
                 var obCustomer = CurrentDb.ObCustomer.Where(m => m.Id == customerId).FirstOrDefault();
@@ -90,14 +69,13 @@ namespace Lumos.BLL.Service.Merch
                     return new CustomJsonResult(ResultType.Failure, ResultCode.Failure, "系统找不到该客户信息");
                 }
 
-                var teleSeat = CurrentDb.TeleSeat.Where(m => m.Id == salesman.TeleSeatId).FirstOrDefault();
 
-                var telePhoneStatus = SdkFactory.Lxt.GetStatus(teleSeat.Account);
+                var telePhoneStatus = SdkFactory.Lxt.GetStatus(account);
                 if (telePhoneStatus == Enumeration.TelePhoneStatus.Unknow)
                 {
-                    SdkFactory.Lxt.Login(teleSeat.Account);
+                    SdkFactory.Lxt.Login(account);
 
-                    telePhoneStatus = SdkFactory.Lxt.GetStatus(teleSeat.Account);
+                    telePhoneStatus = SdkFactory.Lxt.GetStatus(account);
                 }
 
                 if (telePhoneStatus != Enumeration.TelePhoneStatus.IDLE)
@@ -113,14 +91,14 @@ namespace Lumos.BLL.Service.Merch
                 callRecord.CustomerName = obCustomer.CsrName;
                 callRecord.SalesmanId = salesmanId;
                 callRecord.SalesmanName = salesman.FullName;
-                callRecord.TeleSeatAccount = teleSeat.Account;
+                callRecord.TeleSeatAccount = account;
                 callRecord.CustomerPhoneNumber = salesman.PhoneNumber;
                 callRecord.Remark = "";
                 callRecord.Creator = operater;
                 callRecord.CreateTime = this.DateTime;
                 CurrentDb.CallRecord.Add(callRecord);
 
-                SdkFactory.Lxt.CallNumber(teleSeat.Account, callRecord.Sn, obCustomer.CsrPhoneNumber);
+                SdkFactory.Lxt.CallNumber(account, callRecord.Sn, obCustomer.CsrPhoneNumber);
 
                 result = new CustomJsonResult(ResultType.Success, ResultCode.Success, "");
 
@@ -131,39 +109,18 @@ namespace Lumos.BLL.Service.Merch
             return result;
         }
 
-        public CustomJsonResult HangupCustomer(string operater, string merchantId, string salesmanId, string customerId)
+        public CustomJsonResult HangupCustomer(string operater, string merchantId, string salesmanId, string customerId, string account)
         {
             CustomJsonResult result = new CustomJsonResult();
 
-            using (TransactionScope ts = new TransactionScope())
+            if (string.IsNullOrEmpty(account))
             {
-                var salesman = CurrentDb.SysMerchantUser.Where(m => m.MerchantId == merchantId && m.Id == salesmanId).FirstOrDefault();
-                if (salesman == null)
-                {
-                    return new CustomJsonResult(ResultType.Failure, ResultCode.Failure, "用户信息无效");
-                }
-
-
-                if (string.IsNullOrEmpty(salesman.TeleSeatId))
-                {
-                    return new CustomJsonResult(ResultType.Failure, ResultCode.Failure, "未配置外呼话机号码，请联系系统管理员");
-                }
-
-                var obCustomer = CurrentDb.ObCustomer.Where(m => m.Id == customerId).FirstOrDefault();
-                if (obCustomer == null)
-                {
-                    return new CustomJsonResult(ResultType.Failure, ResultCode.Failure, "系统找不到该客户信息");
-                }
-
-                var teleSeat = CurrentDb.TeleSeat.Where(m => m.Id == salesman.TeleSeatId).FirstOrDefault();
-
-                SdkFactory.Lxt.Hangup(teleSeat.Account);
-
-                result = new CustomJsonResult(ResultType.Success, ResultCode.Success, "挂机成功");
-
-                //CurrentDb.SaveChanges();
-                //ts.Complete();
+                return new CustomJsonResult(ResultType.Failure, ResultCode.Failure, "未配置外呼话机号码，请联系系统管理员");
             }
+
+            SdkFactory.Lxt.Hangup(account);
+
+            result = new CustomJsonResult(ResultType.Success, ResultCode.Success, "挂机成功");
 
             return result;
         }
