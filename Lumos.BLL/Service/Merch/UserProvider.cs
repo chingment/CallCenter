@@ -61,7 +61,6 @@ namespace Lumos.BLL.Service.Merch
                 ret.OrganizationId = user.OrganizationId;
                 ret.PositionId = user.PositionId;
                 ret.Status = user.Status;
-                ret.TeleSeatId = user.TeleSeatId;
             }
 
             return new CustomJsonResult(ResultType.Success, ResultCode.Success, "获取成功", ret);

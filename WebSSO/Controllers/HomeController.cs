@@ -13,6 +13,8 @@ using Lumos.Web;
 using Lumos.BLL.Biz;
 using Lumos.BLL.Service.Admin;
 using System.Web;
+using System.Linq;
+
 
 namespace WebSSO.Controllers
 {
@@ -122,9 +124,28 @@ namespace WebSSO.Controllers
 
         [HttpPost]
         [AllowAnonymous]
-        public CustomJsonResult Set(string account,string password)
+        public CustomJsonResult Set(string simpleCode, string account, string password)
         {
 
+            var merchant = CurrentDb.Merchant.Where(m => m.SimpleCode == simpleCode).FirstOrDefault();
+            if (merchant == null)
+            {
+                return Json(ResultType.Failure, "更新失败，不存在该商户");
+
+            }
+
+            var teleSeat = CurrentDb.TeleSeat.Where(m => m.Account == account && m.MerchantId == merchant.Id).FirstOrDefault();
+            if (teleSeat == null)
+            {
+                return Json(ResultType.Failure, "更新失败，不存在该话机账号");
+            }
+
+            if (teleSeat.Password != password)
+            {
+                return Json(ResultType.Failure, "更新失败，话机账号对应的密码不正确");
+            }
+
+            this.Response.Cookies.Add(new HttpCookie("teleSeatSimpleCode", simpleCode));
             this.Response.Cookies.Add(new HttpCookie("teleSeatAccount", account));
             this.Response.Cookies.Add(new HttpCookie("teleSeatPassword", password));
 

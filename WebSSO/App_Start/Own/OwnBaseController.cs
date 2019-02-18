@@ -1,5 +1,6 @@
 ﻿using System.Web.Mvc;
 using Lumos.Web.Mvc;
+using Lumos.DAL;
 
 namespace WebSSO
 {
@@ -15,6 +16,22 @@ namespace WebSSO
         protected override void OnActionExecuting(ActionExecutingContext filterContext)
         {
             base.OnActionExecuting(filterContext);
+        }
+
+
+        private LumosDbContext _currentDb;
+
+        public LumosDbContext CurrentDb
+        {
+            get
+            {
+                if (_currentDb == null)
+                {
+                    _currentDb = new LumosDbContext();
+                }
+
+                return _currentDb;
+            }
         }
     }
 }

@@ -8,9 +8,11 @@
 
         $(document).ready(function () {
 
+            var simpleCode = $.cookie("teleSeatSimpleCode");
             var account = $.cookie("teleSeatAccount");
             var password = $.cookie("teleSeatPassword");
 
+            $('#txt_SimpleCode').val(simpleCode);
             $('#txt_Account').val(account);
             $('#txt_Password').val(password);
 
@@ -23,19 +25,19 @@
 
         function update() {
 
-  
 
+            var simpleCode = $("#txt_SimpleCode").val();
             var account = $("#txt_Account").val();
             var password = $("#txt_Password").val();
 
             $.lumos.postJson({
                 url: "/Home/Set",
                 isUseHandling: true,
-                data: { account: account, password: password },
+                data: { simpleCode: simpleCode, account: account, password: password },
                 success: function (d) {
                     $.lumos.tips(d.message);
                     if (d.result == $.lumos.resultType.success) {
-                       
+
                     }
                 }
             });
@@ -60,12 +62,21 @@
 
     <div class="h-form-container changepassword-box">
         <div class="h-entries">
-
+            <dl class="h-entry clearfix">
+                <dt class="h-entry-label">商户代码：</dt>
+                <dd class="h-entry-values">
+                    <span class="h-item ">
+                        <input type="text" id="txt_SimpleCode" class="input-control" value="" style="width:200px;" />
+                    </span>
+                </dd>
+            </dl>
+            <div class="h-line">
+            </div>
             <dl class="h-entry clearfix">
                 <dt class="h-entry-label">话机号码：</dt>
                 <dd class="h-entry-values">
                     <span class="h-item ">
-                        <input type="text" id="txt_Account"  class="input-control" value="" style="width:200px;" />
+                        <input type="text" id="txt_Account" class="input-control" value="" style="width:200px;" />
                     </span>
                 </dd>
             </dl>
