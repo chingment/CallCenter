@@ -60,6 +60,8 @@ namespace Lumos.BLL.Task
                             }
                         }
                     }
+
+                    CurrentDb.SaveChanges();
                 }
 
                 LogUtil.Info("任务执行完成:" + DateTime.Now.ToUnifiedFormatDate());

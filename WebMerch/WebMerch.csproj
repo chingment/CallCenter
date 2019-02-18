@@ -159,6 +159,7 @@
   <ItemGroup>
     <Compile Include="App_Start\BundleConfig.cs" />
     <Compile Include="App_Start\FilterConfig.cs" />
+    <Compile Include="App_Start\Own\NPOIExcelHelper.cs" />
     <Compile Include="App_Start\Own\OwnRequest.cs" />
     <Compile Include="App_Start\RouteConfig.cs" />
     <Compile Include="Controllers\CallResultRecordController.cs" />
@@ -234,6 +235,7 @@
     <Content Include="Views\ObBatch\DetailsByCommon.cshtml" />
     <Content Include="Views\ObBatchAllocate\AddByCommon.cshtml" />
     <Content Include="Views\ObCallout\TeleMarketByCommon.cshtml" />
+    <Content Include="Views\Report\TeleSeatAccount.cshtml" />
     <None Include="Web.config">
       <SubType>Designer</SubType>
     </None>
@@ -246,7 +248,6 @@
   </ItemGroup>
   <ItemGroup>
     <Folder Include="Scripts\ckeditor\" />
-    <Folder Include="Views\Report\" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="fonts\glyphicons-halflings-regular.woff" />

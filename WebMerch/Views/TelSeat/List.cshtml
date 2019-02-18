@@ -23,8 +23,8 @@
                 l_StrRows += "<td class=\"no\" >" + (p_index + 1) + "</td>";
                 l_StrRows += "<td class=\"overflow tipitem\" title=\"" + p_row.account + "\"   >" + p_row.account + "</td>";
                 l_StrRows += "<td class=\"overflow\" title=\"" + p_row.password + "\">" + p_row.password + "</td>";
-                l_StrRows += "<td class=\"overflow\" title=\"" + p_row.statusName + "\">" + p_row.statusName + "</td>";
-                l_StrRows += "<td class=\"overflow\" title=\"" + p_row.userName + "\">" + p_row.userName + "</td>";
+                l_StrRows += "<td class=\"overflow\" title=\"" + p_row.phoneNumber + "\">" + p_row.phoneNumber + "</td>";
+                l_StrRows += "<td class=\"overflow\" title=\"" + p_row.domain + "\">" + p_row.domain + "</td>";
                 l_StrRows += "</tr>";
                 return l_StrRows;
             }
@@ -55,13 +55,8 @@
                     <input type="text" class="input-control" name="Account" style="width:120px;" />
                 </span>
             </div>
-            <div class="filter">
-                <span class="filter-label">使用账号：</span>
-                <span class="filter-input">
-                    <input type="text" class="input-control" name="UserName" style="width:120px;" />
-                </span>
-            </div>
             <div class="filter"><input type="button" class="btn btn-search" id="btn_Search" value="查询" /> </div>
+            <div class="filter"><input type="button" class="btn btn-search" id="btn_Export" value="导出" /> </div>
         </div>
         <div class="list">
             <table id="list_table" class="list-tb" cellpadding="0" cellspacing="0">
@@ -74,13 +69,13 @@
                             话机账号
                         </th>
                         <th style="width:25%">
-                            话机密码
+                            话机口令
                         </th>
                         <th style="width:25%">
-                            状态
+                            电话号码
                         </th>
                         <th style="width:25%">
-                            使用账号
+                            域名
                         </th>
                     </tr>
                 </thead>
