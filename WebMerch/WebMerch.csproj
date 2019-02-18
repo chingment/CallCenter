@@ -236,6 +236,7 @@
     <Content Include="Views\ObBatchAllocate\AddByCommon.cshtml" />
     <Content Include="Views\ObCallout\TeleMarketByCommon.cshtml" />
     <Content Include="Views\Report\TeleSeatAccount.cshtml" />
+    <Content Include="Views\Report\UserAccount.cshtml" />
     <None Include="Web.config">
       <SubType>Designer</SubType>
     </None>
