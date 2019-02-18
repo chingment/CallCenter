@@ -93,6 +93,10 @@ namespace Lumos.BLL.Service.Merch
                     ret.TeleSeatAccount = teleSeat.Account ?? "";
                     ret.TeleSeatPassword = teleSeat.Password ?? "";
                 }
+                else
+                {
+
+                }
             }
 
             return new CustomJsonResult(ResultType.Success, ResultCode.Success, "获取成功", ret);
