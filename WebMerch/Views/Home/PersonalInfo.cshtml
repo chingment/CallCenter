@@ -26,7 +26,7 @@
                         $('#lbl_PositionName').text(data.positionName);
                         $('#lbl_TeleSeatAccount').text(data.teleSeatAccount);
                         $('#lbl_TeleSeatPassword').text(data.teleSeatPassword);
-
+                        $('#lbl_TeleSeatDomain').text(data.teleSeatDomain);
                     }
                 }
             });
@@ -111,7 +111,7 @@
             <div class="h-line">
             </div>
             <dl class="h-entry clearfix">
-                <dt class="h-entry-label">话机密码：</dt>
+                <dt class="h-entry-label">话机口令：</dt>
                 <dd class="h-entry-values">
                     <span id="lbl_TeleSeatPassword" class="h-item ">
 
@@ -121,9 +121,11 @@
             <div class="h-line">
             </div>
             <dl class="h-entry clearfix">
-                <dt class="h-entry-label"></dt>
+                <dt class="h-entry-label">域名：</dt>
                 <dd class="h-entry-values">
+                    <span id="lbl_TeleSeatDomain" class="h-item ">
 
+                    </span>
                 </dd>
             </dl>
         </div>

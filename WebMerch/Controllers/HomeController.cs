@@ -180,6 +180,12 @@ namespace WebMerch.Controllers
                 {
                     model.TeleSeatAccount = Request.Cookies["teleSeatAccount"].Value.ToString();
                     model.TeleSeatPassword = Request.Cookies["teleSeatPassword"].Value.ToString();
+
+                    var teleSeat = CurrentDb.TeleSeat.Where(m => m.Account == model.TeleSeatAccount).FirstOrDefault();
+                    if (teleSeat != null)
+                    {
+                        model.TeleSeatDomain = teleSeat.Domain;
+                    }
                 }
             }
 

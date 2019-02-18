@@ -17,6 +17,7 @@ namespace Lumos.BLL.Service.Merch
         private string positionName = "";
         private string teleSeatAccount = "";
         private string teleSeatPassword = "";
+        private string teleSeatDomain = "";
 
         public string UserName
         {
@@ -105,6 +106,18 @@ namespace Lumos.BLL.Service.Merch
             set
             {
                 teleSeatPassword = value;
+            }
+        }
+
+        public string TeleSeatDomain
+        {
+            get
+            {
+                return teleSeatDomain;
+            }
+            set
+            {
+                teleSeatDomain = value;
             }
         }
     }
