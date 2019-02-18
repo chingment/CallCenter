@@ -75,7 +75,7 @@
                         $('#sel_Positions').attr("oldPositionId", data.positionId);
                         $('#sel_Positions').myChosen({ urlParams: { type: "SysPosition", organizationId: data.organizationId }, selectedValue: data.positionId });
                         $('#sel_Status').myChosen({ isUseUrl: false, selectedValue: data.status });
-                        $('#sel_TeleSeats').myChosen({ urlParams: { type: "TeleSeat", userId: id }, selectedValue: data.teleSeatId });
+                        //$('#sel_TeleSeats').myChosen({ urlParams: { type: "TeleSeat", userId: id }, selectedValue: data.teleSeatId });
                     }
                 }
             });
@@ -188,14 +188,14 @@
                 <select id="sel_Positions" data-placeholder="请选择" class="chosen-select" style="width:200px"></select>
             </td>
         </tr>
-        <tr>
+        @*<tr>
             <td class="f-tb-t">
                 话机号：
             </td>
             <td class="f-tb-c">
                 <select id="sel_TeleSeats" data-placeholder="请选择" class="chosen-select" style="width:200px"></select>
             </td>
-        </tr>
+        </tr>*@
         <tr style="display:none" id="tr_transfer">
             <td class="f-tb-t">
                 数据转移对象：
