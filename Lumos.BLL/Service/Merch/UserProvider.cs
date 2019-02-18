@@ -67,7 +67,7 @@ namespace Lumos.BLL.Service.Merch
             return new CustomJsonResult(ResultType.Success, ResultCode.Success, "获取成功", ret);
         }
 
-        public CustomJsonResult GetPersonalInfo(string operater, string merchantId, string id)
+        public RetUserGetPersonalInfo GetPersonalInfo(string operater, string merchantId, string id)
         {
             var ret = new RetUserGetPersonalInfo();
 
@@ -93,13 +93,9 @@ namespace Lumos.BLL.Service.Merch
                     ret.TeleSeatAccount = teleSeat.Account ?? "";
                     ret.TeleSeatPassword = teleSeat.Password ?? "";
                 }
-                else
-                {
-
-                }
             }
 
-            return new CustomJsonResult(ResultType.Success, ResultCode.Success, "获取成功", ret);
+            return ret;
         }
 
         public CustomJsonResult Add(string operater, string merchantId, RopUserAdd rop)
@@ -210,7 +206,7 @@ namespace Lumos.BLL.Service.Merch
                     }
                 }
 
-             
+
                 if (user.PositionId != rop.PositionId)
                 {
                     if (user.PositionId == Enumeration.SysPositionId.MerchantTSR)

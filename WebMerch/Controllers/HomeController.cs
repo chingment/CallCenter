@@ -172,7 +172,18 @@ namespace WebMerch.Controllers
 
         public CustomJsonResult GetPersonalInfo()
         {
-            return MerchServiceFactory.User.GetPersonalInfo(this.CurrentUserId, this.CurrentMerchantId, this.CurrentUserId);
+            var model = MerchServiceFactory.User.GetPersonalInfo(this.CurrentUserId, this.CurrentMerchantId, this.CurrentUserId);
+
+            if (string.IsNullOrEmpty(model.TeleSeatAccount))
+            {
+                if (Request.Cookies["teleSeatAccount"] != null)
+                {
+                    model.TeleSeatAccount = Request.Cookies["teleSeatAccount"].Value.ToString();
+                    model.TeleSeatPassword = Request.Cookies["teleSeatPassword"].Value.ToString();
+                }
+            }
+
+            return new CustomJsonResult(ResultType.Success, ResultCode.Success, "获取成功", model);
         }
 
         public class IndexModel
