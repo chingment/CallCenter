@@ -67,10 +67,14 @@ namespace Lumos.BLL.Biz
 
             try
             {
-                using (TransactionScope ts = new TransactionScope())
+                TransactionOptions transactionOption = new TransactionOptions();
+                //设置事务隔离级别
+                transactionOption.IsolationLevel = System.Transactions.IsolationLevel.ReadCommitted;
+                // 设置事务超时时间为60秒
+                transactionOption.Timeout = new TimeSpan(0, 2, 0);
+
+                using (TransactionScope ts = new TransactionScope(TransactionScopeOption.Required, transactionOption))
                 {
-
-
                     var obBatchAllocateId = GuidUtil.New();
 
                     if (obBatch.SoureType == Entity.Enumeration.DataBatchSoureType.File)

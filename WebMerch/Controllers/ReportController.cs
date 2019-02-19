@@ -91,6 +91,7 @@ namespace WebMerch.Controllers
             sbTable.Append("<thead>");
             sbTable.Append("<tr>");
             sbTable.Append("<th>序号</th>");
+            sbTable.Append("<th>商户代码</th>");
             sbTable.Append("<th>话机账号</th>");
             sbTable.Append("<th>话机口令</th>");
             sbTable.Append("<th>域名</th>");
@@ -105,7 +106,7 @@ namespace WebMerch.Controllers
             if (Request.HttpMethod == "GET")
             {
                 #region GET
-                sbTable.Replace("{content}", "<tr><td colspan=\"5\"></td></tr>");
+                sbTable.Replace("{content}", "<tr><td colspan=\"6\"></td></tr>");
 
                 model.TableHtml = sbTable.ToString();
                 return View(model);
@@ -115,7 +116,7 @@ namespace WebMerch.Controllers
             else
             {
                 #region POST
-                StringBuilder sql = new StringBuilder(" select  Account,[Password], Domain,PhoneNumber from [dbo].[TeleSeat] ");
+                StringBuilder sql = new StringBuilder(" select SimpleCode, Account,[Password], Domain,PhoneNumber from [dbo].[TeleSeat] a inner join Merchant b on a.MerchantId=b.Id ");
 
                 sql.Append(" where 1=1 and MerchantId='" + this.CurrentMerchantId + "' ");
 
@@ -176,6 +177,8 @@ namespace WebMerch.Controllers
             sbTable.Append("<th>序号</th>");
             sbTable.Append("<th>账号</th>");
             sbTable.Append("<th>姓名</th>");
+            sbTable.Append("<th>机构</th>");
+            sbTable.Append("<th>职位</th>");
             sbTable.Append("</tr>");
             sbTable.Append("</thead>");
             sbTable.Append("<tbody>");
@@ -186,7 +189,7 @@ namespace WebMerch.Controllers
             if (Request.HttpMethod == "GET")
             {
                 #region GET
-                sbTable.Replace("{content}", "<tr><td colspan=\"3\"></td></tr>");
+                sbTable.Replace("{content}", "<tr><td colspan=\"5\"></td></tr>");
 
                 model.TableHtml = sbTable.ToString();
                 return View(model);
@@ -196,9 +199,9 @@ namespace WebMerch.Controllers
             else
             {
                 #region POST
-                StringBuilder sql = new StringBuilder(" select  UserName,FullName from  SysUser  a  inner join  SysMerchantUser b on a.Id=b.Id ");
+                StringBuilder sql = new StringBuilder(" select  UserName,FullName,(select top 1 fullname from  Organization where ID=b.OrganizationId ) as OrganizationName,(select top 1 Name from SysPosition where BelongSite=2 and ID=b.PositionId) as PositionName from  SysUser  a  inner join  SysMerchantUser b on a.Id=b.Id ");
 
-                sql.Append(" where 1=1 and MerchantId='" + this.CurrentMerchantId + "' ");
+                sql.Append(" where 1=1 and SUBSTRING(UserName,1,1)!='m' and MerchantId='" + this.CurrentMerchantId + "' ");
 
 
                 sql.Append(" order by UserName asc  ");
