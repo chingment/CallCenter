@@ -210,6 +210,11 @@
 
             $('#btn_SkipData').live("click", function () {
 
+                if (takeDataResult == null) {
+                    $.lumos.tips("客户信息为空")
+                    return;
+                }
+
                 art.dialog.confirm('确定要跳过该客户？', function () {
 
                     var customerId = takeDataResult.obCustomerId;
