@@ -30,6 +30,11 @@ namespace WebMerch.Controllers
             return MerchServiceFactory.ObCallout.TakeData(this.CurrentUserId, this.CurrentMerchantId, this.CurrentUserId);
         }
 
+        public CustomJsonResult SkipData(string customerId)
+        {
+            return MerchServiceFactory.ObCallout.SkipData(this.CurrentUserId, this.CurrentMerchantId, this.CurrentUserId, customerId);
+        }
+
         public CustomJsonResult SaveCallResultRecord(RopObCalloutSaveCallResultRecord rop)
         {
             return MerchServiceFactory.ObCallout.SaveCallResultRecord(this.CurrentUserId, this.CurrentMerchantId, this.CurrentUserId, rop);

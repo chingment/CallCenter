@@ -131,6 +131,35 @@ namespace Lumos.BLL.Service.Merch
 
         }
 
+        public CustomJsonResult SkipData(string operater, string merchantId, string salesmanId, string customerId)
+        {
+            CustomJsonResult result = new CustomJsonResult();
+
+            var obCustomer = CurrentDb.ObCustomer.Where(m => m.MerchantId == merchantId && m.IsTake == true && m.SalesmanId == salesmanId && m.Id == customerId).FirstOrDefault();
+
+            var salesman = CurrentDb.SysMerchantUser.Where(m => m.Id == salesmanId).FirstOrDefault();
+
+            var callResultRecord = new CallResultRecord();
+            callResultRecord.Id = GuidUtil.New();
+            callResultRecord.MerchantId = merchantId;
+            callResultRecord.SalesmanId = salesmanId;
+            callResultRecord.CustomerId = customerId;
+            callResultRecord.ResultCode = "3103";
+            callResultRecord.ResultName = "【无效】跳过";
+            callResultRecord.CustomerName = obCustomer.CsrName;
+            callResultRecord.CustomerPhoneNumber = obCustomer.CsrPhoneNumber;
+            callResultRecord.SalesmanId = salesmanId;
+            callResultRecord.SalesmanName = salesman.FullName;
+            callResultRecord.Remark = "跳过数据";
+            callResultRecord.Creator = operater;
+            callResultRecord.CreateTime = this.DateTime;
+            CurrentDb.CallResultRecord.Add(callResultRecord);
+
+            result = new CustomJsonResult(ResultType.Success, ResultCode.Success, "跳过成功");
+
+            return result;
+        }
+
         public CustomJsonResult SaveCallResultRecord(string operater, string merchantId, string salesmanId, RopObCalloutSaveCallResultRecord rop)
         {
             CustomJsonResult result = new CustomJsonResult();
@@ -159,9 +188,11 @@ namespace Lumos.BLL.Service.Merch
                 obCustomer.UseCallTime = this.DateTime;
 
 
+                var merchant = CurrentDb.Merchant.Where(m => m.Id == merchantId).FirstOrDefault();
+
                 var salesman = CurrentDb.SysMerchantUser.Where(m => m.Id == salesmanId).FirstOrDefault();
 
-                var callResultCode = CurrentDb.CallResultCode.Where(m => m.Code == rop.ResultCode).FirstOrDefault();
+                var callResultCode = CurrentDb.CallResultCode.Where(m => m.Code == rop.ResultCode && m.BusinessType == merchant.BusinessType).FirstOrDefault();
 
                 var callResultRecord = new CallResultRecord();
                 callResultRecord.Id = GuidUtil.New();
@@ -171,7 +202,6 @@ namespace Lumos.BLL.Service.Merch
                 callResultRecord.ResultCode = rop.ResultCode;
                 callResultRecord.ResultName = callResultCode.Name;
                 callResultRecord.NextCallTime = rop.NextCallTime;
-                callResultRecord.CustomerId = obCustomer.Id;
                 callResultRecord.CustomerName = obCustomer.CsrName;
                 callResultRecord.CustomerPhoneNumber = obCustomer.CsrPhoneNumber;
                 callResultRecord.SalesmanId = salesman.Id;

@@ -46,12 +46,19 @@ u.MerchantId == this.CurrentMerchantId &&
  (rup.SalesmanName == null || u.SalesmanName.Contains(rup.SalesmanName))
                          select new { u.Id, u.CustomerId, u.CustomerName, u.SalesmanId, u.SalesmanName, u.ResultName, u.ResultCode, u.CustomerPhoneNumber, u.CreateTime, u.NextCallTime, u.Remark });
 
+            if (!string.IsNullOrEmpty(rup.ResultCode))
+            {
+                query = query.Where(m => m.ResultCode == rup.ResultCode);
+            }
 
             int total = query.Count();
 
             int pageIndex = rup.PageIndex;
             int pageSize = 10;
+
             query = query.OrderByDescending(r => r.CreateTime).Skip(pageSize * (pageIndex)).Take(pageSize);
+
+
 
             var list = query.ToList();
 

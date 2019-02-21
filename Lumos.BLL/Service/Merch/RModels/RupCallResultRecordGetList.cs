@@ -11,5 +11,7 @@ namespace Lumos.BLL.Service.Merch
         public  string SalesmanName { get; set; }
         public string CustomerName { get; set; }
         public string PhoneNumber { get; set; }
+
+        public string ResultCode { get; set; }
     }
 }
