@@ -191,7 +191,7 @@
                             $.lumos.postJson({
                                 isUseHandling: true,
                                 url: "/ObCallout/SaveCallResultRecord",
-                                data: { customerId: customerId, resultCode: resultCode, nextCallTime: nextCallTime, remark },
+                                data: { customerId: customerId, resultCode: resultCode, nextCallTime: nextCallTime, remark: remark },
                                         success: function (d) {
                                             $.lumos.tips(d.message);
                                             if (d.result == $.lumos.resultType.success) {

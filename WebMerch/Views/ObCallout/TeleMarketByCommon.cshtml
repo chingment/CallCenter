@@ -191,7 +191,7 @@
                             $.lumos.postJson({
                                 isUseHandling: true,
                                 url: "/ObCallout/SaveCallResultRecord",
-                                data: { customerId: customerId, resultCode: resultCode, nextCallTime: nextCallTime, remark },
+                                data: { customerId: customerId, resultCode: resultCode, nextCallTime: nextCallTime, remark: remark },
                                         success: function (d) {
                                             $.lumos.tips(d.message);
                                             if (d.result == $.lumos.resultType.success) {
@@ -208,6 +208,30 @@
 
             });
 
+            $('#btn_SkipData').live("click", function () {
+
+                if (takeDataResult == null) {
+                    $.lumos.tips("客户信息为空")
+                    return;
+                }
+
+                art.dialog.confirm('确定要跳过该客户？', function () {
+
+                    var customerId = takeDataResult.obCustomerId;
+                    $.lumos.postJson({
+                        isUseHandling: true,
+                        url: "/ObCallout/SkipData",
+                        data: { customerId: customerId },
+                        success: function (d) {
+                            $.lumos.tips(d.message);
+                            if (d.result == $.lumos.resultType.success) {
+                                takeData();
+                            }
+                        }
+                    });
+                });
+
+            });
 
             $('#ul_dealtTrack a').live("click", function () {
 
