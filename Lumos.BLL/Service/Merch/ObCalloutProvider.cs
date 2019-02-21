@@ -135,28 +135,37 @@ namespace Lumos.BLL.Service.Merch
         {
             CustomJsonResult result = new CustomJsonResult();
 
-            var obCustomer = CurrentDb.ObCustomer.Where(m => m.MerchantId == merchantId && m.IsTake == true && m.SalesmanId == salesmanId && m.Id == customerId).FirstOrDefault();
+            using (TransactionScope ts = new TransactionScope())
+            {
+                var obCustomer = CurrentDb.ObCustomer.Where(m => m.MerchantId == merchantId && m.IsTake == true && m.SalesmanId == salesmanId && m.Id == customerId).FirstOrDefault();
 
-            var salesman = CurrentDb.SysMerchantUser.Where(m => m.Id == salesmanId).FirstOrDefault();
+                obCustomer.IsUseCall = true;
+                obCustomer.UseCallTime = this.DateTime;
 
-            var callResultRecord = new CallResultRecord();
-            callResultRecord.Id = GuidUtil.New();
-            callResultRecord.MerchantId = merchantId;
-            callResultRecord.SalesmanId = salesmanId;
-            callResultRecord.CustomerId = customerId;
-            callResultRecord.ResultCode = "3103";
-            callResultRecord.ResultName = "【无效】跳过";
-            callResultRecord.CustomerName = obCustomer.CsrName;
-            callResultRecord.CustomerPhoneNumber = obCustomer.CsrPhoneNumber;
-            callResultRecord.SalesmanId = salesmanId;
-            callResultRecord.SalesmanName = salesman.FullName;
-            callResultRecord.Remark = "跳过数据";
-            callResultRecord.Creator = operater;
-            callResultRecord.CreateTime = this.DateTime;
-            CurrentDb.CallResultRecord.Add(callResultRecord);
+                var salesman = CurrentDb.SysMerchantUser.Where(m => m.Id == salesmanId).FirstOrDefault();
 
-            result = new CustomJsonResult(ResultType.Success, ResultCode.Success, "跳过成功");
+                var callResultRecord = new CallResultRecord();
+                callResultRecord.Id = GuidUtil.New();
+                callResultRecord.MerchantId = merchantId;
+                callResultRecord.SalesmanId = salesmanId;
+                callResultRecord.CustomerId = customerId;
+                callResultRecord.ResultCode = "3103";
+                callResultRecord.ResultName = "【无效】跳过";
+                callResultRecord.CustomerName = obCustomer.CsrName;
+                callResultRecord.CustomerPhoneNumber = obCustomer.CsrPhoneNumber;
+                callResultRecord.SalesmanId = salesmanId;
+                callResultRecord.SalesmanName = salesman.FullName;
+                callResultRecord.Remark = "跳过数据";
+                callResultRecord.Creator = operater;
+                callResultRecord.CreateTime = this.DateTime;
+                CurrentDb.CallResultRecord.Add(callResultRecord);
 
+                CurrentDb.SaveChanges();
+                ts.Complete();
+               
+                result = new CustomJsonResult(ResultType.Success, ResultCode.Success, "跳过成功");
+
+            }
             return result;
         }
 

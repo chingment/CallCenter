@@ -208,6 +208,26 @@
 
             });
 
+            $('#btn_SkipData').live("click", function () {
+
+                art.dialog.confirm('确定要跳过该客户？', function () {
+
+                    var customerId = takeDataResult.obCustomerId;
+                    $.lumos.postJson({
+                        isUseHandling: true,
+                        url: "/ObCallout/SkipData",
+                        data: { customerId: customerId },
+                        success: function (d) {
+                            $.lumos.tips(d.message);
+                            if (d.result == $.lumos.resultType.success) {
+                                takeData();
+                            }
+                        }
+                    });
+                });
+
+            });
+
             $('#btn_CarInsSubmitInsure').live("click", function () {
 
                 if (takeDataResult == null) {
@@ -452,7 +472,7 @@
                 <div class="filter" id="btn_SaveCallRecord">
                     <span class="status-bar-btn selected">保存通话记录</span>
                 </div>
-                <div class="filter">
+                <div class="filter" id="btn_SkipData">
                     <span class="status-bar-btn">跳过该客户</span>
                 </div>
             </div>
@@ -593,7 +613,7 @@
                 </td>
                 <td class="f-tb-c">
 
-                    <input id="txt_NextCallTime" type="text" class="Wdate input-control"  style="width:80px;" onfocus="WdatePicker({ dateFmt: 'yyyy-MM-dd', minDate: '@DateTime.Now.ToUnifiedFormatDate()' })" value="" disabled="disabled" />
+                    <input id="txt_NextCallTime" type="text" class="Wdate input-control" style="width:80px;" onfocus="WdatePicker({ dateFmt: 'yyyy-MM-dd', minDate: '@DateTime.Now.ToUnifiedFormatDate()' })" value="" disabled="disabled" />
 
                 </td>
             </tr>
@@ -677,7 +697,7 @@
                         <select class="txt-value" style="height:30px;width:80px; ">
                             {{each(i,option) item2.inputOption}}
 
-                            <option value="${option}" ${item2.inputValue==option?"selected":""}> ${option}</option>
+                            <option value="${option}" ${item2.inputValue= =option?"selected":""}> ${option}</option>
 
                             {{/each}}
                         </select>
