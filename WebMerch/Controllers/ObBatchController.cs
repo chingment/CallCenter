@@ -180,7 +180,7 @@ namespace WebMerch.Controllers
                     excelFormatCheckUtil.AddCheckCellIsString(0, "联系人", 0, 200);
                     excelFormatCheckUtil.AddCheckCellIsString(1, "联系电话 ", 0, 200);
                     excelFormatCheckUtil.AddCheckCellIsString(2, "联系地址", 0, 200);
-                    excelFormatCheckUtil.AddCheckCellIsString(3, "公司", 0, 200);
+                    excelFormatCheckUtil.AddCheckCellIsString(3, "公司", 0, 500);
                     #endregion
                     break;
                 case "2":

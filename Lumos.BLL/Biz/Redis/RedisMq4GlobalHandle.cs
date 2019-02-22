@@ -50,7 +50,7 @@ namespace Lumos.BLL.Biz
 
         private void HandleByDataBatch(ObBatch rop)
         {
-            LumosDbContext CurrentDb = new LumosDbContext();
+            var CurrentDb = new LumosDbContext();
 
             var obBatch = CurrentDb.ObBatch.Where(m => m.Id == rop.Id && m.Status == Entity.Enumeration.DataBatchStatus.WaitHandle).FirstOrDefault();
 
@@ -65,27 +65,30 @@ namespace Lumos.BLL.Biz
             obBatch.MendTime = DateTime.Now;
             CurrentDb.SaveChanges();
 
+            int a = 0;
             try
             {
                 TransactionOptions transactionOption = new TransactionOptions();
-                //设置事务隔离级别
                 transactionOption.IsolationLevel = System.Transactions.IsolationLevel.ReadCommitted;
-                // 设置事务超时时间为60秒
-                transactionOption.Timeout = new TimeSpan(0, 2, 0);
+                transactionOption.Timeout = new TimeSpan(0, 5, 0);
 
                 using (TransactionScope ts = new TransactionScope(TransactionScopeOption.Required, transactionOption))
                 {
+                    var tsCurrentDb = new LumosDbContext();
+
                     var obBatchAllocateId = GuidUtil.New();
 
-                    if (obBatch.SoureType == Entity.Enumeration.DataBatchSoureType.File)
-                    {
-                        if (!string.IsNullOrEmpty(obBatch.FilePath))
-                        {
-                            if (File.Exists(obBatch.FilePath))
-                            {
-                                var belongUser = CurrentDb.SysUser.Where(m => m.Id == obBatch.BelongerId).FirstOrDefault();
+                    var tsObBatch = tsCurrentDb.ObBatch.Where(m => m.Id == rop.Id).FirstOrDefault();
 
-                                FileStream fsRead = new FileStream(obBatch.FilePath, FileMode.Open);
+                    if (tsObBatch.SoureType == Entity.Enumeration.DataBatchSoureType.File)
+                    {
+                        if (!string.IsNullOrEmpty(tsObBatch.FilePath))
+                        {
+                            if (File.Exists(tsObBatch.FilePath))
+                            {
+                                var belongUser = tsCurrentDb.SysUser.Where(m => m.Id == tsObBatch.BelongerId).FirstOrDefault();
+
+                                FileStream fsRead = new FileStream(tsObBatch.FilePath, FileMode.Open);
                                 HSSFWorkbook workbook = new HSSFWorkbook(fsRead);
                                 ISheet sheet = workbook.GetSheetAt(0);
                                 int rowCount = sheet.LastRowNum + 1;
@@ -95,6 +98,11 @@ namespace Lumos.BLL.Biz
                                 for (int i = 1; i < rowCount; i++)
                                 {
                                     #region 数据去重处理
+                                    a = a + 1;
+                                    if (a == 336)
+                                    {
+                                        var b = "dad";
+                                    }
 
                                     IRow row = sheet.GetRow(i);
 
@@ -115,14 +123,14 @@ namespace Lumos.BLL.Biz
                                     DateTime? carInsLastEndTime = null;
 
 
-                                    if (obBatch.ImportFileTmpl == "1")
+                                    if (tsObBatch.ImportFileTmpl == "1")
                                     {
                                         csrPhoneNumber = NPOIHelperUtil.GetCellValue(row.GetCell(1));
                                         csrName = NPOIHelperUtil.GetCellValue(row.GetCell(0));
                                         csrAddress = NPOIHelperUtil.GetCellValue(row.GetCell(2));
                                         csrCompany = NPOIHelperUtil.GetCellValue(row.GetCell(3));
                                     }
-                                    else if (obBatch.ImportFileTmpl == "2")
+                                    else if (tsObBatch.ImportFileTmpl == "2")
                                     {
                                         csrPhoneNumber = NPOIHelperUtil.GetCellValue(row.GetCell(8));
                                         csrName = NPOIHelperUtil.GetCellValue(row.GetCell(6));
@@ -140,7 +148,7 @@ namespace Lumos.BLL.Biz
                                         carInsLastEndTime = CommonUtil.ConverToEndTime(NPOIHelperUtil.GetCellValue(row.GetCell(11)));
                                     }
 
-                                    var obCustomer = CurrentDb.ObCustomer.Where(m => m.MerchantId == obBatch.MerchantId && m.CsrPhoneNumber == csrPhoneNumber).FirstOrDefault();
+                                    var obCustomer = tsCurrentDb.ObCustomer.Where(m => m.MerchantId == obBatch.MerchantId && m.CsrPhoneNumber == csrPhoneNumber).FirstOrDefault();
 
                                     bool isValid = true;
                                     string handleReport = "";
@@ -154,7 +162,7 @@ namespace Lumos.BLL.Biz
                                     {
                                         if (obCustomer.RecoveryTime >= DateTime.Now)
                                         {
-                                            if (obCustomer.ObBatchId == obBatch.Id)
+                                            if (obCustomer.ObBatchId == tsObBatch.Id)
                                             {
                                                 handleReport = "无效分配数据:与本批次重复";
                                             }
@@ -177,8 +185,8 @@ namespace Lumos.BLL.Biz
 
                                     var obBatchData = new ObBatchData();
                                     obBatchData.Id = GuidUtil.New();
-                                    obBatchData.MerchantId = obBatch.MerchantId;
-                                    obBatchData.ObBatchId = obBatch.Id;
+                                    obBatchData.MerchantId = tsObBatch.MerchantId;
+                                    obBatchData.ObBatchId = tsObBatch.Id;
                                     obBatchData.CsrName = csrName;
                                     obBatchData.CsrPhoneNumber = csrPhoneNumber;
                                     obBatchData.CsrAddress = csrAddress;
@@ -194,20 +202,20 @@ namespace Lumos.BLL.Biz
                                     obBatchData.CarInsLastCompany = carInsLastCompany;
                                     obBatchData.CarInsLastStartTime = carInsLastStartTime;
                                     obBatchData.CarInsLastEndTime = carInsLastEndTime;
-                                    obBatchData.BusinessType = obBatch.BusinessType;
+                                    obBatchData.BusinessType = tsObBatch.BusinessType;
                                     obBatchData.IsValid = isValid;
                                     obBatchData.HandleReport = handleReport;
-                                    obBatchData.Creator = obBatch.Creator;
-                                    obBatchData.CreateTime = obBatch.CreateTime;
-                                    CurrentDb.ObBatchData.Add(obBatchData);
-                                    CurrentDb.SaveChanges();
+                                    obBatchData.Creator = tsObBatch.Creator;
+                                    obBatchData.CreateTime = tsObBatch.CreateTime;
+                                    tsCurrentDb.ObBatchData.Add(obBatchData);
+                                    tsCurrentDb.SaveChanges();
 
                                     if (isValid)
                                     {
                                         obCustomer = new ObCustomer();
                                         obCustomer.Id = GuidUtil.New();
-                                        obCustomer.MerchantId = obBatch.MerchantId;
-                                        obCustomer.ObBatchId = obBatch.Id;
+                                        obCustomer.MerchantId = tsObBatch.MerchantId;
+                                        obCustomer.ObBatchId = tsObBatch.Id;
                                         obCustomer.ObBatchDataId = obBatchData.Id;
                                         obCustomer.ObBatchAllocateId = obBatchAllocateId;
                                         obCustomer.CsrName = obBatchData.CsrName;
@@ -225,37 +233,37 @@ namespace Lumos.BLL.Biz
                                         obCustomer.CarInsLastCompany = obBatchData.CarInsLastCompany;
                                         obCustomer.CarInsLastStartTime = obBatchData.CarInsLastStartTime;
                                         obCustomer.CarInsLastEndTime = obBatchData.CarInsLastEndTime;
-                                        obCustomer.ExpiryTime = obBatch.ExpiryTime;
-                                        obCustomer.RecoveryTime = obBatch.RecoveryTime;
-                                        obCustomer.FollowDelayDays = obBatch.FollowDelayDays;
-                                        obCustomer.BelongerOrganizationId = obBatch.BelongerOrganizationId;
-                                        obCustomer.BelongerId = obBatch.BelongerId;
-                                        obCustomer.BusinessType = obBatch.BusinessType;
-                                        obCustomer.Creator = obBatch.Creator;
-                                        obCustomer.CreateTime = obBatch.CreateTime;
-                                        CurrentDb.ObCustomer.Add(obCustomer);
-                                        CurrentDb.SaveChanges();
+                                        obCustomer.ExpiryTime = tsObBatch.ExpiryTime;
+                                        obCustomer.RecoveryTime = tsObBatch.RecoveryTime;
+                                        obCustomer.FollowDelayDays = tsObBatch.FollowDelayDays;
+                                        obCustomer.BelongerOrganizationId = tsObBatch.BelongerOrganizationId;
+                                        obCustomer.BelongerId = tsObBatch.BelongerId;
+                                        obCustomer.BusinessType = tsObBatch.BusinessType;
+                                        obCustomer.Creator = tsObBatch.Creator;
+                                        obCustomer.CreateTime = tsObBatch.CreateTime;
+                                        tsCurrentDb.ObCustomer.Add(obCustomer);
+                                        tsCurrentDb.SaveChanges();
 
                                         var obCustomerBelongTrack = new ObCustomerBelongTrack();
                                         obCustomerBelongTrack.Id = GuidUtil.New();
-                                        obCustomerBelongTrack.MerchantId = obBatch.MerchantId;
-                                        obCustomerBelongTrack.ObBatchId = obBatch.Id;
+                                        obCustomerBelongTrack.MerchantId = tsObBatch.MerchantId;
+                                        obCustomerBelongTrack.ObBatchId = tsObBatch.Id;
                                         obCustomerBelongTrack.ObBatchDataId = obBatchData.Id;
                                         obCustomerBelongTrack.ObCustomerId = obCustomer.Id;
-                                        obCustomerBelongTrack.BelongerId = obBatch.BelongerId;
+                                        obCustomerBelongTrack.BelongerId = tsObBatch.BelongerId;
                                         obCustomerBelongTrack.Description = string.Format("分配给用户：{0}，姓名：{1}", belongUser.UserName, belongUser.FullName);
-                                        obCustomerBelongTrack.Creator = obBatch.Creator;
-                                        obCustomerBelongTrack.CreateTime = obBatch.CreateTime;
-                                        CurrentDb.ObCustomerBelongTrack.Add(obCustomerBelongTrack);
+                                        obCustomerBelongTrack.Creator = tsObBatch.Creator;
+                                        obCustomerBelongTrack.CreateTime = tsObBatch.CreateTime;
+                                        tsCurrentDb.ObCustomerBelongTrack.Add(obCustomerBelongTrack);
 
                                     }
                                     #endregion
                                 }
 
-                                obBatch.DataCount = validCount + inValidCount;
-                                obBatch.ValidCount = validCount;
-                                obBatch.InValidCount = inValidCount;
-                                obBatch.Status = Entity.Enumeration.DataBatchStatus.Complete;
+                                tsObBatch.DataCount = validCount + inValidCount;
+                                tsObBatch.ValidCount = validCount;
+                                tsObBatch.InValidCount = inValidCount;
+                                tsObBatch.Status = Entity.Enumeration.DataBatchStatus.Complete;
 
                                 //StringBuilder obBatchHandleReport = new StringBuilder();
                                 //obBatchHandleReport.Append("导入数据总数有{0}条");
@@ -266,31 +274,31 @@ namespace Lumos.BLL.Biz
 
                                 //obBatch.HandleReport = obBatchHandleReport.ToString();
 
-                                obBatch.Mender = GuidUtil.New();
-                                obBatch.MendTime = DateTime.Now;
+                                tsObBatch.Mender = GuidUtil.New();
+                                tsObBatch.MendTime = DateTime.Now;
 
                                 if (validCount > 0)
                                 {
                                     var obBatchAllocate = new ObBatchAllocate();
                                     obBatchAllocate.Id = obBatchAllocateId;
                                     obBatchAllocate.PId = GuidUtil.Empty();
-                                    obBatchAllocate.MerchantId = obBatch.MerchantId;
-                                    obBatchAllocate.ObBatchId = obBatch.Id;
+                                    obBatchAllocate.MerchantId = tsObBatch.MerchantId;
+                                    obBatchAllocate.ObBatchId = tsObBatch.Id;
                                     obBatchAllocate.DataCount = validCount;
                                     obBatchAllocate.AllocatedCount = 0;
                                     obBatchAllocate.UnAllocatedCount = validCount;
                                     obBatchAllocate.UsedCount = 0;
-                                    obBatchAllocate.Creator = obBatch.Creator;
-                                    obBatchAllocate.CreateTime = obBatch.CreateTime;
-                                    obBatchAllocate.BelongerId = obBatch.BelongerId;
-                                    obBatchAllocate.BelongerOrganizationId = obBatch.BelongerOrganizationId;
+                                    obBatchAllocate.Creator = tsObBatch.Creator;
+                                    obBatchAllocate.CreateTime = tsObBatch.CreateTime;
+                                    obBatchAllocate.BelongerId = tsObBatch.BelongerId;
+                                    obBatchAllocate.BelongerOrganizationId = tsObBatch.BelongerOrganizationId;
                                     obBatchAllocate.SoureName = string.Format("数据文件:{0}", rop.SoureName);
-                                    CurrentDb.ObBatchAllocate.Add(obBatchAllocate);
-                                    CurrentDb.SaveChanges();
+                                    tsCurrentDb.ObBatchAllocate.Add(obBatchAllocate);
+                                    tsCurrentDb.SaveChanges();
                                 }
                             }
 
-                            CurrentDb.SaveChanges();
+                            tsCurrentDb.SaveChanges();
 
                             ts.Complete();
                         }

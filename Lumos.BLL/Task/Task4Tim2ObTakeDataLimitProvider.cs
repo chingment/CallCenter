@@ -42,16 +42,14 @@ namespace Lumos.BLL.Task
                             switch (merchant.ObTakeDataPeriodMode)
                             {
                                 case Enumeration.ObTakeDataPeriodMode.Day:
-                                    obTakeDataLimit.TaskQuantity = merchant.ObTakeDataPeriodQuantity;
-                                    obTakeDataLimit.UnTakeQuantity = merchant.ObTakeDataPeriodQuantity;
+                                    obTakeDataLimit.UnTakeQuantity = obTakeDataLimit.TaskQuantity;
                                     obTakeDataLimit.TakedQuantity = 0;
                                     CurrentDb.SaveChanges();
                                     break;
                                 case Enumeration.ObTakeDataPeriodMode.Week:
                                     if (DateTime.DayOfWeek == DayOfWeek.Sunday)
                                     {
-                                        obTakeDataLimit.TaskQuantity = merchant.ObTakeDataPeriodQuantity;
-                                        obTakeDataLimit.UnTakeQuantity = merchant.ObTakeDataPeriodQuantity;
+                                        obTakeDataLimit.UnTakeQuantity = obTakeDataLimit.TaskQuantity;
                                         obTakeDataLimit.TakedQuantity = 0;
                                         CurrentDb.SaveChanges();
                                     }
