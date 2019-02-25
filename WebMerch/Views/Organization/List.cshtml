@@ -109,7 +109,7 @@
                     var status = $("#sel_Status").val();
                     $.lumos.postJson({
                         url: "/Organization/Edit",
-                        data: { id: id, name: name, description: description, headerId, headerId, status: status },
+                        data: { id: id, name: name, description: description, headerId: headerId, status: status },
                                 success: function (d) {
                             $.lumos.tips(d.message);
                             if (d.result == $.lumos.resultType.success) {

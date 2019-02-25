@@ -148,116 +148,119 @@ namespace Lumos.BLL.Biz
                                         carInsLastEndTime = CommonUtil.ConverToEndTime(NPOIHelperUtil.GetCellValue(row.GetCell(11)));
                                     }
 
-                                    var obCustomer = tsCurrentDb.ObCustomer.Where(m => m.MerchantId == obBatch.MerchantId && m.CsrPhoneNumber == csrPhoneNumber).FirstOrDefault();
-
-                                    bool isValid = true;
-                                    string handleReport = "";
-                                    if (obCustomer == null)
+                                    if (!string.IsNullOrEmpty(csrPhoneNumber))
                                     {
-                                        handleReport = "有效分配数据：未重复";
-                                        isValid = true;
-                                        validCount += 1;
-                                    }
-                                    else
-                                    {
-                                        if (obCustomer.RecoveryTime >= DateTime.Now)
-                                        {
-                                            if (obCustomer.ObBatchId == tsObBatch.Id)
-                                            {
-                                                handleReport = "无效分配数据:与本批次重复";
-                                            }
-                                            else
-                                            {
-                                                handleReport = "无效分配数据:与其他批次重复，未到回收时间";
-                                            }
+                                        var obCustomer = tsCurrentDb.ObCustomer.Where(m => m.MerchantId == obBatch.MerchantId && m.CsrPhoneNumber == csrPhoneNumber).FirstOrDefault();
 
-                                            isValid = false;
-                                            inValidCount += 1;
-                                        }
-                                        else
+                                        bool isValid = true;
+                                        string handleReport = "";
+                                        if (obCustomer == null)
                                         {
-                                            handleReport = "有效分配数据:数据重复，已到回收时间";
+                                            handleReport = "有效分配数据：未重复";
                                             isValid = true;
                                             validCount += 1;
                                         }
-                                    }
+                                        else
+                                        {
+                                            if (obCustomer.RecoveryTime >= DateTime.Now)
+                                            {
+                                                if (obCustomer.ObBatchId == tsObBatch.Id)
+                                                {
+                                                    handleReport = "无效分配数据:与本批次重复";
+                                                }
+                                                else
+                                                {
+                                                    handleReport = "无效分配数据:与其他批次重复，未到回收时间";
+                                                }
+
+                                                isValid = false;
+                                                inValidCount += 1;
+                                            }
+                                            else
+                                            {
+                                                handleReport = "有效分配数据:数据重复，已到回收时间";
+                                                isValid = true;
+                                                validCount += 1;
+                                            }
+                                        }
 
 
-                                    var obBatchData = new ObBatchData();
-                                    obBatchData.Id = GuidUtil.New();
-                                    obBatchData.MerchantId = tsObBatch.MerchantId;
-                                    obBatchData.ObBatchId = tsObBatch.Id;
-                                    obBatchData.CsrName = csrName;
-                                    obBatchData.CsrPhoneNumber = csrPhoneNumber;
-                                    obBatchData.CsrAddress = csrAddress;
-                                    obBatchData.CsrIdNumber = csrIdNumber;
-                                    obBatchData.CsrCompany = csrCompany;
-                                    obBatchData.CarRegisterDate = carRegisterDate;
-                                    obBatchData.CarPlateNo = carPlateNo;
-                                    obBatchData.CarModel = carModel;
-                                    obBatchData.CarEngineNo = carEngineNo;
-                                    obBatchData.CarVin = carVin;
-                                    obBatchData.CarInsLastQzNo = carInsLastQzNo;
-                                    obBatchData.CarInsLastSyNo = carInsLastSyNo;
-                                    obBatchData.CarInsLastCompany = carInsLastCompany;
-                                    obBatchData.CarInsLastStartTime = carInsLastStartTime;
-                                    obBatchData.CarInsLastEndTime = carInsLastEndTime;
-                                    obBatchData.BusinessType = tsObBatch.BusinessType;
-                                    obBatchData.IsValid = isValid;
-                                    obBatchData.HandleReport = handleReport;
-                                    obBatchData.Creator = tsObBatch.Creator;
-                                    obBatchData.CreateTime = tsObBatch.CreateTime;
-                                    tsCurrentDb.ObBatchData.Add(obBatchData);
-                                    tsCurrentDb.SaveChanges();
-
-                                    if (isValid)
-                                    {
-                                        obCustomer = new ObCustomer();
-                                        obCustomer.Id = GuidUtil.New();
-                                        obCustomer.MerchantId = tsObBatch.MerchantId;
-                                        obCustomer.ObBatchId = tsObBatch.Id;
-                                        obCustomer.ObBatchDataId = obBatchData.Id;
-                                        obCustomer.ObBatchAllocateId = obBatchAllocateId;
-                                        obCustomer.CsrName = obBatchData.CsrName;
-                                        obCustomer.CsrPhoneNumber = csrPhoneNumber;
-                                        obCustomer.CsrAddress = obBatchData.CsrAddress;
-                                        obCustomer.CsrIdNumber = obBatchData.CsrIdNumber;
-                                        obCustomer.CsrCompany = obBatchData.CsrCompany;
-                                        obCustomer.CarRegisterDate = obBatchData.CarRegisterDate;
-                                        obCustomer.CarPlateNo = obBatchData.CarPlateNo;
-                                        obCustomer.CarModel = obBatchData.CarModel;
-                                        obCustomer.CarEngineNo = obBatchData.CarEngineNo;
-                                        obCustomer.CarVin = obBatchData.CarVin;
-                                        obCustomer.CarInsLastQzNo = obBatchData.CarInsLastQzNo;
-                                        obCustomer.CarInsLastSyNo = obBatchData.CarInsLastSyNo;
-                                        obCustomer.CarInsLastCompany = obBatchData.CarInsLastCompany;
-                                        obCustomer.CarInsLastStartTime = obBatchData.CarInsLastStartTime;
-                                        obCustomer.CarInsLastEndTime = obBatchData.CarInsLastEndTime;
-                                        obCustomer.ExpiryTime = tsObBatch.ExpiryTime;
-                                        obCustomer.RecoveryTime = tsObBatch.RecoveryTime;
-                                        obCustomer.FollowDelayDays = tsObBatch.FollowDelayDays;
-                                        obCustomer.BelongerOrganizationId = tsObBatch.BelongerOrganizationId;
-                                        obCustomer.BelongerId = tsObBatch.BelongerId;
-                                        obCustomer.BusinessType = tsObBatch.BusinessType;
-                                        obCustomer.Creator = tsObBatch.Creator;
-                                        obCustomer.CreateTime = tsObBatch.CreateTime;
-                                        tsCurrentDb.ObCustomer.Add(obCustomer);
+                                        var obBatchData = new ObBatchData();
+                                        obBatchData.Id = GuidUtil.New();
+                                        obBatchData.MerchantId = tsObBatch.MerchantId;
+                                        obBatchData.ObBatchId = tsObBatch.Id;
+                                        obBatchData.CsrName = csrName;
+                                        obBatchData.CsrPhoneNumber = csrPhoneNumber;
+                                        obBatchData.CsrAddress = csrAddress;
+                                        obBatchData.CsrIdNumber = csrIdNumber;
+                                        obBatchData.CsrCompany = csrCompany;
+                                        obBatchData.CarRegisterDate = carRegisterDate;
+                                        obBatchData.CarPlateNo = carPlateNo;
+                                        obBatchData.CarModel = carModel;
+                                        obBatchData.CarEngineNo = carEngineNo;
+                                        obBatchData.CarVin = carVin;
+                                        obBatchData.CarInsLastQzNo = carInsLastQzNo;
+                                        obBatchData.CarInsLastSyNo = carInsLastSyNo;
+                                        obBatchData.CarInsLastCompany = carInsLastCompany;
+                                        obBatchData.CarInsLastStartTime = carInsLastStartTime;
+                                        obBatchData.CarInsLastEndTime = carInsLastEndTime;
+                                        obBatchData.BusinessType = tsObBatch.BusinessType;
+                                        obBatchData.IsValid = isValid;
+                                        obBatchData.HandleReport = handleReport;
+                                        obBatchData.Creator = tsObBatch.Creator;
+                                        obBatchData.CreateTime = tsObBatch.CreateTime;
+                                        tsCurrentDb.ObBatchData.Add(obBatchData);
                                         tsCurrentDb.SaveChanges();
 
-                                        var obCustomerBelongTrack = new ObCustomerBelongTrack();
-                                        obCustomerBelongTrack.Id = GuidUtil.New();
-                                        obCustomerBelongTrack.MerchantId = tsObBatch.MerchantId;
-                                        obCustomerBelongTrack.ObBatchId = tsObBatch.Id;
-                                        obCustomerBelongTrack.ObBatchDataId = obBatchData.Id;
-                                        obCustomerBelongTrack.ObCustomerId = obCustomer.Id;
-                                        obCustomerBelongTrack.BelongerId = tsObBatch.BelongerId;
-                                        obCustomerBelongTrack.Description = string.Format("分配给用户：{0}，姓名：{1}", belongUser.UserName, belongUser.FullName);
-                                        obCustomerBelongTrack.Creator = tsObBatch.Creator;
-                                        obCustomerBelongTrack.CreateTime = tsObBatch.CreateTime;
-                                        tsCurrentDb.ObCustomerBelongTrack.Add(obCustomerBelongTrack);
+                                        if (isValid)
+                                        {
+                                            obCustomer = new ObCustomer();
+                                            obCustomer.Id = GuidUtil.New();
+                                            obCustomer.MerchantId = tsObBatch.MerchantId;
+                                            obCustomer.ObBatchId = tsObBatch.Id;
+                                            obCustomer.ObBatchDataId = obBatchData.Id;
+                                            obCustomer.ObBatchAllocateId = obBatchAllocateId;
+                                            obCustomer.CsrName = obBatchData.CsrName;
+                                            obCustomer.CsrPhoneNumber = csrPhoneNumber;
+                                            obCustomer.CsrAddress = obBatchData.CsrAddress;
+                                            obCustomer.CsrIdNumber = obBatchData.CsrIdNumber;
+                                            obCustomer.CsrCompany = obBatchData.CsrCompany;
+                                            obCustomer.CarRegisterDate = obBatchData.CarRegisterDate;
+                                            obCustomer.CarPlateNo = obBatchData.CarPlateNo;
+                                            obCustomer.CarModel = obBatchData.CarModel;
+                                            obCustomer.CarEngineNo = obBatchData.CarEngineNo;
+                                            obCustomer.CarVin = obBatchData.CarVin;
+                                            obCustomer.CarInsLastQzNo = obBatchData.CarInsLastQzNo;
+                                            obCustomer.CarInsLastSyNo = obBatchData.CarInsLastSyNo;
+                                            obCustomer.CarInsLastCompany = obBatchData.CarInsLastCompany;
+                                            obCustomer.CarInsLastStartTime = obBatchData.CarInsLastStartTime;
+                                            obCustomer.CarInsLastEndTime = obBatchData.CarInsLastEndTime;
+                                            obCustomer.ExpiryTime = tsObBatch.ExpiryTime;
+                                            obCustomer.RecoveryTime = tsObBatch.RecoveryTime;
+                                            obCustomer.FollowDelayDays = tsObBatch.FollowDelayDays;
+                                            obCustomer.BelongerOrganizationId = tsObBatch.BelongerOrganizationId;
+                                            obCustomer.BelongerId = tsObBatch.BelongerId;
+                                            obCustomer.BusinessType = tsObBatch.BusinessType;
+                                            obCustomer.Creator = tsObBatch.Creator;
+                                            obCustomer.CreateTime = tsObBatch.CreateTime;
+                                            tsCurrentDb.ObCustomer.Add(obCustomer);
+                                            tsCurrentDb.SaveChanges();
 
+                                            var obCustomerBelongTrack = new ObCustomerBelongTrack();
+                                            obCustomerBelongTrack.Id = GuidUtil.New();
+                                            obCustomerBelongTrack.MerchantId = tsObBatch.MerchantId;
+                                            obCustomerBelongTrack.ObBatchId = tsObBatch.Id;
+                                            obCustomerBelongTrack.ObBatchDataId = obBatchData.Id;
+                                            obCustomerBelongTrack.ObCustomerId = obCustomer.Id;
+                                            obCustomerBelongTrack.BelongerId = tsObBatch.BelongerId;
+                                            obCustomerBelongTrack.Description = string.Format("分配给用户：{0}，姓名：{1}", belongUser.UserName, belongUser.FullName);
+                                            obCustomerBelongTrack.Creator = tsObBatch.Creator;
+                                            obCustomerBelongTrack.CreateTime = tsObBatch.CreateTime;
+                                            tsCurrentDb.ObCustomerBelongTrack.Add(obCustomerBelongTrack);
+
+                                        }
+                                        #endregion
                                     }
-                                    #endregion
                                 }
 
                                 tsObBatch.DataCount = validCount + inValidCount;
