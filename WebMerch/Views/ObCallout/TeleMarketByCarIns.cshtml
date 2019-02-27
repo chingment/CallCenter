@@ -702,7 +702,7 @@
                         <select class="txt-value" style="height:30px;width:80px; ">
                             {{each(i,option) item2.inputOption}}
 
-                            <option value="${option}" ${item2.inputValue= =option?"selected":""}> ${option}</option>
+                            <option value="${option}" ${item2.inputValue==option?"selected":""}> ${option}</option>
 
                             {{/each}}
                         </select>
