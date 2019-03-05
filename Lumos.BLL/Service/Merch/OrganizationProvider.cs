@@ -80,6 +80,12 @@ namespace Lumos.BLL.Service.Merch
             using (TransactionScope ts = new TransactionScope())
             {
                 var fathters = GetFathers(merchantId, rop.PId);
+
+                if(fathters==null)
+                {
+                    LogUtil.Error("fathters is null");
+                }
+
                 int dept = fathters.Count;
                 var isExists = CurrentDb.Organization.Where(m => m.MerchantId == merchantId && m.PId == rop.PId && m.Name == rop.Name && m.Dept == dept && m.IsDelete == false).FirstOrDefault();
                 if (isExists != null)
@@ -134,7 +140,7 @@ namespace Lumos.BLL.Service.Merch
 
                 var fathters = GetFathers(merchantId, organization.PId);
                 int dept = fathters.Count;
-                var isExists = CurrentDb.Organization.Where(m => m.PId == organization.PId && m.Name == rop.Name && m.Dept == dept && m.Id != rop.Id && m.IsDelete == false).FirstOrDefault();
+                var isExists = CurrentDb.Organization.Where(m => m.MerchantId == merchantId && m.PId == organization.PId && m.Name == rop.Name && m.Dept == dept && m.Id != rop.Id && m.IsDelete == false).FirstOrDefault();
                 if (isExists != null)
                 {
                     return new CustomJsonResult(ResultType.Failure, ResultCode.Failure, string.Format("保存失败，该名称({0})已被同一级别使用", rop.Name));
