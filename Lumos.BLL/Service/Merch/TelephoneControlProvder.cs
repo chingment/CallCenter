@@ -24,7 +24,7 @@ namespace Lumos.BLL.Service.Merch
 
             var merchant = CurrentDb.Merchant.Where(m => m.Id == merchantId).FirstOrDefault();
 
-            SdkFactory.Lxt.Login(merchant.LxtApiCustomer,merchant.LxtApiPassword,account);
+            SdkFactory.Lxt.Login(merchant.LxtApiCustomer, merchant.LxtApiPassword, account);
 
             result = new CustomJsonResult(ResultType.Success, ResultCode.Success, "签入成功");
 
@@ -96,7 +96,7 @@ namespace Lumos.BLL.Service.Merch
                 callRecord.SalesmanId = salesmanId;
                 callRecord.SalesmanName = salesman.FullName;
                 callRecord.TeleSeatAccount = account;
-                callRecord.CustomerPhoneNumber = salesman.PhoneNumber;
+                callRecord.CustomerPhoneNumber = obCustomer.CsrPhoneNumber;
                 callRecord.Remark = "";
                 callRecord.Creator = operater;
                 callRecord.CreateTime = this.DateTime;
