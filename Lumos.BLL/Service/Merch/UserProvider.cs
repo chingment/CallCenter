@@ -174,7 +174,7 @@ namespace Lumos.BLL.Service.Merch
 
             if (result.Result == ResultType.Success)
             {
-                UserDataCacheUtil.Add(merchantId, userId);
+                UserDataCacheUtil.Update(merchantId, userId);
             }
 
             return result;
@@ -258,12 +258,6 @@ namespace Lumos.BLL.Service.Merch
                 CurrentDb.SaveChanges();
                 ts.Complete();
 
-                //userModel.UserId = user.Id;
-                //userModel.FullName = user.FullName;
-                //userModel.OrganizationId = user.OrganizationId;
-                //userModel.PositionId = user.PositionId;
-                //userModel.TeleSeatAccount = user.TeleSeatAccount;
-                //userModel.TeleSeatPassword = user.TeleSeatPassword;
 
                 result = new CustomJsonResult(ResultType.Success, ResultCode.Success, "保存成功");
 
@@ -271,7 +265,8 @@ namespace Lumos.BLL.Service.Merch
 
             if (result.Result == ResultType.Success)
             {
-                //UserDataCacheUtil.Edit(merchantId, rop.Id);
+                UserDataCacheUtil.Update(merchantId, rop.Id);
+
             }
 
             return result;

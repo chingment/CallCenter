@@ -18,7 +18,7 @@ namespace Lumos.BLL.Service.Merch
             return RedisManager.Db.HashExists(key_list, userId);
         }
 
-        public static bool Add(string merchantId, string userId)
+        public static bool Update(string merchantId, string userId)
         {
             var isFlag = false;
 
@@ -38,44 +38,36 @@ namespace Lumos.BLL.Service.Merch
             p_user.PositionId = sysMerchantUser.PositionId;
             p_user.WorkStatus = Enumeration.WorkStatus.Unknow;
             p_user.TeleSeatId = sysMerchantUser.TeleSeatId;
-            var teleSeat = db.TeleSeat.Where(m => m.Id == sysMerchantUser.TeleSeatId).FirstOrDefault();
-            if (teleSeat != null)
+
+            if (string.IsNullOrEmpty(sysMerchantUser.TeleSeatId))
             {
+                p_user.TeleSeatAccount = null;
+                p_user.TeleSeatPassword = null;
+                p_user.TelePhoneStatus = Enumeration.TelePhoneStatus.Unknow;
+            }
+            else
+            {
+                var teleSeat = db.TeleSeat.Where(m => m.Id == sysMerchantUser.TeleSeatId).FirstOrDefault();
                 p_user.TeleSeatAccount = teleSeat.Account;
                 p_user.TeleSeatPassword = teleSeat.Password;
                 p_user.TelePhoneStatus = Enumeration.TelePhoneStatus.Unknow;
             }
+
+            var merchant = db.Merchant.Where(m => m.Id == merchantId).FirstOrDefault();
+
+            p_user.TeleSeatApiCustomer = merchant.LxtApiCustomer;
+            p_user.TeleSeatApiPassword = merchant.LxtApiPassword;
 
             isFlag = RedisManager.Db.HashSet(key_list, userId, p_user.ToJsonString(), StackExchange.Redis.When.Always);
 
             return isFlag;
         }
 
-        public static bool Edit(string merchantId, string userId,string fullName,string organizationId, Enumeration.SysPositionId positionId,string teleSeatId)
-        {
-            if (!IsExists(merchantId, userId))
-            {
-                var isAddSuccessed = Add(merchantId, userId);
-                if (!isAddSuccessed)
-                    return false;
-            }
-
-            var l_user = RedisManager.Db.HashGet(key_list, userId).ToString().ToJsonObject<UserModel>();
-            l_user.FullName = fullName;
-            l_user.OrganizationId = organizationId;
-            l_user.PositionId = positionId;
-            l_user.TeleSeatId = teleSeatId;
-
-            var isFlag = RedisManager.Db.HashSet(key_list, userId, l_user.ToJsonString(), StackExchange.Redis.When.Always);
-            return isFlag;
-
-        }
-
         public static bool SetLastAccessTime(string merchantId, string userId, DateTime lastAccessTime)
         {
             if (!IsExists(merchantId, userId))
             {
-                var isAddSuccessed = Add(merchantId, userId);
+                var isAddSuccessed = Update(merchantId, userId);
                 if (!isAddSuccessed)
                     return false;
             }
@@ -88,7 +80,7 @@ namespace Lumos.BLL.Service.Merch
             return isFlag;
         }
 
-        public static bool Edit(UserModel user)
+        public static bool Update(UserModel user)
         {
             var isFlag = RedisManager.Db.HashSet(key_list, user.UserId, user.ToJsonString(), StackExchange.Redis.When.Always);
             return isFlag;

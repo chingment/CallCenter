@@ -23,5 +23,7 @@ namespace Lumos.BLL.Service.Merch
         public string TeleSeatAccount { get; set; }
         public string TeleSeatPassword { get; set; }
         public Enumeration.TelePhoneStatus TelePhoneStatus { get; set; }
+        public string TeleSeatApiCustomer { get; set; }
+        public string TeleSeatApiPassword { get; set; }
     }
 }
