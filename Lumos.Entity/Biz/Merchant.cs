@@ -36,5 +36,8 @@ namespace Lumos.Entity
         public string Mender { get; set; }
 
         public DateTime? MendTime { get; set; }
+
+        public string LxtApiCustomer { get; set; }
+        public string LxtApiPassword { get; set; }
     }
 }

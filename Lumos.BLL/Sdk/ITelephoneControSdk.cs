@@ -9,10 +9,10 @@ namespace Lumos.BLL
 {
     public interface ITelephoneControlSdk
     {
-        CustomJsonResult CallNumber(string account, string csrId, string csrPhoneNumber);
-        CustomJsonResult Hangup(string account);
-        CustomJsonResult Login(string acccount);
-        CustomJsonResult Logout(string account);
-        Enumeration.TelePhoneStatus GetStatus(string account);
+        CustomJsonResult CallNumber(string customer, string password, string account, string csrId, string csrPhoneNumber);
+        CustomJsonResult Hangup(string customer, string password, string account);
+        CustomJsonResult Login(string customer, string password, string acccount);
+        CustomJsonResult Logout(string customer, string password, string account);
+        Enumeration.TelePhoneStatus GetStatus(string customer, string password, string account);
     }
 }

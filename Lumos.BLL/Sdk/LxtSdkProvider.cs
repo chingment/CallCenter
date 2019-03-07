@@ -12,7 +12,7 @@ namespace Lumos.BLL
     {
         private LxtApi _api = new LxtApi();
 
-        public CustomJsonResult CallNumber(string account, string seq, string csrPhoneNumber)
+        public CustomJsonResult CallNumber(string customer,string password,string account, string seq, string csrPhoneNumber)
         {
             CustomJsonResult result = new CustomJsonResult();
 
@@ -23,13 +23,14 @@ namespace Lumos.BLL
             requestData.Callee = csrPhoneNumber;
 
             var request = new CallNumberRequest(requestData);
-
+            request.Customer = customer;
+            request.Password = password;
             var requestResult = _api.DoPost(request);
 
 
             return result;
         }
-        public CustomJsonResult Hangup(string account)
+        public CustomJsonResult Hangup(string customer, string password, string account)
         {
             CustomJsonResult result = new CustomJsonResult();
 
@@ -40,18 +41,19 @@ namespace Lumos.BLL
 
 
             var request = new HangupCallRequest(requestData);
-
+            request.Customer = customer;
+            request.Password = password;
             var requestResult = _api.DoPost(request);
 
 
             return result;
         }
-        public CustomJsonResult Login(string account)
+        public CustomJsonResult Login(string customer, string password, string account)
         {
 
             CustomJsonResult result = new CustomJsonResult();
 
-            var telephoneStatus = GetStatus(account);
+            var telephoneStatus = GetStatus(customer, password, account);
             if (telephoneStatus == Enumeration.TelePhoneStatus.Unknow)
             {
                 var requestData = new AgentLoginRequestData();
@@ -60,14 +62,15 @@ namespace Lumos.BLL
                 requestData.UserData = "";
 
                 var request = new AgentLoginRequest(requestData);
-
+                request.Customer = customer;
+                request.Password = password;
                 var requestResult = _api.DoPost(request);
 
             }
 
             return result;
         }
-        public CustomJsonResult Logout(string account)
+        public CustomJsonResult Logout(string customer, string password, string account)
         {
 
             CustomJsonResult result = new CustomJsonResult();
@@ -79,12 +82,13 @@ namespace Lumos.BLL
             requestData.UserData = "";
 
             var request = new AgentLogoutRequest(requestData);
-
-            var requestResult = _api.DoPost(request);
+            request.Customer = customer;
+            request.Password = password;
+            var requestResult = _api.DoPost( request);
 
             return result;
         }
-        public Enumeration.TelePhoneStatus GetStatus(string account)
+        public Enumeration.TelePhoneStatus GetStatus(string customer, string password, string account)
         {
             Enumeration.TelePhoneStatus telephoneStatus = Entity.Enumeration.TelePhoneStatus.Unknow;
 
@@ -94,7 +98,8 @@ namespace Lumos.BLL
             requestData.UserData = "";
 
             var request = new GetAgentStatusRequest(requestData);
-
+            request.Customer = customer;
+            request.Password = password;
             var requestResult = _api.DoPost(request);
 
             if (requestResult == null)
@@ -138,8 +143,7 @@ namespace Lumos.BLL
 
             return telephoneStatus;
         }
-
-        public CustomJsonResult GetRecordList(string startKey)
+        public CustomJsonResult GetRecordList(string customer, string password, string startKey)
         {
             CustomJsonResult result = new CustomJsonResult();
 
@@ -149,7 +153,8 @@ namespace Lumos.BLL
             requestData.Seq = SnUtil.Build(Entity.Enumeration.BizSnType.TelphoneControlSeq, "");
 
             var request = new GetRecordListRequest(requestData);
-
+            request.Customer = customer;
+            request.Password = password;
             var requestResult = _api.DoPost(request);
 
             return result;

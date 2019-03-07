@@ -13,6 +13,8 @@ namespace LxtSdk
             this.PostData = postdata;
         }
 
+        public string Customer { get; set; }
+        public string Password { get; set; }
 
         public Object PostData { get; set; }
 

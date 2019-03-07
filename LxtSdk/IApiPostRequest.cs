@@ -6,10 +6,13 @@ using System.Threading.Tasks;
 
 namespace LxtSdk
 {
-    public interface IApiPostRequest<T> 
+    public interface IApiPostRequest<T>
     {
         string ApiUrl { get; }
 
         Object PostData { get; set; }
+
+        string Customer { get; set; }
+        string Password { get; set; }
     }
 }

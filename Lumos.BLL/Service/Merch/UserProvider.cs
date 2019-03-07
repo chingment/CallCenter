@@ -343,8 +343,8 @@ namespace Lumos.BLL.Service.Merch
 
             var userModel = UserDataCacheUtil.Get(merchantId, id);
 
-            ret.WorkStatusName = userModel.WorkStatusName;
-            ret.TelePhoneStatusName = userModel.TelePhoneStatusName;
+            ret.WorkStatusName = userModel.WorkStatus.GetCnName();
+            ret.TelePhoneStatusName = userModel.TelePhoneStatus.GetCnName();
 
             return new CustomJsonResult(ResultType.Success, ResultCode.Success, "", ret);
         }

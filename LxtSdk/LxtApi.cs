@@ -57,8 +57,12 @@ namespace LxtSdk
         {
             BaseRequestData postData = new BaseRequestData();
 
-            string customer = "C112";
-            string password = "002D5B9BB96F585E7FA85AB1BADE244B30744608";
+            string customer = request.Customer;
+            string password = request.Password;
+
+            //string customer = customer;
+            //string password = "002D5B9BB96F585E7FA85AB1BADE244B30744608";
+
             string timestamp = ((long)(DateTime.Now - TimeZone.CurrentTimeZone.ToLocalTime(new System.DateTime(1970, 1, 1))).TotalSeconds).ToString();
 
             ThreadSafeRandom ran = new ThreadSafeRandom();
@@ -82,7 +86,7 @@ namespace LxtSdk
             WebUtils webUtils = new WebUtils();
 
 
-            JsonSerializerSettings jsonSerializerSettings=new JsonSerializerSettings();
+            JsonSerializerSettings jsonSerializerSettings = new JsonSerializerSettings();
             jsonSerializerSettings.ContractResolver = new CamelCasePropertyNamesContractResolver();
 
             string str_PostData = JsonConvert.SerializeObject(postData, jsonSerializerSettings);

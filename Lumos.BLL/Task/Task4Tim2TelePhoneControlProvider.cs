@@ -28,11 +28,11 @@ namespace Lumos.BLL.Task
                         user.WorkStatus = Enumeration.WorkStatus.OffLine;
                     }
 
-                    user.TelePhoneStatus = SdkFactory.Lxt.GetStatus(user.TeleSeatAccount);
+                    //user.TelePhoneStatus = SdkFactory.Lxt.GetStatus(user.TeleSeatAccount);
 
-                    LogUtil.Info(string.Format("用户:{0},在线状态:{1},话机状态:{2}", user.UserName, user.WorkStatusName, user.TelePhoneStatusName));
+                    LogUtil.Info(string.Format("用户:{0},在线状态:{1},话机状态:{2}", user.UserName, user.WorkStatus.GetCnName(), user.TelePhoneStatus.GetCnName()));
 
-                    UserDataCacheUtil.SetStatus(user.MerchantId, user.UserId, user.WorkStatus, user.TelePhoneStatus);
+                    UserDataCacheUtil.Edit(user);
                 }
             }
             catch (Exception ex)

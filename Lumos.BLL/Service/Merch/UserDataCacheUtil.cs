@@ -88,22 +88,9 @@ namespace Lumos.BLL.Service.Merch
             return isFlag;
         }
 
-        public static bool SetStatus(string merchantId, string userId, Enumeration.WorkStatus workStatus, Enumeration.TelePhoneStatus telePhoneStatus)
+        public static bool Edit(UserModel user)
         {
-            if (!IsExists(merchantId, userId))
-            {
-                var isAddSuccessed = Add(merchantId, userId);
-                if (!isAddSuccessed)
-                    return false;
-            }
-
-            var l_user = RedisManager.Db.HashGet(key_list, userId).ToString().ToJsonObject<UserModel>();
-
-            l_user.WorkStatus = workStatus;
-            l_user.TelePhoneStatus = telePhoneStatus;
-
-            var isFlag = RedisManager.Db.HashSet(key_list, userId, l_user.ToJsonString(), StackExchange.Redis.When.Always);
-
+            var isFlag = RedisManager.Db.HashSet(key_list, user.UserId, user.ToJsonString(), StackExchange.Redis.When.Always);
             return isFlag;
         }
 
@@ -134,38 +121,39 @@ namespace Lumos.BLL.Service.Merch
             foreach (var hs_user in hs_users)
             {
                 var user = hs_user.Value.ToString().ToJsonObject<UserModel>();
-                if (user.LastAccessTime.AddMinutes(1) > DateTime.Now)
-                {
-                    user.WorkStatus = Enumeration.WorkStatus.OnLine;
-                    user.WorkStatusName = "在线";
-                }
-                else
-                {
-                    user.WorkStatus = Enumeration.WorkStatus.OffLine;
-                    user.WorkStatusName = "离线";
-                }
 
-                switch (user.TelePhoneStatus)
-                {
-                    case Enumeration.TelePhoneStatus.IDLE:
-                        user.TelePhoneStatusName = "空闲";
-                        break;
-                    case Enumeration.TelePhoneStatus.CallOut:
-                        user.TelePhoneStatusName = "正在外呼通话中";
-                        break;
-                    case Enumeration.TelePhoneStatus.CallIn:
-                        user.TelePhoneStatusName = "正在呼入通话中";
-                        break;
-                    case Enumeration.TelePhoneStatus.Ringing:
-                        user.TelePhoneStatusName = "正在响铃中";
-                        break;
-                    case Enumeration.TelePhoneStatus.Process:
-                        user.TelePhoneStatusName = "正在整理中";
-                        break;
-                    default:
-                        user.TelePhoneStatusName = "未就绪";
-                        break;
-                }
+                //if (user.LastAccessTime.AddMinutes(1) > DateTime.Now)
+                //{
+                //    user.WorkStatus = Enumeration.WorkStatus.OnLine;
+                //    user.WorkStatusName = "在线";
+                //}
+                //else
+                //{
+                //    user.WorkStatus = Enumeration.WorkStatus.OffLine;
+                //    user.WorkStatusName = "离线";
+                //}
+
+                //switch (user.TelePhoneStatus)
+                //{
+                //    case Enumeration.TelePhoneStatus.IDLE:
+                //        user.TelePhoneStatusName = "空闲";
+                //        break;
+                //    case Enumeration.TelePhoneStatus.CallOut:
+                //        user.TelePhoneStatusName = "正在外呼通话中";
+                //        break;
+                //    case Enumeration.TelePhoneStatus.CallIn:
+                //        user.TelePhoneStatusName = "正在呼入通话中";
+                //        break;
+                //    case Enumeration.TelePhoneStatus.Ringing:
+                //        user.TelePhoneStatusName = "正在响铃中";
+                //        break;
+                //    case Enumeration.TelePhoneStatus.Process:
+                //        user.TelePhoneStatusName = "正在整理中";
+                //        break;
+                //    default:
+                //        user.TelePhoneStatusName = "未就绪";
+                //        break;
+                //}
 
                 list_users.Add(user);
             }

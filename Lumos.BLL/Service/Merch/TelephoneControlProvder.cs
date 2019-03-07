@@ -22,8 +22,9 @@ namespace Lumos.BLL.Service.Merch
                 return new CustomJsonResult(ResultType.Failure, ResultCode.Failure, "未配置外呼话机号码，请联系系统管理员");
             }
 
+            var merchant = CurrentDb.Merchant.Where(m => m.Id == merchantId).FirstOrDefault();
 
-            SdkFactory.Lxt.Login(account);
+            SdkFactory.Lxt.Login(merchant.LxtApiCustomer,merchant.LxtApiPassword,account);
 
             result = new CustomJsonResult(ResultType.Success, ResultCode.Success, "签入成功");
 
@@ -39,7 +40,9 @@ namespace Lumos.BLL.Service.Merch
                 return new CustomJsonResult(ResultType.Failure, ResultCode.Failure, "未配置外呼话机号码，请联系系统管理员");
             }
 
-            SdkFactory.Lxt.Logout(account);
+            var merchant = CurrentDb.Merchant.Where(m => m.Id == merchantId).FirstOrDefault();
+
+            SdkFactory.Lxt.Logout(merchant.LxtApiCustomer, merchant.LxtApiPassword, account);
 
             result = new CustomJsonResult(ResultType.Success, ResultCode.Success, "签出成功");
 
@@ -69,13 +72,14 @@ namespace Lumos.BLL.Service.Merch
                     return new CustomJsonResult(ResultType.Failure, ResultCode.Failure, "系统找不到该客户信息");
                 }
 
+                var merchant = CurrentDb.Merchant.Where(m => m.Id == merchantId).FirstOrDefault();
 
-                var telePhoneStatus = SdkFactory.Lxt.GetStatus(account);
+                var telePhoneStatus = SdkFactory.Lxt.GetStatus(merchant.LxtApiCustomer, merchant.LxtApiPassword, account);
                 if (telePhoneStatus == Enumeration.TelePhoneStatus.Unknow)
                 {
-                    SdkFactory.Lxt.Login(account);
+                    SdkFactory.Lxt.Login(merchant.LxtApiCustomer, merchant.LxtApiPassword, account);
 
-                    telePhoneStatus = SdkFactory.Lxt.GetStatus(account);
+                    telePhoneStatus = SdkFactory.Lxt.GetStatus(merchant.LxtApiCustomer, merchant.LxtApiPassword, account);
                 }
 
                 if (telePhoneStatus != Enumeration.TelePhoneStatus.IDLE)
@@ -98,7 +102,7 @@ namespace Lumos.BLL.Service.Merch
                 callRecord.CreateTime = this.DateTime;
                 CurrentDb.CallRecord.Add(callRecord);
 
-                SdkFactory.Lxt.CallNumber(account, callRecord.Sn, obCustomer.CsrPhoneNumber);
+                SdkFactory.Lxt.CallNumber(merchant.LxtApiCustomer, merchant.LxtApiPassword, account, callRecord.Sn, obCustomer.CsrPhoneNumber);
 
                 result = new CustomJsonResult(ResultType.Success, ResultCode.Success, "");
 
@@ -118,7 +122,9 @@ namespace Lumos.BLL.Service.Merch
                 return new CustomJsonResult(ResultType.Failure, ResultCode.Failure, "未配置外呼话机号码，请联系系统管理员");
             }
 
-            SdkFactory.Lxt.Hangup(account);
+            var merchant = CurrentDb.Merchant.Where(m => m.Id == merchantId).FirstOrDefault();
+
+            SdkFactory.Lxt.Hangup(merchant.LxtApiCustomer, merchant.LxtApiPassword, account);
 
             result = new CustomJsonResult(ResultType.Success, ResultCode.Success, "挂机成功");
 
