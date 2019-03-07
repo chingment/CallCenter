@@ -15,6 +15,8 @@ namespace Lumos.BLL.Task
         {
             try
             {
+
+
                 var users = UserDataCacheUtil.GetList();
 
                 foreach (var user in users)
