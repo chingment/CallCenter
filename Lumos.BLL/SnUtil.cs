@@ -1,4 +1,5 @@
 ﻿using Lumos.DAL;
+using Lumos.Redis;
 using System;
 using System.Linq;
 using System.Transactions;
@@ -17,29 +18,33 @@ namespace Lumos.BLL
             {
                 try
                 {
-                    using (TransactionScope ts = new TransactionScope(TransactionScopeOption.RequiresNew))
-                    {
-                        LumosDbContext _dbContext = new LumosDbContext();
+                    var incr = RedisManager.Db.StringIncrement("SnIncr", 1);
 
-                        string date = DateTime.Now.ToString("yyyy-MM-dd");
+                    return (int)incr;
 
-                        var bizSn = _dbContext.BizSn.Where(m => m.IncrDate == date).FirstOrDefault();
-                        if (bizSn == null)
-                        {
-                            bizSn = new Entity.BizSn();
-                            bizSn.IncrNum = 0;
-                            bizSn.IncrDate = date;
-                            _dbContext.BizSn.Add(bizSn);
-                            _dbContext.SaveChanges();
-                        }
+                    //using (TransactionScope ts = new TransactionScope(TransactionScopeOption.RequiresNew))
+                    //{
+                    //    LumosDbContext _dbContext = new LumosDbContext();
 
-                        bizSn.IncrNum += 1;
+                    //    string date = DateTime.Now.ToString("yyyy-MM-dd");
 
-                        _dbContext.SaveChanges();
-                        ts.Complete();
+                    //    var bizSn = _dbContext.BizSn.Where(m => m.IncrDate == date).FirstOrDefault();
+                    //    if (bizSn == null)
+                    //    {
+                    //        bizSn = new Entity.BizSn();
+                    //        bizSn.IncrNum = 0;
+                    //        bizSn.IncrDate = date;
+                    //        _dbContext.BizSn.Add(bizSn);
+                    //        _dbContext.SaveChanges();
+                    //    }
 
-                        return bizSn.IncrNum;
-                    }
+                    //    bizSn.IncrNum += 1;
+
+                    //    _dbContext.SaveChanges();
+                    //    ts.Complete();
+
+                    //    return bizSn.IncrNum;
+                    //}
                 }
                 catch (Exception ex)
                 {
@@ -71,7 +76,7 @@ namespace Lumos.BLL
 
             ThreadSafeRandom ran = new ThreadSafeRandom();
 
-
+            
             string part0 = ran.Next(100, 999).ToString();
             string part1 = DateTime.Now.ToString("yyyyMMddHHmmss");
             string part2 = GetIncrNum().ToString().PadLeft(5, '0');

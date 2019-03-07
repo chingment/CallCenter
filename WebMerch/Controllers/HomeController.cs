@@ -8,6 +8,7 @@ using Lumos.Entity;
 using Lumos.BLL.Service.Merch;
 using Lumos.Common;
 using System;
+using Lumos.Redis;
 
 namespace WebMerch.Controllers
 {
@@ -16,6 +17,7 @@ namespace WebMerch.Controllers
 
         public ViewResult Index()
         {
+            var incr = RedisManager.Db.StringIncrement("textIncr", 1);
             //MerchServiceFactory.User.SetLastAccessTime(this.CurrentUserId, this.CurrentMerchantId, this.CurrentUserId, DateTime.Now);
 
             //SdkFactory.Lxt.GetRecordList("0");
