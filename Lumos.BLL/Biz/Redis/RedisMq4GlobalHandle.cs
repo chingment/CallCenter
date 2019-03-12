@@ -4,6 +4,7 @@ using Lumos.Entity;
 using NPOI.HSSF.UserModel;
 using NPOI.SS.UserModel;
 using System;
+using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Text;
@@ -65,7 +66,6 @@ namespace Lumos.BLL.Biz
             obBatch.MendTime = DateTime.Now;
             CurrentDb.SaveChanges();
 
-            int a = 0;
             try
             {
                 TransactionOptions transactionOption = new TransactionOptions();
@@ -79,6 +79,12 @@ namespace Lumos.BLL.Biz
                     var obBatchAllocateId = GuidUtil.New();
 
                     var tsObBatch = tsCurrentDb.ObBatch.Where(m => m.Id == rop.Id).FirstOrDefault();
+
+
+                    List<ObBatchData> obBatchDatas = new List<ObBatchData>();
+                    List<ObCustomer> obCustomers = new List<ObCustomer>();
+                    List<ObCustomerBelongTrack> obCustomerBelongTracks = new List<ObCustomerBelongTrack>();
+                    List<ObBatchAllocate> obBatchAllocates = new List<Entity.ObBatchAllocate>();
 
                     if (tsObBatch.SoureType == Entity.Enumeration.DataBatchSoureType.File)
                     {
@@ -98,11 +104,6 @@ namespace Lumos.BLL.Biz
                                 for (int i = 1; i < rowCount; i++)
                                 {
                                     #region 数据去重处理
-                                    a = a + 1;
-                                    if (a == 336)
-                                    {
-                                        var b = "dad";
-                                    }
 
                                     IRow row = sheet.GetRow(i);
 
@@ -150,6 +151,7 @@ namespace Lumos.BLL.Biz
 
                                     if (!string.IsNullOrEmpty(csrPhoneNumber))
                                     {
+                                        //ObCustomer obCustomer = null;
                                         var obCustomer = tsCurrentDb.ObCustomer.Where(m => m.MerchantId == obBatch.MerchantId && m.CsrPhoneNumber == csrPhoneNumber).FirstOrDefault();
 
                                         bool isValid = true;
@@ -184,7 +186,7 @@ namespace Lumos.BLL.Biz
                                             }
                                         }
 
-
+                                       
                                         var obBatchData = new ObBatchData();
                                         obBatchData.Id = GuidUtil.New();
                                         obBatchData.MerchantId = tsObBatch.MerchantId;
@@ -209,8 +211,9 @@ namespace Lumos.BLL.Biz
                                         obBatchData.HandleReport = handleReport;
                                         obBatchData.Creator = tsObBatch.Creator;
                                         obBatchData.CreateTime = tsObBatch.CreateTime;
-                                        tsCurrentDb.ObBatchData.Add(obBatchData);
-                                        tsCurrentDb.SaveChanges();
+                                        //tsCurrentDb.ObBatchData.Add(obBatchData);
+
+                                        obBatchDatas.Add(obBatchData);
 
                                         if (isValid)
                                         {
@@ -243,8 +246,9 @@ namespace Lumos.BLL.Biz
                                             obCustomer.BusinessType = tsObBatch.BusinessType;
                                             obCustomer.Creator = tsObBatch.Creator;
                                             obCustomer.CreateTime = tsObBatch.CreateTime;
-                                            tsCurrentDb.ObCustomer.Add(obCustomer);
-                                            tsCurrentDb.SaveChanges();
+                                            //tsCurrentDb.ObCustomer.Add(obCustomer);
+
+                                            obCustomers.Add(obCustomer);
 
                                             var obCustomerBelongTrack = new ObCustomerBelongTrack();
                                             obCustomerBelongTrack.Id = GuidUtil.New();
@@ -256,8 +260,9 @@ namespace Lumos.BLL.Biz
                                             obCustomerBelongTrack.Description = string.Format("分配给用户：{0}，姓名：{1}", belongUser.UserName, belongUser.FullName);
                                             obCustomerBelongTrack.Creator = tsObBatch.Creator;
                                             obCustomerBelongTrack.CreateTime = tsObBatch.CreateTime;
-                                            tsCurrentDb.ObCustomerBelongTrack.Add(obCustomerBelongTrack);
+                                            //tsCurrentDb.ObCustomerBelongTrack.Add(obCustomerBelongTrack);
 
+                                            obCustomerBelongTracks.Add(obCustomerBelongTrack);
                                         }
                                         #endregion
                                     }
@@ -296,12 +301,18 @@ namespace Lumos.BLL.Biz
                                     obBatchAllocate.BelongerId = tsObBatch.BelongerId;
                                     obBatchAllocate.BelongerOrganizationId = tsObBatch.BelongerOrganizationId;
                                     obBatchAllocate.SoureName = string.Format("数据文件:{0}", rop.SoureName);
-                                    tsCurrentDb.ObBatchAllocate.Add(obBatchAllocate);
-                                    tsCurrentDb.SaveChanges();
+                                    //tsCurrentDb.ObBatchAllocate.Add(obBatchAllocate);
+
+                                    obBatchAllocates.Add(obBatchAllocate);
                                 }
                             }
 
-                            tsCurrentDb.SaveChanges();
+                            tsCurrentDb.BulkInsert(obBatchDatas);
+                            tsCurrentDb.BulkInsert(obCustomers);
+                            tsCurrentDb.BulkInsert(obCustomerBelongTracks);
+                            tsCurrentDb.BulkInsert(obBatchAllocates);
+
+                            tsCurrentDb.BulkSaveChanges();
 
                             ts.Complete();
                         }
