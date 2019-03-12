@@ -189,6 +189,8 @@
     <Compile Include="App_Start\Own\OwnHmlExtension.cs" />
     <Compile Include="App_Start\Own\OwnStaticResource.cs" />
     <Compile Include="App_Start\Own\OwnStatisticsTrackerAttribute.cs" />
+    <Compile Include="Models\CallResultRecordReportModel.cs" />
+    <Compile Include="Models\ReportModel.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
@@ -237,6 +239,7 @@
     <Content Include="Views\ObCallout\TeleMarketByCommon.cshtml" />
     <Content Include="Views\Report\TeleSeatAccount.cshtml" />
     <Content Include="Views\Report\UserAccount.cshtml" />
+    <Content Include="Views\Report\CallResultRecord.cshtml" />
     <None Include="Web.config">
       <SubType>Designer</SubType>
     </None>

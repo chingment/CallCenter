@@ -90,7 +90,7 @@ u.MerchantId == this.CurrentMerchantId &&
 
         public CustomJsonResult GetCallRecordList(RupCallRecordGetList rup)
         {
-            var accessUserIds = MerchServiceFactory.User.GetCanAccessUserIds(this.CurrentMerchantId, this.CurrentUserId);
+          var accessUserIds = MerchServiceFactory.User.GetCanAccessUserIds(this.CurrentMerchantId, this.CurrentUserId);
 
             var query = (from u in CurrentDb.CallRecord
                          where
@@ -146,5 +146,6 @@ u.MerchantId == this.CurrentMerchantId &&
 
             return Json(ResultType.Success, pageEntity, "");
         }
+
     }
 }

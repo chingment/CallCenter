@@ -12,6 +12,16 @@
 
         //$('#sel_Organizations').myChosen({ urlParams: { type: "SysOrganization" } });
 
+        $('.btn-export-excel').live('click', function () {
+           
+            var l_Data = $("#form1").serializeArray();
+ 
+            $.lumos.download("/CallResultRecord/ExportExcel", l_Data, 'post');
+
+        });
+
+
+       
         $('#sel_ResultCode').myChosen({ urlParams: { type: "callresultcode", businessType: 1 } });
 
         listTable = $("#list_table").loadDataTable({
@@ -96,7 +106,12 @@
             </div>
          
 
-            <div class="filter"><input type="button" class="btn btn-search" id="btn_Search" value="查询" /> </div>
+            <div class="filter">
+
+            <input type="button" class="btn btn-search" id="btn_Search" value="查询" /> 
+                <input type="button" class="btn btn-export-excel" id="btn_Export" value="导出" />
+            
+            </div>
 
         </div>
         <div class="list">
