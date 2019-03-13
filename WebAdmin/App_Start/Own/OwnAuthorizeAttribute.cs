@@ -37,8 +37,23 @@ namespace WebAdmin
             var response = filterContext.RequestContext.HttpContext.Response;
             bool isAjaxRequest = request.IsAjaxRequest();
             string userAgent = request.UserAgent;
-            string returnUrl = isAjaxRequest == true ? request.UrlReferrer.AbsoluteUri : request.Url.AbsoluteUri;
+            string returnUrl = "";
 
+            if (isAjaxRequest)
+            {
+                if (request.UrlReferrer != null)
+                {
+                    returnUrl = request.UrlReferrer.AbsoluteUri;
+                    //LogUtil.Info("request.UrlReferrer.AbsoluteUri:" + request.UrlReferrer.AbsoluteUri);
+                }
+                else
+                {
+                    returnUrl = request.Url.AbsoluteUri;
+                    //LogUtil.Info("request.Url.AbsoluteUri:" + request.Url.AbsoluteUri);
+                }
+            }
+
+            //LogUtil.Info("returnUrl:" + returnUrl);
 
 
             if (request.HttpMethod == "POST")
@@ -80,6 +95,8 @@ namespace WebAdmin
 
             if (userInfo == null)
             {
+                //LogUtil.Info("userInfo: is null");
+
                 MessageBox messageBox = new MessageBox();
                 messageBox.No = Guid.NewGuid().ToString();
                 messageBox.Type = MessageBoxTip.Failure;
@@ -116,6 +133,8 @@ namespace WebAdmin
 
                 if (!isHasPermission)
                 {
+                    //LogUtil.Info("userInfo isHasPermission : false");
+
                     if (isAjaxRequest)
                     {
                         CustomJsonResult jsonResult = new CustomJsonResult(ResultType.Exception, ResultCode.Exception, messageBox.Title, messageBox);
@@ -134,6 +153,8 @@ namespace WebAdmin
             }
 
             OwnRequest.Postpone();
+
+            //LogUtil.Info("check over");
 
             base.OnActionExecuting(filterContext);
         }
