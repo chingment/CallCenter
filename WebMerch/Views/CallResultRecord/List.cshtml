@@ -42,6 +42,7 @@
                 l_StrRows += "<td class=\"overflow\" title=\"" + p_row.nextCallTime + "\">" + p_row.nextCallTime + "</td>";
                 l_StrRows += "<td class=\"overflow\" title=\"" + p_row.remark + "\">" + p_row.remark + "</td>";
                 l_StrRows += "<td class=\"overflow\" title=\"" + p_row.salesmanName + "\">" + p_row.salesmanName + "</td>";
+                l_StrRows += "<td class=\"overflow\" title=\"" + p_row.createTime + "\">" + p_row.createTime + "</td>";
                 l_StrRows += "<td class=\"operation\">";
                 l_StrRows += l_Strlimt;
                 l_StrRows += "</td>";
@@ -121,10 +122,10 @@
                         <th style="width:25px" class="no">
                             序号
                         </th>
-                        <th style="width:15%">
+                        <th style="width:10%">
                             客户名称
                         </th>
-                        <th style="width:15%">
+                        <th style="width:10%">
                             电话号码
                         </th>
                         <th style="width:10%">
@@ -139,6 +140,9 @@
                         <th style="width:10%">
                             坐席
                         </th>
+                        <th style="width:10%">
+                            创建时间
+                        </th>
                         <th style="width:25px" class="operation">
                             操作
                         </th>
@@ -147,7 +151,7 @@
                 <tbody></tbody>
                 <tfoot>
                     <tr>
-                        <td colspan="8">
+                        <td colspan="9">
                             <div class="pull-left">
                                 <span class="load-tip"></span>
                             </div>

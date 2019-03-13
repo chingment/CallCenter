@@ -77,7 +77,8 @@ u.MerchantId == this.CurrentMerchantId &&
                     ResultCode = item.ResultCode,
                     CustomerPhoneNumber = item.CustomerPhoneNumber,
                     NextCallTime = item.NextCallTime.ToUnifiedFormatDateTime(),
-                    Remark = item.Remark
+                    Remark = item.Remark,
+                    CreateTime = item.CreateTime.ToUnifiedFormatDateTime()
                 });
             }
 
@@ -90,7 +91,7 @@ u.MerchantId == this.CurrentMerchantId &&
 
         public CustomJsonResult GetCallRecordList(RupCallRecordGetList rup)
         {
-          var accessUserIds = MerchServiceFactory.User.GetCanAccessUserIds(this.CurrentMerchantId, this.CurrentUserId);
+            var accessUserIds = MerchServiceFactory.User.GetCanAccessUserIds(this.CurrentMerchantId, this.CurrentUserId);
 
             var query = (from u in CurrentDb.CallRecord
                          where
