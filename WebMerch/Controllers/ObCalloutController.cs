@@ -25,9 +25,9 @@ namespace WebMerch.Controllers
             return View();
         }
 
-        public CustomJsonResult TakeData()
+        public CustomJsonResult TakeData(string customerId)
         {
-            return MerchServiceFactory.ObCallout.TakeData(this.CurrentUserId, this.CurrentMerchantId, this.CurrentUserId);
+            return MerchServiceFactory.ObCallout.TakeData(this.CurrentUserId, this.CurrentMerchantId, this.CurrentUserId, customerId);
         }
 
         public CustomJsonResult SkipData(string customerId)
@@ -80,6 +80,42 @@ namespace WebMerch.Controllers
             var obTakeDataLimit = CurrentDb.ObTakeDataLimit.Where(m => m.MerchantId == this.CurrentMerchantId && m.SalesmanId == this.CurrentUserId).FirstOrDefault();
 
             return new CustomJsonResult(ResultType.Success, ResultCode.Success, "获取成功", new { TaskQuantity = obTakeDataLimit.TaskQuantity, UnTakeQuantity = obTakeDataLimit.UnTakeQuantity, TakedQuantity = obTakeDataLimit.TakedQuantity });
+        }
+
+
+        public CustomJsonResult GetBookingCustomers()
+        {
+
+            var query = (from u in CurrentDb.CallResultRecord
+                         where
+u.MerchantId == this.CurrentMerchantId &&
+u.SalesmanId == this.CurrentUserId &&
+u.IsBackCalled == false &&
+u.NextCallTime != null
+                         select new { u.Id, u.CustomerId, u.CustomerName, u.SalesmanId, u.SalesmanName, u.ResultName, u.ResultCode, u.CustomerPhoneNumber, u.CreateTime, u.NextCallTime, u.Remark });
+
+
+            query = query.OrderBy(r => r.CreateTime);
+
+
+
+            var list = query.ToList();
+
+            List<object> olist = new List<object>();
+
+            foreach (var item in list)
+            {
+                olist.Add(new
+                {
+                    Id = item.Id,
+                    CustomerId = item.CustomerId,
+                    CustomerName = item.CustomerName,
+                    ResultName = item.ResultName,
+                    NextCallTime = item.NextCallTime.ToUnifiedFormatDateTime()
+                });
+            }
+
+            return Json(ResultType.Success, olist, "");
         }
     }
 }

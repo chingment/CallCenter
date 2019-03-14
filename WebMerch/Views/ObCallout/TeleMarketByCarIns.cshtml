@@ -128,6 +128,8 @@
 
             getTaskDataStatus();
 
+            getBookingCustomers();
+
             takeData();
 
             $('.btn-switch').myBtnSwitch();
@@ -162,7 +164,7 @@
                 }
 
                 var form_CallRecord = document.getElementById('form_CallRecord');
-
+            
                 var sel_ResultCode = $(form_CallRecord).find('#sel_ResultCode');
                 var txt_NextCallTime = $(form_CallRecord).find('#txt_NextCallTime');
                 var txt_Remark = $(form_CallRecord).find('#txt_Remark');
@@ -191,7 +193,7 @@
                             $.lumos.postJson({
                                 isUseHandling: true,
                                 url: "/ObCallout/SaveCallResultRecord",
-                                data: { customerId: customerId, resultCode: resultCode, nextCallTime: nextCallTime, remark: remark },
+                                data: { pId: callResultRecordId, customerId: customerId, resultCode: resultCode, nextCallTime: nextCallTime, remark: remark },
                                         success: function (d) {
                                             $.lumos.tips(d.message);
                                             if (d.result == $.lumos.resultType.success) {
@@ -305,6 +307,12 @@
                 });
             });
 
+            $('#ul_bookingCustomers a').live("click", function () {
+                var customerId = $(this).attr("customerId");
+                callResultRecordId = $(this).attr("callResultRecordId");
+                takeData(customerId);
+            });
+
             $('#sel_ResultCode').on("change", function () {
                 var obj = JSON.parse($(this).find("option:selected").attr("ext"));
                 if (obj.isAllowNextCall) {
@@ -337,12 +345,16 @@
         });
 
         var takeDataResult = null;
+        var callResultRecordId = null;
 
-        function takeData() {
+        function takeData(customerId) {
+
+            customerId = typeof customerId == "undefined" ? "" : customerId;
 
             $.lumos.getJson({
                 url: "/ObCallout/TakeData",
                 isUseHandling: false,
+                urlParams: { customerId: customerId },
                 success: function (d) {
 
                     $.lumos.tips(d.message);
@@ -376,6 +388,7 @@
 
                         getDealtTrack();
                         getTaskDataStatus();
+                        getBookingCustomers();
                     }
                 }
             });
@@ -464,14 +477,43 @@
             });
         }
 
+        function getBookingCustomers() {
+
+            var ul_bookingCustomers = $('#ul_bookingCustomers');
+
+            $.lumos.getJson({
+                url: "/ObCallout/GetBookingCustomers",
+                isShowLoading: false,
+                success: function (d) {
+                    if (d.result == $.lumos.resultType.success) {
+                   
+
+                        $(ul_bookingCustomers).html('')
+
+                        if (d.data.length > 0) {
+                            $.each(d.data, function (i, item) {
+
+                                var msg = "<li ><p> <a href=\"javascript:void(0)\" callResultRecordId='"+item.id+"' customerId='" + item.customerId + "' > [" + item.customerName + "]" + item.nextCallTime + "</a></p></li>";
+                   
+
+
+                                $(ul_bookingCustomers).append(msg);
+                            })
+                        }
+                        else {
+                            $(ul_bookingCustomers).append("<li>暂无信息</li>");
+                        }
+
+                    }
+                }
+            });
+        }
     </script>
 }
 
 <div class="gbr-row gbr-page">
 
     <div class="teleMarket">
-
-
         <div class="customerInfo">
             <div id="top_bar" class="search-bar" style="background-color:#fff;">
                 <div class="filter" id="btn_SaveCallRecord">
@@ -571,10 +613,21 @@
                         <li><div class="name">任务数量</div><div id="lbl_TaskQuantity" class="value">0</div></li>
                         <li><div class="name">未拨数量</div><div id="lbl_UnTakeQuantity" class="value">0</div></li>
                         <li><div class="name">已拨数量</div><div id="lbl_TakedQuantity" class="value">0</div></li>
-                    </ul>
+                     </ul>
                 </div>
             </div>
 
+
+            <div id="taskInfo" class="infobox" style="margin-top:5px;">
+                <div class="t">
+                    <span class="title">预约通话</span>
+                </div>
+                <div class="b">
+                    <ul id="ul_bookingCustomers">
+                        <li></li>
+                    </ul>
+                </div>
+            </div>
 
             <div id="dealtTrackInfo" class="infobox" style="margin-top:5px;">
                 <div class="t">
@@ -592,8 +645,6 @@
 
 
     </div>
-
-
 
     <form id="form_CallRecord" name="form_CallRecord" method="post" style="width:500px;display:none">
 

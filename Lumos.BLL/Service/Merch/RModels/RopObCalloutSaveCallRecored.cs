@@ -8,6 +8,8 @@ namespace Lumos.BLL.Service.Merch
 {
     public class RopObCalloutSaveCallResultRecord
     {
+        public string PId { get; set; }
+
         public string CustomerId { get; set; }
 
         public string ResultCode { get; set; }

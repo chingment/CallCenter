@@ -27,7 +27,7 @@ namespace Lumos.BLL.Service.Merch
             return query.ToList().Concat(query.ToList().SelectMany(t => GetFatherObBatchAllocateList(list, t.PId)));
         }
 
-        public CustomJsonResult TakeData(string operater, string merchantId, string salesmanId)
+        public CustomJsonResult TakeData(string operater, string merchantId, string salesmanId, string customerId)
         {
             CustomJsonResult result = new CustomJsonResult();
 
@@ -50,58 +50,69 @@ namespace Lumos.BLL.Service.Merch
                     return new CustomJsonResult(ResultType.Failure, ResultCode.Failure, "该账号已被禁用");
                 }
 
-                var obCustomer = CurrentDb.ObCustomer.Where(m => m.MerchantId == merchantId && m.IsUseCall == false && m.SalesmanId == salesmanId).FirstOrDefault();
-                if (obCustomer == null)
+                ObCustomer obCustomer;
+
+                //customerId  当 customerId 为空随机取一条
+                if (string.IsNullOrEmpty(customerId))
                 {
-
-                    var obTakeDataLimit = CurrentDb.ObTakeDataLimit.Where(m => m.MerchantId == merchantId && m.SalesmanId == salesmanId).FirstOrDefault();
-                    if (obTakeDataLimit == null || obTakeDataLimit.UnTakeQuantity <= 0)
-                    {
-
-                        return new CustomJsonResult(ResultType.Failure, ResultCode.Failure, "您当前的外号任务量已经用完");
-                    }
-
-
-                    obCustomer = CurrentDb.ObCustomer.Where(m => m.MerchantId == merchantId && m.IsTake == false && m.BelongerId == salesmanId).OrderBy(x => Guid.NewGuid()).FirstOrDefault();
+                    obCustomer = CurrentDb.ObCustomer.Where(m => m.MerchantId == merchantId && m.IsUseCall == false && m.SalesmanId == salesmanId).FirstOrDefault();
 
                     if (obCustomer == null)
                     {
-                        return new CustomJsonResult(ResultType.Failure, ResultCode.Failure, "没有可外呼的数据");
-                    }
 
-                    obCustomer.SalesmanId = salesmanId;
-                    obCustomer.IsTake = true;
-                    obCustomer.TakeTime = this.DateTime;
-                    obCustomer.IsUseCall = false;
-                    obCustomer.Mender = operater;
-                    obCustomer.MendTime = this.DateTime;
-
-                    var obBatchAllocates = GetFatherObBatchAllocates(merchantId, obCustomer.ObBatchAllocateId);
-
-                    foreach (var obBatchAllocate in obBatchAllocates)
-                    {
-                        if (obBatchAllocate.Id == obCustomer.ObBatchAllocateId)
+                        var obTakeDataLimit = CurrentDb.ObTakeDataLimit.Where(m => m.MerchantId == merchantId && m.SalesmanId == salesmanId).FirstOrDefault();
+                        if (obTakeDataLimit == null || obTakeDataLimit.UnTakeQuantity <= 0)
                         {
-                            obBatchAllocate.AllocatedCount += 1;
-                            obBatchAllocate.UnAllocatedCount -= 1;
-                            obBatchAllocate.UsedCount += 1;
-                        }
-                        else
-                        {
-                            obBatchAllocate.UsedCount += 1;
+
+                            return new CustomJsonResult(ResultType.Failure, ResultCode.Failure, "您当前的外号任务量已经用完");
                         }
 
-                        //obBatchAllocate.UnUsedCount = obBatchAllocate.AllocatedCount - obBatchAllocate.UsedCount;
-                        obBatchAllocate.Mender = operater;
-                        obBatchAllocate.MendTime = this.DateTime;
+
+                        obCustomer = CurrentDb.ObCustomer.Where(m => m.MerchantId == merchantId && m.IsTake == false && m.BelongerId == salesmanId).OrderBy(x => Guid.NewGuid()).FirstOrDefault();
+
+                        if (obCustomer == null)
+                        {
+                            return new CustomJsonResult(ResultType.Failure, ResultCode.Failure, "没有可外呼的数据");
+                        }
+
+                        obCustomer.SalesmanId = salesmanId;
+                        obCustomer.IsTake = true;
+                        obCustomer.TakeTime = this.DateTime;
+                        obCustomer.IsUseCall = false;
+                        obCustomer.Mender = operater;
+                        obCustomer.MendTime = this.DateTime;
+
+                        var obBatchAllocates = GetFatherObBatchAllocates(merchantId, obCustomer.ObBatchAllocateId);
+
+                        foreach (var obBatchAllocate in obBatchAllocates)
+                        {
+                            if (obBatchAllocate.Id == obCustomer.ObBatchAllocateId)
+                            {
+                                obBatchAllocate.AllocatedCount += 1;
+                                obBatchAllocate.UnAllocatedCount -= 1;
+                                obBatchAllocate.UsedCount += 1;
+                            }
+                            else
+                            {
+                                obBatchAllocate.UsedCount += 1;
+                            }
+
+                            //obBatchAllocate.UnUsedCount = obBatchAllocate.AllocatedCount - obBatchAllocate.UsedCount;
+                            obBatchAllocate.Mender = operater;
+                            obBatchAllocate.MendTime = this.DateTime;
+                        }
+
+                        obTakeDataLimit.TakedQuantity += 1;
+                        obTakeDataLimit.UnTakeQuantity -= 1;
+
+
+                        CurrentDb.SaveChanges();
+                        ts.Complete();
                     }
-
-                    obTakeDataLimit.TakedQuantity += 1;
-                    obTakeDataLimit.UnTakeQuantity -= 1;
-
-
-                    CurrentDb.SaveChanges();
-                    ts.Complete();
+                }
+                else
+                {
+                    obCustomer = CurrentDb.ObCustomer.Where(m => m.MerchantId == merchantId && m.Id == customerId).FirstOrDefault();
                 }
 
                 ret.ObCustomerId = obCustomer.Id;
@@ -162,7 +173,7 @@ namespace Lumos.BLL.Service.Merch
 
                 CurrentDb.SaveChanges();
                 ts.Complete();
-               
+
                 result = new CustomJsonResult(ResultType.Success, ResultCode.Success, "跳过成功");
 
             }
@@ -181,20 +192,22 @@ namespace Lumos.BLL.Service.Merch
                     return new CustomJsonResult(ResultType.Failure, ResultCode.Failure, "客户资料不存在");
                 }
 
-                if (obCustomer.IsUseCall)
+                if (string.IsNullOrEmpty(rop.PId))
                 {
-                    return new CustomJsonResult(ResultType.Failure, ResultCode.Failure, "已经保存通话记录");
+                    if (obCustomer.IsUseCall)
+                    {
+                        return new CustomJsonResult(ResultType.Failure, ResultCode.Failure, "已经保存通话记录");
+                    }
+
+                    var callRecordCount = CurrentDb.CallRecord.Where(m => m.MerchantId == merchantId && m.SalesmanId == salesmanId && m.CustomerId == rop.CustomerId).Count();
+                    if (callRecordCount == 0)
+                    {
+                        return new CustomJsonResult(ResultType.Failure, ResultCode.Failure, "系统检测到没有外呼客户，不能保存通话记录");
+                    }
+
+                    obCustomer.IsUseCall = true;
+                    obCustomer.UseCallTime = this.DateTime;
                 }
-
-
-                var callRecordCount = CurrentDb.CallRecord.Where(m => m.MerchantId == merchantId && m.SalesmanId == salesmanId && m.CustomerId == rop.CustomerId).Count();
-                if (callRecordCount == 0)
-                {
-                    return new CustomJsonResult(ResultType.Failure, ResultCode.Failure, "系统检测到没有外呼客户，不能保存通话记录");
-                }
-
-                obCustomer.IsUseCall = true;
-                obCustomer.UseCallTime = this.DateTime;
 
 
                 var merchant = CurrentDb.Merchant.Where(m => m.Id == merchantId).FirstOrDefault();
@@ -218,8 +231,15 @@ namespace Lumos.BLL.Service.Merch
                 callResultRecord.Remark = rop.Remark;
                 callResultRecord.Creator = operater;
                 callResultRecord.CreateTime = this.DateTime;
+                callResultRecord.PId = rop.PId;
                 CurrentDb.CallResultRecord.Add(callResultRecord);
 
+
+                var pCallResultRecord = CurrentDb.CallResultRecord.Where(m => m.Id == rop.PId).FirstOrDefault();
+                if (pCallResultRecord != null)
+                {
+                    pCallResultRecord.IsBackCalled = true;
+                }
 
                 var resultCodePrefix = rop.ResultCode.Substring(0, 1);
 
