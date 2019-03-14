@@ -162,6 +162,7 @@
     <Compile Include="App_Start\Own\NPOIExcelHelper.cs" />
     <Compile Include="App_Start\Own\OwnRequest.cs" />
     <Compile Include="App_Start\RouteConfig.cs" />
+    <Compile Include="Controllers\BackCallController.cs" />
     <Compile Include="Controllers\CallResultRecordController.cs" />
     <Compile Include="Controllers\CarInsController.cs" />
     <Compile Include="Controllers\CommonController.cs" />
@@ -240,6 +241,8 @@
     <Content Include="Views\Report\TeleSeatAccount.cshtml" />
     <Content Include="Views\Report\UserAccount.cshtml" />
     <Content Include="Views\Report\CallResultRecord.cshtml" />
+    <Content Include="Views\BackCall\List.cshtml" />
+    <Content Include="Views\BackCall\BackCall.cshtml" />
     <None Include="Web.config">
       <SubType>Designer</SubType>
     </None>

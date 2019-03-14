@@ -1,0 +1,277 @@
+﻿@{
+    ViewBag.Title = "";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+
+<script type="text/javascript">
+
+    var list_Allocate;
+    var list_Allocated;
+    $(document).ready(function () {
+
+        list_Allocate = $("#list_Allocate").loadDataTable({
+            url: "/BackCall/GetListByToday",
+            pageIndex: 0,
+            searchParams: $("#form1").serializeArray(),
+            searchButtonId: "btn_Search",
+            containerId: "form1",
+            rowDataCombie: function (p_index, p_row) {
+                var l_Strlimt = "";
+                l_Strlimt += "@Html.IsInPermission("<a href=\\\"javascript:void(0)\\\" operate=\\\"allocate\\\"   class=\\\"a-btn a-btn-edit\\\"  >转入回拨</a>")";
+                var l_StrRows = "";
+                l_StrRows += "<tr>";
+                l_StrRows += "<td class=\"no\" >" + (p_index + 1) + "</td>";
+                l_StrRows += "<td class=\"overflow tipitem\" title=\"" + p_row.customerName + "\"   >" + p_row.customerName + "</td>";
+                l_StrRows += "<td class=\"overflow\" title=\"" + p_row.customerPhoneNumber + "\">" + p_row.customerPhoneNumber + "</td>";
+                l_StrRows += "<td class=\"overflow\" title=\"" + p_row.resultName + "\">" + p_row.resultName + "</td>";
+                l_StrRows += "<td class=\"overflow\" title=\"" + p_row.createTime + "\">" + p_row.createTime + "</td>";
+                l_StrRows += "<td class=\"overflow\" title=\"" + p_row.remark + "\">" + p_row.remark + "</td>";
+                l_StrRows += "<td class=\"overflow\" title=\"" + p_row.nextCallTime + "\">" + p_row.nextCallTime + "</td>";
+                l_StrRows += "<td class=\"operation\">";
+                l_StrRows += l_Strlimt;
+                l_StrRows += "</td>";
+                l_StrRows += "</tr>";
+                return l_StrRows;
+            },
+            operate: {
+                "allocate": function (obj) {
+
+                    var url = "";
+
+                    switch (obj.businessType) {
+                        case 1:
+                            url = '/ObBatchAllocate/AddByCommon?id=' + obj.id;
+                            break;
+                        case 2:
+                            url = '/ObBatchAllocate/AddByCarIns?id=' + obj.id;
+                            break;
+                    }
+
+                    var title = '回拨';
+                    art.dialog.open(url, {
+                        id: "openDialog", title: title, width: '70%', height: '70%', lock: true, drag: false, cancelVal: '关闭', cancel: true, okVal: '完成', ok: function () {
+                            this.iframe.contentWindow.add();
+                            return false;
+                        }
+                    });
+                }
+            }
+        });
+
+
+        list_Allocated = $("#list_Allocated").loadDataTable({
+            url: "/ObBatchAllocate/GetAlreadyAllocateList",
+            pageIndex: 0,
+            searchParams: $("#form2").serializeArray(),
+            searchButtonId: "btn_Search",
+            containerId: "form2",
+            rowDataCombie: function (p_index, p_row) {
+                var l_Strlimt = "";
+                l_Strlimt += "@Html.IsInPermission("<a href=\\\"javascript:void(0)\\\" operate=\\\"allocate\\\"   class=\\\"a-btn a-btn-edit\\\"  >查看</a>")";
+                var l_StrRows = "";
+                l_StrRows += "<tr>";
+                l_StrRows += "<td class=\"no\" >" + (p_index + 1) + "</td>";
+                l_StrRows += "<td class=\"overflow tipitem\" title=\"" + p_row.obBatchCode + "\"   >" + p_row.obBatchCode + "</td>";
+                l_StrRows += "<td class=\"overflow\" title=\"" + p_row.belongerName + "\">" + p_row.belongerName + "</td>";
+                l_StrRows += "<td class=\"overflow\" title=\"" + p_row.allocateMode + "\">" + p_row.allocateMode + "</td>";
+                l_StrRows += "<td class=\"overflow\" title=\"" + p_row.dataCount + "\">" + p_row.dataCount + "</td>";
+                l_StrRows += "<td class=\"overflow\" title=\"" + p_row.unUsedCount + "\">" + p_row.unUsedCount + "</td>";
+                l_StrRows += "<td class=\"overflow\" title=\"" + p_row.usedCount + "\">" + p_row.usedCount + "</td>";
+                l_StrRows += "<td class=\"overflow\" title=\"" + p_row.description + "\">" + p_row.description + "</td>";
+                l_StrRows += "<td class=\"overflow\" title=\"" + p_row.createTime + "\">" + p_row.createTime + "</td>";
+                l_StrRows += "</tr>";
+                return l_StrRows;
+            },
+            operate: {
+                "allocate": function (obj) {
+                    var url = '/ObBatchAllocateTask/Allocate?id=' + obj.id;
+                    var title = '查看';
+                    art.dialog.open(url, {
+                        id: "openDialog", title: title, width: '70%', height: '70%', lock: true, drag: false, cancelVal: '关闭', cancel: true, okVal: '保存', ok: function () {
+                            this.iframe.contentWindow.allocate();
+                            return false;
+                        }
+                    });
+                }
+            }
+        });
+
+
+    });
+
+    function refresh(type) {
+        switch (type) {
+            case 1:
+                list_Allocate.loadData();
+                list_Allocated.loadData();
+                break;
+            case 2:
+                list_Allocate.loadData("c");
+                list_Allocated.loadData("c");
+                break;
+        }
+    }
+
+
+</script>
+
+
+<div class="gbr-row gbr-page">
+
+    <div class="gbr-row-title clearfix">
+        <div class="pull-left">
+            <h5>当日回拨任务</h5>
+        </div>
+        <div class="pull-right f-tb1-item-pull-right">
+            <h6></h6>
+        </div>
+    </div>
+
+    <form id="form1" name="form1">
+        <div class="search-bar">
+            <div class="filter">
+                <span class="filter-label">批次号：</span>
+                <span class="filter-input">
+                    <input type="text" class="input-control" name="Code" style="width:120px;" />
+                </span>
+            </div>
+
+            <div class="filter"><input type="button" class="btn btn-search" id="btn_Search" value="查询" /> </div>
+
+        </div>
+        <div class="list">
+            <table id="list_Allocate" class="list-tb" cellpadding="0" cellspacing="0">
+                <thead>
+                    <tr>
+                        <th style="width:25px" class="no">
+                            序号
+                        </th>
+                        <th style="width:20%">
+                            客户名称
+                        </th>
+                        <th style="width:20%">
+                            电话号码
+                        </th>
+                        <th style="width:10%">
+                            上次通话结果
+                        </th>
+                        <th style="width:20%">
+                            上次通话时间
+                        </th>
+                        <th style="width:20%">
+                            备注
+                        </th>
+                        <th style="width:10%">
+                            预约回拨时间
+                        </th>
+                        <th style="width:50px" class="operation">
+                            操作
+                        </th>
+                    </tr>
+                </thead>
+                <tbody></tbody>
+                <tfoot>
+                    <tr>
+                        <td colspan="8">
+                            <div class="pull-left">
+                                <span class="load-tip"></span>
+                            </div>
+                            <div class="pull-right pagination">
+                                <div class="pagination-info">
+
+                                </div>
+                                <div class="pagination-index">
+
+                                </div>
+                                <div class="pagination-goto">
+
+                                </div>
+                            </div>
+                        </td>
+                    </tr>
+                </tfoot>
+            </table>
+        </div>
+    </form>
+
+    <div class="gbr-row-title clearfix">
+        <div class="pull-left">
+            <h5>所有回拨任务</h5>
+        </div>
+        <div class="pull-right f-tb1-item-pull-right">
+            <h6></h6>
+        </div>
+    </div>
+
+    <form id="form2" name="form2">
+        <div class="search-bar">
+            <div class="filter">
+                <span class="filter-label">批次号：</span>
+                <span class="filter-input">
+                    <input type="text" class="input-control" name="Code" style="width:120px;" />
+                </span>
+            </div>
+
+            <div class="filter"><input type="button" class="btn btn-search" id="btn_Search" value="查询" /> </div>
+
+        </div>
+        <div class="list">
+            <table id="list_Allocated" class="list-tb" cellpadding="0" cellspacing="0">
+                <thead>
+                    <tr>
+                        <th style="width:25px" class="no">
+                            序号
+                        </th>
+                        <th style="width:20%">
+                            批次号
+                        </th>
+                        <th style="width:20%">
+                            分配对象
+                        </th>
+                        <th style="width:20%">
+                            分配方式
+                        </th>
+                        <th style="width:15%">
+                            分配数量(条)
+                        </th>
+                        <th style="width:10%">
+                            未使用(条)
+                        </th>
+                        <th style="width:10%">
+                            已使用(条)
+                        </th>
+                        <th style="width:10%">
+                            描述
+                        </th>
+                        <th style="width:10%">
+                            分配时间
+                        </th>
+                    </tr>
+                </thead>
+                <tbody></tbody>
+                <tfoot>
+                    <tr>
+                        <td colspan="9">
+                            <div class="pull-left">
+                                <span class="load-tip"></span>
+                            </div>
+                            <div class="pull-right pagination">
+                                <div class="pagination-info">
+
+                                </div>
+                                <div class="pagination-index">
+
+                                </div>
+                                <div class="pagination-goto">
+
+                                </div>
+                            </div>
+                        </td>
+                    </tr>
+                </tfoot>
+            </table>
+        </div>
+    </form>
+
+</div>

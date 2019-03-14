@@ -66,6 +66,8 @@ namespace Lumos.BLL.Biz
             obBatch.MendTime = DateTime.Now;
             CurrentDb.SaveChanges();
 
+            var belongUser = CurrentDb.SysUser.Where(m => m.Id == obBatch.BelongerId).FirstOrDefault();
+
             try
             {
                 TransactionOptions transactionOption = new TransactionOptions();
@@ -80,7 +82,6 @@ namespace Lumos.BLL.Biz
 
                     var tsObBatch = tsCurrentDb.ObBatch.Where(m => m.Id == rop.Id).FirstOrDefault();
 
-
                     List<ObBatchData> obBatchDatas = new List<ObBatchData>();
                     List<ObCustomer> obCustomers = new List<ObCustomer>();
                     List<ObCustomerBelongTrack> obCustomerBelongTracks = new List<ObCustomerBelongTrack>();
@@ -92,7 +93,6 @@ namespace Lumos.BLL.Biz
                         {
                             if (File.Exists(tsObBatch.FilePath))
                             {
-                                var belongUser = tsCurrentDb.SysUser.Where(m => m.Id == tsObBatch.BelongerId).FirstOrDefault();
 
                                 FileStream fsRead = new FileStream(tsObBatch.FilePath, FileMode.Open);
                                 HSSFWorkbook workbook = new HSSFWorkbook(fsRead);
@@ -264,8 +264,10 @@ namespace Lumos.BLL.Biz
 
                                             obCustomerBelongTracks.Add(obCustomerBelongTrack);
                                         }
-                                        #endregion
-                                    }
+                                      
+                                    } 
+                                    
+                                    #endregion
                                 }
 
                                 tsObBatch.DataCount = validCount + inValidCount;
