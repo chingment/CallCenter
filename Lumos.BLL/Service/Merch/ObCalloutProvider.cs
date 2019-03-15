@@ -115,6 +115,7 @@ namespace Lumos.BLL.Service.Merch
                     obCustomer = CurrentDb.ObCustomer.Where(m => m.MerchantId == merchantId && m.Id == customerId).FirstOrDefault();
                 }
 
+
                 ret.ObCustomerId = obCustomer.Id;
 
                 ret.Customer.Name = obCustomer.CsrName;
@@ -133,7 +134,12 @@ namespace Lumos.BLL.Service.Merch
                 ret.Car.InsLastCompany = obCustomer.CarInsLastCompany;
                 ret.Car.InsTime = obCustomer.CarInsLastStartTime.ToUnifiedFormatDate() + " 至 " + obCustomer.CarInsLastEndTime.ToUnifiedFormatDate();
 
+                var callResultRecords = CurrentDb.CallResultRecord.Where(m => m.CustomerId == obCustomer.Id).OrderByDescending(m => m.CreateTime).Take(3).ToList();
 
+                foreach (var item in callResultRecords)
+                {
+                    ret.CallResultRecords.Add(new CallResultRecordModel { ResultName = item.ResultName, NextCallTime = item.NextCallTime.ToUnifiedFormatDateTime(), Remark = item.Remark, CreateTime = item.CreateTime.ToUnifiedFormatDateTime() });
+                }
 
                 result = new CustomJsonResult(ResultType.Success, ResultCode.Success, "取出成功", ret);
             }

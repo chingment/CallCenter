@@ -386,6 +386,22 @@
                         $('#txt_OfTravelTaxAmount').decimalInput(2);
                         $('#txt_OfCommercialAmount').decimalInput(2);
 
+
+                        var l_StrRows = "";
+                        $.each(data.callResultRecords, function (p_index, p_row) {
+
+                            l_StrRows += "<tr>";
+                            l_StrRows += "<td  >" + p_row.resultName + "</td>";
+                            l_StrRows += "<td>" + p_row.createTime + "</td>";
+                            l_StrRows += "<td>" + p_row.remark + "</td>";
+                            l_StrRows += "<td>" + p_row.nextCallTime + "</td>";
+                            l_StrRows += "</tr>";
+
+
+                        });
+
+                        $('#list_table_callResultRecord tbody').html(l_StrRows);
+
                         getDealtTrack();
                         getTaskDataStatus();
                         getBookingCustomers();
@@ -555,6 +571,47 @@
                     <td class="c" colspan="3"><span id="lbl_CsrAddress"></span></td>
                 </tr>
             </table>
+
+            <div class="gbr-row-title clearfix">
+                <div class="pull-left">
+                    <h5>最近通话记录</h5>
+                </div>
+                <div class="pull-right f-tb1-item-pull-right">
+                    <h6></h6>
+                </div>
+            </div>
+
+            <table id="list_table_callResultRecord" class="list-tb" cellpadding="0" cellspacing="0">
+                <thead>
+                    <tr>
+                        <th style="width:50%" class="no">
+                            通话结果
+
+                        </th>
+                        <th style="width:20%">
+                            时间
+                        </th>
+                        <th style="width:20%">
+                            备注
+                        </th>
+                        <th style="width:10%">
+                            下次通话时间
+                        </th>
+                    </tr>
+                </thead>
+
+
+
+                <tbody>
+
+
+   
+                </tbody>
+
+
+
+            </table>
+
             <div class="gbr-row-title clearfix">
                 <div class="pull-left">
                     <h5>车辆信息</h5>
