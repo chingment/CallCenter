@@ -105,9 +105,6 @@ namespace Lumos.BLL.Service.Merch
                         obTakeDataLimit.TakedQuantity += 1;
                         obTakeDataLimit.UnTakeQuantity -= 1;
 
-
-                        CurrentDb.SaveChanges();
-                        ts.Complete();
                     }
                 }
                 else
@@ -140,6 +137,9 @@ namespace Lumos.BLL.Service.Merch
                 {
                     ret.CallResultRecords.Add(new CallResultRecordModel { ResultName = item.ResultName, NextCallTime = item.NextCallTime.ToUnifiedFormatDateTime(), Remark = item.Remark, CreateTime = item.CreateTime.ToUnifiedFormatDateTime() });
                 }
+
+                CurrentDb.SaveChanges();
+                ts.Complete();
 
                 result = new CustomJsonResult(ResultType.Success, ResultCode.Success, "取出成功", ret);
             }

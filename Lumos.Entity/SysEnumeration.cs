@@ -196,6 +196,8 @@ namespace Lumos.Entity
             MerchantHL = 205,
             [Remark("后勤人员")]
             MerchantHQR = 206,
+            [Remark("数据导入员")]
+            MerchantDBA = 207,
             [Remark("普通人员")]
             MerchantStaff = 299
         }
