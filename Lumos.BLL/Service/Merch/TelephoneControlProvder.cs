@@ -55,7 +55,7 @@ namespace Lumos.BLL.Service.Merch
 
             if (string.IsNullOrEmpty(account))
             {
-                return new CustomJsonResult(ResultType.Failure, ResultCode.Failure, "未配置外呼话机号码，请联系系统管理员");
+                return new CustomJsonResult(ResultType.Failure, ResultCode.Failure, "未配置外呼话机号码，请退出，在登陆界面点击设置，进行设置");
             }
 
             using (TransactionScope ts = new TransactionScope())
