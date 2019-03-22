@@ -7,12 +7,12 @@
 <script type="text/javascript">
 
     var listTable;
-
+    var businessType= $.lumos.getUrlParamValue("businessType");
     $(document).ready(function () {
 
         //$('#sel_Organizations').myChosen({ urlParams: { type: "SysOrganization" } });
 
-       
+
         $('#sel_ResultCode').myChosen({ urlParams: { type: "callresultcode", businessType: 1 } });
 
         listTable = $("#list_table").loadDataTable({
@@ -23,6 +23,7 @@
             containerId: "form1",
             rowDataCombie: function (p_index, p_row) {
                 var l_Strlimt = "";
+                l_Strlimt += "@Html.IsInPermission("<a href=\\\"javascript:void(0)\\\" operate=\\\"callout\\\"   class=\\\"a-btn a-btn-edit\\\"  >转入行销</a>")";
                 l_Strlimt += "@Html.IsInPermission("<a href=\\\"javascript:void(0)\\\" operate=\\\"details\\\"   class=\\\"a-btn a-btn-edit\\\"  >查看</a>")";
                 var l_StrRows = "";
                 l_StrRows += "<tr>";
@@ -42,12 +43,18 @@
             },
             operate: {
                 "details": function (obj) {
-               
+
                     var url = '/CallResultRecord/Details?id=' + obj.id;
                     var title = '查看';
                     art.dialog.open(url, {
                         id: "openDialog", title: title, width: '800px', height: '600px', lock: true, drag: false, cancelVal: '关闭', cancel: true
                     });
+                },
+                "callout": function (obj) {
+
+                    var url = '/ObCallout/TeleMarketBy' + businessType + '?gb=1&customerId=' + obj.customerId;
+                   
+                    window.location.href = url;
                 }
             }
         });
@@ -132,7 +139,7 @@
                         <th style="width:10%">
                             创建时间
                         </th>
-                        <th style="width:25px" class="operation">
+                        <th style="width:100px" class="operation">
                             操作
                         </th>
                     </tr>

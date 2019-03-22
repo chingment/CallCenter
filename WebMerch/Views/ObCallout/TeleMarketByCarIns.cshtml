@@ -121,8 +121,13 @@
 @section scripts{
     <script type="text/javascript">
 
-
+        var customerId = $.lumos.getUrlParamValue("customerId");
+        var gb = $.lumos.getUrlParamValue("gb");
         $(this).ready(function () {
+
+            if (gb != null){
+                $('#btn_GoBack').show();
+            }
 
             initData();
 
@@ -130,7 +135,7 @@
 
             getBookingCustomers();
 
-            takeData();
+            takeData(customerId);
 
             $('.btn-switch').myBtnSwitch();
 
@@ -164,7 +169,7 @@
                 }
 
                 var form_CallRecord = document.getElementById('form_CallRecord');
-            
+
                 var sel_ResultCode = $(form_CallRecord).find('#sel_ResultCode');
                 var txt_NextCallTime = $(form_CallRecord).find('#txt_NextCallTime');
                 var txt_Remark = $(form_CallRecord).find('#txt_Remark');
@@ -233,6 +238,10 @@
                     });
                 });
 
+            });
+
+            $('#btn_GoBack').live("click", function () {
+                window.history.go(-1);
             });
 
             $('#btn_CarInsSubmitInsure').live("click", function () {
@@ -502,7 +511,7 @@
                 isShowLoading: false,
                 success: function (d) {
                     if (d.result == $.lumos.resultType.success) {
-                   
+
 
                         $(ul_bookingCustomers).html('')
 
@@ -510,7 +519,7 @@
                             $.each(d.data, function (i, item) {
 
                                 var msg = "<li ><p> <a href=\"javascript:void(0)\" callResultRecordId='"+item.id+"' customerId='" + item.customerId + "' > [" + item.customerName + "]" + item.nextCallTime + "</a></p></li>";
-                   
+
 
 
                                 $(ul_bookingCustomers).append(msg);
@@ -537,6 +546,9 @@
                 </div>
                 <div class="filter" id="btn_SkipData">
                     <span class="status-bar-btn">跳过该客户</span>
+                </div>
+                <div class="filter" id="btn_GoBack" style="display:none">
+                    <span class="status-bar-btn">返回上一页</span>
                 </div>
             </div>
 

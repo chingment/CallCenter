@@ -18,14 +18,27 @@
             containerId: "form_ObCustomer",
             rowDataCombie: function (p_index, p_row) {
                 var l_StrRows = "";
+                var l_Strlimt = "";
+                l_Strlimt += "@Html.IsInPermission("<a href=\\\"javascript:void(0)\\\" operate=\\\"callout\\\"   class=\\\"a-btn a-btn-edit\\\"  >转入行销</a>")";
                 l_StrRows += "<tr>";
                 l_StrRows += "<td class=\"no\" >" + (p_index + 1) + "</td>";
                 l_StrRows += "<td class=\"overflow\" title=\"" + p_row.csrName + "\"   >" + p_row.csrName + "</td>";
                 l_StrRows += "<td class=\"overflow\" title=\"" + p_row.csrPhoneNumber + "\">" + p_row.csrPhoneNumber + "</td>";
                 l_StrRows += "<td class=\"overflow\" title=\"" + p_row.csrAddress + "\">" + p_row.csrAddress + "</td>";
                 l_StrRows += "<td class=\"overflow\" title=\"" + p_row.csrCompany + "\">" + p_row.csrCompany + "</td>";
+                l_StrRows += "<td class=\"operation\">";
+                l_StrRows += l_Strlimt;
+                l_StrRows += "</td>";
                 l_StrRows += "</tr>";
                 return l_StrRows;
+            },
+            operate: {
+                "callout": function (obj) {
+
+                    var url = '/ObCallout/TeleMarketByCommon?gb=1&customerId=' + obj.id;
+
+                    window.location.href = url;
+                }
             }
         });
 
@@ -82,6 +95,9 @@
                         </th>
                         <th style="width:25%">
                             公司
+                        </th>
+                        <th style="width:100px" class="operation">
+                            操作
                         </th>
                     </tr>
                 </thead>
