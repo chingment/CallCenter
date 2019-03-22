@@ -79,7 +79,16 @@ namespace WebMerch.Controllers
         {
             var obTakeDataLimit = CurrentDb.ObTakeDataLimit.Where(m => m.MerchantId == this.CurrentMerchantId && m.SalesmanId == this.CurrentUserId).FirstOrDefault();
 
-            return new CustomJsonResult(ResultType.Success, ResultCode.Success, "获取成功", new { TaskQuantity = obTakeDataLimit.TaskQuantity, UnTakeQuantity = obTakeDataLimit.UnTakeQuantity, TakedQuantity = obTakeDataLimit.TakedQuantity });
+            int taskQuantity = 0;
+            int unTakeQuantity = 0;
+            int takedQuantity = 0;
+            if (obTakeDataLimit != null)
+            {
+                taskQuantity = obTakeDataLimit.TaskQuantity;
+                unTakeQuantity = obTakeDataLimit.UnTakeQuantity;
+                takedQuantity = obTakeDataLimit.TakedQuantity;
+            }
+            return new CustomJsonResult(ResultType.Success, ResultCode.Success, "获取成功", new { TaskQuantity = taskQuantity, UnTakeQuantity = unTakeQuantity, TakedQuantity = takedQuantity });
         }
 
 
