@@ -360,6 +360,11 @@
 
             customerId = typeof customerId == "undefined" ? "" : customerId;
 
+            if (customerId==null||customerId == "null" || customerId == "NULL")
+            {
+                customerId = "";
+            }
+
             $.lumos.getJson({
                 url: "/ObCallout/TakeData",
                 isUseHandling: false,

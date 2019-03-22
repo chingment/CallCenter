@@ -238,6 +238,10 @@
 
             });
 
+            $('#btn_GoBack').live("click", function () {
+                window.history.go(-1);
+            });
+
             $('#ul_dealtTrack a').live("click", function () {
 
                 var url = $(this).attr("goUrl");
@@ -283,6 +287,10 @@
         function takeData(customerId) {
 
             customerId = typeof customerId == "undefined" ? "" : customerId;
+
+            if (customerId == null || customerId == "null" || customerId == "NULL") {
+                customerId = "";
+            }
 
             $.lumos.getJson({
                 url: "/ObCallout/TakeData",
