@@ -22,9 +22,13 @@
         });
 
         function GetParams(operate) {
-            var l_Data = $("#form1").serializeArray();
-            l_Data.push({ name: "Operate", value: operate });
-            return l_Data;
+            var salesmanName=$('#txt_SalesmanName').val();
+            var customerName=$('#txt_CustomerName').val();
+            var phoneNumber=$('#txt_PhoneNumber').val();
+            var resultCode = $('#sel_ResultCode').val();
+            var startTime=$('#txt_StartTime').val();
+            var endTime=$('#txt_EndTime').val();
+            return {operate:operate,salesmanName:salesmanName,customerName:customerName,phoneNumber:phoneNumber,resultCode:resultCode,startTime:startTime,endTime:endTime};
         }
 
         var url = "/Report/CallResultRecord";
@@ -55,19 +59,19 @@
             <div class="filter">
                 <span class="filter-label">坐席：</span>
                 <span class="filter-input">
-                    <input type="text" class="input-control" name="SalesmanName" style="width:120px;" />
+                    <input id="txt_SalesmanName" type="text" class="input-control"  style="width:120px;" />
                 </span>
             </div>
             <div class="filter">
                 <span class="filter-label">客户姓名：</span>
                 <span class="filter-input">
-                    <input type="text" class="input-control" name="CustomerName" style="width:120px;" />
+                    <input id="txt_CustomerName" type="text" class="input-control"  style="width:120px;" />
                 </span>
             </div>
             <div class="filter">
                 <span class="filter-label">电话号码：</span>
                 <span class="filter-input">
-                    <input type="text" class="input-control" name="PhoneNumber" style="width:120px;" />
+                    <input id="txt_PhoneNumber" type="text" class="input-control"  style="width:120px;" />
                 </span>
             </div>
             <div class="filter">
@@ -81,7 +85,7 @@
             <div class="filter">
                 <span class="filter-label">创建时间：</span>
                 <span class="filter-input">
-                    <input type="text" class="input-control Wdate" id="Model_StartTime" name="StartTime" onclick="WdatePicker({ maxDate: '#F{$dp.$D(\'Model_EndTime\')||\'@DateTime.Now.ToString("yyyy-MM-dd")\'}' })" style="width:80px;" value="@DateTime.Now.ToString("yyyy-MM-dd")" />至<input type="text" class="input-control Wdate" id="Model_EndTime" name="EndTime" onclick="WdatePicker({ minDate: '#F{$dp.$D(\'Model_StartTime\')}' })" style="width:80px;" value="@DateTime.Now.ToString("yyyy-MM-dd")" />
+                    <input type="text" class="input-control Wdate" id="txt_StartTime" onclick="WdatePicker({ maxDate: '#F{$dp.$D(\'txt_EndTime\')||\'@DateTime.Now.ToString("yyyy-MM-dd")\'}' })" style="width:80px;" value="@DateTime.Now.ToString("yyyy-MM-dd")" />至<input type="text" class="input-control Wdate" id="txt_EndTime"  onclick="WdatePicker({ minDate: '#F{$dp.$D(\'txt_StartTime\')}' })" style="width:80px;" value="@DateTime.Now.ToString("yyyy-MM-dd")" />
                 </span>
             </div>
             <div class="filter">

@@ -20,10 +20,7 @@
         });
 
         function GetParams(operate) {
-            var l_Data = $("#form1").serializeArray();
-            l_Data.push({ name: "Model.Operate", value: operate });
-
-            return l_Data;
+            return { operate: operate };
         }
 
         var url = "/Report/TeleSeatAccount";
