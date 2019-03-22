@@ -65,6 +65,48 @@ namespace Lumos.BLL.Service.Merch
                         {
                             return new CustomJsonResult(ResultType.Failure, ResultCode.Failure, "没有可外呼的数据");
                         }
+
+                        if (!obCustomer.IsTake)
+                        {
+
+                            var obTakeDataLimit = CurrentDb.ObTakeDataLimit.Where(m => m.MerchantId == merchantId && m.SalesmanId == salesmanId).FirstOrDefault();
+                            if (obTakeDataLimit == null || obTakeDataLimit.UnTakeQuantity <= 0)
+                            {
+
+                                return new CustomJsonResult(ResultType.Failure, ResultCode.Failure, "您当前的外号任务量已经用完");
+                            }
+
+                            obCustomer.SalesmanId = salesmanId;
+                            obCustomer.IsTake = true;
+                            obCustomer.TakeTime = this.DateTime;
+                            obCustomer.IsUseCall = false;
+                            obCustomer.Mender = operater;
+                            obCustomer.MendTime = this.DateTime;
+
+                            var obBatchAllocates = GetFatherObBatchAllocates(merchantId, obCustomer.ObBatchAllocateId);
+
+                            foreach (var obBatchAllocate in obBatchAllocates)
+                            {
+                                if (obBatchAllocate.Id == obCustomer.ObBatchAllocateId)
+                                {
+                                    obBatchAllocate.AllocatedCount += 1;
+                                    obBatchAllocate.UnAllocatedCount -= 1;
+                                    obBatchAllocate.UsedCount += 1;
+                                }
+                                else
+                                {
+                                    obBatchAllocate.UsedCount += 1;
+                                }
+
+                                //obBatchAllocate.UnUsedCount = obBatchAllocate.AllocatedCount - obBatchAllocate.UsedCount;
+                                obBatchAllocate.Mender = operater;
+                                obBatchAllocate.MendTime = this.DateTime;
+                            }
+
+                            obTakeDataLimit.TakedQuantity += 1;
+                            obTakeDataLimit.UnTakeQuantity -= 1;
+
+                        }
                     }
                 }
                 else
@@ -73,47 +115,6 @@ namespace Lumos.BLL.Service.Merch
 
                 }
 
-
-                if (!obCustomer.IsTake)
-                {
-                    var obTakeDataLimit = CurrentDb.ObTakeDataLimit.Where(m => m.MerchantId == merchantId && m.SalesmanId == salesmanId).FirstOrDefault();
-                    if (obTakeDataLimit == null || obTakeDataLimit.UnTakeQuantity <= 0)
-                    {
-
-                        return new CustomJsonResult(ResultType.Failure, ResultCode.Failure, "您当前的外号任务量已经用完");
-                    }
-
-                    obCustomer.SalesmanId = salesmanId;
-                    obCustomer.IsTake = true;
-                    obCustomer.TakeTime = this.DateTime;
-                    obCustomer.IsUseCall = false;
-                    obCustomer.Mender = operater;
-                    obCustomer.MendTime = this.DateTime;
-
-                    var obBatchAllocates = GetFatherObBatchAllocates(merchantId, obCustomer.ObBatchAllocateId);
-
-                    foreach (var obBatchAllocate in obBatchAllocates)
-                    {
-                        if (obBatchAllocate.Id == obCustomer.ObBatchAllocateId)
-                        {
-                            obBatchAllocate.AllocatedCount += 1;
-                            obBatchAllocate.UnAllocatedCount -= 1;
-                            obBatchAllocate.UsedCount += 1;
-                        }
-                        else
-                        {
-                            obBatchAllocate.UsedCount += 1;
-                        }
-
-                        //obBatchAllocate.UnUsedCount = obBatchAllocate.AllocatedCount - obBatchAllocate.UsedCount;
-                        obBatchAllocate.Mender = operater;
-                        obBatchAllocate.MendTime = this.DateTime;
-                    }
-
-                    obTakeDataLimit.TakedQuantity += 1;
-                    obTakeDataLimit.UnTakeQuantity -= 1;
-
-                }
 
 
                 ret.ObCustomerId = obCustomer.Id;
