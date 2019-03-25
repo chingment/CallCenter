@@ -196,10 +196,15 @@ namespace Lumos.BLL.Service.Merch
 
             using (TransactionScope ts = new TransactionScope())
             {
-                var obCustomer = CurrentDb.ObCustomer.Where(m => m.MerchantId == merchantId && m.IsTake == true && m.SalesmanId == salesmanId && m.Id == rop.CustomerId).FirstOrDefault();
+                var obCustomer = CurrentDb.ObCustomer.Where(m => m.MerchantId == merchantId && m.SalesmanId == salesmanId && m.Id == rop.CustomerId).FirstOrDefault();
                 if (obCustomer == null)
                 {
                     return new CustomJsonResult(ResultType.Failure, ResultCode.Failure, "客户资料不存在");
+                }
+
+                if(!obCustomer.IsTake)
+                {
+                    return new CustomJsonResult(ResultType.Failure, ResultCode.Failure, "该客户未进行外呼取号");
                 }
 
                 if (string.IsNullOrEmpty(rop.PId))
