@@ -136,7 +136,7 @@ namespace WebMerch.Controllers
                 return new CustomJsonResult(ResultType.Failure, ResultCode.Failure, "请选择上传文件");
 
             var file = Request.Files[0];
-
+            
             string fileExtension = System.IO.Path.GetExtension(file.FileName).ToLower();
 
             if (fileExtension != ".xls")
@@ -220,7 +220,7 @@ namespace WebMerch.Controllers
             workbook.Write(fs);
             fs.Close();
 
-            rop.FileName = file.FileName;
+            rop.FileName = System.IO.Path.GetFileName(file.FileName); 
             rop.FilePath = filePath;
             rop.BelongerId = belongUser.Id;
             rop.BelongerName = string.Format("{0}({1})", belongUser.FullName, belongUser.UserName);
