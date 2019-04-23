@@ -73,7 +73,6 @@ namespace WebMerch.Controllers
             }
         }
 
-
         public ActionResult TeleSeatAccount(ReportModel model)
         {
             StringBuilder sbTable = new StringBuilder();
@@ -240,7 +239,6 @@ namespace WebMerch.Controllers
                 #endregion
             }
         }
-
 
         public ActionResult CallResultRecord(CallResultRecordReportModel model)
         {
