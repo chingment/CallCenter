@@ -72,7 +72,7 @@ namespace Lumos.BLL.Biz
             {
                 TransactionOptions transactionOption = new TransactionOptions();
                 transactionOption.IsolationLevel = System.Transactions.IsolationLevel.ReadCommitted;
-                transactionOption.Timeout = new TimeSpan(0, 5, 0);
+                transactionOption.Timeout = new TimeSpan(0, 10, 0);
 
                 using (TransactionScope ts = new TransactionScope(TransactionScopeOption.Required, transactionOption))
                 {
@@ -211,7 +211,7 @@ namespace Lumos.BLL.Biz
                                         obBatchData.HandleReport = handleReport;
                                         obBatchData.Creator = tsObBatch.Creator;
                                         obBatchData.CreateTime = tsObBatch.CreateTime;
-                                        //tsCurrentDb.ObBatchData.Add(obBatchData);
+                                        tsCurrentDb.ObBatchData.Add(obBatchData);
 
                                         obBatchDatas.Add(obBatchData);
 
@@ -315,7 +315,7 @@ namespace Lumos.BLL.Biz
                             tsCurrentDb.BulkInsert(obBatchAllocates);
 
                             tsCurrentDb.BulkSaveChanges();
-
+                            //tsCurrentDb.SaveChanges();
                             ts.Complete();
                         }
                     }
