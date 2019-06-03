@@ -276,7 +276,7 @@ namespace WebMerch.Controllers
                 #region POST
                 StringBuilder sql = new StringBuilder(" select CustomerName,CustomerPhoneNumber,ResultName,NextCallTime,Remark,SalesmanName,CreateTime from CallResultRecord ");
 
-                sql.Append(" where  MerchantId='" + this.CurrentMerchantId + "' ");
+                sql.Append(" where  MerchantId='" + this.CurrentMerchantId + "' and RecoveryTime >= getdate() ");
 
                 if(!string.IsNullOrEmpty(model.SalesmanName))
                 {
