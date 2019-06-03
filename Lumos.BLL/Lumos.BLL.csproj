@@ -101,6 +101,7 @@
     <Compile Include="Service\Admin\Biz\ObBatchProvider.cs" />
     <Compile Include="Service\Admin\Biz\RModels\RetObBatchGetDetails.cs" />
     <Compile Include="Service\Admin\Biz\RModels\RopObBatchAddByFile.cs" />
+    <Compile Include="Service\Admin\Biz\RModels\RupObBatchDataGetList.cs" />
     <Compile Include="Service\Admin\Biz\RModels\RupObBatchGetList.cs" />
     <Compile Include="Service\Merch\CallResultRecordProvider.cs" />
     <Compile Include="Service\Merch\Models\CallResultRecordModel.cs" />
