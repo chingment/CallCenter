@@ -152,7 +152,7 @@ namespace Lumos.BLL.Biz
                                     if (!string.IsNullOrEmpty(csrPhoneNumber))
                                     {
                                         //ObCustomer obCustomer = null;
-                                        var obCustomer = tsCurrentDb.ObCustomer.Where(m => m.MerchantId == obBatch.MerchantId && m.CsrPhoneNumber == csrPhoneNumber).FirstOrDefault();
+                                        var obCustomer = tsCurrentDb.ObCustomer.Where(m => m.MerchantId == obBatch.MerchantId && m.CsrPhoneNumber == csrPhoneNumber && m.RecoveryTime >= DateTime.Now).FirstOrDefault();
 
                                         bool isValid = true;
                                         string handleReport = "";
@@ -186,7 +186,7 @@ namespace Lumos.BLL.Biz
                                             }
                                         }
 
-                                       
+
                                         var obBatchData = new ObBatchData();
                                         obBatchData.Id = GuidUtil.New();
                                         obBatchData.MerchantId = tsObBatch.MerchantId;
@@ -264,9 +264,9 @@ namespace Lumos.BLL.Biz
 
                                             obCustomerBelongTracks.Add(obCustomerBelongTrack);
                                         }
-                                      
-                                    } 
-                                    
+
+                                    }
+
                                     #endregion
                                 }
 
