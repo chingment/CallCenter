@@ -30,7 +30,7 @@
                 }
                 var organizationId = $(this).attr("organizationId");
                 var isDataAllocater = $(this).attr("isDataAllocater");
-                art.dialog.open('/User/ListBySelect?organizationId=' + organizationId + '&isDataAllocater=' + isDataAllocater, {
+                art.dialog.open('/Biz/User/ListBySelect?merchantId=' + merchantId + '&organizationId=' + organizationId + '&isDataAllocater=' + isDataAllocater, {
                     id: "openDialog565", title: "选择", width: '600px', height: '530px', lock: true, drag: false, cancelVal: '关闭', cancel: true
                 });
             });

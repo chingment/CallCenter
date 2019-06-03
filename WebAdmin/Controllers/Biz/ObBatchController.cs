@@ -46,32 +46,34 @@ namespace WebAdmin.Controllers.Biz
             int recoveryDays = 30;
             string belongerId = "";
             string belongerName = "";
-
-            var obBatch = CurrentDb.ObBatch.Where(m => m.MerchantId == merchantId).OrderByDescending(m => m.CreateTime).FirstOrDefault();
-
-            if (obBatch != null)
-            {
-                expiryDays = obBatch.ExpiryDays;
-                followDelayDays = obBatch.FollowDelayDays;
-                recoveryDays = obBatch.RecoveryDays;
-                belongerId = obBatch.BelongerId;
-                belongerName = obBatch.BelongerName;
-            }
+            var obj_importFileTmpls = new List<object>();
 
             var merchant = CurrentDb.Merchant.Where(m => m.Id == merchantId).FirstOrDefault();
 
-            string[] str_importFileTmpls = merchant.ImportFileTmpls.Split(',');
-
-
-            var importFileTmpls = CurrentDb.ImportFileTmpl.Where(m => str_importFileTmpls.Contains(m.Id)).ToList();
-
-            var obj_importFileTmpls = new List<object>();
-
-            foreach (var item in importFileTmpls)
+            if (merchant != null)
             {
-                obj_importFileTmpls.Add(new { value = item.Id, Name = item.Name });
-            }
+                var obBatch = CurrentDb.ObBatch.Where(m => m.MerchantId == merchantId).OrderByDescending(m => m.CreateTime).FirstOrDefault();
 
+                if (obBatch != null)
+                {
+                    expiryDays = obBatch.ExpiryDays;
+                    followDelayDays = obBatch.FollowDelayDays;
+                    recoveryDays = obBatch.RecoveryDays;
+                    belongerId = obBatch.BelongerId;
+                    belongerName = obBatch.BelongerName;
+                }
+
+                string[] str_importFileTmpls = merchant.ImportFileTmpls.Split(',');
+
+
+                var importFileTmpls = CurrentDb.ImportFileTmpl.Where(m => str_importFileTmpls.Contains(m.Id)).ToList();
+
+
+                foreach (var item in importFileTmpls)
+                {
+                    obj_importFileTmpls.Add(new { value = item.Id, Name = item.Name });
+                }
+            }
 
             var data = new { expiryDays = expiryDays, followDelayDays = followDelayDays, recoveryDays = recoveryDays, belongerId = belongerId, belongerName = belongerName, importFileTmpls = obj_importFileTmpls };
 
