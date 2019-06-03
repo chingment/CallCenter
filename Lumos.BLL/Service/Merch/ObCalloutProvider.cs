@@ -55,11 +55,11 @@ namespace Lumos.BLL.Service.Merch
                 //customerId  当 customerId 为空随机取一条
                 if (string.IsNullOrEmpty(customerId))
                 {
-                    obCustomer = CurrentDb.ObCustomer.Where(m => m.MerchantId == merchantId && m.IsUseCall == false && m.SalesmanId == salesmanId).FirstOrDefault();
+                    obCustomer = CurrentDb.ObCustomer.Where(m => m.MerchantId == merchantId && m.IsUseCall == false && m.SalesmanId == salesmanId && m.RecoveryTime >= DateTime.Now).FirstOrDefault();
 
                     if (obCustomer == null)
                     {
-                        obCustomer = CurrentDb.ObCustomer.Where(m => m.MerchantId == merchantId && m.IsTake == false && m.BelongerId == salesmanId).OrderBy(x => Guid.NewGuid()).FirstOrDefault();
+                        obCustomer = CurrentDb.ObCustomer.Where(m => m.MerchantId == merchantId && m.IsTake == false && m.BelongerId == salesmanId && m.RecoveryTime >= DateTime.Now).OrderBy(x => Guid.NewGuid()).FirstOrDefault();
 
                         if (obCustomer == null)
                         {
