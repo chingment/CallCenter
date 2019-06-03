@@ -10,7 +10,7 @@
 
     $(document).ready(function () {
         listTable = $("#list_table").loadDataTable({
-            url: "/ObBatch/GetList",
+            url: "/Biz/ObBatch/GetList",
             pageIndex: 0,
             searchParams: $("#form1").serializeArray(),
             searchButtonId: "btn_Search",
@@ -42,10 +42,10 @@
 
                     switch (obj.businessType) {
                         case 1:
-                            url = '/ObBatch/DetailsByCommon?id=' + obj.id;
+                            url = '/Biz/ObBatch/DetailsByCommon?id=' + obj.id;
                             break;
                         case 2:
-                            url = '/ObBatch/DetailsByCarIns?id=' + obj.id;
+                            url = '/Biz/ObBatch/DetailsByCarIns?id=' + obj.id;
                             break;
                     }
 
@@ -58,7 +58,7 @@
         });
 
         $("#btn_Add").click(function () {
-            var url = '/ObBatch/AddByFile';
+            var url = '/Biz/ObBatch/AddByFile';
             var title = '导入';
             art.dialog.open(url, {
                 id: "openDialog", title: title, width: '650px', height: '500px', lock: true, drag: false, cancelVal: '关闭', cancel: true, okVal: '确定', ok: function () {

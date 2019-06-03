@@ -281,7 +281,6 @@ namespace WebAdmin.Controllers.Biz
             return Json(ResultType.Success, pageEntity, "");
         }
 
-
         public CustomJsonResult GetDataListByCommon(RupObBatchDataGetList rup)
         {
             var query = (from u in CurrentDb.ObBatchData

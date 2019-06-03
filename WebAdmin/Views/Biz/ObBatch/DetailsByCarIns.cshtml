@@ -19,7 +19,7 @@
         function getDetails() {
 
             $.lumos.getJson({
-                url: "/ObBatch/GetDetails",
+                url: "/Biz/ObBatch/GetDetails",
                 urlParams: { id: id },
                 isUseHandling: true,
                 success: function (d) {
@@ -47,7 +47,7 @@
         function getBatchData() {
 
             $("#list_DataBatch_CarIns").loadDataTable({
-                url: "/ObBatch/GetDataListByCarIns",
+                url: "/Biz/ObBatch/GetDataListByCarIns",
                 pageIndex: 0,
                 searchParams: $("#form_DataBatch_CarIns").serializeArray(),
                 searchButtonId: "btn_Search",

@@ -41,7 +41,7 @@
         function initData(merchantId) {
 
             $.lumos.getJson({
-                url: "/ObBatch/InitDataToAddByFile",
+                url: "/Biz/ObBatch/InitDataToAddByFile",
                 isUseHandling: true,
                 urlParams: { merchantId: merchantId },
                 success: function (d) {
@@ -90,7 +90,7 @@
 
                 $('#form1').ajaxSubmit({
                     type: "post",
-                    url: "/ObBatch/AddByFile",
+                    url: "/Biz/ObBatch/AddByFile",
                     dataType: "json",
                     success: function (d) {
                         loading.close();
