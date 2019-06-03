@@ -11,7 +11,33 @@ namespace Lumos.BLL.Service.Admin
 {
     public class ObBatchProvider : BaseProvider
     {
-   
+
+        public CustomJsonResult GetDetails(string operater, string id)
+        {
+            var ret = new RetObBatchGetDetails();
+
+            var obBatch = CurrentDb.ObBatch.Where(m => m.Id == id).FirstOrDefault();
+
+            if (obBatch != null)
+            {
+                ret.Id = obBatch.Id ?? ""; ;
+                ret.Code = obBatch.Code ?? ""; ;
+                ret.Name = obBatch.Name ?? ""; ;
+                ret.SoureName = string.Format("（{0}）{1}", obBatch.SoureType.GetCnName(), obBatch.SoureName);
+                ret.DataCount = obBatch.DataCount;
+                ret.ValidCount = obBatch.ValidCount;
+                ret.InValidCount = obBatch.InValidCount;
+                ret.ExpiryTime = obBatch.ExpiryTime.ToUnifiedFormatDate() ?? "";
+                ret.RecoveryTime = obBatch.RecoveryTime.ToUnifiedFormatDate() ?? "";
+                ret.HandleReport = obBatch.HandleReport ?? "";
+                ret.FollowDelayDays = obBatch.FollowDelayDays;
+                ret.BelongerName = obBatch.BelongerName;
+                ret.BusinessType = obBatch.BusinessType;
+            }
+
+            return new CustomJsonResult(ResultType.Success, ResultCode.Success, "获取成功", ret);
+        }
+
         public CustomJsonResult AddByFile(string operater, RopObBatchAddByFile rop)
         {
             CustomJsonResult result = new CustomJsonResult();

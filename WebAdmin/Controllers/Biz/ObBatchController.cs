@@ -82,10 +82,10 @@ namespace WebAdmin.Controllers.Biz
 
         }
 
-        //public CustomJsonResult GetDetails(string id)
-        //{
-        //    return MerchServiceFactory.ObBatch.GetDetails(this.CurrentUserId, this.CurrentMerchantId, id);
-        //}
+        public CustomJsonResult GetDetails(string id)
+        {
+            return AdminServiceFactory.ObBatch.GetDetails(this.CurrentUserId, id);
+        }
 
         public CustomJsonResult GetList(RupObBatchGetList rup)
         {
@@ -232,99 +232,95 @@ namespace WebAdmin.Controllers.Biz
             return result;
         }
 
-        //public CustomJsonResult GetDataListByCarIns(RupObBatchDataGetList rup)
-        //{
-        //    var query = (from u in CurrentDb.ObBatchData
-        //                 where
-        //                 u.ObBatchId == rup.ObBatchId
-        //                 &&
-        //                 u.MerchantId == this.CurrentMerchantId
-        //                 select new { u.Id, u.CsrName, u.CsrPhoneNumber, u.CsrAddress, u.CsrIdNumber, u.CarRegisterDate, u.CarPlateNo, u.CarModel, u.CarEngineNo, u.CarVin, u.CarInsLastQzNo, u.CarInsLastSyNo, u.CarInsLastCompany, u.CarInsLastStartTime, u.CarInsLastEndTime, u.CreateTime, u.IsValid, u.HandleReport });
+        public CustomJsonResult GetDataListByCarIns(RupObBatchDataGetList rup)
+        {
+            var query = (from u in CurrentDb.ObBatchData
+                         where
+                         u.ObBatchId == rup.ObBatchId
+                         select new { u.Id, u.CsrName, u.CsrPhoneNumber, u.CsrAddress, u.CsrIdNumber, u.CarRegisterDate, u.CarPlateNo, u.CarModel, u.CarEngineNo, u.CarVin, u.CarInsLastQzNo, u.CarInsLastSyNo, u.CarInsLastCompany, u.CarInsLastStartTime, u.CarInsLastEndTime, u.CreateTime, u.IsValid, u.HandleReport });
 
-        //    int total = query.Count();
+            int total = query.Count();
 
-        //    int pageIndex = rup.PageIndex;
-        //    int pageSize = 10;
-        //    query = query.OrderByDescending(r => r.Id).Skip(pageSize * (pageIndex)).Take(pageSize);
+            int pageIndex = rup.PageIndex;
+            int pageSize = 10;
+            query = query.OrderByDescending(r => r.Id).Skip(pageSize * (pageIndex)).Take(pageSize);
 
 
-        //    var list = query.ToList();
+            var list = query.ToList();
 
-        //    List<object> olist = new List<object>();
+            List<object> olist = new List<object>();
 
-        //    foreach (var item in list)
-        //    {
+            foreach (var item in list)
+            {
 
-        //        olist.Add(new
-        //        {
-        //            Id = item.Id,
-        //            CsrName = item.CsrName,
-        //            CsrPhoneNumber = item.CsrPhoneNumber,
-        //            CsrAddress = item.CsrAddress,
-        //            CsrIdNumber = item.CsrIdNumber,
-        //            CarRegisterDate = item.CarRegisterDate.ToUnifiedFormatDate(),
-        //            CarPlateNo = item.CarPlateNo,
-        //            CarModel = item.CarModel,
-        //            CarEngineNo = item.CarEngineNo,
-        //            CarVin = item.CarVin,
-        //            IsValid = item.IsValid,
-        //            CarInsLastQzNo = item.CarInsLastQzNo,
-        //            CarInsLastCompany = item.CarInsLastCompany,
-        //            CarInsLastStartTime = item.CarInsLastStartTime.ToUnifiedFormatDate(),
-        //            CarInsLastEndTime = item.CarInsLastEndTime.ToUnifiedFormatDate(),
-        //            HandleReport = item.HandleReport,
-        //            CreateTime = item.CreateTime.ToUnifiedFormatDateTime()
-        //        });
-        //    }
-
-
-        //    PageEntity pageEntity = new PageEntity { PageSize = pageSize, TotalRecord = total, Rows = olist };
-
-        //    return Json(ResultType.Success, pageEntity, "");
-        //}
+                olist.Add(new
+                {
+                    Id = item.Id,
+                    CsrName = item.CsrName,
+                    CsrPhoneNumber = item.CsrPhoneNumber,
+                    CsrAddress = item.CsrAddress,
+                    CsrIdNumber = item.CsrIdNumber,
+                    CarRegisterDate = item.CarRegisterDate.ToUnifiedFormatDate(),
+                    CarPlateNo = item.CarPlateNo,
+                    CarModel = item.CarModel,
+                    CarEngineNo = item.CarEngineNo,
+                    CarVin = item.CarVin,
+                    IsValid = item.IsValid,
+                    CarInsLastQzNo = item.CarInsLastQzNo,
+                    CarInsLastCompany = item.CarInsLastCompany,
+                    CarInsLastStartTime = item.CarInsLastStartTime.ToUnifiedFormatDate(),
+                    CarInsLastEndTime = item.CarInsLastEndTime.ToUnifiedFormatDate(),
+                    HandleReport = item.HandleReport,
+                    CreateTime = item.CreateTime.ToUnifiedFormatDateTime()
+                });
+            }
 
 
-        //public CustomJsonResult GetDataListByCommon(RupObBatchDataGetList rup)
-        //{
-        //    var query = (from u in CurrentDb.ObBatchData
-        //                 where
-        //                 u.ObBatchId == rup.ObBatchId
-        //                 &&
-        //                 u.MerchantId == this.CurrentMerchantId
-        //                 select new { u.Id, u.CsrName, u.CsrPhoneNumber, u.CsrAddress, u.CsrIdNumber, u.CsrCompany, u.CreateTime, u.IsValid, u.HandleReport });
+            PageEntity pageEntity = new PageEntity { PageSize = pageSize, TotalRecord = total, Rows = olist };
 
-        //    int total = query.Count();
-
-        //    int pageIndex = rup.PageIndex;
-        //    int pageSize = 10;
-        //    query = query.OrderByDescending(r => r.Id).Skip(pageSize * (pageIndex)).Take(pageSize);
+            return Json(ResultType.Success, pageEntity, "");
+        }
 
 
-        //    var list = query.ToList();
+        public CustomJsonResult GetDataListByCommon(RupObBatchDataGetList rup)
+        {
+            var query = (from u in CurrentDb.ObBatchData
+                         where
+                         u.ObBatchId == rup.ObBatchId
+                         select new { u.Id, u.CsrName, u.CsrPhoneNumber, u.CsrAddress, u.CsrIdNumber, u.CsrCompany, u.CreateTime, u.IsValid, u.HandleReport });
 
-        //    List<object> olist = new List<object>();
+            int total = query.Count();
 
-        //    foreach (var item in list)
-        //    {
-
-        //        olist.Add(new
-        //        {
-        //            Id = item.Id,
-        //            CsrName = item.CsrName,
-        //            CsrPhoneNumber = item.CsrPhoneNumber,
-        //            CsrAddress = item.CsrAddress,
-        //            CsrIdNumber = item.CsrIdNumber,
-        //            CsrCompany = item.CsrCompany,
-        //            HandleReport = item.HandleReport,
-        //            CreateTime = item.CreateTime.ToUnifiedFormatDateTime()
-        //        });
-        //    }
+            int pageIndex = rup.PageIndex;
+            int pageSize = 10;
+            query = query.OrderByDescending(r => r.Id).Skip(pageSize * (pageIndex)).Take(pageSize);
 
 
-        //    PageEntity pageEntity = new PageEntity { PageSize = pageSize, TotalRecord = total, Rows = olist };
+            var list = query.ToList();
 
-        //    return Json(ResultType.Success, pageEntity, "");
-        //}
+            List<object> olist = new List<object>();
+
+            foreach (var item in list)
+            {
+
+                olist.Add(new
+                {
+                    Id = item.Id,
+                    CsrName = item.CsrName,
+                    CsrPhoneNumber = item.CsrPhoneNumber,
+                    CsrAddress = item.CsrAddress,
+                    CsrIdNumber = item.CsrIdNumber,
+                    CsrCompany = item.CsrCompany,
+                    HandleReport = item.HandleReport,
+                    CreateTime = item.CreateTime.ToUnifiedFormatDateTime()
+                });
+            }
+
+
+            PageEntity pageEntity = new PageEntity { PageSize = pageSize, TotalRecord = total, Rows = olist };
+
+            return Json(ResultType.Success, pageEntity, "");
+        }
 
     }
 }
