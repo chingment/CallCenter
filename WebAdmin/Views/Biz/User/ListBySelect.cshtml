@@ -6,12 +6,14 @@
 <script type="text/javascript">
     var organizationId = $.lumos.getUrlParamValue("organizationId");
     var isDataAllocater = $.lumos.getUrlParamValue("isDataAllocater") == null ? "False" : $.lumos.getUrlParamValue("isDataAllocater");
+    var merchantId = $.lumos.getUrlParamValue("merchantId");
     var listTable;
     $(document).ready(function () {
         $("input[name=OrganizationId]").val(organizationId);
         $("input[name=IsDataAllocater]").val(isDataAllocater);
+        $("input[name=MerchantId]").val(merchantId);
         listTable = $("#list_table").loadDataTable({
-            url: "/User/GetList",
+            url: "/Biz/User/GetList",
             pageIndex: 0,
             searchParams: $("#form1").serializeArray(),
             searchButtonId: "btn_Search",
@@ -51,6 +53,7 @@
 
 <div class="gbr-row gbr-dialog">
     <form id="form1" name="form1">
+        <input type="hidden" name="MerchantId" />
         <input type="hidden" name="OrganizationId" />
         <input type="hidden" name="IsDataAllocater" value="0" />
         <div class="search-bar">
