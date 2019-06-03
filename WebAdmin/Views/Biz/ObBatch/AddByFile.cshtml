@@ -1,0 +1,236 @@
+﻿@{
+    ViewBag.Title = "";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+@section scripts{
+    <script type="text/javascript">
+
+        $(this).ready(function () {
+            $.formValidator.initConfig({ formID: "form1", onError: function (msg) { $.lumos.tips(msg); } });
+            $("#sel_Merchant").formValidator().inputValidator({ min: 1, max: 100, onError: "请选择商户" });
+            $("#txt_Code").formValidator().inputValidator({ min: 1, max: 50, onError: "批次号须填，且不能超过50个字符" });
+            $("#txt_ExpiryDays").formValidator().regexValidator({ regExp: regexEnum.intege1, onError: "有效期天数格式为大于1的正整数" });
+            $("#txt_FollowDelayDays").formValidator().regexValidator({ regExp: regexEnum.intege1, onError: "跟进延迟天数格式为大于1的正整数" });
+            $("#txt_RecoveryDays").formValidator().regexValidator({ regExp: regexEnum.intege1, onError: "回收期天数格式为大于1的正整数" });
+            $("#txt_BelongerId").formValidator().inputValidator({ min: 1, max: 100, onError: "请选择数据分配人" });
+            $("#markupload_file").formValidator().inputValidator({ min: 1, max: 2000, onError: "请选择上次文件" });
+
+            $('#sel_Merchant').myChosen({ urlParams: { type: "merchant", businessType: 1 } });
+
+            $('#sel_Merchant').live("change", function () {
+                var merchantId = $(this).val();
+                initData(merchantId);
+            });
+
+            $('#btn_select_user').live('click', function () {
+                var merchantId = $('#sel_Merchant').val();
+                if (merchantId == '') {
+                    $.lumos.tips("请选择商户");
+                    return;
+                }
+                var organizationId = $(this).attr("organizationId");
+                var isDataAllocater = $(this).attr("isDataAllocater");
+                art.dialog.open('/User/ListBySelect?organizationId=' + organizationId + '&isDataAllocater=' + isDataAllocater, {
+                    id: "openDialog565", title: "选择", width: '600px', height: '530px', lock: true, drag: false, cancelVal: '关闭', cancel: true
+                });
+            });
+        });
+
+        function initData(merchantId) {
+
+            $.lumos.getJson({
+                url: "/ObBatch/InitDataToAddByFile",
+                isUseHandling: true,
+                urlParams: { merchantId: merchantId },
+                success: function (d) {
+                    if (d.result == $.lumos.resultType.success) {
+                        var data = d.data;
+                        $('#txt_ExpiryDays').val(data.expiryDays);
+                        $('#txt_FollowDelayDays').val(data.followDelayDays);
+                        $('#txt_RecoveryDays').val(data.recoveryDays);
+                        $('#txt_BelongerId').val(data.belongerId);
+                        $('#lbl_BelongerName').text(data.belongerName);
+
+                        if (data.importFileTmpls.length > 1) {
+                            $('#div_ImportFileTmpl').show();
+                        }
+
+
+                        $('#sel_ImportFileTmpl').myChosen({ isUseUrl: false, data: data.importFileTmpls });
+
+                        //alert(JSON.stringify(data))
+                    }
+                }
+            });
+
+        }
+
+        function add() {
+
+            var isValid = $.formValidator.pageIsValid();
+            if (!isValid)
+                return false;
+
+            var followDelayDays = parseInt($("#txt_FollowDelayDays").val());
+            var recoveryDays = parseInt($("#txt_RecoveryDays").val());
+
+            if (recoveryDays <= followDelayDays) {
+                $.lumos.tips("回收期天数必须大于跟进延迟天数")
+                return;
+            }
+
+            art.dialog.confirm('确定要导入？', function (e) {
+
+                var loading = artDialog.loading2("正在上传中");
+                $("#errorbox").hide();
+                $("#message").text("");
+                $("#point").html("");
+
+                $('#form1').ajaxSubmit({
+                    type: "post",
+                    url: "/ObBatch/AddByFile",
+                    dataType: "json",
+                    success: function (d) {
+                        loading.close();
+                        if (d.result == $.lumos.resultType.success) {
+                            $.lumos.parentDialog.refresh(1);
+                            $.lumos.tips(d.message, true);
+                        }
+                        else {
+                            $("#errorbox").show();
+                            $("#message").text(d.message);
+                            if (d.data != null) {
+                                for (var i = 0; i < d.data.length; i++) {
+                                    $("#point").append("<li>" + d.data[i] + "</li>");
+                                }
+                            }
+                        }
+                    }
+                });
+
+            });
+
+            return false;
+        }
+
+        function getUserDetails(obj) {
+            $("#txt_BelongerId").val(obj.id);
+            $('#lbl_BelongerName').text(obj.fullName + "(" + obj.userName + ")," + "所属机构:" + obj.organizationName);
+        }
+
+    </script>
+}
+
+
+
+<div class="gbr-row gbr-dialog">
+    <div class="gbr-row-title clearfix">
+        <div class="pull-left">
+            <h5>基本信息</h5>
+        </div>
+        <div class="pull-right f-tb1-item-pull-right">
+            <h6></h6>
+        </div>
+    </div>
+    <form id='form1' method='post' enctype="multipart/form-data" 　>
+        <table class="f-tb" cellpadding="0" cellspacing="1">
+            <tr>
+                <td class="f-tb-t" style="width:120px;">
+                    <span class="required-symbol">*</span>商户：
+                </td>
+                <td class="f-tb-c">
+                    <select id="sel_Merchant" name="merchantId" data-placeholder="请选择" class="chosen-select" style="width:200px">
+                        <option value="">请选择</option>
+                    </select>
+                </td>
+            </tr>
+            <tr>
+                <td class="f-tb-t" style="width:120px;">
+                    <span class="required-symbol">*</span>批次号：
+                </td>
+                <td class="f-tb-c">
+                    <input id="txt_Code" name="code" class="input-control" type="text" style="width: 224px;" autocomplete="off" />
+                </td>
+            </tr>
+            <tr>
+                <td class="f-tb-t">
+                    <span class="required-symbol">*</span>有效期（天）：
+                </td>
+                <td class="f-tb-c">
+                    <div>
+                        <input id="txt_ExpiryDays" type="text" name="expiryDays" class="input-control" style="width:50px;" value="30" autocomplete="off" />
+                    </div>
+                </td>
+            </tr>
+            <tr>
+                <td class="f-tb-t">
+                    <span class="required-symbol">*</span>跟进延迟（天）：
+                </td>
+                <td class="f-tb-c">
+                    <div>
+                        <input id="txt_FollowDelayDays" type="text" name="followDelayDays" class="input-control" style="width:50px;" value="14" autocomplete="off" />
+                    </div>
+                </td>
+            </tr>
+            <tr>
+                <td class="f-tb-t">
+                    <span class="required-symbol">*</span>回收期（天）：
+                </td>
+                <td class="f-tb-c">
+                    <div>
+                        <input id="txt_RecoveryDays" type="text" name="recoveryDays" class="input-control" style="width:50px;" value="30" autocomplete="off" />
+                    </div>
+                </td>
+            </tr>
+            <tr>
+                <td class="f-tb-t">
+                    <span class="required-symbol">*</span>数据分配人：
+                </td>
+                <td class="f-tb-c">
+                    <span id="lbl_BelongerName"></span>
+                    <input type="hidden" id="txt_BelongerId" name="belongerId" value="" />
+                    <input type="button" class="btn" id="btn_select_user" organizationId="" isDataAllocater="True" value="选择" dialog-title="选择" />
+                </td>
+            </tr>
+            <tr style="display:none">
+                <td class="f-tb-t"></td>
+                <td class="f-tb-c">
+                    <input type="submit" name="btn_Submit" id="btn_Submit" value="确定" class="btn btn-sure" />
+                    <input type="button" name="btn_Cancle" id="btn_Cancle" value="关闭" class="btn btn-close dialog-close" />
+                </td>
+            </tr>
+        </table>
+        <div class="remark-tips"><span class="t">提醒：</span><span class="c">该数据分配人在数据分配时只能分配给下属机构用户.</span></div>
+        <div class="gbr-row-title clearfix">
+            <div class="pull-left">
+                <h5>选择文件</h5>
+            </div>
+            <div class="pull-right f-tb1-item-pull-right">
+                <h6></h6>
+            </div>
+        </div>
+        <div style="margin:20px 0px;height:30px;">
+            <div style="width:80px;float:left;margin-right:10px;margin-top:3px;display:none;" id="div_ImportFileTmpl">
+                <select id="sel_ImportFileTmpl" name="importFileTmpl" class="chosen-select" style="width:80px"></select>
+            </div>
+            <div class="markupload" style="position:relative;width:300px; height:33px; float:left;margin-right:20px ">
+                <div class="file-name" id="file_name"></div>
+                <div class="file-msg"></div>
+                <label class="file-browse" for="markupload_file">浏览..</label>
+                <div class='file-loading'>上传中...</div>
+
+                <div style="width:0px;overflow:hidden">
+                    <input type='file' name='markupload_file' id='markupload_file' class="markupload-file" filetype="xls" accept='application/vnd.ms-excel'>
+                </div>
+            </div>
+
+
+        </div>
+
+        <div id="errorbox" style="display:none;color:red;">
+            <div>错误提示:<span id="message"></span></div>
+            <ul id="point"></ul>
+        </div>
+    </form>
+</div>
+

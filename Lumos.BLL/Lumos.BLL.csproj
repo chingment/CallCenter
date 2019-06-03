@@ -98,6 +98,9 @@
     <Compile Include="Biz\Models\FieldModel.cs" />
     <Compile Include="Sdk\ITelephoneControSdk.cs" />
     <Compile Include="Sdk\LxtSdkProvider.cs" />
+    <Compile Include="Service\Admin\Biz\ObBatchProvider.cs" />
+    <Compile Include="Service\Admin\Biz\RModels\RopObBatchAddByFile.cs" />
+    <Compile Include="Service\Admin\Biz\RModels\RupObBatchGetList.cs" />
     <Compile Include="Service\Merch\CallResultRecordProvider.cs" />
     <Compile Include="Service\Merch\Models\CallResultRecordModel.cs" />
     <Compile Include="Service\Merch\Models\CarInsCompanyModel.cs" />

@@ -1,0 +1,166 @@
+﻿@{
+    ViewBag.Title = "";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+
+<script type="text/javascript">
+
+    var listTable;
+
+    $(document).ready(function () {
+        listTable = $("#list_table").loadDataTable({
+            url: "/ObBatch/GetList",
+            pageIndex: 0,
+            searchParams: $("#form1").serializeArray(),
+            searchButtonId: "btn_Search",
+            containerId: "form1",
+            refreshInterval: 1000,
+            rowDataCombie: function (p_index, p_row) {
+                var l_Strlimt = "";
+                l_Strlimt += "@Html.IsInPermission("<a href=\\\"javascript:void(0)\\\" operate=\\\"details\\\"   class=\\\"a-btn a-btn-edit\\\"  >查看</a>")";
+                var l_StrRows = "";
+                l_StrRows += "<tr>";
+                l_StrRows += "<td class=\"no\" >" + (p_index + 1) + "</td>";
+                l_StrRows += "<td class=\"overflow\" title=\"" + p_row.merchantName + "\">" + p_row.merchantName + "</td>";
+                l_StrRows += "<td class=\"overflow tipitem\" title=\"" + p_row.code + "\"   >" + p_row.code + "</td>";
+                l_StrRows += "<td class=\"overflow\" title=\"" + p_row.soureName + "\">" + p_row.soureName + "</td>";
+                l_StrRows += "<td class=\"overflow\" title=\"" + p_row.dataCount + "\">" + p_row.dataCount + "</td>";
+                l_StrRows += "<td class=\"overflow\" title=\"" + p_row.validCount + "\">" + p_row.validCount + "</td>";
+                l_StrRows += "<td class=\"overflow\" title=\"" + p_row.inValidCount + "\">" + p_row.inValidCount + "</td>";
+                l_StrRows += "<td class=\"overflow\" title=\"" + p_row.statusName + "\">" + p_row.statusName + "</td>";
+                l_StrRows += "<td class=\"overflow\" title=\"" + p_row.createTime + "\">" + p_row.createTime + "</td>";
+                l_StrRows += "<td class=\"operation\">";
+                l_StrRows += l_Strlimt;
+                l_StrRows += "</td>";
+                l_StrRows += "</tr>";
+                return l_StrRows;
+            },
+            operate: {
+                "details": function (obj) {
+                    var url = "";
+
+                    switch (obj.businessType) {
+                        case 1:
+                            url = '/ObBatch/DetailsByCommon?id=' + obj.id;
+                            break;
+                        case 2:
+                            url = '/ObBatch/DetailsByCarIns?id=' + obj.id;
+                            break;
+                    }
+
+                    var title = '查看';
+                    art.dialog.open(url, {
+                        id: "openDialog", title: title, width: '70%', height: '70%', lock: true, drag: false, cancelVal: '关闭', cancel: true
+                    });
+                }
+            }
+        });
+
+        $("#btn_Add").click(function () {
+            var url = '/ObBatch/AddByFile';
+            var title = '导入';
+            art.dialog.open(url, {
+                id: "openDialog", title: title, width: '650px', height: '500px', lock: true, drag: false, cancelVal: '关闭', cancel: true, okVal: '确定', ok: function () {
+                    this.iframe.contentWindow.add();
+                    return false;
+                }
+            });
+        });
+
+    });
+
+    function refresh(type) {
+        switch (type) {
+            case 1:
+                listTable.loadData();
+                break;
+            case 2:
+                listTable.loadData("c");
+                break;
+        }
+    }
+
+
+</script>
+
+
+<div class="gbr-row gbr-page">
+    <form id="form1" name="form1">
+        <div class="search-bar">
+            <div class="filter">
+                <span class="filter-label">批次号：</span>
+                <span class="filter-input">
+                    <input type="text" class="input-control" name="Code" style="width:120px;" />
+                </span>
+            </div>
+
+
+            <div class="filter"><input type="button" class="btn btn-search" id="btn_Search" value="查询" /> </div>
+
+            <div class="filter" style="float:right">
+                <input type="button" class="btn btn-add" id="btn_Add" value="导入" />
+            </div>
+        </div>
+        <div class="list">
+            <table id="list_table" class="list-tb" cellpadding="0" cellspacing="0">
+                <thead>
+                    <tr>
+                        <th style="width:25px" class="no">
+                            序号
+                        </th>
+                        <th style="width:15%">
+                            商户
+                        </th>
+                        <th style="width:15%">
+                            批次号
+                        </th>
+                        <th style="width:20%">
+                            来源
+                        </th>
+                        <th style="width:10%">
+                            数据量(条)
+                        </th>
+                        <th style="width:10%">
+                            有效(条)
+                        </th>
+                        <th style="width:10%">
+                            无效(条)
+                        </th>
+                        <th style="width:10%">
+                            状态
+                        </th>
+                        <th style="width:10%">
+                            导入时间
+                        </th>
+                        <th style="width:25px" class="operation">
+                            操作
+                        </th>
+                    </tr>
+                </thead>
+                <tbody></tbody>
+                <tfoot>
+                    <tr>
+                        <td colspan="10">
+                            <div class="pull-left">
+                                <span class="load-tip"></span>
+                            </div>
+                            <div class="pull-right pagination">
+                                <div class="pagination-info">
+
+                                </div>
+                                <div class="pagination-index">
+
+                                </div>
+                                <div class="pagination-goto">
+
+                                </div>
+                            </div>
+                        </td>
+                    </tr>
+                </tfoot>
+            </table>
+        </div>
+    </form>
+
+</div>

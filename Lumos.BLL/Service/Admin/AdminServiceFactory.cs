@@ -32,6 +32,14 @@ namespace Lumos.BLL.Service.Admin
             }
         }
 
+        public static ObBatchProvider ObBatch
+        {
+            get
+            {
+                return new ObBatchProvider();
+            }
+        }
+
         public static SysUserProvider SysUser
         {
             get
