@@ -238,6 +238,7 @@ namespace Lumos.BLL.Service.Merch
                 callResultRecord.Remark = rop.Remark;
                 callResultRecord.Creator = operater;
                 callResultRecord.CreateTime = this.DateTime;
+                callResultRecord.RecoveryTime = obCustomer.RecoveryTime;
                 callResultRecord.PId = rop.PId;
                 CurrentDb.CallResultRecord.Add(callResultRecord);
 

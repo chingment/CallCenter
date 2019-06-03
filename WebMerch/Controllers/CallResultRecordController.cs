@@ -43,7 +43,8 @@ u.MerchantId == this.CurrentMerchantId &&
  accessUserIds.Contains(u.SalesmanId) &&
  (rup.CustomerName == null || u.CustomerName.Contains(rup.CustomerName)) &&
  (rup.PhoneNumber == null || u.CustomerPhoneNumber.Contains(rup.PhoneNumber)) &&
- (rup.SalesmanName == null || u.SalesmanName.Contains(rup.SalesmanName))
+ (rup.SalesmanName == null || u.SalesmanName.Contains(rup.SalesmanName))&&
+  u.RecoveryTime <= DateTime.Now
                          select new { u.Id, u.CustomerId, u.CustomerName, u.SalesmanId, u.SalesmanName, u.ResultName, u.ResultCode, u.CustomerPhoneNumber, u.CreateTime, u.NextCallTime, u.Remark });
 
             if (!string.IsNullOrEmpty(rup.ResultCode))

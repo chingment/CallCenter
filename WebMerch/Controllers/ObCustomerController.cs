@@ -58,7 +58,8 @@ namespace WebMerch.Controllers
                          (rup.CarRegisterDateEnd == null || u.CarRegisterDate <= rup.CarRegisterDateEnd) &&
                          (rup.CarInsLastStartTime == null || u.CarInsLastStartTime >= rup.CarInsLastStartTime) &&
                          (rup.CarInsLastEndTime == null || u.CarInsLastEndTime <= rup.CarInsLastEndTime)
-
+                          &&
+                          u.RecoveryTime <= DateTime.Now
                          select new { u.Id, u.CsrName, u.CsrPhoneNumber, u.CsrAddress, u.CsrIdNumber, u.CarRegisterDate, u.CarPlateNo, u.CarModel, u.CarEngineNo, u.CarVin, u.CarInsLastQzNo, u.CarInsLastSyNo, u.CarInsLastCompany, u.CarInsLastStartTime, u.CarInsLastEndTime, u.CreateTime });
 
             // var s = predicate();
@@ -117,7 +118,8 @@ namespace WebMerch.Controllers
                          (rup.CsrPhoneNumber == null || u.CsrPhoneNumber.Contains(rup.CsrPhoneNumber)) &&
                          (rup.CsrName == null || u.CsrName.Contains(rup.CsrName)) &&
                          (rup.CsrCompany == null || u.CsrCompany.Contains(rup.CsrCompany))
-
+                                                   &&
+                          u.RecoveryTime <= DateTime.Now
 
                          select new { u.Id, u.CsrName, u.CsrPhoneNumber, u.CsrAddress, u.CsrCompany, u.CreateTime });
 

@@ -46,7 +46,8 @@ namespace WebMerch.Controllers
                          &&
                          u.MerchantId == this.CurrentMerchantId &&
                            (rup.Code == null || b.Code.Contains(rup.Code))
-                         select new { u.Id, ObBatchName = b.Name, u.SoureName, ObBatchCode = b.Code, u.DataCount, u.AllocatedCount, u.UnAllocatedCount, u.UsedCount, u.CreateTime, b.BusinessType });
+
+                         select new { u.Id, u.IsStopAllocate, ObBatchName = b.Name, u.SoureName, ObBatchCode = b.Code, u.DataCount, u.AllocatedCount, u.UnAllocatedCount, u.UsedCount, u.CreateTime, b.BusinessType });
 
             int total = query.Count();
 
@@ -74,6 +75,7 @@ namespace WebMerch.Controllers
                     UnUsedCount = item.AllocatedCount - item.UsedCount,
                     UsedCount = item.UsedCount,
                     BusinessType = item.BusinessType,
+                    IsStopAllocate = item.IsStopAllocate,
                     CreateTime = item.CreateTime.ToUnifiedFormatDateTime()
                 });
             }
@@ -218,7 +220,7 @@ namespace WebMerch.Controllers
                          &&
                          u.MerchantId == this.CurrentMerchantId &&
                          (rup.CsrPhoneNumber == null || u.CsrPhoneNumber.Contains(rup.CsrPhoneNumber)) &&
-                         (rup.CsrName == null || u.CsrName.Contains(rup.CsrName)) 
+                         (rup.CsrName == null || u.CsrName.Contains(rup.CsrName))
 
                          select new { u.Id, u.CsrName, u.CsrPhoneNumber, u.CsrAddress, u.CsrCompany, u.CreateTime });
 
