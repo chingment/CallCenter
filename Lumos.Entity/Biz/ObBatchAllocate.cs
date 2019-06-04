@@ -22,6 +22,9 @@ namespace Lumos.Entity
         public string BelongerName { get; set; }
         public string BelongerOrganizationId { get; set; }
         public string AllocaterId { get; set; }
+
+        public bool IsStopAllocate { get; set; }
+
         public string Creator { get; set; }
         public DateTime CreateTime { get; set; }
         public string Mender { get; set; }

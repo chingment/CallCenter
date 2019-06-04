@@ -22,7 +22,7 @@ namespace Lumos.Entity
         public string Creator { get; set; }
         public DateTime CreateTime { get; set; }
         public string SalesmanName { get; set; }
-
+        public DateTime RecoveryTime { get; set; }
         public bool IsBackCalled { get; set; }
 
         public string PId { get; set; }

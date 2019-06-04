@@ -29,8 +29,18 @@
                 l_StrRows += "<td class=\"overflow\" title=\"" + p_row.allocatedCount + "\">" + p_row.allocatedCount + "</td>";
                 l_StrRows += "<td class=\"overflow\" title=\"" + p_row.unUsedCount + "\">" + p_row.unUsedCount + "</td>";
                 l_StrRows += "<td class=\"overflow\" title=\"" + p_row.usedCount + "\">" + p_row.usedCount + "</td>";
+
+
+                var isStopAllocateName = p_row.isStopAllocate == false ? "否" : "是";
+
+                l_StrRows += "<td class=\"overflow\" title=\"" + isStopAllocateName + "\">" + isStopAllocateName + "</td>";
+
                 l_StrRows += "<td class=\"operation\">";
-                l_StrRows += l_Strlimt;
+
+                if (!p_row.isStopAllocate) {
+                    l_StrRows += l_Strlimt;
+                }
+
                 l_StrRows += "</td>";
                 l_StrRows += "</tr>";
                 return l_StrRows;
@@ -154,10 +164,10 @@
                         <th style="width:20%">
                             来源
                         </th>
-                        <th style="width:15%">
+                        <th style="width:10%">
                             数据量(条)
                         </th>
-                        <th style="width:15%">
+                        <th style="width:10%">
                             可分配(条)
                         </th>
                         <th style="width:10%">
@@ -169,6 +179,9 @@
                         <th style="width:10%">
                             已使用(条)
                         </th>
+                        <th style="width:10%">
+                            禁止分配
+                        </th>
                         <th style="width:25px" class="operation">
                             操作
                         </th>
@@ -177,7 +190,7 @@
                 <tbody></tbody>
                 <tfoot>
                     <tr>
-                        <td colspan="9">
+                        <td colspan="10">
                             <div class="pull-left">
                                 <span class="load-tip"></span>
                             </div>

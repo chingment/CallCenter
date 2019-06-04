@@ -55,6 +55,21 @@
             });
 
 
+            $('.markupload-file').live('change', function () {
+                var file_name = $(this).val();
+
+                if (file_name == '')
+                    return;
+
+                var index = file_name.lastIndexOf('\\');
+                if (index > 0) {
+                    index = index + 1;
+                }
+                file_name = file_name.substring(index, file_name.length);
+
+                $(this).parent().parent().find('.file-name').text(file_name);
+            });
+
         });
 
         function tips(message) {

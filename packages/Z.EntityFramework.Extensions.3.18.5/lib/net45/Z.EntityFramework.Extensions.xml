@@ -320,6 +320,32 @@
             <param name="updateExpression">The update expression.</param>
             <param name="bulkOperationFactory">The bulk operation factory.</param>
         </member>
+        <member name="M:DbContextExtensions.UpdateFromQuery``1(System.Linq.IQueryable{``0},System.Dynamic.ExpandoObject)">
+            <summary>An IQueryable&lt;TEntity&gt; extension method that updates from query.</summary>
+            <typeparam name="TEntity">Type of the entity.</typeparam>
+            <param name="query">The query to act on.</param>
+            <param name="expandoObject">The expandoObject.</param>
+        </member>
+        <member name="M:DbContextExtensions.UpdateFromQuery``1(System.Linq.IQueryable{``0},System.Dynamic.ExpandoObject,System.Action{Z.BulkOperations.BulkOperation})">
+            <summary>An IQueryable&lt;TEntity&gt; extension method that updates from query.</summary>
+            <typeparam name="TEntity">Type of the entity.</typeparam>
+            <param name="query">The query to act on.</param>
+            <param name="expandoObject">The expandoObject.</param>
+            <param name="bulkOperationFactory">The bulk operation factory.</param>
+        </member>
+        <member name="M:DbContextExtensions.UpdateFromQuery``1(System.Linq.IQueryable{``0},System.Collections.Generic.IDictionary{System.String,System.Object})">
+            <summary>An IQueryable&lt;TEntity&gt; extension method that updates from query.</summary>
+            <typeparam name="TEntity">Type of the entity.</typeparam>
+            <param name="query">The query to act on.</param>
+            <param name="dictionary">The dictionary.</param>
+        </member>
+        <member name="M:DbContextExtensions.UpdateFromQuery``1(System.Linq.IQueryable{``0},System.Collections.Generic.IDictionary{System.String,System.Object},System.Action{Z.BulkOperations.BulkOperation})">
+            <summary>An IQueryable&lt;TEntity&gt; extension method that updates from query.</summary>
+            <typeparam name="TEntity">Type of the entity.</typeparam>
+            <param name="query">The query to act on.</param>
+            <param name="dictionary">The dictionary.</param>
+            <param name="bulkOperationFactory">The bulk operation factory.</param>
+        </member>
         <member name="M:DbContextExtensions.UpdateFromQueryAsync``1(System.Linq.IQueryable{``0},System.Linq.Expressions.Expression{System.Func{``0,``0}})">
             <summary>An IQueryable&lt;TEntity&gt; extension method that updates from query.</summary>
             <typeparam name="TEntity">Type of the entity.</typeparam>
@@ -348,6 +374,70 @@
             <typeparam name="TEntity">Type of the entity.</typeparam>
             <param name="query">The query to act on.</param>
             <param name="updateExpression">The update expression.</param>
+            <param name="bulkOperationFactory">The bulk operation factory.</param>
+            <param name="cancellationToken">The cancellation token.</param>
+            <returns>A Task.</returns>
+        </member>
+        <member name="M:DbContextExtensions.UpdateFromQueryAsync``1(System.Linq.IQueryable{``0},System.Dynamic.ExpandoObject)">
+            <summary>An IQueryable&lt;TEntity&gt; extension method that updates from query.</summary>
+            <typeparam name="TEntity">Type of the entity.</typeparam>
+            <param name="query">The query to act on.</param>
+            <param name="expandoObject">The expandoObject.</param>
+            <returns>A Task.</returns>
+        </member>
+        <member name="M:DbContextExtensions.UpdateFromQueryAsync``1(System.Linq.IQueryable{``0},System.Dynamic.ExpandoObject,System.Threading.CancellationToken)">
+            <summary>An IQueryable&lt;TEntity&gt; extension method that updates from query.</summary>
+            <typeparam name="TEntity">Type of the entity.</typeparam>
+            <param name="query">The query to act on.</param>
+            <param name="expandoObject">The expandoObject.</param>
+            <param name="cancellationToken">The cancellation token.</param>
+            <returns>A Task.</returns>
+        </member>
+        <member name="M:DbContextExtensions.UpdateFromQueryAsync``1(System.Linq.IQueryable{``0},System.Dynamic.ExpandoObject,System.Action{Z.BulkOperations.BulkOperation})">
+            <summary>An IQueryable&lt;TEntity&gt; extension method that updates from query.</summary>
+            <typeparam name="TEntity">Type of the entity.</typeparam>
+            <param name="query">The query to act on.</param>
+            <param name="expandoObject">The expandoObject.</param>
+            <param name="bulkOperationFactory">The bulk operation factory.</param>
+            <returns>A Task.</returns>
+        </member>
+        <member name="M:DbContextExtensions.UpdateFromQueryAsync``1(System.Linq.IQueryable{``0},System.Dynamic.ExpandoObject,System.Action{Z.BulkOperations.BulkOperation},System.Threading.CancellationToken)">
+            <summary>An IQueryable&lt;TEntity&gt; extension method that updates from query.</summary>
+            <typeparam name="TEntity">Type of the entity.</typeparam>
+            <param name="query">The query to act on.</param>
+            <param name="expandoObject">The expandoObject.</param>
+            <param name="bulkOperationFactory">The bulk operation factory.</param>
+            <param name="cancellationToken">The cancellation token.</param>
+            <returns>A Task.</returns>
+        </member>
+        <member name="M:DbContextExtensions.UpdateFromQueryAsync``1(System.Linq.IQueryable{``0},System.Collections.Generic.IDictionary{System.String,System.Object})">
+            <summary>An IQueryable&lt;TEntity&gt; extension method that updates from query.</summary>
+            <typeparam name="TEntity">Type of the entity.</typeparam>
+            <param name="query">The query to act on.</param>
+            <param name="dictionary">The dictionary.</param>
+            <returns>A Task.</returns>
+        </member>
+        <member name="M:DbContextExtensions.UpdateFromQueryAsync``1(System.Linq.IQueryable{``0},System.Collections.Generic.IDictionary{System.String,System.Object},System.Threading.CancellationToken)">
+            <summary>An IQueryable&lt;TEntity&gt; extension method that updates from query.</summary>
+            <typeparam name="TEntity">Type of the entity.</typeparam>
+            <param name="query">The query to act on.</param>
+            <param name="dictionary">The dictionary.</param>
+            <param name="cancellationToken">The cancellation token.</param>
+            <returns>A Task.</returns>
+        </member>
+        <member name="M:DbContextExtensions.UpdateFromQueryAsync``1(System.Linq.IQueryable{``0},System.Collections.Generic.IDictionary{System.String,System.Object},System.Action{Z.BulkOperations.BulkOperation})">
+            <summary>An IQueryable&lt;TEntity&gt; extension method that updates from query.</summary>
+            <typeparam name="TEntity">Type of the entity.</typeparam>
+            <param name="query">The query to act on.</param>
+            <param name="dictionary">The dictionary.</param>
+            <param name="bulkOperationFactory">The bulk operation factory.</param>
+            <returns>A Task.</returns>
+        </member>
+        <member name="M:DbContextExtensions.UpdateFromQueryAsync``1(System.Linq.IQueryable{``0},System.Collections.Generic.IDictionary{System.String,System.Object},System.Action{Z.BulkOperations.BulkOperation},System.Threading.CancellationToken)">
+            <summary>An IQueryable&lt;TEntity&gt; extension method that updates from query.</summary>
+            <typeparam name="TEntity">Type of the entity.</typeparam>
+            <param name="query">The query to act on.</param>
+            <param name="dictionary">The dictionary.</param>
             <param name="bulkOperationFactory">The bulk operation factory.</param>
             <param name="cancellationToken">The cancellation token.</param>
             <returns>A Task.</returns>
@@ -675,61 +765,86 @@
             <param name="cancellationToken">The cancellation token.</param>
             <returns>A Task.</returns>
         </member>
+        <member name="M:DbContextExtensions.BatchSaveChanges(System.Data.Entity.Core.Objects.ObjectContext)">
+            <summary>
+                An ObjectContext extension method that BatchSaveChanges (batches EF commands in
+                fewer commands to reduce the number of database round-trip).
+            </summary>
+            <param name="this">The @this to act on.</param>
+            <returns>The number of entities modified.</returns>
+        </member>
         <member name="M:DbContextExtensions.BulkSaveChanges(System.Data.Entity.Core.Objects.ObjectContext)">
-            <summary>A DbContext extension method that bulk save changes.</summary>
+            <summary>An ObjectContext extension method that bulk save changes.</summary>
             <param name="this">The @this to act on.</param>
         </member>
         <member name="M:DbContextExtensions.BulkSaveChanges(System.Data.Entity.Core.Objects.ObjectContext,System.Action{Z.BulkOperations.BulkOperation})">
-            <summary>A DbContext extension method that bulk save changes.</summary>
+            <summary>An ObjectContext extension method that bulk save changes.</summary>
             <exception cref="T:System.Exception">Thrown when an exception error condition occurs.</exception>
             <param name="this">The @this to act on.</param>
             <param name="bulkOperationFactory">The bulk operation factory.</param>
         </member>
+        <member name="M:DbContextExtensions.BatchSaveChangesAsync(System.Data.Entity.Core.Objects.ObjectContext)">
+            <summary>
+                An ObjectContext extension method that BatchSaveChanges asynchronously (batches EF commands in
+                fewer commands to reduce the number of database round-trip).
+            </summary>
+            <param name="this">The @this to act on.</param>
+            <returns>An asynchronous result that return the number of entities modified.</returns>
+        </member>
+        <member name="M:DbContextExtensions.BatchSaveChangesAsync(System.Data.Entity.Core.Objects.ObjectContext,System.Threading.CancellationToken)">
+            <summary>
+                An ObjectContext extension method that BatchSaveChanges asynchronously (batches EF commands in
+                fewer commands to reduce the number of database round-trip).
+            </summary>
+            <param name="this">The @this to act on.</param>
+            <param name="cancellationToken">The cancellation token.</param>
+            <returns>An asynchronous result that return the number of entities modified.</returns>
+        </member>
         <member name="M:DbContextExtensions.BulkSaveChangesAsync(System.Data.Entity.Core.Objects.ObjectContext)">
-            <summary>A DbContext extension method that bulk save changes.</summary>
+            <summary>An ObjectContext extension method that bulk save changes.</summary>
             <param name="this">The @this to act on.</param>
         </member>
         <member name="M:DbContextExtensions.BulkSaveChangesAsync(System.Data.Entity.Core.Objects.ObjectContext,System.Threading.CancellationToken)">
-            <summary>A DbContext extension method that bulk save changes.</summary>
+            <summary>An ObjectContext extension method that bulk save changes.</summary>
             <param name="this">The @this to act on.</param>
             <param name="cancellationToken">The cancellation token.</param>
             <returns>A Task.</returns>
         </member>
         <member name="M:DbContextExtensions.BulkSaveChangesAsync(System.Data.Entity.Core.Objects.ObjectContext,System.Boolean)">
-            <summary>A DbContext extension method that bulk save changes.</summary>
+            <summary>An ObjectContext extension method that bulk save changes.</summary>
             <param name="this">The @this to act on.</param>
             <param name="useEntityFrameworkPropagation">true to use entity framework propagation.</param>
             <returns>A Task.</returns>
         </member>
         <member name="M:DbContextExtensions.BulkSaveChangesAsync(System.Data.Entity.Core.Objects.ObjectContext,System.Boolean,System.Threading.CancellationToken)">
-            <summary>A DbContext extension method that bulk save changes.</summary>
+            <summary>An ObjectContext extension method that bulk save changes.</summary>
             <param name="this">The @this to act on.</param>
             <param name="useEntityFrameworkPropagation">true to use entity framework propagation.</param>
             <param name="cancellationToken">The cancellation token.</param>
             <returns>A Task.</returns>
         </member>
         <member name="M:DbContextExtensions.BulkSaveChangesAsync(System.Data.Entity.Core.Objects.ObjectContext,System.Action{Z.BulkOperations.BulkOperation})">
-            <summary>A DbContext extension method that bulk save changes.</summary>
+            <summary>An ObjectContext extension method that bulk save changes.</summary>
             <exception cref="T:System.Exception">Thrown when an exception error condition occurs.</exception>
             <param name="this">The @this to act on.</param>
             <param name="bulkOperationFactory">The bulk operation factory.</param>
         </member>
         <member name="M:DbContextExtensions.BulkSaveChangesAsync(System.Data.Entity.Core.Objects.ObjectContext,System.Action{Z.BulkOperations.BulkOperation},System.Threading.CancellationToken)">
-            <summary>A DbContext extension method that bulk save changes.</summary>
+            <summary>An ObjectContext extension method that bulk save changes.</summary>
             <param name="this">The @this to act on.</param>
             <param name="bulkOperationFactory">The bulk operation factory.</param>
             <param name="cancellationToken">The cancellation token.</param>
             <returns>A Task.</returns>
         </member>
         <member name="M:DbContextExtensions.BulkSaveChangesAsync(System.Data.Entity.Core.Objects.ObjectContext,System.Boolean,System.Action{Z.BulkOperations.BulkOperation})">
-            <summary>A DbContext extension method that bulk save changes.</summary>
+            <summary>An ObjectContext extension method that bulk save changes.</summary>
             <param name="this">The @this to act on.</param>
             <param name="useEntityFrameworkPropagation">true to use entity framework propagation.</param>
             <param name="bulkOperationFactory">The bulk operation factory.</param>
             <returns>A Task.</returns>
         </member>
         <member name="M:DbContextExtensions.BulkSaveChangesAsync(System.Data.Entity.Core.Objects.ObjectContext,System.Boolean,System.Action{Z.BulkOperations.BulkOperation},System.Threading.CancellationToken)">
-            <summary>A DbContext extension method that bulk save changes.</summary>
+            <summary>An ObjectContext extension method that bulk save changes.</summary>
             <param name="this">The @this to act on.</param>
             <param name="useEntityFrameworkPropagation">true to use entity framework propagation.</param>
             <param name="bulkOperationFactory">The bulk operation factory.</param>
@@ -825,6 +940,25 @@
             <param name="entities">The entities.</param>
             <param name="cancellationToken">The cancellation token.</param>
             <returns>A Task.</returns>
+        </member>
+        <member name="M:DbContextExtensions.Add(System.Collections.Generic.List{Z.EntityFramework.Extensions.SelfHierarchyListColumnMapping},System.String,System.String)">
+            <summary>
+            A List&lt;SelfHierarchyListColumnMapping&gt; extension method that adds columnMappings.
+            </summary>
+            <param name="columnMappings">The columnMappings to act on.</param>
+            <param name="columnName">Name of the column.</param>
+            <param name="recursiveColumnName">Name of the recursive column.</param>
+        </member>
+        <member name="M:DbContextExtensions.ToSelfHierarchyList``1(System.Linq.IQueryable{``0},System.Linq.Expressions.Expression{System.Func{``0,System.Object}},System.Action{Z.EntityFramework.Extensions.SelfHierarchyListOptions{``0}})">
+            <summary>
+            An IQueryable&lt;T&gt; extension method that converts this object to a self hierarchy
+            list.
+            </summary>
+            <typeparam name="T">Generic type parameter.</typeparam>
+            <param name="query">The query to act on.</param>
+            <param name="joinExpression">The join expression.</param>
+            <param name="options">(Optional) Options for controlling the operation.</param>
+            <returns>The given data converted to a List&lt;T&gt;</returns>
         </member>
         <member name="M:DbContextExtensions.GetOrCreateDbContext(System.Data.Entity.Core.Objects.ObjectContext)">
             <summary>A DbContext extension method that gets a model.</summary>
@@ -2584,6 +2718,10 @@
         <member name="F:Z.EntityFramework.Extensions.EntityFrameworkManager.SetDataSourceBulkInsertAction">
             <summary>The set data source for bulk insert action.</summary>
         </member>
+        <member name="P:Z.EntityFramework.Extensions.EntityFrameworkManager.PreBatchSaveChanges">
+            <summary>Gets or sets an action to perform before the BatchSaveChanges is executed.</summary>
+            <value>The action to perform before the BatchSaveChanges is executed.</value>
+        </member>
         <member name="P:Z.EntityFramework.Extensions.EntityFrameworkManager.PreBulkSaveChanges">
             <summary>Gets or sets an action to perform before the BulkSaveChanges is executed.</summary>
             <value>The action to perform before the BulkSaveChanges is executed.</value>
@@ -2626,6 +2764,36 @@
             <summary>Validates if license added is valid.</summary>
             <param name="provider">The provider specific for the license.</param>
             <returns>true if it's valid, false if it's invalid.</returns>
+        </member>
+        <member name="T:Z.EntityFramework.Extensions.SelfHierarchyListColumnMapping">
+            <summary>to self hierarchy option.</summary>
+        </member>
+        <member name="T:Z.EntityFramework.Extensions.SelfHierarchyListOptions`1">
+            <summary>to self hierarchy option.</summary>
+        </member>
+        <member name="P:Z.EntityFramework.Extensions.SelfHierarchyListOptions`1.MaxRecursion">
+            <summary>Gets or sets the maximum recursion to perform.</summary>
+            <value>The maximum recursion to perform.</value>
+        </member>
+        <member name="P:Z.EntityFramework.Extensions.SelfHierarchyListOptions`1.SelfHierarchyQuery">
+            <summary>Gets or sets the self hierarchy query.</summary>
+            <value>The self hierarchy query.</value>
+        </member>
+        <member name="P:Z.EntityFramework.Extensions.SelfHierarchyListOptions`1.JoinExpression">
+            <summary>Gets or sets the join expression.</summary>
+            <value>The join expression.</value>
+        </member>
+        <member name="P:Z.EntityFramework.Extensions.SelfHierarchyListOptions`1.ColumnMappings">
+            <summary>Gets or sets the column mappings.</summary>
+            <value>The column mappings.</value>
+        </member>
+        <member name="P:Z.EntityFramework.Extensions.SelfHierarchyListOptions`1.FlatListRecursionLevel">
+            <summary>Gets or sets the flat list recursion level, default = 0 which include only first query item.</summary>
+            <value>The flat list recursion level, default = 0 which include only first query item.</value>
+        </member>
+        <member name="P:Z.EntityFramework.Extensions.SelfHierarchyListOptions`1.InverseMapping">
+            <summary>Gets or sets a value indicating whether the inverse mapping.</summary>
+            <value>True if inverse mapping, false if not.</value>
         </member>
         <member name="T:Z.EntityFramework.Extensions.PolyCommandSet">
             <summary>A polygon SQL command set.</summary>
@@ -3698,6 +3866,14 @@
             <summary>Gets or sets the `AND (ONE NOT MEET CONDITION)` to add when merge update is matched.</summary>
             <value>The `AND (ONE NOT MEET CONDITION)` to add when merge update is matched.</value>
         </member>
+        <member name="P:Z.BulkOperations.BulkOperation.UpdateMatchedAndConditionExpression">
+            <summary>Gets or sets the `AND CONDITION` to add when update is matched.</summary>
+            <value>The `AND CONDITION` to add when update is matched.</value>
+        </member>
+        <member name="P:Z.BulkOperations.BulkOperation.UpdateMatchedAndOneNotConditionExpression">
+            <summary>Gets or sets the `AND (ONE NOT MEET CONDITION)` to add when update is matched.</summary>
+            <value>The `AND (ONE NOT MEET CONDITION)` to add when update is matched.</value>
+        </member>
         <member name="P:Z.BulkOperations.BulkOperation.SynchronizeMatchedAndConditionExpression">
             <summary>Gets or sets the `AND CONDITION` to add when synchronize (merge) update is matched.</summary>
             <value>The `AND CONDITION` to add when synchronize (merge) update is matched.</value>
@@ -3705,6 +3881,30 @@
         <member name="P:Z.BulkOperations.BulkOperation.SynchronizeMatchedAndOneNotConditionExpression">
             <summary>Gets or sets the `AND (ONE NOT MEET CONDITION)` to add when synchronize (merge) update is matched.</summary>
             <value>The `AND (ONE NOT MEET CONDITION)` to add when synchronize (merge) update is matched.</value>
+        </member>
+        <member name="P:Z.BulkOperations.BulkOperation.IgnoreOnMergeMatchedAndConditionExpression">
+            <summary>Gets or sets the `AND CONDITION` to add when merge update is matched. All columns are part of the condition except those from the ignore expression.</summary>
+            <value>The `AND CONDITION` to add when merge update is matched. All columns are part of the condition except those from the ignore expression.</value>
+        </member>
+        <member name="P:Z.BulkOperations.BulkOperation.IgnoreOnMergeMatchedAndOneNotConditionExpression">
+            <summary>Gets or sets the `AND (ONE NOT MEET CONDITION)` to add when merge update is matched. All columns are part of the condition except those from the ignore expression.</summary>
+            <value>The `AND (ONE NOT MEET CONDITION)` to add when merge update is matched. All columns are part of the condition except those from the ignore expression.</value>
+        </member>
+        <member name="P:Z.BulkOperations.BulkOperation.IgnoreOnUpdateMatchedAndConditionExpression">
+            <summary>Gets or sets the `AND CONDITION` to add when update is matched. All columns are part of the condition except those from the ignore expression.</summary>
+            <value>The `AND CONDITION` to add when update is matched. All columns are part of the condition except those from the ignore expression.</value>
+        </member>
+        <member name="P:Z.BulkOperations.BulkOperation.IgnoreOnUpdateMatchedAndOneNotConditionExpression">
+            <summary>Gets or sets the `AND (ONE NOT MEET CONDITION)` to add when update is matched. All columns are part of the condition except those from the ignore expression.</summary>
+            <value>The `AND (ONE NOT MEET CONDITION)` to add when update is matched. All columns are part of the condition except those from the ignore expression.</value>
+        </member>
+        <member name="P:Z.BulkOperations.BulkOperation.IgnoreOnSynchronizeMatchedAndConditionExpression">
+            <summary>Gets or sets the `AND CONDITION` to add when synchronize (merge) update is matched. All columns are part of the condition except those from the ignore expression.</summary>
+            <value>The `AND CONDITION` to add when synchronize (merge) update is matched. All columns are part of the condition except those from the ignore expression.</value>
+        </member>
+        <member name="P:Z.BulkOperations.BulkOperation.IgnoreOnSynchronizeMatchedAndOneNotConditionExpression">
+            <summary>Gets or sets the `AND (ONE NOT MEET CONDITION)` to add when synchronize (merge) update is matched. All columns are part of the condition except those from the ignore expression.</summary>
+            <value>The `AND (ONE NOT MEET CONDITION)` to add when synchronize (merge) update is matched. All columns are part of the condition except those from the ignore expression.</value>
         </member>
         <member name="P:Z.BulkOperations.BulkOperation.CoalesceOnMergeUpdateExpression">
             <summary>Gets or sets columns to coalesce, ISNULL(StagingValue, DestinationValue).</summary>
@@ -3714,9 +3914,29 @@
             <summary>Gets or sets columns to coalesce, ISNULL(DestinationValue, StagingValue).</summary>
             <value>The columns to coalesce, ISNULL(DestinationValue, StagingValue).</value>
         </member>
+        <member name="P:Z.BulkOperations.BulkOperation.CoalesceOnUpdateExpression">
+            <summary>Gets or sets columns to coalesce, ISNULL(StagingValue, DestinationValue).</summary>
+            <value>The columns to coalesce, ISNULL(StagingValue, DestinationValue).</value>
+        </member>
+        <member name="P:Z.BulkOperations.BulkOperation.CoalesceDestinationOnUpdateExpression">
+            <summary>Gets or sets columns to coalesce, ISNULL(DestinationValue, StagingValue).</summary>
+            <value>The columns to coalesce, ISNULL(DestinationValue, StagingValue).</value>
+        </member>
         <member name="P:Z.BulkOperations.BulkOperation.ColumnMappings">
             <summary>Gets or sets the column mappings.</summary>
             <value>The column mappings.</value>
+        </member>
+        <member name="P:Z.BulkOperations.BulkOperation.OnMergeUpdateUseCoalesce">
+            <summary>
+            Gets or sets a value indicating whether the on merge update use coalesce.
+            </summary>
+            <value>True if on merge update use coalesce, false if not.</value>
+        </member>
+        <member name="P:Z.BulkOperations.BulkOperation.OnUpdateUseCoalesce">
+            <summary>
+            Gets or sets a value indicating whether the on update use coalesce.
+            </summary>
+            <value>True if on update use coalesce, false if not.</value>
         </member>
         <member name="P:Z.BulkOperations.BulkOperation.CommandParameterAddRowIndex">
             <summary>Gets or sets a value indicating whether the command parameter add row index.</summary>
@@ -3761,12 +3981,6 @@
         <member name="P:Z.BulkOperations.BulkOperation.DestinationTableName">
             <summary>Gets or sets the name of the destination table.</summary>
             <value>The name of the destination table.</value>
-        </member>
-        <member name="P:Z.BulkOperations.BulkOperation.OnMergeUpdateUseCoalesce">
-            <summary>
-            Gets or sets a value indicating whether the on merge update use coalesce.
-            </summary>
-            <value>True if on merge update use coalesce, false if not.</value>
         </member>
         <member name="F:Z.BulkOperations.BulkOperation.ContextFactory">
             <summary>Gets or sets the context factory function to use when a working context is requested.</summary>
@@ -4133,6 +4347,14 @@
             <summary>Gets or sets the `AND (ONE NOT MEET CONDITION)` to add when merge update is matched.</summary>
             <value>The `AND (ONE NOT MEET CONDITION)` to add when merge update is matched.</value>
         </member>
+        <member name="P:Z.BulkOperations.BulkOperation`1.UpdateMatchedAndConditionExpression">
+            <summary>Gets or sets the `AND CONDITION` to add when update is matched.</summary>
+            <value>The `AND CONDITION` to add when update is matched.</value>
+        </member>
+        <member name="P:Z.BulkOperations.BulkOperation`1.UpdateMatchedAndOneNotConditionExpression">
+            <summary>Gets or sets the `AND (ONE NOT MEET CONDITION)` to add when update is matched.</summary>
+            <value>The `AND (ONE NOT MEET CONDITION)` to add when update is matched.</value>
+        </member>
         <member name="P:Z.BulkOperations.BulkOperation`1.SynchronizeMatchedAndConditionExpression">
             <summary>Gets or sets the `AND CONDITION` to add when merge update is matched.</summary>
             <value>The `AND CONDITION` to add when merge update is matched.</value>
@@ -4141,11 +4363,43 @@
             <summary>Gets or sets the `AND (ONE NOT MEET CONDITION)` to add when merge update is matched.</summary>
             <value>The `AND (ONE NOT MEET CONDITION)` to add when merge update is matched.</value>
         </member>
+        <member name="P:Z.BulkOperations.BulkOperation`1.IgnoreOnMergeMatchedAndConditionExpression">
+            <summary>Gets or sets the `AND CONDITION` to add when merge update is matched. All columns are part of the condition except those from the ignore expression.</summary>
+            <value>The `AND CONDITION` to add when merge update is matched. All columns are part of the condition except those from the ignore expression.</value>
+        </member>
+        <member name="P:Z.BulkOperations.BulkOperation`1.IgnoreOnMergeMatchedAndOneNotConditionExpression">
+            <summary>Gets or sets the `AND (ONE NOT MEET CONDITION)` to add when merge update is matched. All columns are part of the condition except those from the ignore expression.</summary>
+            <value>The `AND (ONE NOT MEET CONDITION)` to add when merge update is matched. All columns are part of the condition except those from the ignore expression.</value>
+        </member>
+        <member name="P:Z.BulkOperations.BulkOperation`1.IgnoreOnUpdateMatchedAndConditionExpression">
+            <summary>Gets or sets the `AND CONDITION` to add when update is matched. All columns are part of the condition except those from the ignore expression.</summary>
+            <value>The `AND CONDITION` to add when update is matched. All columns are part of the condition except those from the ignore expression.</value>
+        </member>
+        <member name="P:Z.BulkOperations.BulkOperation`1.IgnoreOnUpdateMatchedAndOneNotConditionExpression">
+            <summary>Gets or sets the `AND (ONE NOT MEET CONDITION)` to add when update is matched. All columns are part of the condition except those from the ignore expression.</summary>
+            <value>The `AND (ONE NOT MEET CONDITION)` to add when update is matched. All columns are part of the condition except those from the ignore expression.</value>
+        </member>
+        <member name="P:Z.BulkOperations.BulkOperation`1.IgnoreOnSynchronizeMatchedAndConditionExpression">
+            <summary>Gets or sets the `AND CONDITION` to add when merge update is matched. All columns are part of the condition except those from the ignore expression.</summary>
+            <value>The `AND CONDITION` to add when merge update is matched. All columns are part of the condition except those from the ignore expression.</value>
+        </member>
+        <member name="P:Z.BulkOperations.BulkOperation`1.IgnoreOnSynchronizeMatchedAndOneNotConditionExpression">
+            <summary>Gets or sets the `AND (ONE NOT MEET CONDITION)` to add when merge update is matched. All columns are part of the condition except those from the ignore expression.</summary>
+            <value>The `AND (ONE NOT MEET CONDITION)` to add when merge update is matched. All columns are part of the condition except those from the ignore expression.</value>
+        </member>
         <member name="P:Z.BulkOperations.BulkOperation`1.CoalesceOnMergeUpdateExpression">
             <summary>Gets or sets columns to coalesce, ISNULL(StagingValue, DestinationValue).</summary>
             <value>The columns to coalesce, ISNULL(StagingValue, DestinationValue).</value>
         </member>
         <member name="P:Z.BulkOperations.BulkOperation`1.CoalesceDestinationOnMergeUpdateExpression">
+            <summary>Gets or sets columns to coalesce, ISNULL(DestinationValue, StagingValue).</summary>
+            <value>The columns to coalesce, ISNULL(DestinationValue, StagingValue).</value>
+        </member>
+        <member name="P:Z.BulkOperations.BulkOperation`1.CoalesceOnUpdateExpression">
+            <summary>Gets or sets columns to coalesce, ISNULL(StagingValue, DestinationValue).</summary>
+            <value>The columns to coalesce, ISNULL(StagingValue, DestinationValue).</value>
+        </member>
+        <member name="P:Z.BulkOperations.BulkOperation`1.CoalesceDestinationOnUpdateExpression">
             <summary>Gets or sets columns to coalesce, ISNULL(DestinationValue, StagingValue).</summary>
             <value>The columns to coalesce, ISNULL(DestinationValue, StagingValue).</value>
         </member>
@@ -7476,6 +7730,15 @@
         </member>
         <member name="T:IDbSetExtensions">
             <summary>A database set extensions.</summary>
+        </member>
+        <member name="M:IDbSetExtensions.DetachRange``1(System.Data.Entity.IDbSet{``0},System.Collections.Generic.IEnumerable{``0})">
+            <summary>
+            Detach the given collection of entities from the context
+            </summary>
+            <typeparam name="TEntity">Type of the entity.</typeparam>
+            <param name="set">The set to act on.</param>
+            <param name="entities">The collection of entities to remove.</param>
+            <returns>The collection of entities.</returns>
         </member>
         <member name="M:IDbSetExtensions.AddOrUpdateExtension``1(System.Data.Entity.IDbSet{``0},``0[])">
             <summary>
