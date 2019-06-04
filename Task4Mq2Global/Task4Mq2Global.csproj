@@ -65,7 +65,8 @@
     <Reference Include="Topshelf.Log4Net">
       <HintPath>..\packages\Topshelf.Log4Net.dll</HintPath>
     </Reference>
-    <Reference Include="Z.EntityFramework.Extensions">
+    <Reference Include="Z.EntityFramework.Extensions, Version=3.18.3.0, Culture=neutral, PublicKeyToken=59b66d028979105b, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
       <HintPath>..\packages\Z.EntityFramework.Extensions.3.18.5\lib\net45\Z.EntityFramework.Extensions.dll</HintPath>
     </Reference>
   </ItemGroup>

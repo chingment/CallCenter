@@ -190,13 +190,14 @@ namespace Lumos.BLL.Service.Merch
                     if (rop.Mode == Enumeration.ObBatchAllocateMode.Random)
                     {
                         //随机分配
-                        obCustomers = CurrentDb.ObCustomer.Where(x => x.BelongerId == obBatchAllocate.BelongerId).OrderBy(x => Guid.NewGuid()).Take(item.AllocatedCount).ToList();
+                        obCustomers = CurrentDb.ObCustomer.Where(x => x.ObBatchId == obBatchAllocate.ObBatchId && x.BelongerId == obBatchAllocate.BelongerId).OrderBy(x => Guid.NewGuid()).Take(item.AllocatedCount).ToList();
                     }
                     else if (rop.Mode == Enumeration.ObBatchAllocateMode.Filter)
                     {
                         new_Allocate.Filters = GetFilters(rop.Filters);
                         //过滤分配
                         obCustomers = CurrentDb.ObCustomer.Where(x =>
+                                     x.ObBatchId == obBatchAllocate.ObBatchId &&
                                      x.BelongerId == obBatchAllocate.BelongerId
                                      &&
                                      (rop.Filters.CarPlateNo == null || x.CarPlateNo.Contains(rop.Filters.CarPlateNo)) &&
