@@ -9,5 +9,7 @@ namespace Lumos.BLL.Service.Admin
     public class RupObBatchGetList : RupBaseGetList
     {
         public string Code { get; set; }
+
+        public string MerchantId { get; set; }
     }
 }

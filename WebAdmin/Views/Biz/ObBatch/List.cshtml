@@ -9,6 +9,9 @@
     var listTable;
 
     $(document).ready(function () {
+
+        $('#sel_Merchants').myChosen({ urlParams: { type: "Merchant" } });
+
         listTable = $("#list_table").loadDataTable({
             url: "/Biz/ObBatch/GetList",
             pageIndex: 0,
@@ -88,6 +91,14 @@
 <div class="gbr-row gbr-page">
     <form id="form1" name="form1">
         <div class="search-bar">
+            <div class="filter">
+                <span class="filter-label">商户：</span>
+                <span class="filter-input">
+                    <select id="sel_Merchants" name="MerchantId" data-placeholder="请选择" class="chosen-select" style="width:200px">
+                        <option value=""></option>
+                    </select>
+                </span>
+            </div>
             <div class="filter">
                 <span class="filter-label">批次号：</span>
                 <span class="filter-input">

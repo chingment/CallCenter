@@ -91,7 +91,9 @@ namespace WebAdmin.Controllers.Biz
         {
             var query = (from u in CurrentDb.ObBatch
                          join m in CurrentDb.Merchant on u.MerchantId equals m.Id
-                         where (rup.Code == null || u.Code.Contains(rup.Code))
+
+                         where (rup.Code == null || u.Code.Contains(rup.Code))&&
+                          (rup.MerchantId == null || u.MerchantId.Contains(rup.MerchantId))
                          select new { u.Id, MerchantName = m.Name, u.Code, u.Name, u.SoureType, u.SoureName, u.Description, u.DataCount, u.ValidCount, u.InValidCount, u.Status, u.CreateTime, u.BusinessType });
 
             int total = query.Count();
