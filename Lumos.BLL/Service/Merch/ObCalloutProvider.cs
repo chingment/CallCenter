@@ -11,7 +11,7 @@ namespace Lumos.BLL.Service.Merch
     public class ObCalloutProvider : BaseProvider
     {
 
-        private List<ObBatchAllocate> GetFatherObBatchAllocates(string merchantId, string id)
+        public List<ObBatchAllocate> GetFatherObBatchAllocates(string merchantId, string id)
         {
             var obBatchAllocates = CurrentDb.ObBatchAllocate.Where(m => m.MerchantId == merchantId).ToList();
 

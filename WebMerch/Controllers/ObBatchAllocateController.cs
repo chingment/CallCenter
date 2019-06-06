@@ -144,6 +144,12 @@ namespace WebMerch.Controllers
             return MerchServiceFactory.ObBatchAllocate.Add(this.CurrentUserId, this.CurrentMerchantId, rop);
         }
 
+        [HttpPost]
+        public CustomJsonResult Restore(RopObBatchAllocateRestore rop)
+        {
+            return MerchServiceFactory.ObBatchAllocate.Restore(this.CurrentUserId, this.CurrentMerchantId, rop.Id);
+        }
+
 
         public CustomJsonResult GetObCustomerListByCarIns(RupObCustomerGetList rup)
         {

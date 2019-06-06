@@ -110,6 +110,7 @@
     <Compile Include="Service\Merch\RModels\RetCallResultRecordGetDetails.cs" />
     <Compile Include="Service\Merch\RModels\RetRunHeartbeatPacket.cs" />
     <Compile Include="Service\Merch\RModels\RetUserGetPersonalInfo.cs" />
+    <Compile Include="Service\Merch\RModels\RopObBatchAllocateRestore.cs" />
     <Compile Include="Service\Merch\RModels\RopTelphoneControlCallCustomer.cs" />
     <Compile Include="Service\Merch\RModels\RupCallRecordGetList.cs" />
     <Compile Include="Service\Merch\RModels\RupCallResultRecordGetList.cs" />

@@ -256,7 +256,7 @@ namespace Lumos.BLL.Service.Merch
         }
 
 
-        public CustomJsonResult Recover(string operater, string merchantId, string obBatchAllocateId)
+        public CustomJsonResult Restore(string operater, string merchantId, string obBatchAllocateId)
         {
             CustomJsonResult result = new CustomJsonResult();
 
@@ -265,14 +265,23 @@ namespace Lumos.BLL.Service.Merch
 
                 var obBatchAllocate = CurrentDb.ObBatchAllocate.Where(m => m.Id == obBatchAllocateId).FirstOrDefault();
 
-                int unUsedCount = obBatchAllocate.AllocatedCount - obBatchAllocate.UsedCount;
+                var pObBatchAllocate = CurrentDb.ObBatchAllocate.Where(m => m.Id == obBatchAllocate.PId).FirstOrDefault();
 
 
-                obBatchAllocate.UnAllocatedCount += unUsedCount;
-                obBatchAllocate.AllocatedCount -= unUsedCount;
-                obBatchAllocate.UsedCount -= unUsedCount;
+                int unAllocatedCount = obBatchAllocate.UnAllocatedCount;
 
-                var obCustomers = CurrentDb.ObCustomer.Where(m => m.BelongerId == obBatchAllocate.BelongerId && m.IsUseCall == false && m.IsTake == false).Take(unUsedCount).ToList();
+                pObBatchAllocate.AllocatedCount -= unAllocatedCount;
+                pObBatchAllocate.UnAllocatedCount += unAllocatedCount;
+
+                pObBatchAllocate.Mender = operater;
+                pObBatchAllocate.MendTime = this.DateTime;
+
+
+                //obBatchAllocate.UnAllocatedCount += unUsedCount;
+                //obBatchAllocate.AllocatedCount -= unUsedCount;
+                //obBatchAllocate.UsedCount -= unUsedCount;
+
+                var obCustomers = CurrentDb.ObCustomer.Where(m => m.BelongerId == obBatchAllocate.BelongerId && m.IsUseCall == false && m.IsTake == false).Take(unAllocatedCount).ToList();
 
                 var belongUser = CurrentDb.SysMerchantUser.Where(m => m.Id == obBatchAllocate.AllocaterId).FirstOrDefault();
                 var belongOrganization = CurrentDb.Organization.Where(m => m.Id == belongUser.OrganizationId).FirstOrDefault();
