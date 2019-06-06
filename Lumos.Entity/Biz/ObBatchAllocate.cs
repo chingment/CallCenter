@@ -35,5 +35,7 @@ namespace Lumos.Entity
         public string Description { get; set; }
 
         public string Filters { get; set; }
+
+        public int RestoreCount { get; set; }
     }
 }

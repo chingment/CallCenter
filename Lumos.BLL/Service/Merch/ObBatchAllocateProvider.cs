@@ -256,6 +256,60 @@ namespace Lumos.BLL.Service.Merch
         }
 
 
+
+        public void a(string operater, string obBatchAllocateId, int count)
+        {
+            var obBatchAllocate = CurrentDb.ObBatchAllocate.Where(m => m.Id == obBatchAllocateId).FirstOrDefault();
+
+            var pObBatchAllocates = CurrentDb.ObBatchAllocate.Where(m => m.PId == obBatchAllocateId).ToList();
+
+            if (pObBatchAllocates.Count > 0)
+            {
+                foreach (var item in pObBatchAllocates)
+                {
+                    int unAllocatedCount = item.UnAllocatedCount;
+
+                    if (unAllocatedCount > 0)
+                    { 
+
+                    item.RestoreCount = unAllocatedCount;
+                    item.UnAllocatedCount = unAllocatedCount;
+
+                    var obCustomers = CurrentDb.ObCustomer.Where(m => m.BelongerId == item.BelongerId && m.IsUseCall == false && m.IsTake == false).Take(unAllocatedCount).ToList();
+                        if (obCustomers.Count > 0)
+                        {
+                            var belongUser = CurrentDb.SysMerchantUser.Where(m => m.Id == obBatchAllocate.AllocaterId).FirstOrDefault();
+                            var belongOrganization = CurrentDb.Organization.Where(m => m.Id == belongUser.OrganizationId).FirstOrDefault();
+
+                            foreach (var obCustomer in obCustomers)
+                            {
+                                obCustomer.BelongerId = belongUser.Id;
+                                obCustomer.BelongerOrganizationId = belongUser.OrganizationId;
+                                obCustomer.ObBatchAllocateId = item.Id;
+                                obCustomer.Mender = operater;
+                                obCustomer.MendTime = this.DateTime;
+                                CurrentDb.SaveChanges();
+
+                                var obCustomerBelongTrack = new ObCustomerBelongTrack();
+                                obCustomerBelongTrack.Id = GuidUtil.New();
+                                obCustomerBelongTrack.MerchantId = obCustomer.MerchantId;
+                                obCustomerBelongTrack.ObBatchId = obCustomer.ObBatchId;
+                                obCustomerBelongTrack.ObBatchDataId = obCustomer.ObBatchId;
+                                obCustomerBelongTrack.ObCustomerId = obCustomer.Id;
+                                obCustomerBelongTrack.BelongerId = belongUser.Id;
+                                obCustomerBelongTrack.Description = string.Format("还原给用户：{0}（{1}）", belongUser.FullName, belongUser.UserName);
+                                obCustomerBelongTrack.Creator = operater;
+                                obCustomerBelongTrack.CreateTime = this.DateTime;
+                                CurrentDb.ObCustomerBelongTrack.Add(obCustomerBelongTrack);
+                            }
+                            CurrentDb.SaveChanges();
+                        }
+                    }
+
+                    a(operater,item.Id, count);
+                }
+            }
+        }
         public CustomJsonResult Restore(string operater, string merchantId, string obBatchAllocateId)
         {
             CustomJsonResult result = new CustomJsonResult();
@@ -265,48 +319,16 @@ namespace Lumos.BLL.Service.Merch
 
                 var obBatchAllocate = CurrentDb.ObBatchAllocate.Where(m => m.Id == obBatchAllocateId).FirstOrDefault();
 
+                int unAllocatedCount = obBatchAllocate.UnAllocatedCount;
+
                 var pObBatchAllocate = CurrentDb.ObBatchAllocate.Where(m => m.Id == obBatchAllocate.PId).FirstOrDefault();
 
 
-                int unAllocatedCount = obBatchAllocate.UnAllocatedCount;
-
-                pObBatchAllocate.AllocatedCount -= unAllocatedCount;
                 pObBatchAllocate.UnAllocatedCount += unAllocatedCount;
+                pObBatchAllocate.AllocatedCount -= unAllocatedCount;
 
-                pObBatchAllocate.Mender = operater;
-                pObBatchAllocate.MendTime = this.DateTime;
+                a(operater,obBatchAllocateId, unAllocatedCount);
 
-
-                //obBatchAllocate.UnAllocatedCount += unUsedCount;
-                //obBatchAllocate.AllocatedCount -= unUsedCount;
-                //obBatchAllocate.UsedCount -= unUsedCount;
-
-                var obCustomers = CurrentDb.ObCustomer.Where(m => m.BelongerId == obBatchAllocate.BelongerId && m.IsUseCall == false && m.IsTake == false).Take(unAllocatedCount).ToList();
-
-                var belongUser = CurrentDb.SysMerchantUser.Where(m => m.Id == obBatchAllocate.AllocaterId).FirstOrDefault();
-                var belongOrganization = CurrentDb.Organization.Where(m => m.Id == belongUser.OrganizationId).FirstOrDefault();
-
-                foreach (var obCustomer in obCustomers)
-                {
-                    obCustomer.BelongerId = belongUser.Id;
-                    obCustomer.BelongerOrganizationId = belongUser.OrganizationId;
-                    obCustomer.ObBatchAllocateId = obBatchAllocate.Id;
-                    obCustomer.Mender = operater;
-                    obCustomer.MendTime = this.DateTime;
-                    CurrentDb.SaveChanges();
-
-                    var obCustomerBelongTrack = new ObCustomerBelongTrack();
-                    obCustomerBelongTrack.Id = GuidUtil.New();
-                    obCustomerBelongTrack.MerchantId = obCustomer.MerchantId;
-                    obCustomerBelongTrack.ObBatchId = obCustomer.ObBatchId;
-                    obCustomerBelongTrack.ObBatchDataId = obCustomer.ObBatchId;
-                    obCustomerBelongTrack.ObCustomerId = obCustomer.Id;
-                    obCustomerBelongTrack.BelongerId = belongUser.Id;
-                    obCustomerBelongTrack.Description = string.Format("还原给用户：{0}（{1}）", belongUser.FullName, belongUser.UserName);
-                    obCustomerBelongTrack.Creator = operater;
-                    obCustomerBelongTrack.CreateTime = this.DateTime;
-                    CurrentDb.ObCustomerBelongTrack.Add(obCustomerBelongTrack);
-                }
 
                 CurrentDb.SaveChanges();
                 ts.Complete();

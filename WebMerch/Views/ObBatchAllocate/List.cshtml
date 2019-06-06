@@ -89,7 +89,8 @@
                 l_StrRows += "<td class=\"overflow\" title=\"" + p_row.dataCount + "\">" + p_row.dataCount + "</td>";
                 l_StrRows += "<td class=\"overflow\" title=\"" + p_row.unUsedCount + "\">" + p_row.unUsedCount + "</td>";
                 l_StrRows += "<td class=\"overflow\" title=\"" + p_row.usedCount + "\">" + p_row.usedCount + "</td>";
-                l_StrRows += "<td class=\"overflow\" title=\"" + p_row.description + "\">" + p_row.description + "</td>";
+                l_StrRows += "<td class=\"overflow\" title=\"" + p_row.usedCount + "\">" + p_row.usedCount + "</td>";
+                l_StrRows += "<td class=\"overflow\" title=\"" + p_row.restoreCount + "\">" + p_row.restoreCount + "</td>";
                 l_StrRows += "<td class=\"overflow\" title=\"" + p_row.createTime + "\">" + p_row.createTime + "</td>";
                 l_StrRows += "<td class=\"operation\">";
 
@@ -257,10 +258,10 @@
                         <th style="width:15%">
                             分配对象
                         </th>
-                        <th style="width:15%">
+                        <th style="width:10%">
                             分配方式
                         </th>
-                        <th style="width:15%">
+                        <th style="width:10%">
                             分配数量(条)
                         </th>
                         <th style="width:10%">
@@ -268,6 +269,9 @@
                         </th>
                         <th style="width:10%">
                             已使用(条)
+                        </th>
+                        <th style="width:10%">
+                            已还原(条)
                         </th>
                         <th style="width:10%">
                             描述
@@ -283,7 +287,7 @@
                 <tbody></tbody>
                 <tfoot>
                     <tr>
-                        <td colspan="10">
+                        <td colspan="11">
                             <div class="pull-left">
                                 <span class="load-tip"></span>
                             </div>
