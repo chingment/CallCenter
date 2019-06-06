@@ -94,7 +94,9 @@
                 l_StrRows += "<td class=\"overflow\" title=\"" + p_row.createTime + "\">" + p_row.createTime + "</td>";
                 l_StrRows += "<td class=\"operation\">";
 
-                l_StrRows += l_Strlimt;
+                if ((p_row.unUsedCount - p_row.restoreCount)>0) {
+                    l_StrRows += l_Strlimt;
+                }
 
                 l_StrRows += "</td>";
                 l_StrRows += "</tr>";
