@@ -255,5 +255,57 @@ namespace Lumos.BLL.Service.Merch
             return result;
         }
 
+
+        public CustomJsonResult Recover(string operater, string merchantId, string obBatchAllocateId)
+        {
+            CustomJsonResult result = new CustomJsonResult();
+
+            using (TransactionScope ts = new TransactionScope())
+            {
+
+                var obBatchAllocate = CurrentDb.ObBatchAllocate.Where(m => m.Id == obBatchAllocateId).FirstOrDefault();
+
+                int unUsedCount = obBatchAllocate.AllocatedCount - obBatchAllocate.UsedCount;
+
+
+                obBatchAllocate.UnAllocatedCount += unUsedCount;
+                obBatchAllocate.AllocatedCount -= unUsedCount;
+                obBatchAllocate.UsedCount -= unUsedCount;
+
+                var obCustomers = CurrentDb.ObCustomer.Where(m => m.BelongerId == obBatchAllocate.BelongerId && m.IsUseCall == false && m.IsTake == false).Take(unUsedCount).ToList();
+
+                var belongUser = CurrentDb.SysMerchantUser.Where(m => m.Id == obBatchAllocate.AllocaterId).FirstOrDefault();
+                var belongOrganization = CurrentDb.Organization.Where(m => m.Id == belongUser.OrganizationId).FirstOrDefault();
+
+                foreach (var obCustomer in obCustomers)
+                {
+                    obCustomer.BelongerId = belongUser.Id;
+                    obCustomer.BelongerOrganizationId = belongUser.OrganizationId;
+                    obCustomer.ObBatchAllocateId = obBatchAllocate.Id;
+                    obCustomer.Mender = operater;
+                    obCustomer.MendTime = this.DateTime;
+                    CurrentDb.SaveChanges();
+
+                    var obCustomerBelongTrack = new ObCustomerBelongTrack();
+                    obCustomerBelongTrack.Id = GuidUtil.New();
+                    obCustomerBelongTrack.MerchantId = obCustomer.MerchantId;
+                    obCustomerBelongTrack.ObBatchId = obCustomer.ObBatchId;
+                    obCustomerBelongTrack.ObBatchDataId = obCustomer.ObBatchId;
+                    obCustomerBelongTrack.ObCustomerId = obCustomer.Id;
+                    obCustomerBelongTrack.BelongerId = belongUser.Id;
+                    obCustomerBelongTrack.Description = string.Format("还原给用户：{0}（{1}）", belongUser.FullName, belongUser.UserName);
+                    obCustomerBelongTrack.Creator = operater;
+                    obCustomerBelongTrack.CreateTime = this.DateTime;
+                    CurrentDb.ObCustomerBelongTrack.Add(obCustomerBelongTrack);
+                }
+
+                CurrentDb.SaveChanges();
+                ts.Complete();
+
+                result = new CustomJsonResult(ResultType.Success, ResultCode.Success, "新建成功");
+            }
+
+            return result;
+        }
     }
 }
