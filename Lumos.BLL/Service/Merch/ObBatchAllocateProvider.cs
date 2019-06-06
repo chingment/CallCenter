@@ -286,7 +286,7 @@ namespace Lumos.BLL.Service.Merch
                             {
                                 obCustomer.BelongerId = belongUser.Id;
                                 obCustomer.BelongerOrganizationId = belongUser.OrganizationId;
-                                obCustomer.ObBatchAllocateId = item.Id;
+                                obCustomer.ObBatchAllocateId = item.PId;
                                 obCustomer.Mender = operater;
                                 obCustomer.MendTime = this.DateTime;
                                 CurrentDb.SaveChanges();
@@ -323,7 +323,7 @@ namespace Lumos.BLL.Service.Merch
                     {
                         obCustomer.BelongerId = belongUser.Id;
                         obCustomer.BelongerOrganizationId = belongUser.OrganizationId;
-                        obCustomer.ObBatchAllocateId = obBatchAllocate.Id;
+                        obCustomer.ObBatchAllocateId = obBatchAllocate.PId;
                         obCustomer.Mender = operater;
                         obCustomer.MendTime = this.DateTime;
                         CurrentDb.SaveChanges();
