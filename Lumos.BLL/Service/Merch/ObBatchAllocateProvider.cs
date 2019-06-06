@@ -270,14 +270,15 @@ namespace Lumos.BLL.Service.Merch
                     int unAllocatedCount = item.UnAllocatedCount;
 
                     if (unAllocatedCount > 0)
-                    { 
+                    {
 
-                    item.RestoreCount = unAllocatedCount;
-                    item.UnAllocatedCount = unAllocatedCount;
+                        item.RestoreCount = unAllocatedCount;
+                        item.UnAllocatedCount = unAllocatedCount;
 
-                    var obCustomers = CurrentDb.ObCustomer.Where(m => m.BelongerId == item.BelongerId && m.IsUseCall == false && m.IsTake == false).Take(unAllocatedCount).ToList();
+                        var obCustomers = CurrentDb.ObCustomer.Where(m => m.ObBatchAllocateId == item.Id && m.BelongerId == item.BelongerId && m.IsUseCall == false && m.IsTake == false).Take(unAllocatedCount).ToList();
                         if (obCustomers.Count > 0)
                         {
+
                             var belongUser = CurrentDb.SysMerchantUser.Where(m => m.Id == obBatchAllocate.AllocaterId).FirstOrDefault();
                             var belongOrganization = CurrentDb.Organization.Where(m => m.Id == belongUser.OrganizationId).FirstOrDefault();
 
@@ -306,9 +307,43 @@ namespace Lumos.BLL.Service.Merch
                         }
                     }
 
-                    a(operater,item.Id, count);
+                    a(operater, item.Id, count);
                 }
             }
+            else
+            {
+                var obCustomers = CurrentDb.ObCustomer.Where(m => m.ObBatchAllocateId == obBatchAllocate.Id && m.BelongerId == obBatchAllocate.BelongerId && m.IsUseCall == false && m.IsTake == false).Take(count).ToList();
+                if (obCustomers.Count > 0)
+                {
+
+                    var belongUser = CurrentDb.SysMerchantUser.Where(m => m.Id == obBatchAllocate.AllocaterId).FirstOrDefault();
+                    var belongOrganization = CurrentDb.Organization.Where(m => m.Id == belongUser.OrganizationId).FirstOrDefault();
+
+                    foreach (var obCustomer in obCustomers)
+                    {
+                        obCustomer.BelongerId = belongUser.Id;
+                        obCustomer.BelongerOrganizationId = belongUser.OrganizationId;
+                        obCustomer.ObBatchAllocateId = obBatchAllocate.Id;
+                        obCustomer.Mender = operater;
+                        obCustomer.MendTime = this.DateTime;
+                        CurrentDb.SaveChanges();
+
+                        var obCustomerBelongTrack = new ObCustomerBelongTrack();
+                        obCustomerBelongTrack.Id = GuidUtil.New();
+                        obCustomerBelongTrack.MerchantId = obCustomer.MerchantId;
+                        obCustomerBelongTrack.ObBatchId = obCustomer.ObBatchId;
+                        obCustomerBelongTrack.ObBatchDataId = obCustomer.ObBatchId;
+                        obCustomerBelongTrack.ObCustomerId = obCustomer.Id;
+                        obCustomerBelongTrack.BelongerId = belongUser.Id;
+                        obCustomerBelongTrack.Description = string.Format("还原给用户：{0}（{1}）", belongUser.FullName, belongUser.UserName);
+                        obCustomerBelongTrack.Creator = operater;
+                        obCustomerBelongTrack.CreateTime = this.DateTime;
+                        CurrentDb.ObCustomerBelongTrack.Add(obCustomerBelongTrack);
+                    }
+                    CurrentDb.SaveChanges();
+                }
+            }
+
         }
         public CustomJsonResult Restore(string operater, string merchantId, string obBatchAllocateId)
         {
@@ -319,21 +354,33 @@ namespace Lumos.BLL.Service.Merch
 
                 var obBatchAllocate = CurrentDb.ObBatchAllocate.Where(m => m.Id == obBatchAllocateId).FirstOrDefault();
 
-                int unAllocatedCount = obBatchAllocate.UnAllocatedCount;
+                int unAllocatedCount = obBatchAllocate.UnAllocatedCount - obBatchAllocate.RestoreCount;
 
                 var pObBatchAllocate = CurrentDb.ObBatchAllocate.Where(m => m.Id == obBatchAllocate.PId).FirstOrDefault();
 
 
-                pObBatchAllocate.UnAllocatedCount += unAllocatedCount;
-                pObBatchAllocate.AllocatedCount -= unAllocatedCount;
+                if (unAllocatedCount > 0)
+                {
+                    a(operater, obBatchAllocateId, unAllocatedCount);
 
-                a(operater,obBatchAllocateId, unAllocatedCount);
+                    obBatchAllocate.RestoreCount = unAllocatedCount;
+
+                    pObBatchAllocate.UnAllocatedCount += unAllocatedCount;
+                    pObBatchAllocate.AllocatedCount -= unAllocatedCount;
+
+                    CurrentDb.SaveChanges();
+                    ts.Complete();
+
+                    result = new CustomJsonResult(ResultType.Success, ResultCode.Success, "还原成功");
+                }
+                else
+                {
+                    result = new CustomJsonResult(ResultType.Success, ResultCode.Success, "没有可还原的数据");
+                }
 
 
-                CurrentDb.SaveChanges();
-                ts.Complete();
 
-                result = new CustomJsonResult(ResultType.Success, ResultCode.Success, "新建成功");
+
             }
 
             return result;

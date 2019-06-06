@@ -89,8 +89,8 @@
                 l_StrRows += "<td class=\"overflow\" title=\"" + p_row.dataCount + "\">" + p_row.dataCount + "</td>";
                 l_StrRows += "<td class=\"overflow\" title=\"" + p_row.unUsedCount + "\">" + p_row.unUsedCount + "</td>";
                 l_StrRows += "<td class=\"overflow\" title=\"" + p_row.usedCount + "\">" + p_row.usedCount + "</td>";
-                l_StrRows += "<td class=\"overflow\" title=\"" + p_row.usedCount + "\">" + p_row.usedCount + "</td>";
                 l_StrRows += "<td class=\"overflow\" title=\"" + p_row.restoreCount + "\">" + p_row.restoreCount + "</td>";
+                l_StrRows += "<td class=\"overflow\" title=\"" + p_row.description + "\">" + p_row.description + "</td>";
                 l_StrRows += "<td class=\"overflow\" title=\"" + p_row.createTime + "\">" + p_row.createTime + "</td>";
                 l_StrRows += "<td class=\"operation\">";
 
@@ -111,6 +111,7 @@
                     data: { id: id },
                     success: function (d) {
                         $.lumos.tips(d.message);
+                        refresh(2)
                     }
                 });
                 return true;
