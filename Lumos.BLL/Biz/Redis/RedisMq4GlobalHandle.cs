@@ -152,15 +152,25 @@ namespace Lumos.BLL.Biz
                                     if (!string.IsNullOrEmpty(csrPhoneNumber))
                                     {
                                         //ObCustomer obCustomer = null;
-                                        var obCustomer = tsCurrentDb.ObCustomer.Where(m => m.MerchantId == obBatch.MerchantId && m.CsrPhoneNumber == csrPhoneNumber && m.RecoveryTime >= DateTime.Now).FirstOrDefault();
+                                        var obCustomer = tsCurrentDb.ObCustomer.Where(m => m.MerchantId == obBatch.MerchantId && m.CsrPhoneNumber == csrPhoneNumber).FirstOrDefault();
 
                                         bool isValid = true;
                                         string handleReport = "";
                                         if (obCustomer == null)
                                         {
-                                            handleReport = "有效分配数据：未重复";
-                                            isValid = true;
-                                            validCount += 1;
+                                            var obCustomer1 = obBatchDatas.Where(m => m.CsrPhoneNumber == csrPhoneNumber).FirstOrDefault();
+                                            if (obCustomer1 == null)
+                                            {
+                                                handleReport = "有效分配数据：未重复";
+                                                isValid = true;
+                                                validCount += 1;
+                                            }
+                                            else
+                                            {
+                                                handleReport = "无效分配数据:与本批次重复";
+                                                isValid = false;
+                                                inValidCount += 1;
+                                            }
                                         }
                                         else
                                         {
@@ -211,7 +221,7 @@ namespace Lumos.BLL.Biz
                                         obBatchData.HandleReport = handleReport;
                                         obBatchData.Creator = tsObBatch.Creator;
                                         obBatchData.CreateTime = tsObBatch.CreateTime;
-                                        tsCurrentDb.ObBatchData.Add(obBatchData);
+                                        
 
                                         obBatchDatas.Add(obBatchData);
 
