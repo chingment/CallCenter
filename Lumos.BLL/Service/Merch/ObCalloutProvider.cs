@@ -202,14 +202,14 @@ namespace Lumos.BLL.Service.Merch
                     return new CustomJsonResult(ResultType.Failure, ResultCode.Failure, "客户资料不存在");
                 }
 
-                if (string.IsNullOrEmpty(rop.PId))
-                {
-                    var callRecordCount = CurrentDb.CallRecord.Where(m => m.MerchantId == merchantId && m.SalesmanId == salesmanId && m.CustomerId == rop.CustomerId).Count();
-                    if (callRecordCount == 0)
-                    {
-                        return new CustomJsonResult(ResultType.Failure, ResultCode.Failure, "系统检测到没有外呼客户，不能保存通话记录");
-                    }
-                }
+                //if (string.IsNullOrEmpty(rop.PId))
+                //{
+                //    var callRecordCount = CurrentDb.CallRecord.Where(m => m.MerchantId == merchantId && m.SalesmanId == salesmanId && m.CustomerId == rop.CustomerId).Count();
+                //    if (callRecordCount == 0)
+                //    {
+                //        return new CustomJsonResult(ResultType.Failure, ResultCode.Failure, "系统检测到没有外呼客户，不能保存通话记录");
+                //    }
+                //}
 
                 if (!obCustomer.IsUseCall)
                 {
